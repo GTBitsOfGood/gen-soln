@@ -1,0 +1,12 @@
+/build/**
+/coverage/**
+/node_modules/**
+/docs/**
+/jsdoc/**
+/templates/**
+/tests/bench/**
+/tests/fixtures/**
+/tests/performance/**
+/tmp/**
+/tools/internal-rules/node_modules/**
+*.d.ts

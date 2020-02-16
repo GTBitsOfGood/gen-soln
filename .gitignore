@@ -1,0 +1,32 @@
+# mac
+.DS_Store
+.LSOverride
+.AppleDB
+.AppleDesktop
+
+# windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# environment
+.env
+.env.test.local
+.env.local
+.env.development.local
+.env.production.local
+
+# package manager
+node_modules/
+npm-debug.log*
+/.pnp
+.pnp.js
+build/
+coverage/
+*.log
+.npm
+
+# other
+.idea
+.next
+dist
