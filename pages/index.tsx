@@ -1,7 +1,15 @@
-export default function Index() {
+import React from "react";
+import { NextPage } from "next";
+
+import AuthPageLayout from "components/auth/AuthPageLayout";
+import LoginFormContent from "components/auth/LoginFormContent";
+
+const IndexPage: NextPage = () => {
   return (
-    <div>
-      <h1>Hello World!</h1>
-    </div>
+    <AuthPageLayout>
+      <LoginFormContent />
+    </AuthPageLayout>
   );
-}
+};
+
+export default IndexPage;
