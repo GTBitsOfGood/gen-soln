@@ -17,7 +17,7 @@ export default createMuiTheme({
     },
     background: {
       default: "#F7F7F9",
-      placeholder: "#CBE3DB"
+      placeholder: "#EBDEF0"
     }
   }
 });

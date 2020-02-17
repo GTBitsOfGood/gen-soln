@@ -9,21 +9,16 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import AuthPageFormContainer from "./AuthPageFormContainer";
 
 const useStyles = makeStyles({
-  form: {
-    height: "75%",
-    maxHeight: 360
-  },
-  formContent: {
-    height: "60%"
-  },
   formFooter: {
-    height: "15%",
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center"
   },
   rightMargin: {
     marginRight: 8
+  },
+  topMargin: {
+    marginTop: 50
   }
 });
 
@@ -43,7 +38,7 @@ const AuthPageForm: React.FC<Props> = ({
   ctaText,
   footer
 }) => {
-  const { form, formContent, formFooter, rightMargin } = useStyles();
+  const { formFooter, rightMargin, topMargin } = useStyles();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -66,11 +61,12 @@ const AuthPageForm: React.FC<Props> = ({
   return (
     <AuthPageFormContainer>
       <Typography variant="h5">{title}</Typography>
-      <form className={form} onSubmit={handleSubmit}>
-        <div className={formContent}>{children}</div>
+      <form onSubmit={handleSubmit}>
+        <div>{children}</div>
 
         <Button
           fullWidth
+          className={topMargin}
           type="submit"
           color="primary"
           variant="contained"

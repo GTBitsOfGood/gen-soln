@@ -6,14 +6,12 @@ const white = "white";
 const useStyles = makeStyles({
   container: {
     backgroundColor: white,
-    borderRadius: 8,
-    paddingLeft: "9%",
-    paddingRight: "9%",
-    paddingTop: "10%",
-    paddingBottom: "10%",
+    borderRadius: 10,
+    boxShadow: "0 0px 5px 1px rgba(0, 0, 0, 0.1)",
+    padding: 50,
     flex: 0.8,
-    maxHeight: 592,
-    maxWidth: 486
+    maxHeight: 450,
+    maxWidth: 500
   }
 });
 
