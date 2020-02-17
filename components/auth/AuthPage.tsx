@@ -3,18 +3,21 @@ import dynamic, { DynamicOptions } from "next/dynamic";
 
 import AuthPageLayout from "./AuthPageLayout";
 import AuthPageFormContainer from "./AuthPageFormContainer";
-import { Content, ContentComponent } from "./types";
+import { Content, ContentComponentProps } from "./types";
 
-const options: DynamicOptions<ContentComponent> = {
+const options: DynamicOptions<ContentComponentProps> = {
   loading: () => <AuthPageFormContainer />,
   ssr: false
 };
 
 const contentComponents: Record<
   Content,
-  React.ComponentType<ContentComponent> | null
+  React.ComponentType<ContentComponentProps> | null
 > = {
-  login: dynamic<ContentComponent>(() => import("./LoginFormContent"), options),
+  login: dynamic<ContentComponentProps>(
+    () => import("./LoginFormContent"),
+    options
+  ),
   forgotPassword: null,
   chooseService: null,
   signup: null

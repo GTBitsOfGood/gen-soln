@@ -10,7 +10,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 import AuthPageForm from "./AuthPageForm";
 
-import { ContentComponent } from "./types";
+import { ContentComponentProps } from "./types";
 
 const useStyles = makeStyles({
   topMargin: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   }
 });
 
-const LoginFormContent: React.FC<ContentComponent> = ({
+const LoginFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
 }) => {
   const [email, setEmail] = useState("");
