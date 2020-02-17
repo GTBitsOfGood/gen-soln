@@ -1,15 +1,10 @@
 import React from "react";
 import { NextPage } from "next";
 
-import AuthPageLayout from "components/auth/AuthPageLayout";
-import LoginFormContent from "components/auth/LoginFormContent";
+import AuthPage from "components/auth/AuthPage";
 
 const IndexPage: NextPage = () => {
-  return (
-    <AuthPageLayout>
-      <LoginFormContent />
-    </AuthPageLayout>
-  );
+  return <AuthPage />;
 };
 
 export default IndexPage;

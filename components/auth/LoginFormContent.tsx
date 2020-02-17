@@ -10,13 +10,17 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 import AuthPageForm from "./AuthPageForm";
 
+import { ContentComponent } from "./types";
+
 const useStyles = makeStyles({
   topMargin: {
     marginTop: 40
   }
 });
 
-const LoginFormContent: React.FC = () => {
+const LoginFormContent: React.FC<ContentComponent> = ({
+  navigateToContent
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hasError, setHasError] = useState(false);
@@ -42,8 +46,9 @@ const LoginFormContent: React.FC = () => {
   }, []);
 
   const onClickForgotPassword = useCallback(() => {
+    navigateToContent("forgotPassword");
     // TODO: Code for forgot password
-  }, []);
+  }, [navigateToContent]);
 
   return (
     <AuthPageForm

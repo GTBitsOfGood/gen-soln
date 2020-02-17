@@ -6,19 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-const white = "white";
+import AuthPageFormContainer from "./AuthPageFormContainer";
+
 const useStyles = makeStyles({
-  container: {
-    backgroundColor: white,
-    borderRadius: 8,
-    paddingLeft: "9%",
-    paddingRight: "9%",
-    paddingTop: "10%",
-    paddingBottom: "10%",
-    flex: 0.8,
-    maxHeight: 592,
-    maxWidth: 486
-  },
   form: {
     height: "75%",
     maxHeight: 360
@@ -53,7 +43,7 @@ const AuthPageForm: React.FC<Props> = ({
   ctaText,
   footer
 }) => {
-  const { form, container, formContent, formFooter, rightMargin } = useStyles();
+  const { form, formContent, formFooter, rightMargin } = useStyles();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -74,7 +64,7 @@ const AuthPageForm: React.FC<Props> = ({
   );
 
   return (
-    <div className={container}>
+    <AuthPageFormContainer>
       <Typography variant="h5">{title}</Typography>
       <form className={form} onSubmit={handleSubmit}>
         <div className={formContent}>{children}</div>
@@ -98,7 +88,7 @@ const AuthPageForm: React.FC<Props> = ({
 
         <div className={formFooter}>{footer}</div>
       </form>
-    </div>
+    </AuthPageFormContainer>
   );
 };
 
