@@ -42,9 +42,8 @@
     }
   },
   "lint-staged": {
-    "*.{tsx,ts,jsx,js}": [
-      "eslint --fix --plugin tsc --rule 'tsc/config: [2, {configFile: \"./tsconfig.json\"}]'",
-      "git add"
+    "**/*.{tsx,ts}": [
+      "eslint --fix --plugin tsc --rule 'tsc/config: [2, {configFile: \"./tsconfig.json\"}]'"
     ]
   }
 }
