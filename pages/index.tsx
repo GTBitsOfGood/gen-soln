@@ -1,7 +1,10 @@
-export default function Index() {
-  return (
-    <div>
-      <h1>Hello World!</h1>
-    </div>
-  );
-}
+import React from "react";
+import { NextPage } from "next";
+
+import AuthPage from "components/auth/AuthPage";
+
+const IndexPage: NextPage = () => {
+  return <AuthPage />;
+};
+
+export default IndexPage;

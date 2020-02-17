@@ -6,12 +6,13 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "yarn lint:tsc && yarn lint:eslint",
+    "lint": "yarn lint:tsc ; yarn lint:eslint",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
-    "lint:eslint": "eslint '**/*.{tsx,jsx}' --fix"
+    "lint:eslint": "eslint '**/*.{tsx,ts}' --fix"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.2",
+    "@material-ui/icons": "^4.9.1",
     "next": "^9.2.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
@@ -30,7 +31,19 @@
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^2.3.0",
     "eslint-plugin-tsc": "^1.2.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.7",
     "prettier": "^1.19.1",
     "typescript": "^3.7.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{tsx,ts}": [
+      "eslint --fix --plugin tsc --rule 'tsc/config: [2, {configFile: \"./tsconfig.json\"}]'"
+    ]
   }
 }
