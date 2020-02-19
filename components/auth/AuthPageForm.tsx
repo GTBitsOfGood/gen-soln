@@ -3,10 +3,10 @@ import React, { useState, useCallback, SetStateAction, Dispatch } from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import AuthPageFormContainer from "./AuthPageFormContainer";
+import ButtonWithCTA from "components/ButtonWithCTA";
 
 const useStyles = makeStyles({
   form: {
@@ -24,9 +24,6 @@ const useStyles = makeStyles({
   },
   rightMargin: {
     marginRight: 8
-  },
-  buttonStyle: {
-    borderRadius: 20
   }
 });
 
@@ -46,7 +43,7 @@ const AuthPageForm: React.FC<Props> = ({
   ctaText,
   footer
 }) => {
-  const { form, formContent, formFooter, rightMargin, buttonStyle } = useStyles();
+  const { form, formContent, formFooter, rightMargin } = useStyles();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -72,14 +69,7 @@ const AuthPageForm: React.FC<Props> = ({
       <form className={form} onSubmit={handleSubmit}>
         <div className={formContent}>{children}</div>
 
-        <Button
-          fullWidth
-          className={buttonStyle}
-          type="submit"
-          color="primary"
-          variant="contained"
-          disabled={isSubmitting}
-        >
+        <ButtonWithCTA fullWidth type="submit" disabled={isSubmitting}>
           {isSubmitting && (
             <CircularProgress
               className={rightMargin}
@@ -88,7 +78,7 @@ const AuthPageForm: React.FC<Props> = ({
             />
           )}
           {ctaText}
-        </Button>
+        </ButtonWithCTA>
 
         <div className={formFooter}>{footer}</div>
       </form>
