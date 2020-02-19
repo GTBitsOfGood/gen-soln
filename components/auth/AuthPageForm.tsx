@@ -3,23 +3,27 @@ import React, { useState, useCallback, SetStateAction, Dispatch } from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import AuthPageFormContainer from "./AuthPageFormContainer";
+import ButtonWithCTA from "components/ButtonWithCTA";
 
 const useStyles = makeStyles({
+  form: {
+    height: "75%",
+    maxHeight: 360
+  },
+  formContent: {
+    height: "60%"
+  },
   formFooter: {
+    height: "15%",
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center"
   },
   rightMargin: {
     marginRight: 8
-  },
-  buttonStyle: {
-    marginTop: 50,
-    borderRadius: 20
   }
 });
 
@@ -39,7 +43,7 @@ const AuthPageForm: React.FC<Props> = ({
   ctaText,
   footer
 }) => {
-  const { formFooter, rightMargin, buttonStyle } = useStyles();
+  const { form, formContent, formFooter, rightMargin } = useStyles();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -62,17 +66,10 @@ const AuthPageForm: React.FC<Props> = ({
   return (
     <AuthPageFormContainer>
       <Typography variant="h5">{title}</Typography>
-      <form onSubmit={handleSubmit}>
-        <div>{children}</div>
+      <form className={form} onSubmit={handleSubmit}>
+        <div className={formContent}>{children}</div>
 
-        <Button
-          fullWidth
-          className={buttonStyle}
-          type="submit"
-          color="primary"
-          variant="contained"
-          disabled={isSubmitting}
-        >
+        <ButtonWithCTA fullWidth type="submit" disabled={isSubmitting}>
           {isSubmitting && (
             <CircularProgress
               className={rightMargin}
@@ -81,7 +78,7 @@ const AuthPageForm: React.FC<Props> = ({
             />
           )}
           {ctaText}
-        </Button>
+        </ButtonWithCTA>
 
         <div className={formFooter}>{footer}</div>
       </form>
