@@ -17,8 +17,9 @@ const useStyles = makeStyles({
   rightMargin: {
     marginRight: 8
   },
-  topMargin: {
-    marginTop: 50
+  buttonStyle: {
+    marginTop: 50,
+    borderRadius: 20
   }
 });
 
@@ -38,7 +39,7 @@ const AuthPageForm: React.FC<Props> = ({
   ctaText,
   footer
 }) => {
-  const { formFooter, rightMargin, topMargin } = useStyles();
+  const { formFooter, rightMargin, buttonStyle } = useStyles();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -66,7 +67,7 @@ const AuthPageForm: React.FC<Props> = ({
 
         <Button
           fullWidth
-          className={topMargin}
+          className={buttonStyle}
           type="submit"
           color="primary"
           variant="contained"
