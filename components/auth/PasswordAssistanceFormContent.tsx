@@ -1,0 +1,93 @@
+import React, { useState, useCallback } from "react";
+
+import makeStyles from "@material-ui/core/styles/makeStyles";
+
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+
+import AuthPageForm from "./AuthPageForm";
+
+import { ContentComponentProps } from "./types";
+
+const useStyles = makeStyles({
+  topMargin: {
+    marginTop: 40
+  }
+});
+
+const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
+  navigateToContent
+}) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [hasError, setHasError] = useState(false);
+
+  const { topMargin } = useStyles();
+
+  const onChangeEmail = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(e.target.value);
+    },
+    []
+  );
+
+  const onChangePassword = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+    },
+    []
+  );
+
+  const onPressCTA = useCallback(() => {
+    // TODO: Code for signing-in
+  }, []);
+
+  const onClickGoBack = useCallback(() => {
+    navigateToContent("login");
+  }, [navigateToContent]);
+
+  return (
+    <>
+      <div>
+        <Button
+          disableRipple
+          color="secondary"
+          startIcon={<ArrowBackIosIcon />}
+          onClick={onClickGoBack}
+        >
+          Back
+        </Button>
+      </div>
+      <AuthPageForm
+        title="Password Assistance"
+        ctaText="Password Assistance"
+        onPressCTA={onPressCTA}
+        setHasError={setHasError}
+      >
+        <TextField
+          className={topMargin}
+          required
+          fullWidth
+          color="secondary"
+          type="email"
+          placeholder="email@nonprofit.com"
+          value={email}
+          onChange={onChangeEmail}
+          error={hasError}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <EmailOutlinedIcon color="secondary" />
+              </InputAdornment>
+            )
+          }}
+        />
+      </AuthPageForm>
+    </>
+  );
+};
+
+export default PasswordAssistanceFormContent;

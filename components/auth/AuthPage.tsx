@@ -18,9 +18,11 @@ const contentComponents: Record<
     () => import("./LoginFormContent"),
     options
   ),
-  forgotPassword: null,
-  chooseService: null,
-  signup: null
+  forgotPassword: dynamic<ContentComponentProps>(
+    () => import("./PasswordAssistanceFormContent"),
+    options
+  ),
+  chooseService: null
 };
 
 const AuthPage: React.FC = () => {
