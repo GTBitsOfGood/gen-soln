@@ -22,7 +22,6 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
 }) => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [hasError, setHasError] = useState(false);
 
   const { topMargin } = useStyles();
@@ -30,13 +29,6 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setEmail(e.target.value);
-    },
-    []
-  );
-
-  const onChangePassword = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(e.target.value);
     },
     []
   );
