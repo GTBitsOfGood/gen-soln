@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import Typography from "@material-ui/core/Typography";
 
 import AuthPageForm from "./AuthPageForm";
 
@@ -77,6 +78,10 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
             )
           }}
         />
+        <Typography>
+          Enter the email address associated with your Donation Marketplace
+          Solution account.
+        </Typography>
       </AuthPageForm>
     </>
   );
