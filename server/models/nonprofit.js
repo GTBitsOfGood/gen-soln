@@ -29,8 +29,4 @@ const nonprofitSchema = new Schema({
   }]
 });
 
-donationSchema.statics.findByName = async function(name) {
-  return this.findOne({ name: name }).exec();
-}
-
 module.exports = mongoose.model('Nonprofit', nonprofitSchema);

@@ -24,8 +24,4 @@ const donationSchema = new Schema({
   }
 });
 
-donationSchema.statics.findByTimestamp = async function(ts) {
-  return this.findOne({ timestamp: ts }).exec();
-}
-
 module.exports = mongoose.model('Donation', donationSchema);
