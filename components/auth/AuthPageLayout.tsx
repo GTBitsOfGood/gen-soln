@@ -13,20 +13,21 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     },
     content: {
       display: "flex",
-      flex: 0.4,
+      flex: 0.6,
       justifyContent: "center",
-      padding: 50
+      paddingTop: "5vh",
+      paddingBottom: "5vh"
     },
     main: {
       position: "relative",
       display: "flex",
-      flex: 0.5,
+      flex: 0.7,
       minWidth: 500,
       flexDirection: "column",
       justifyContent: "center"
     },
     placeholder: {
-      flex: 0.6,
+      flex: 0.4,
       backgroundColor: palette.background.placeholder
     }
   })

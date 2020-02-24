@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "yarn lint:tsc ; yarn lint:eslint",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
-    "lint:eslint": "eslint '**/*.{tsx,ts}' --fix"
+    "lint:eslint": "eslint '**/*.{tsx,ts,js,jsx}' --fix"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.2",
@@ -45,7 +45,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{tsx,ts}": [
+    "**/*.{tsx,ts,js,jsx}": [
       "eslint --fix --plugin tsc --rule 'tsc/config: [2, {configFile: \"./tsconfig.json\"}]'"
     ]
   }

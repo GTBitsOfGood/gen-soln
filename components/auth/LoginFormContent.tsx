@@ -3,11 +3,11 @@ import React, { useState, useCallback } from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
+import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 import AuthPageForm from "./AuthPageForm";
 
 import { ContentComponentProps } from "./types";
@@ -57,9 +57,13 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
       onPressCTA={onPressCTA}
       setHasError={setHasError}
       footer={
-        <Button disableRipple color="secondary" onClick={onClickForgotPassword}>
+        <ButtonWithLowercaseText
+          disableRipple
+          color="secondary"
+          onClick={onClickForgotPassword}
+        >
           Forgot password?
-        </Button>
+        </ButtonWithLowercaseText>
       }
     >
       <TextField
