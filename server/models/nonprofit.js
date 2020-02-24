@@ -1,8 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
-
-const { Donation } = require('./donation');
 
 const nonprofitSchema = new Schema({
   name: {
@@ -19,14 +17,18 @@ const nonprofitSchema = new Schema({
     contentType: String,
     required: true
   },
-  colors: [{
-    type: String,
-    required: true
-  }],
-  donations: [{
-    type: ObjectId,
-    ref: 'Donation'
-  }]
+  colors: [
+    {
+      type: String,
+      required: true
+    }
+  ],
+  donations: [
+    {
+      type: ObjectId,
+      ref: "Donation"
+    }
+  ]
 });
 
-module.exports = mongoose.model('Nonprofit', nonprofitSchema);
+module.exports = mongoose.model("Nonprofit", nonprofitSchema);

@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-const { Nonprofit } = require('./nonprofit');
-
 const donationSchema = new Schema({
   amount: {
     type: Number,
@@ -15,7 +13,7 @@ const donationSchema = new Schema({
   },
   org: {
     type: ObjectId,
-    ref: 'Nonprofit',
+    ref: "Nonprofit",
     required: true
   },
   timestamp: {
