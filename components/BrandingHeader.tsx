@@ -15,15 +15,20 @@ const useStyles = makeStyles({
   logo: {
     height: 16,
     marginRight: 4
+  },
+  imglink: {
+    lineHeight: 1
   }
 });
 
 const BrandingHeader: React.FC = () => {
-  const { header, logo } = useStyles();
+  const { header, logo, imglink } = useStyles();
 
   return (
     <header className={header}>
-      <img className={logo} alt="Bits of Good logo" src="bog-logo.svg" />
+      <a className={imglink} href="https://www.bitsofgood.org/">
+        <img className={logo} alt="Bits of Good Logo" src="bog-logo.svg" />
+      </a>
       <Typography variant="subtitle2" color="secondary">
         &middot; Donation Marketplace Solution
       </Typography>

@@ -1,7 +1,6 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
 
 const adminSchema = new Schema({
   firstName: {
@@ -19,7 +18,8 @@ const adminSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    minlength: 8
   }
 });
 
@@ -29,8 +29,4 @@ adminSchema.pre("save", async function(next) {
   next();
 });
 
-adminSchema.statics.findAdminByEmail = async function(email) {
-  return this.findOne({ email: email }).exec();
-};
-
-module.exports = mongoose.model("Admin", adminSchema);
+module.exports = mongoose.model('Admin', adminSchema);

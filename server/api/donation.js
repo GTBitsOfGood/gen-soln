@@ -1,1 +1,0 @@
-// donation.js api endpoints
