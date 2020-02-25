@@ -29,4 +29,8 @@ adminSchema.pre("save", async function(next) {
   next();
 });
 
+if (process.env.IS_OFFLINE) {
+  delete mongoose.connection.models.Admin;
+}
+
 module.exports = mongoose.model("Admin", adminSchema);

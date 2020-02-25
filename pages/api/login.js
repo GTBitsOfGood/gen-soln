@@ -1,4 +1,4 @@
-import { login } from "../../server/actions/admin";
+import { login } from "server/actions/admin";
 
 const handler = (req, res) => {
   login(req.body.email, req.body.password)
