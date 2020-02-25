@@ -13,5 +13,7 @@ export default async () => {
     .catch(error => {
       console.error("Database connection failed. 👇🏼");
       console.error(" > " + error);
+
+      throw new Error(error);
     });
 };
