@@ -65,7 +65,7 @@ const AuthPageForm: React.FC<Props> = ({
 
   return (
     <AuthPageFormContainer>
-      <Typography variant="h5">{title}</Typography>
+      <Typography variant="h4">{title}</Typography>
       <form className={form} onSubmit={handleSubmit}>
         <div className={formContent}>{children}</div>
 
