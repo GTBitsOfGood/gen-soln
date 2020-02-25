@@ -14,6 +14,6 @@ export default async () => {
       console.error("Database connection failed. 👇🏼");
       console.error(" > " + error);
 
-      throw new Error(error);
+      throw error;
     });
 };
