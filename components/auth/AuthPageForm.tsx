@@ -10,14 +10,16 @@ import ButtonWithCTA from "components/ButtonWithCTA";
 
 const useStyles = makeStyles({
   form: {
-    height: "75%",
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
     maxHeight: 360
   },
   formContent: {
-    height: "60%"
+    flex: 0.8
   },
   formFooter: {
-    height: "15%",
+    marginTop: 8,
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center"
