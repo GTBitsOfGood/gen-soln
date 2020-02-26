@@ -17,7 +17,7 @@ const useStyles = makeStyles(({ palette, margins }: Theme) =>
     main: {
       position: "relative",
       display: "flex",
-      minWidth: 486,
+      minWidth: 500,
       flexDirection: "column",
       justifyContent: "center",
       marginLeft: margins.LEFT

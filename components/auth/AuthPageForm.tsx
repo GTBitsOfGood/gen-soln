@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    maxHeight: 320
+    maxHeight: 360
   },
   formContent: {
     flex: 1
