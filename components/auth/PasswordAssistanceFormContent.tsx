@@ -19,6 +19,12 @@ const useStyles = makeStyles({
   }
 });
 
+const useStyles2 = makeStyles({
+  assistanceText: {
+    marginTop: 20
+  }
+});
+
 const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
 }) => {
@@ -26,6 +32,8 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
   const [hasError, setHasError] = useState(false);
 
   const { topMargin } = useStyles();
+
+  const { assistanceText } = useStyles2();
 
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +86,7 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
             )
           }}
         />
-        <Typography>
+        <Typography className={assistanceText}>
           Enter the email address associated with your Donation Marketplace
           Solution account.
         </Typography>
