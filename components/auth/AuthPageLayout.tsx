@@ -2,50 +2,46 @@ import React from "react";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-import BrandingHeader from "components/BrandingHeader";
+import AuthPageHeader from "./AuthPageHeader";
 
-const useStyles = makeStyles(({ palette }: Theme) =>
+import FullPageLayout from "components/FullPageLayout";
+
+const useStyles = makeStyles(({ palette, margins }: Theme) =>
   createStyles({
-    container: {
-      height: "100vh",
-      width: "100vw",
-      display: "flex"
-    },
     content: {
       display: "flex",
       flex: 0.6,
-      justifyContent: "center",
-      paddingTop: "5vh",
-      paddingBottom: "5vh"
+      paddingTop: margins.VERTICAL,
+      paddingBottom: margins.VERTICAL
     },
     main: {
       position: "relative",
       display: "flex",
-      flex: 0.7,
       minWidth: 500,
       flexDirection: "column",
-      justifyContent: "center"
+      justifyContent: "center",
+      marginLeft: margins.LEFT
     },
     placeholder: {
       flex: 0.4,
-      backgroundColor: palette.background.placeholder
+      backgroundColor: palette.background.imagePlaceholder
     }
   })
 );
 
 const AuthPageLayout: React.FC = ({ children }) => {
-  const { container, content, main, placeholder } = useStyles();
+  const { content, main, placeholder } = useStyles();
 
   return (
-    <div className={container}>
+    <FullPageLayout>
       <div className={content}>
         <div className={main}>
-          <BrandingHeader />
+          <AuthPageHeader />
           {children}
         </div>
       </div>
       <div className={placeholder} />
-    </div>
+    </FullPageLayout>
   );
 };
 

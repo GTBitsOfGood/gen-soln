@@ -1,11 +1,11 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import { TypeBackground } from "@material-ui/core/styles/createPalette";
 
-declare module "@material-ui/core/styles/createPalette" {
-  interface TypeBackground {
-    placeholder: string;
-  }
-}
+import { Spacing } from "./types";
+
+const margins: Record<Spacing, string> = {
+  VERTICAL: "5vh",
+  LEFT: "8vw"
+};
 
 export default createMuiTheme({
   palette: {
@@ -17,7 +17,8 @@ export default createMuiTheme({
     },
     background: {
       default: "#F7F7F9",
-      placeholder: "#EBDEF0"
+      imagePlaceholder: "#EBDEF0"
     }
-  }
+  },
+  margins
 });
