@@ -33,6 +33,7 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
   const [onPressGetPassword, setOnPressGetPassword] = useState(
     "Enter the email address associated with your Donation Marketplace Solution account."
   );
+  const [ctaText, setCtaText] = useState("Get Password");
 
   const { topMargin } = useStyles();
 
@@ -47,6 +48,7 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
 
   const onPressCTA = useCallback(() => {
     setOnPressGetPassword("We have sent a new password to this email.");
+    setCtaText("Back to Sign In");
   }, []);
 
   const onClickGoBack = useCallback(() => {
@@ -67,7 +69,7 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
       </div>
       <AuthPageForm
         title="Password Assistance"
-        ctaText="Get Password"
+        ctaText={ctaText}
         onPressCTA={onPressCTA}
         setHasError={setHasError}
       >
