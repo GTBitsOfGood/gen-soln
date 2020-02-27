@@ -1,10 +1,11 @@
 import React from "react";
 import { NextPage } from "next";
 
-import AuthPage from "components/auth/AuthPage";
+import DonationPage from "components/donation/DonationPage";
 
 const IndexPage: NextPage = () => {
-  return <AuthPage />;
+  // TODO: get list of non-profits from the server and send them as props to DonationPage
+  return <DonationPage />;
 };
 
 export default IndexPage;

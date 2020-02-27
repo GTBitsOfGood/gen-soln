@@ -8,11 +8,14 @@
     "start": "next start",
     "lint": "yarn lint:tsc ; yarn lint:eslint",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
-    "lint:eslint": "eslint '**/*.{tsx,ts}' --fix"
+    "lint:eslint": "eslint '**/*.{tsx,ts,js,jsx}' --fix"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.2",
     "@material-ui/icons": "^4.9.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.9.1",
     "next": "^9.2.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
@@ -42,7 +45,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{tsx,ts}": [
+    "**/*.{tsx,ts,js,jsx}": [
       "eslint --fix --plugin tsc --rule 'tsc/config: [2, {configFile: \"./tsconfig.json\"}]'"
     ]
   }

@@ -17,9 +17,10 @@
     "baseUrl": "./",
     "paths": {
       "components/*": ["components/*"],
-      "utils/*": ["utils/*"]
+      "utils/*": ["utils/*"],
+      "server/*": ["server/*"]
     }
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
 }

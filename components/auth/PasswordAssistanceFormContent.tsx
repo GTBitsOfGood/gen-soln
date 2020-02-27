@@ -16,14 +16,16 @@ import { ContentComponentProps } from "./types";
 const useStyles = makeStyles({
   topMargin: {
     marginTop: 40
-  }
-});
-
-const useStyles2 = makeStyles({
+  },
   assistanceText: {
     marginTop: 20
   }
 });
+
+const PasswordAssistanceCaption =
+  "Enter the email address associated with your Donation Marketplace Solution account.";
+const PasswordAssistanceCaption2 = "We have sent a new password to this email.";
+const ForgetPasswordCTAText = "Back to Sign In";
 
 const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
@@ -31,13 +33,12 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
   const [email, setEmail] = useState("");
   const [hasError, setHasError] = useState(false);
   const [onPressGetPassword, setOnPressGetPassword] = useState(
-    "Enter the email address associated with your Donation Marketplace Solution account."
+    PasswordAssistanceCaption
   );
+
   const [ctaText, setCtaText] = useState("Get Password");
 
-  const { topMargin } = useStyles();
-
-  const { assistanceText } = useStyles2();
+  const { topMargin, assistanceText } = useStyles();
 
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,14 +47,18 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
     []
   );
 
-  const onPressCTA = useCallback(() => {
-    setOnPressGetPassword("We have sent a new password to this email.");
-    setCtaText("Back to Sign In");
-  }, []);
-
   const onClickGoBack = useCallback(() => {
     navigateToContent("login");
   }, [navigateToContent]);
+
+  const onPressCTA = useCallback(() => {
+    //debugger;
+    setOnPressGetPassword(PasswordAssistanceCaption2);
+    setCtaText(ForgetPasswordCTAText);
+    if (ctaText === ForgetPasswordCTAText) {
+      onClickGoBack();
+    }
+  }, [ctaText, onClickGoBack]);
 
   return (
     <>
