@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     maxHeight: 360
   },
   formContent: {
-    flex: 0.8
+    flex: 1
   },
   formFooter: {
     marginTop: 8,

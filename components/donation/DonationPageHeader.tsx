@@ -14,7 +14,7 @@ const useStyles = makeStyles(({ margins }: Theme) =>
       alignItems: "center",
       justifyContent: "flex-start",
       backgroundColor: white,
-      padding: 16,
+      padding: 12,
       paddingLeft: margins.LEFT,
       paddingRight: margins.LEFT
     }

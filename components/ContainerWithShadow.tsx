@@ -8,9 +8,9 @@ const useStyles = makeStyles({
     backgroundColor: white,
     borderRadius: 8,
     boxShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.1)",
-    flex: 0.8,
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    overflow: "hidden"
   }
 });
 

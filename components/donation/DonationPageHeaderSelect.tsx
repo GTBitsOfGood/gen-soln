@@ -22,13 +22,23 @@ const useStyles = makeStyles({
   bold: {
     fontWeight: "bold"
   },
-  input: {
+  leftPadding: {
     paddingLeft: 6
+  },
+  color: {
+    color: "#837AD7"
   }
 });
 
 const DonationPageHeaderSelect: React.FC = () => {
-  const { container, select, selectMargin, bold, input } = useStyles();
+  const {
+    container,
+    select,
+    selectMargin,
+    bold,
+    leftPadding,
+    color
+  } = useStyles();
 
   const [value, setValue] = useState(0);
 
@@ -47,14 +57,14 @@ const DonationPageHeaderSelect: React.FC = () => {
         Donating to
       </Typography>
       <Select
-        classes={{ select }}
+        classes={{ select, icon: color }}
         value={value}
         onChange={onChange}
         className={selectMargin}
         disableUnderline={true}
         inputProps={{
           classes: {
-            root: `${bold} ${input}`
+            root: `${bold} ${leftPadding} ${color}`
           }
         }}
       >
