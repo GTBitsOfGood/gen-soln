@@ -1,12 +1,13 @@
 import bcrypt from "bcryptjs";
-
+import jwt from "jsonwebtoken";
 import Mongo from "server/index";
 import Admin from "server/models/admin";
 
 const responses = {
   BAD_EMAIL: "There is no account currently associated with this email.",
   BAD_PASSWORD: "The password you entered is incorrect. Please try again.",
-  USER_EXISTS: "A user with these credentials already exists."
+  USER_EXISTS: "A user with these credentials already exists.",
+  INVALID_TOKEN: "Token is expired or invalid."
 };
 
 export async function login(email, password) {
@@ -43,4 +44,14 @@ export async function signup(fname, lname, email, password, org) {
         org: org
       });
     });
+}
+
+export async function checkToken(token) {
+  return jwt.verify(token, process.env.TOKEN, (err, decoded) => {
+    if (decoded) {
+      return Promise.resolve(decoded);
+    }
+
+    return Promise.reject(Error(responses.INVALID_TOKEN));
+  });
 }
