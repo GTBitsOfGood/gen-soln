@@ -5,12 +5,14 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import ContainerWithShadow from "components/ContainerWithShadow";
 
 import DonationPageLayout from "./DonationPageLayout";
+import DonationPageFormHeader from "./DonationPageFormHeader";
+import DonationPageFormBody from "./DonationPageFormBody";
 
 const useStyles = makeStyles({
   container: {
-    maxHeight: 788,
-    maxWidth: 588,
-    padding: 16
+    height: "95%",
+    width: "40vw",
+    minWidth: 420
   }
 });
 
@@ -19,7 +21,10 @@ const DonationPage: React.FC = () => {
 
   return (
     <DonationPageLayout>
-      <ContainerWithShadow className={container}>TODO</ContainerWithShadow>
+      <ContainerWithShadow className={container}>
+        <DonationPageFormHeader />
+        <DonationPageFormBody />
+      </ContainerWithShadow>
     </DonationPageLayout>
   );
 };

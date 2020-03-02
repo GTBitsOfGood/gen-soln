@@ -5,7 +5,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
-  button: {
+  root: {
     textTransform: "none"
   }
 });
@@ -13,10 +13,10 @@ const useStyles = makeStyles({
 const ButtonWithLowercaseText: React.FC<React.ComponentProps<
   typeof Button
 >> = ({ children, ...rest }) => {
-  const { button } = useStyles();
+  const { root } = useStyles();
 
   return (
-    <Button className={button} {...rest}>
+    <Button classes={{ root }} {...rest}>
       {children}
     </Button>
   );
