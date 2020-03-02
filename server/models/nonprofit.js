@@ -16,22 +16,19 @@ const nonprofitSchema = new Schema({
     data: { type: Buffer, required: true },
     contentType: { type: String, required: true }
   },
-  colors: [
-    {
-      type: String,
-      required: true
-    }
-  ],
-  donations: [
-    {
-      type: ObjectId,
-      ref: "Donation"
-    }
-  ]
+  colors: {
+    type: [String],
+    required: true
+  },
+  donations: {
+    type: [ObjectId],
+    ref: "Donation"
+  }
 });
 
 if (process.env.IS_OFFLINE) {
   delete mongoose.connection.models.Nonprofit;
 }
 
-module.exports = mongoose.model("Nonprofit", nonprofitSchema);
+module.exports =
+  mongoose.models.Nonprofit || mongoose.model("Nonprofit", nonprofitSchema);
