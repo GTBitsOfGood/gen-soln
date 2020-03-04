@@ -13,17 +13,32 @@ const responses = {
 export async function login(email, password) {
   await Mongo();
 
-  return Admin.findOne({ email: email }).then(admin => {
-    if (admin) {
-      return bcrypt.compare(password, admin.password).then(result => {
-        return result
-          ? Promise.resolve(admin)
-          : Promise.reject(new Error(responses.BAD_PASSWORD));
-      });
-    } else {
-      return Promise.reject(new Error(responses.BAD_EMAIL));
-    }
-  });
+  return Admin.findOne({ email: email })
+    .then(admin => {
+      if (admin) {
+        return bcrypt.compare(password, admin.password).then(result => {
+          return result
+            ? Promise.resolve(admin)
+            : Promise.reject(new Error(responses.BAD_PASSWORD));
+        });
+      } else {
+        return Promise.reject(new Error(responses.BAD_EMAIL));
+      }
+    })
+    .then(admin =>
+      jwt.sign(
+        {
+          firstName: admin.firstName,
+          lastName: admin.lastName,
+          email: admin.email,
+          org: admin.org
+        },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: "1h"
+        }
+      )
+    );
 }
 
 export async function signup(fname, lname, email, password, org) {
@@ -43,11 +58,25 @@ export async function signup(fname, lname, email, password, org) {
         password: hashedPassword,
         org: org
       });
-    });
+    })
+    .then(admin =>
+      jwt.sign(
+        {
+          firstName: admin.firstName,
+          lastName: admin.lastName,
+          email: admin.email,
+          org: admin.org
+        },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: "1h"
+        }
+      )
+    );
 }
 
 export async function checkToken(token) {
-  return jwt.verify(token, process.env.TOKEN, (err, decoded) => {
+  return jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
     if (decoded) {
       return Promise.resolve(decoded);
     }
