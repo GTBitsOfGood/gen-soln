@@ -13,12 +13,20 @@ export default createMuiTheme({
       main: "#403C70"
     },
     secondary: {
-      main: "#A09DB7"
+      main: "rgba(64, 59, 112, 0.38)"
     },
     background: {
       default: "#F7F7F9",
       imagePlaceholder: "#EBDEF0"
+    },
+    nonProfitColors: {
+      primary: "#95C079",
+      secondary: "#013042"
     }
+  },
+  nonProfitImages: {
+    logo: "url(nonProfitLogo.png)",
+    background: "url(nonProfitBackgroundImage.png)"
   },
   margins
 });
