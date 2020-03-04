@@ -13,6 +13,8 @@ const useStyles = makeStyles(({ palette, margins }: Theme) =>
     },
     content: {
       flex: 1,
+      display: "flex",
+      alignItems: "center",
       backgroundColor: palette.background.imagePlaceholder,
       paddingLeft: margins.LEFT,
       paddingTop: margins.VERTICAL,
