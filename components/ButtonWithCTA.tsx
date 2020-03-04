@@ -1,23 +1,42 @@
 import React from "react";
+import clsx from "clsx";
 
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
 
-const useStyles = makeStyles({
-  root: {
-    borderRadius: 30
-  }
-});
+const useStyles = makeStyles(({ palette }: Theme) =>
+  createStyles({
+    root: {
+      borderRadius: 30
+    },
+    nonProfitColor: {
+      backgroundColor: palette.nonProfitColors.secondary
+    }
+  })
+);
 
-const ButtonWithCTA: React.FC<React.ComponentProps<typeof Button>> = ({
+type Props = React.ComponentProps<typeof Button> & {
+  useNonProfitColor?: boolean;
+};
+
+const ButtonWithCTA: React.FC<Props> = ({
   children,
+  className,
+  color = "primary",
+  useNonProfitColor = false,
   ...rest
 }) => {
-  const { root } = useStyles();
+  const { root, nonProfitColor } = useStyles();
 
   return (
-    <Button classes={{ root }} color="primary" variant="contained" {...rest}>
+    <Button
+      classes={{ root }}
+      className={clsx(className, useNonProfitColor && nonProfitColor)}
+      color={color}
+      variant="contained"
+      {...rest}
+    >
       {children}
     </Button>
   );

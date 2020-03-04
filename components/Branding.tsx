@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   },
   imglink: {
     lineHeight: 0,
-    marginBottom: -2
+    marginTop: -2
   }
 });
 

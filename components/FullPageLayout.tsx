@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
@@ -14,10 +15,10 @@ interface Props {
   className?: string;
 }
 
-const FullPageLayout: React.FC<Props> = ({ children, className = "" }) => {
+const FullPageLayout: React.FC<Props> = ({ children, className }) => {
   const { container } = useStyles();
 
-  return <div className={`${container} ${className}`.trim()}>{children}</div>;
+  return <div className={clsx(container, className)}>{children}</div>;
 };
 
 export default FullPageLayout;
