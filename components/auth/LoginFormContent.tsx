@@ -5,16 +5,17 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 import AuthPageForm from "./AuthPageForm";
+import LoginFormPasswordField from "./LoginFormPasswordField";
 
 import { ContentComponentProps } from "./types";
 
 const useStyles = makeStyles({
-  topMargin: {
-    marginTop: 40
+  verticalMargins: {
+    marginTop: 40,
+    marginBottom: 40
   }
 });
 
@@ -25,7 +26,7 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const [password, setPassword] = useState("");
   const [hasError, setHasError] = useState(false);
 
-  const { topMargin } = useStyles();
+  const { verticalMargins } = useStyles();
 
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +53,7 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
 
   return (
     <AuthPageForm
-      title="SIGN IN"
+      title="Sign in"
       ctaText="SIGN IN"
       onPressCTA={onPressCTA}
       setHasError={setHasError}
@@ -67,7 +68,7 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
       }
     >
       <TextField
-        className={topMargin}
+        className={verticalMargins}
         required
         fullWidth
         color="secondary"
@@ -84,24 +85,10 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
           )
         }}
       />
-      <TextField
-        className={topMargin}
-        required
-        fullWidth
-        color="secondary"
-        type="password"
-        placeholder="Enter password"
-        value={password}
-        onChange={onChangePassword}
-        error={hasError}
-        helperText={hasError ? "Incorrect email or password" : ""}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <LockOutlinedIcon color="secondary" />
-            </InputAdornment>
-          )
-        }}
+      <LoginFormPasswordField
+        password={password}
+        onChangePassword={onChangePassword}
+        hasError={hasError}
       />
     </AuthPageForm>
   );
