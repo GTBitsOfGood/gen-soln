@@ -4,12 +4,13 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
+const white = "white";
 const useStyles = makeStyles({
   container: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: white,
     margin: "8px -4px"
   },
   button: {

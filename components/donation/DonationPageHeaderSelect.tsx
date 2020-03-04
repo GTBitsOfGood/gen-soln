@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import Typography from "@material-ui/core/Typography";
 
@@ -8,37 +8,27 @@ import Select from "@material-ui/core/Select";
 
 import MenuItem from "@material-ui/core/MenuItem";
 
-const useStyles = makeStyles({
-  container: {
-    display: "flex",
-    alignItems: "center"
-  },
-  select: {
-    minWidth: 160
-  },
-  selectMargin: {
-    marginLeft: 16
-  },
-  bold: {
-    fontWeight: "bold"
-  },
-  leftPadding: {
-    paddingLeft: 6
-  },
-  color: {
-    color: "#837AD7"
-  }
-});
+const useStyles = makeStyles(({ palette, typography }: Theme) =>
+  createStyles({
+    container: {
+      display: "flex",
+      alignItems: "center"
+    },
+    select: {
+      minWidth: 180
+    },
+    selectMargin: {
+      marginLeft: 16
+    },
+    input: { ...typography.h6, paddingLeft: 6 },
+    color: {
+      color: palette.nonProfitColors.secondary
+    }
+  })
+);
 
 const DonationPageHeaderSelect: React.FC = () => {
-  const {
-    container,
-    select,
-    selectMargin,
-    bold,
-    leftPadding,
-    color
-  } = useStyles();
+  const { container, select, selectMargin, color, input } = useStyles();
 
   const [value, setValue] = useState(0);
 
@@ -53,9 +43,7 @@ const DonationPageHeaderSelect: React.FC = () => {
 
   return (
     <div className={container}>
-      <Typography variant="subtitle1" classes={{ subtitle1: bold }}>
-        Donating to
-      </Typography>
+      <Typography variant="h6">Donating to</Typography>
       <Select
         classes={{ select, icon: color }}
         value={value}
@@ -64,7 +52,7 @@ const DonationPageHeaderSelect: React.FC = () => {
         disableUnderline={true}
         inputProps={{
           classes: {
-            root: `${bold} ${leftPadding} ${color}`
+            root: `${color} ${input}`
           }
         }}
       >

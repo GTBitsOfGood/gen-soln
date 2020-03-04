@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo } from "react";
+import clsx from "clsx";
 import dynamic, { DynamicOptions } from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -7,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import ButtonWithCTA from "components/ButtonWithCTA";
 import DonationPageFormNavigation from "./DonationPageFormNavigation";
 
+const white = "white";
 const useStyles = makeStyles({
   container: {
     display: "flex",
@@ -14,7 +16,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     paddingLeft: 16,
     paddingRight: 16,
-    backgroundColor: "white"
+    backgroundColor: white
   },
   button: {
     width: "50%",
@@ -77,20 +79,20 @@ const DonationPageFormBody: React.FC = () => {
 
   return (
     <div className={container}>
-      <Typography className={`${text} ${verticalMargin}`}>
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
-        ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis
-        dis parturient montes, nascetur ridiculus mus.
+      <Typography className={clsx(text, verticalMargin)}>
+        Mother Theresa once said, &quot;The needs are great, and none of us,
+        including me, ever do great things. But we can all do small things, with
+        great love, and together we can do something wonderful.&quot;
       </Typography>
       <DonationPageFormNavigation
         curStepIndex={curStepIndex}
         stepTitles={STEPS.map(_ => _.title)}
       />
-      <div className={`${contentContainer} ${verticalMargin}`}>
+      <div className={clsx(contentContainer, verticalMargin)}>
         {Component && <Component />}
       </div>
-      <div className={`${buttonContainer} ${verticalMargin}`}>
-        <ButtonWithCTA className={button} onClick={onClick}>
+      <div className={clsx(buttonContainer, verticalMargin)}>
+        <ButtonWithCTA className={button} onClick={onClick} useNonProfitColor>
           Continue
         </ButtonWithCTA>
       </div>
