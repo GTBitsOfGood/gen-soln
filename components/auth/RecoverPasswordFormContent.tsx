@@ -22,7 +22,7 @@ const PasswordAssistanceCaption =
 const PasswordAssistanceCaption2 = "We have sent a new password to this email.";
 const ForgetPasswordCTAText = "Back to Sign In";
 
-const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
+const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
 }) => {
   const [email, setEmail] = useState("");
@@ -68,7 +68,7 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
         </Button>
       </div>
       <AuthPageForm
-        title="Password Assistance"
+        title="Recover Password"
         ctaText={ctaText}
         onPressCTA={onPressCTA}
         setHasError={setHasError}
@@ -84,4 +84,4 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
   );
 };
 
-export default PasswordAssistanceFormContent;
+export default RecoverPasswordFormContent;
