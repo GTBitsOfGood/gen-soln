@@ -19,7 +19,7 @@ const contentComponents: Record<
     options
   ),
   forgotPassword: dynamic<ContentComponentProps>(
-    () => import("./PasswordAssistanceFormContent"),
+    () => import("./RecoverPasswordFormContent"),
     options
   ),
   chooseService: null
