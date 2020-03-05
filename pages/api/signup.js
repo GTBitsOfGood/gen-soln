@@ -9,7 +9,10 @@ const handler = (req, res) => {
     req.body.org
   )
     .then(token => {
-      res.setHeader("Set-Cookie", `token=${token}; Max-Age=86400; Path=/`);
+      res.setHeader(
+        "Set-Cookie",
+        `token=${token}; Max-Age=604800; SameSite=Lax; Path=/`
+      );
 
       res.status(200).json({
         success: true,
