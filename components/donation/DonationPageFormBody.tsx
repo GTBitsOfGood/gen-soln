@@ -1,12 +1,13 @@
 import React, { useState, useCallback, useMemo } from "react";
-import clsx from "clsx";
 import dynamic, { DynamicOptions } from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 
-import ButtonWithCTA from "components/ButtonWithCTA";
+import ButtonWithNonProfitColor from "components/ButtonWithNonProfitColor";
 import DonationPageFormNavigation from "./DonationPageFormNavigation";
+
+import { ContentComponentProps } from "./types";
 
 const white = "white";
 const useStyles = makeStyles({
@@ -14,13 +15,8 @@ const useStyles = makeStyles({
     display: "flex",
     flex: 1,
     flexDirection: "column",
-    paddingLeft: 16,
-    paddingRight: 16,
+    padding: "3.5vh 3vh",
     backgroundColor: white
-  },
-  button: {
-    width: "50%",
-    alignSelf: "center"
   },
   contentContainer: {
     flex: 3
@@ -31,21 +27,20 @@ const useStyles = makeStyles({
   },
   text: {
     flex: 1
-  },
-  verticalMargin: {
-    marginTop: 8,
-    marginBottom: 8
   }
 });
 
-const options: DynamicOptions = {
+const options: DynamicOptions<ContentComponentProps> = {
   ssr: false
 };
 
 const STEPS = [
   {
     title: "Donation Amount",
-    component: dynamic(() => import("./DonationPageFormAmountStep"), options)
+    component: dynamic<ContentComponentProps>(
+      () => import("./DonationPageFormAmountStep"),
+      options
+    )
   },
   {
     title: "Contact",
@@ -58,20 +53,20 @@ const STEPS = [
 ];
 
 const DonationPageFormBody: React.FC = () => {
-  const {
-    container,
-    button,
-    contentContainer,
-    buttonContainer,
-    text,
-    verticalMargin
-  } = useStyles();
+  const { container, contentContainer, buttonContainer, text } = useStyles();
   const [curStepIndex, setCurStepIndex] = useState(0);
+  const [isContinueButtonDisabled, setIsContinueButtonDisabled] = useState(
+    false
+  );
 
   const onClick = useCallback(() => {
     // TODO: code added for temporary purposes, until the "Thank you for your donation" is implemented
     setCurStepIndex(Math.min(curStepIndex + 1, STEPS.length - 1));
   }, [curStepIndex]);
+
+  const handleContinueButtonDisabling = useCallback((disabled: boolean) => {
+    setIsContinueButtonDisabled(disabled);
+  }, []);
 
   const Component = useMemo(() => STEPS[curStepIndex].component, [
     curStepIndex
@@ -79,7 +74,7 @@ const DonationPageFormBody: React.FC = () => {
 
   return (
     <div className={container}>
-      <Typography className={clsx(text, verticalMargin)}>
+      <Typography className={text}>
         Mother Theresa once said, &quot;The needs are great, and none of us,
         including me, ever do great things. But we can all do small things, with
         great love, and together we can do something wonderful.&quot;
@@ -88,13 +83,20 @@ const DonationPageFormBody: React.FC = () => {
         curStepIndex={curStepIndex}
         stepTitles={STEPS.map(_ => _.title)}
       />
-      <div className={clsx(contentContainer, verticalMargin)}>
-        {Component && <Component />}
+      <div className={contentContainer}>
+        {Component && (
+          <Component
+            setIsContinueButtonDisabled={handleContinueButtonDisabling}
+          />
+        )}
       </div>
-      <div className={clsx(buttonContainer, verticalMargin)}>
-        <ButtonWithCTA className={button} onClick={onClick} useNonProfitColor>
+      <div className={buttonContainer}>
+        <ButtonWithNonProfitColor
+          onClick={onClick}
+          disabled={isContinueButtonDisabled}
+        >
           Continue
-        </ButtonWithCTA>
+        </ButtonWithNonProfitColor>
       </div>
     </div>
   );
