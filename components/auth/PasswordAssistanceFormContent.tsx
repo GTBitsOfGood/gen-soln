@@ -2,21 +2,16 @@ import React, { useState, useCallback } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import Typography from "@material-ui/core/Typography";
+import EmailField from "./EmailField";
 
 import AuthPageForm from "./AuthPageForm";
 
 import { ContentComponentProps } from "./types";
 
 const useStyles = makeStyles({
-  topMargin: {
-    marginTop: 40
-  },
   assistanceText: {
     marginTop: 20
   }
@@ -38,7 +33,7 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
 
   const [ctaText, setCtaText] = useState("Get Password");
 
-  const { topMargin, assistanceText } = useStyles();
+  const { assistanceText } = useStyles();
 
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,24 +73,11 @@ const PasswordAssistanceFormContent: React.FC<ContentComponentProps> = ({
         onPressCTA={onPressCTA}
         setHasError={setHasError}
       >
-        <TextField
-          className={topMargin}
-          required
-          fullWidth
-          color="secondary"
-          type="email"
-          placeholder="email@nonprofit.com"
-          value={email}
-          onChange={onChangeEmail}
-          error={hasError}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailOutlinedIcon color="secondary" />
-              </InputAdornment>
-            )
-          }}
-        />
+        <EmailField
+          email={email}
+          onChangeEmail={onChangeEmail}
+          hasError={hasError}
+        ></EmailField>
         <Typography className={assistanceText}>{onPressGetPassword}</Typography>
       </AuthPageForm>
     </>
