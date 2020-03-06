@@ -1,26 +1,25 @@
-import { checkToken } from "../../server/actions/admin.js";
+import { checkToken } from "server/actions/admin.js";
 
-export default async function(req, res) {
-  const token = req.body.token;
-
-  if (!token) {
-    return res.status(400).json({
+const handler = (req, res) => {
+  if (!req.body.token)
+    res.status(400).json({
       success: false,
-      message: "Admin does not have cookies."
+      message: "Admin doesn't have cookies."
     });
-  }
 
-  try {
-    const admin = await checkToken(token);
+  checkToken(req.body.token)
+    .then(admin => {
+      res.status(200).json({
+        success: true,
+        payload: admin
+      });
+    })
+    .catch(error => {
+      res.status(400).json({
+        success: false,
+        message: error.message
+      });
+    });
+};
 
-    return res.status(200).json({
-      success: true,
-      payload: admin
-    });
-  } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message: error.message
-    });
-  }
-}
+export default handler;

@@ -7,7 +7,7 @@ const responses = {
   BAD_EMAIL: "There is no account currently associated with this email.",
   BAD_PASSWORD: "The password you entered is incorrect. Please try again.",
   USER_EXISTS: "A user with these credentials already exists.",
-  INVALID_TOKEN: "Token is expired or invalid."
+  INVALID_TOKEN: "The current token is expired or invalid."
 };
 
 export async function login(email, password) {
@@ -76,11 +76,9 @@ export async function signup(fname, lname, email, password, org) {
 }
 
 export async function checkToken(token) {
-  return jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
-    if (decoded) {
-      return Promise.resolve(decoded);
-    }
-
-    return Promise.reject(Error(responses.INVALID_TOKEN));
+  return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    return decoded
+      ? Promise.resolve(decoded)
+      : Promise.reject(new Error(responses.INVALID_TOKEN));
   });
 }
