@@ -14,8 +14,7 @@ import { ContentComponentProps } from "./types";
 
 const useStyles = makeStyles({
   verticalMargins: {
-    marginTop: 40,
-    marginBottom: 40
+    margin: "5vh 0"
   }
 });
 

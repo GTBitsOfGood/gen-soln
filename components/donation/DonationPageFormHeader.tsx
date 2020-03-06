@@ -11,8 +11,7 @@ const useStyles = makeStyles(({ palette, nonProfitImages }: Theme) =>
       display: "flex",
       alignItems: "center",
       backgroundColor: palette.nonProfitColors.primary,
-      padding: 12,
-      maxHeight: 100
+      padding: "3vh"
     },
     circle: {
       borderWidth: 3,

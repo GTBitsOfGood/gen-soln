@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import AuthPageFormContainer from "./AuthPageFormContainer";
-import ButtonWithCTA from "components/ButtonWithCTA";
+import ButtonWithNonProfitColor from "components/ButtonWithNonProfitColor";
 
 const useStyles = makeStyles({
   form: {
@@ -19,10 +19,11 @@ const useStyles = makeStyles({
     flex: 1
   },
   formFooter: {
-    marginTop: 8,
     display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center"
+    justifyContent: "space-between"
+  },
+  formFooterContainer: {
+    flex: 0.2
   },
   rightMargin: {
     marginRight: 8
@@ -45,7 +46,13 @@ const AuthPageForm: React.FC<Props> = ({
   ctaText,
   footer
 }) => {
-  const { form, formContent, formFooter, rightMargin } = useStyles();
+  const {
+    form,
+    formContent,
+    formFooter,
+    rightMargin,
+    formFooterContainer
+  } = useStyles();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -70,19 +77,21 @@ const AuthPageForm: React.FC<Props> = ({
       <Typography variant="h4">{title}</Typography>
       <form className={form} onSubmit={handleSubmit}>
         <div className={formContent}>{children}</div>
-
-        <ButtonWithCTA fullWidth type="submit" disabled={isSubmitting}>
-          {isSubmitting && (
-            <CircularProgress
-              className={rightMargin}
-              color="inherit"
-              size={16}
-            />
-          )}
-          {ctaText}
-        </ButtonWithCTA>
-
-        <div className={formFooter}>{footer}</div>
+        <div className={formFooterContainer}>
+          <div className={formFooter}>
+            <ButtonWithNonProfitColor type="submit" disabled={isSubmitting}>
+              {isSubmitting && (
+                <CircularProgress
+                  className={rightMargin}
+                  color="inherit"
+                  size={16}
+                />
+              )}
+              {ctaText}
+            </ButtonWithNonProfitColor>
+            {footer}
+          </div>
+        </div>
       </form>
     </AuthPageFormContainer>
   );

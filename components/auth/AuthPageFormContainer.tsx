@@ -7,17 +7,14 @@ import ContainerWithShadow from "components/ContainerWithShadow";
 const useStyles = makeStyles({
   container: {
     width: "34vw",
-    flex: 0.66,
+    height: "52vh",
     minWidth: 400
   },
   contentContainer: {
     display: "flex",
     flexDirection: "column",
     flex: 1,
-    marginLeft: "10%",
-    marginRight: "10%",
-    marginTop: "9%",
-    marginBottom: "9%"
+    margin: "5vh 5.5vh"
   }
 });
 
