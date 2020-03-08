@@ -12,12 +12,14 @@ interface Props {
   password: string;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   hasError: boolean;
+  hasErrorHelperText: string;
 }
 
 const LoginFormPasswordField: React.FC<Props> = ({
   password,
   onChangePassword,
-  hasError
+  hasError,
+  hasErrorHelperText
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -35,7 +37,7 @@ const LoginFormPasswordField: React.FC<Props> = ({
       onChange={onChangePassword}
       error={hasError}
       type={showPassword ? "text" : "password"}
-      helperText={hasError ? "Incorrect email or password" : ""}
+      helperText={hasError ? hasErrorHelperText : ""}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">

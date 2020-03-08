@@ -38,13 +38,15 @@ interface Props {
   footer?: React.ReactNode;
 }
 
-const AuthPageForm: React.FC<Props> = ({
+const AuthPageForm: React.FC<Props &
+  React.ComponentProps<typeof AuthPageFormContainer>> = ({
   children,
   title,
   onPressCTA,
   setHasError,
   ctaText,
-  footer
+  footer,
+  ...rest
 }) => {
   const {
     form,
@@ -73,7 +75,7 @@ const AuthPageForm: React.FC<Props> = ({
   );
 
   return (
-    <AuthPageFormContainer>
+    <AuthPageFormContainer {...rest}>
       <Typography variant="h4">{title}</Typography>
       <form className={form} onSubmit={handleSubmit}>
         <div className={formContent}>{children}</div>

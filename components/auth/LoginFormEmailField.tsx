@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
@@ -7,8 +7,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 
 const useStyles = makeStyles({
-  topMargin: {
-    marginTop: 40
+  verticalMargins: {
+    margin: "5vh 0"
   }
 });
 
@@ -16,13 +16,20 @@ interface Props {
   email: string;
   onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   hasError: boolean;
+  hasErrorHelperText?: string;
 }
 
-const EmailField: React.FC<Props> = ({ email, onChangeEmail, hasError }) => {
-  const { topMargin } = useStyles();
+const LoginFormEmailField: React.FC<Props> = ({
+  email,
+  onChangeEmail,
+  hasError,
+  hasErrorHelperText = ""
+}) => {
+  const { verticalMargins } = useStyles();
+
   return (
     <TextField
-      className={topMargin}
+      className={verticalMargins}
       required
       fullWidth
       color="secondary"
@@ -31,6 +38,7 @@ const EmailField: React.FC<Props> = ({ email, onChangeEmail, hasError }) => {
       value={email}
       onChange={onChangeEmail}
       error={hasError}
+      helperText={hasError ? hasErrorHelperText : ""}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -42,4 +50,4 @@ const EmailField: React.FC<Props> = ({ email, onChangeEmail, hasError }) => {
   );
 };
 
-export default EmailField;
+export default LoginFormEmailField;
