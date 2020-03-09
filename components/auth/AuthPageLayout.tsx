@@ -24,7 +24,11 @@ const useStyles = makeStyles(({ palette, margins }: Theme) =>
     },
     placeholder: {
       flex: 0.4,
-      backgroundColor: palette.background.imagePlaceholder
+      backgroundImage: "url('signin-illust.png')",
+      backgroundSize: "contain",
+      backgroundRepeat: "no-repeat",
+      marginRight: margins.RIGHT,
+      marginTop: margins.VERTICAL1
     }
   })
 );

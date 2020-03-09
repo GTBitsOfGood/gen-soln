@@ -4,7 +4,9 @@ import { Spacing } from "./types";
 
 const margins: Record<Spacing, string> = {
   VERTICAL: "5vh",
-  LEFT: "8vw"
+  VERTICAL1: "8vh",
+  LEFT: "8vw",
+  RIGHT: "8vw"
 };
 
 export default createMuiTheme({

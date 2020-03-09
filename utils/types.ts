@@ -5,7 +5,7 @@ import {
 } from "@material-ui/core/styles/createPalette";
 import { ThemeOptions, Theme } from "@material-ui/core/styles/createMuiTheme";
 
-export type Spacing = "VERTICAL" | "LEFT";
+export type Spacing = "VERTICAL" | "VERTICAL1" | "LEFT" | "RIGHT";
 
 // TODO: Possibly keep in sync with the backend schema
 interface NonProfit {
