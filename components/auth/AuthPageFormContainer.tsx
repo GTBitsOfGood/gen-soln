@@ -4,27 +4,58 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import ContainerWithShadow from "components/ContainerWithShadow";
 
+import Button from "@material-ui/core/Button";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+
 const useStyles = makeStyles({
   container: {
     width: "34vw",
     height: "52vh",
-    minWidth: 400
+    minWidth: 400,
+    minHeight: 250
   },
   contentContainer: {
     display: "flex",
     flexDirection: "column",
     flex: 1,
     margin: "5vh 5.5vh"
+  },
+  backButtonContainer: {
+    minHeight: 36
   }
 });
 
-const AuthPageFormContainer: React.FC = ({ children }) => {
-  const { container, contentContainer } = useStyles();
+interface Props {
+  hasBackButton?: boolean;
+  onPressBackButton?: () => void;
+}
+
+const AuthPageFormContainer: React.FC<Props> = ({
+  children,
+  hasBackButton = false,
+  onPressBackButton
+}) => {
+  const { container, contentContainer, backButtonContainer } = useStyles();
 
   return (
-    <ContainerWithShadow className={container}>
-      <div className={contentContainer}>{children}</div>
-    </ContainerWithShadow>
+    <>
+      <div className={backButtonContainer}>
+        {hasBackButton && (
+          <Button
+            disableRipple
+            color="secondary"
+            startIcon={<ArrowBackIosIcon />}
+            onClick={onPressBackButton}
+          >
+            Back
+          </Button>
+        )}
+      </div>
+
+      <ContainerWithShadow className={container}>
+        <div className={contentContainer}>{children}</div>
+      </ContainerWithShadow>
+    </>
   );
 };
 

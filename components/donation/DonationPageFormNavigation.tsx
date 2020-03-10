@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: white,
-    margin: "8px -4px"
+    margin: "15px -4px"
   },
   button: {
     width: "50%",

@@ -1,22 +1,11 @@
 import React, { useState, useCallback } from "react";
 
-import makeStyles from "@material-ui/core/styles/makeStyles";
-
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
-
 import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 import AuthPageForm from "./AuthPageForm";
+import LoginFormEmailField from "./LoginFormEmailField";
 import LoginFormPasswordField from "./LoginFormPasswordField";
 
 import { ContentComponentProps } from "./types";
-
-const useStyles = makeStyles({
-  verticalMargins: {
-    margin: "5vh 0"
-  }
-});
 
 const LoginFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
@@ -25,11 +14,10 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const [password, setPassword] = useState("");
   const [hasError, setHasError] = useState(false);
 
-  const { verticalMargins } = useStyles();
-
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setEmail(e.target.value);
+      setHasError(false);
     },
     []
   );
@@ -37,11 +25,12 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(e.target.value);
+      setHasError(false);
     },
     []
   );
 
-  const onPressCTA = useCallback(() => {
+  const onPressCTA = useCallback(async () => {
     // TODO: Code for signing-in
   }, []);
 
@@ -66,28 +55,16 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
         </ButtonWithLowercaseText>
       }
     >
-      <TextField
-        className={verticalMargins}
-        required
-        fullWidth
-        color="secondary"
-        type="email"
-        placeholder="email@nonprofit.com"
-        value={email}
-        onChange={onChangeEmail}
-        error={hasError}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <EmailOutlinedIcon color="secondary" />
-            </InputAdornment>
-          )
-        }}
+      <LoginFormEmailField
+        email={email}
+        onChangeEmail={onChangeEmail}
+        hasError={hasError}
       />
       <LoginFormPasswordField
         password={password}
         onChangePassword={onChangePassword}
         hasError={hasError}
+        hasErrorHelperText="Incorrect email or password"
       />
     </AuthPageForm>
   );

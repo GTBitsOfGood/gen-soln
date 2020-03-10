@@ -13,11 +13,10 @@ const useStyles = makeStyles(({ palette, nonProfitImages }: Theme) =>
       backgroundColor: palette.nonProfitColors.primary,
       padding: "3vh"
     },
-    circle: {
+    logo: {
       borderWidth: 3,
       borderStyle: "solid",
-      backgroundImage: nonProfitImages.logo,
-      backgroundSize: "cover",
+      content: nonProfitImages.logo,
       borderRadius: "50%",
       backgroundColor: white,
       height: 80,
@@ -44,17 +43,18 @@ const useStyles = makeStyles(({ palette, nonProfitImages }: Theme) =>
 const DonationPageFormHeader: React.FC = () => {
   const {
     container,
-    circle,
     text,
+    logo,
     horizontalPositiveMargin,
     horizontalNegativeMargin
   } = useStyles();
 
   return (
     <div className={clsx(container, horizontalNegativeMargin)}>
-      <div className={horizontalPositiveMargin}>
-        <div className={circle} />
-      </div>
+      <img
+        className={clsx(logo, horizontalPositiveMargin)}
+        alt="Nonprofit logo"
+      />
       <Typography variant="h5" className={clsx(text, horizontalPositiveMargin)}>
         Bring smiles to children
       </Typography>

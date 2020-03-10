@@ -10,9 +10,8 @@ import DonationPageFormBody from "./DonationPageFormBody";
 
 const useStyles = makeStyles({
   container: {
-    height: "99%",
-    width: "40vw",
-    minWidth: 420
+    minWidth: 420,
+    flex: 0.48
   }
 });
 

@@ -3,10 +3,9 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { Spacing } from "./types";
 
 const margins: Record<Spacing, string> = {
-  VERTICAL: "5vh",
-  VERTICAL1: "8vh",
-  LEFT: "8vw",
-  RIGHT: "8vw"
+  VERTICAL: "4.5vh",
+  HORIZONTAL: "8.5vw",
+  LARGE_VERTICAL: "7vh"
 };
 
 export default createMuiTheme({
@@ -18,12 +17,25 @@ export default createMuiTheme({
       main: "rgba(64, 59, 112, 0.38)"
     },
     background: {
-      default: "#F7F7F9",
+      default: "#F5F5F7",
       imagePlaceholder: "#EBDEF0"
     },
     nonProfitColors: {
       primary: "#95C079",
       secondary: "#013042"
+    }
+  },
+  props: {
+    MuiTextField: {
+      variant: "filled",
+      size: "small"
+    }
+  },
+  overrides: {
+    MuiFilledInput: {
+      root: {
+        backgroundColor: "#F5F5F5"
+      }
     }
   },
   nonProfitImages: {

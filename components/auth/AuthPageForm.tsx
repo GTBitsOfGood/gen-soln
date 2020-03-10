@@ -33,18 +33,20 @@ const useStyles = makeStyles({
 interface Props {
   title: string;
   ctaText: string;
-  onPressCTA: () => void;
+  onPressCTA: () => Promise<void>;
   setHasError: Dispatch<SetStateAction<boolean>>;
   footer?: React.ReactNode;
 }
 
-const AuthPageForm: React.FC<Props> = ({
+const AuthPageForm: React.FC<Props &
+  React.ComponentProps<typeof AuthPageFormContainer>> = ({
   children,
   title,
   onPressCTA,
   setHasError,
   ctaText,
-  footer
+  footer,
+  ...rest
 }) => {
   const {
     form,
@@ -62,7 +64,7 @@ const AuthPageForm: React.FC<Props> = ({
       try {
         setIsSubmitting(true);
         setHasError(false);
-        onPressCTA();
+        await onPressCTA();
       } catch (_) {
         setHasError(true);
       } finally {
@@ -73,7 +75,7 @@ const AuthPageForm: React.FC<Props> = ({
   );
 
   return (
-    <AuthPageFormContainer>
+    <AuthPageFormContainer {...rest}>
       <Typography variant="h4">{title}</Typography>
       <form className={form} onSubmit={handleSubmit}>
         <div className={formContent}>{children}</div>

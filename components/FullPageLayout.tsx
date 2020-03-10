@@ -5,7 +5,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 
 const useStyles = makeStyles({
   container: {
-    height: "100vh",
+    minHeight: "100vh",
     width: "100vw",
     display: "flex"
   }
