@@ -14,13 +14,11 @@ const useStyles = makeStyles(({ margins, nonProfitImages }: Theme) =>
     content: {
       flex: 1,
       display: "flex",
-      alignItems: "center",
       backgroundImage: nonProfitImages.background,
       backgroundSize: "cover",
       backgroundPositionY: "-56vh", // TODO: The current image asset is a bit weird, hence the hacky offset. Perhaps ask for another version of the asset.
-      paddingLeft: margins.LEFT,
-      paddingTop: margins.VERTICAL,
-      paddingBottom: margins.VERTICAL
+      backgroundRepeat: "no-repeat",
+      padding: `${margins.LARGE_VERTICAL} ${margins.HORIZONTAL}`
     }
   })
 );

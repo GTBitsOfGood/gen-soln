@@ -28,7 +28,7 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
     []
   );
 
-  const onPressCTA = useCallback(() => {
+  const onPressCTA = useCallback(async () => {
     // TODO: Code for signing-in
   }, []);
 

@@ -32,6 +32,7 @@ const LoginFormEmailField: React.FC<Props> = ({
       className={verticalMargins}
       required
       fullWidth
+      variant="standard"
       color="secondary"
       type="email"
       placeholder="email@nonprofit.com"

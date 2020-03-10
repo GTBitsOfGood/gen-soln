@@ -44,7 +44,10 @@ const STEPS = [
   },
   {
     title: "Contact",
-    component: null
+    component: dynamic<ContentComponentProps>(
+      () => import("./DonationPageFormContactStep"),
+      options
+    )
   },
   {
     title: "Payment",
@@ -54,17 +57,22 @@ const STEPS = [
 
 const DonationPageFormBody: React.FC = () => {
   const { container, contentContainer, buttonContainer, text } = useStyles();
-  const [curStepIndex, setCurStepIndex] = useState(0);
+  const [curStepIndex, setCurStepIndex] = useState(1);
   const [isContinueButtonDisabled, setIsContinueButtonDisabled] = useState(
     false
   );
 
-  const onClick = useCallback(() => {
-    // TODO: code added for temporary purposes, until the "Thank you for your donation" is implemented
-    setCurStepIndex(Math.min(curStepIndex + 1, STEPS.length - 1));
-  }, [curStepIndex]);
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      // TODO: code added for temporary purposes, until the "Thank you for your donation" is implemented
+      setCurStepIndex(Math.min(curStepIndex + 1, STEPS.length - 1));
+    },
+    [curStepIndex]
+  );
 
   const handleContinueButtonDisabling = useCallback((disabled: boolean) => {
+    // I am not that familiar with HTML's form validation API, so instead disable the button to handle custom logic:
     setIsContinueButtonDisabled(disabled);
   }, []);
 
@@ -73,7 +81,7 @@ const DonationPageFormBody: React.FC = () => {
   ]);
 
   return (
-    <div className={container}>
+    <form className={container} onSubmit={handleSubmit}>
       <Typography className={text}>
         Mother Theresa once said, &quot;The needs are great, and none of us,
         including me, ever do great things. But we can all do small things, with
@@ -92,13 +100,13 @@ const DonationPageFormBody: React.FC = () => {
       </div>
       <div className={buttonContainer}>
         <ButtonWithNonProfitColor
-          onClick={onClick}
           disabled={isContinueButtonDisabled}
+          type="submit"
         >
           Continue
         </ButtonWithNonProfitColor>
       </div>
-    </div>
+    </form>
   );
 };
 

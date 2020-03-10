@@ -31,6 +31,7 @@ const LoginFormPasswordField: React.FC<Props> = ({
     <TextField
       required
       fullWidth
+      variant="standard"
       color="secondary"
       placeholder="Enter password"
       value={password}
