@@ -57,7 +57,7 @@ const STEPS = [
 
 const DonationPageFormBody: React.FC = () => {
   const { container, contentContainer, buttonContainer, text } = useStyles();
-  const [curStepIndex, setCurStepIndex] = useState(1);
+  const [curStepIndex, setCurStepIndex] = useState(0);
   const [isContinueButtonDisabled, setIsContinueButtonDisabled] = useState(
     false
   );

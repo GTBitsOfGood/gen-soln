@@ -42,7 +42,7 @@ const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
   const onPressCTA = useCallback(async () => {
     switch (currentState) {
       case "INITIAL":
-        // TODO: await some async function that sends password recovery email to users
+        // TODO: await some async function that sends password recovery email to the user
         setCurrentState("FINAL");
         break;
       case "FINAL":
