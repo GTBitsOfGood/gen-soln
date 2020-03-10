@@ -17,7 +17,7 @@ export default createMuiTheme({
       main: "rgba(64, 59, 112, 0.38)"
     },
     background: {
-      default: "#F7F7F9",
+      default: "#F5F5F7",
       imagePlaceholder: "#EBDEF0"
     },
     nonProfitColors: {
@@ -27,7 +27,8 @@ export default createMuiTheme({
   },
   props: {
     MuiTextField: {
-      variant: "filled"
+      variant: "filled",
+      size: "small"
     }
   },
   overrides: {

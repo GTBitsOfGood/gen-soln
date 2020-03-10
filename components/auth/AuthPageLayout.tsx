@@ -25,6 +25,8 @@ const useStyles = makeStyles(({ margins }: Theme) =>
     },
     placeholder: {
       height: "68vh",
+      minHeight: 450,
+      margin: "0 auto",
       width: "auto",
       alignSelf: "center"
     }

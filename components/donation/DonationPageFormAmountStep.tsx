@@ -101,7 +101,7 @@ const DonationPageFormAmountStep: React.FC<ContentComponentProps> = ({
         {radioButtons}
       </RadioGroup>
       <FormControlLabel
-        label={`Other (max $${MAX_OTHER_AMOUNT})`}
+        label={`Other (Max $${MAX_OTHER_AMOUNT})`}
         control={
           <Radio
             color="default"

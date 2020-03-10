@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     display: "flex",
     flex: 1,
     flexDirection: "column",
-    padding: "3.5vh 3vh",
+    padding: "4.5vh 4vh",
     backgroundColor: white
   },
   contentContainer: {
@@ -26,7 +26,8 @@ const useStyles = makeStyles({
     flex: 0.75
   },
   text: {
-    flex: 1
+    flex: 1,
+    marginBottom: "1vh"
   }
 });
 

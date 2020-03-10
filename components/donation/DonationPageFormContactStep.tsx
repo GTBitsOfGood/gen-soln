@@ -53,7 +53,6 @@ const DonationPageFormContactStep: React.FC<ContentComponentProps> = () => {
         fullWidth
         type="email"
         label="Email"
-        placeholder="email@nonprofit.com"
         className={verticalPositiveMargin}
       />
     </div>
