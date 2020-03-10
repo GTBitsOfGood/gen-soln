@@ -13,10 +13,6 @@ const useStyles = makeStyles(({ margins }: Theme) =>
       justifyContent: "space-between"
     },
     content: {
-      display: "flex",
-      flex: 0.6
-    },
-    main: {
       position: "relative",
       display: "flex",
       flexDirection: "column",
@@ -31,11 +27,11 @@ const useStyles = makeStyles(({ margins }: Theme) =>
 );
 
 const AuthPageLayout: React.FC = ({ children }) => {
-  const { container, content, main, placeholder } = useStyles();
+  const { container, content, placeholder } = useStyles();
 
   return (
     <FullPageLayout className={container}>
-      <div className={main}>
+      <div className={content}>
         <AuthPageHeader />
         {children}
       </div>
