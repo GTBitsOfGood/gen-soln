@@ -19,14 +19,11 @@ const useStyles = makeStyles(({ margins }: Theme) =>
     main: {
       position: "relative",
       display: "flex",
-      minWidth: 500,
       flexDirection: "column",
       justifyContent: "center"
     },
     placeholder: {
       height: "68vh",
-      minHeight: 450,
-      margin: "0 auto",
       width: "auto",
       alignSelf: "center"
     }
@@ -38,11 +35,9 @@ const AuthPageLayout: React.FC = ({ children }) => {
 
   return (
     <FullPageLayout className={container}>
-      <div className={content}>
-        <div className={main}>
-          <AuthPageHeader />
-          {children}
-        </div>
+      <div className={main}>
+        <AuthPageHeader />
+        {children}
       </div>
       <img
         className={placeholder}

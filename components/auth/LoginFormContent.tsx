@@ -17,7 +17,6 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setEmail(e.target.value);
-      setHasError(false);
     },
     []
   );
@@ -25,7 +24,6 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(e.target.value);
-      setHasError(false);
     },
     []
   );
