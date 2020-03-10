@@ -39,9 +39,10 @@ const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
     navigateToContent("login");
   }, [navigateToContent]);
 
-  const onPressCTA = useCallback(() => {
+  const onPressCTA = useCallback(async () => {
     switch (currentState) {
       case "INITIAL":
+        // TODO: await some async function that sends password recovery email to the user
         setCurrentState("FINAL");
         break;
       case "FINAL":

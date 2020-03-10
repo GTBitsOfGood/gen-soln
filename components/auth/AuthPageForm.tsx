@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 interface Props {
   title: string;
   ctaText: string;
-  onPressCTA: () => void;
+  onPressCTA: () => Promise<void>;
   setHasError: Dispatch<SetStateAction<boolean>>;
   footer?: React.ReactNode;
 }
@@ -64,7 +64,7 @@ const AuthPageForm: React.FC<Props &
       try {
         setIsSubmitting(true);
         setHasError(false);
-        onPressCTA();
+        await onPressCTA();
       } catch (_) {
         setHasError(true);
       } finally {
