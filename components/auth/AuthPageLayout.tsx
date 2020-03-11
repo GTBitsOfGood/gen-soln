@@ -13,20 +13,13 @@ const useStyles = makeStyles(({ margins }: Theme) =>
       justifyContent: "space-between"
     },
     content: {
-      display: "flex",
-      flex: 0.6
-    },
-    main: {
       position: "relative",
       display: "flex",
-      minWidth: 500,
       flexDirection: "column",
       justifyContent: "center"
     },
     placeholder: {
       height: "68vh",
-      minHeight: 450,
-      margin: "0 auto",
       width: "auto",
       alignSelf: "center"
     }
@@ -34,15 +27,13 @@ const useStyles = makeStyles(({ margins }: Theme) =>
 );
 
 const AuthPageLayout: React.FC = ({ children }) => {
-  const { container, content, main, placeholder } = useStyles();
+  const { container, content, placeholder } = useStyles();
 
   return (
     <FullPageLayout className={container}>
       <div className={content}>
-        <div className={main}>
-          <AuthPageHeader />
-          {children}
-        </div>
+        <AuthPageHeader />
+        {children}
       </div>
       <img
         className={placeholder}
