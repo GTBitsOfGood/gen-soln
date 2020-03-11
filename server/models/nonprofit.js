@@ -13,8 +13,10 @@ const nonprofitSchema = new Schema({
     required: true
   },
   logo: {
-    data: { type: Buffer, required: true },
-    contentType: { type: String, required: true }
+    type: String,
+    required: true
+    // data: { type: Buffer, required: true },
+    // contentType: { type: String, required: true }
   },
   colors: {
     type: [String],

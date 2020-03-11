@@ -4,6 +4,9 @@ export default {
   dbName: process.env.DB_NAME,
   apis: {
     login: "/api/login",
-    signup: "/api/signup"
+    signup: "/api/signup",
+    checkToken: "/api/checkToken",
+    createDonation: "/api/createDonation",
+    createNonprofit: "/api/createNonprofit"
   }
 };

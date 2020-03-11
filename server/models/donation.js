@@ -3,12 +3,16 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const donationSchema = new Schema({
-  amount: {
-    type: Number,
+  firstName: {
+    type: String,
     required: true
   },
-  donor: {
+  lastName: {
     type: String,
+    required: true
+  },
+  amount: {
+    type: Number,
     required: true
   },
   org: {
