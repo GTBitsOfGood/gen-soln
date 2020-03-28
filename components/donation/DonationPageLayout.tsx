@@ -6,7 +6,7 @@ import DonationPageHeader from "./DonationPageHeader";
 
 import FullPageLayout from "components/FullPageLayout";
 
-const useStyles = makeStyles(({ palette, margins }: Theme) =>
+const useStyles = makeStyles(({ margins, nonProfitImages }: Theme) =>
   createStyles({
     container: {
       flexDirection: "column"
@@ -14,11 +14,11 @@ const useStyles = makeStyles(({ palette, margins }: Theme) =>
     content: {
       flex: 1,
       display: "flex",
-      alignItems: "center",
-      backgroundColor: palette.background.imagePlaceholder,
-      paddingLeft: margins.LEFT,
-      paddingTop: margins.VERTICAL,
-      paddingBottom: margins.VERTICAL
+      backgroundImage: nonProfitImages.background,
+      backgroundSize: "cover",
+      backgroundPositionY: "-56vh", // TODO: The current image asset is a bit weird, hence the hacky offset. Perhaps ask for another version of the asset.
+      backgroundRepeat: "repeat-y",
+      padding: `${margins.LARGE_VERTICAL} ${margins.HORIZONTAL}`
     }
   })
 );

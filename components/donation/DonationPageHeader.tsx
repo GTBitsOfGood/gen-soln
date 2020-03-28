@@ -5,18 +5,14 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import DonationPageHeaderSelect from "./DonationPageHeaderSelect";
 import DonationPageHeaderBranding from "./DonationPageHeaderBranding";
 
-const white = "white";
-
 const useStyles = makeStyles(({ margins }: Theme) =>
   createStyles({
     header: {
       display: "flex",
       alignItems: "center",
       justifyContent: "flex-start",
-      backgroundColor: white,
-      padding: 12,
-      paddingLeft: margins.LEFT,
-      paddingRight: margins.LEFT
+      backgroundColor: "white",
+      padding: `6px ${margins.HORIZONTAL}`
     }
   })
 );

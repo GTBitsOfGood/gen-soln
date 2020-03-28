@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     marginLeft: "auto"
   },
   text: {
-    marginRight: 4
+    marginRight: 6
   },
   buttonContainer: {
     marginLeft: 4,
@@ -42,7 +42,7 @@ const DonationPageHeaderBranding: React.FC = () => {
 
   return (
     <div className={container}>
-      <Typography variant="subtitle2" color="secondary" className={text}>
+      <Typography variant="overline" color="secondary" className={text}>
         This page is powered by
       </Typography>
       <Branding />

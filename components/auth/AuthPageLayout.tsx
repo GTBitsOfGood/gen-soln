@@ -6,41 +6,49 @@ import AuthPageHeader from "./AuthPageHeader";
 
 import FullPageLayout from "components/FullPageLayout";
 
-const useStyles = makeStyles(({ palette, margins }: Theme) =>
+const useStyles = makeStyles(({ margins }: Theme) =>
   createStyles({
+    container: {
+      padding: `${margins.VERTICAL} ${margins.HORIZONTAL}`,
+      justifyContent: "space-between"
+    },
     content: {
       display: "flex",
-      flex: 0.6,
-      paddingTop: margins.VERTICAL,
-      paddingBottom: margins.VERTICAL
+      flex: 0.6
     },
     main: {
       position: "relative",
       display: "flex",
       minWidth: 500,
       flexDirection: "column",
-      justifyContent: "center",
-      marginLeft: margins.LEFT
+      justifyContent: "center"
     },
     placeholder: {
-      flex: 0.4,
-      backgroundColor: palette.background.imagePlaceholder
+      height: "68vh",
+      minHeight: 450,
+      margin: "0 auto",
+      width: "auto",
+      alignSelf: "center"
     }
   })
 );
 
 const AuthPageLayout: React.FC = ({ children }) => {
-  const { content, main, placeholder } = useStyles();
+  const { container, content, main, placeholder } = useStyles();
 
   return (
-    <FullPageLayout>
+    <FullPageLayout className={container}>
       <div className={content}>
         <div className={main}>
           <AuthPageHeader />
           {children}
         </div>
       </div>
-      <div className={placeholder} />
+      <img
+        className={placeholder}
+        alt="Bits of Good DMS login page background"
+        src="signin-illust.png"
+      />
     </FullPageLayout>
   );
 };

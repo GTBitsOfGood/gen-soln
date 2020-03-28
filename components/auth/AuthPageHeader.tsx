@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     top: 0
   },
   text: {
-    marginLeft: 4
+    marginLeft: 6
   }
 });
 
@@ -24,7 +24,7 @@ const AuthPageHeader: React.FC = () => {
   return (
     <header className={header}>
       <Branding />
-      <Typography variant="subtitle2" color="secondary" className={text}>
+      <Typography variant="overline" color="secondary" className={text}>
         &middot; Donation Marketplace Solution
       </Typography>
     </header>
