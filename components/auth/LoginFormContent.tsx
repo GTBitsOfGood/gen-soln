@@ -1,5 +1,9 @@
 import React, { useState, useCallback } from "react";
 
+import { login } from "../../pages/actions/admin";
+import { useRouter } from "next/router";
+import urls from "../../config";
+
 import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 import AuthPageForm from "./AuthPageForm";
 import LoginFormEmailField from "./LoginFormEmailField";
@@ -10,8 +14,10 @@ import { ContentComponentProps } from "./types";
 const LoginFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
 }) => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [hasError, setHasError] = useState(false);
 
   const onChangeEmail = useCallback(
@@ -31,8 +37,17 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   );
 
   const onPressCTA = useCallback(async () => {
-    // TODO: Code for signing-in
-  }, []);
+    return login(email, password)
+      .then(() => {
+        router.push({
+          pathname: urls.pages.index
+        });
+      })
+      .catch(err => {
+        setError(err.message);
+        setHasError(true);
+      });
+  }, [email, password, router]);
 
   const onClickForgotPassword = useCallback(() => {
     navigateToContent("forgotPassword");
@@ -64,7 +79,7 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
         password={password}
         onChangePassword={onChangePassword}
         hasError={hasError}
-        hasErrorHelperText="Incorrect email or password"
+        hasErrorHelperText={error}
       />
     </AuthPageForm>
   );

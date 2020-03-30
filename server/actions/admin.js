@@ -5,11 +5,11 @@ import Admin from "server/models/admin";
 import Nonprofit from "server/models/nonprofit";
 
 const responses = {
-  INVALID_EMAIL: "There is no account currently associated with this email.",
-  INVALID_PASSWORD: "The password you entered is incorrect. Please try again.",
-  INVALID_ORG: "The nonprofit does not currently exist in our database.",
+  INVALID_EMAIL: "Please enter a valid email address.",
+  INVALID_PASSWORD: "The password you entered is incorrect.",
+  INVALID_ORG: "Please enter a valid nonprofit organization.",
   INVALID_TOKEN: "The current token is expired or invalid.",
-  USER_EXISTS: "A user with these credentials already exists."
+  USER_EXISTS: "A user with this email already exists."
 };
 
 export async function login(email, password) {
@@ -23,7 +23,7 @@ export async function login(email, password) {
       if (admin)
         // if the provided password matches the one stored in the
         // database, resolve the promise.
-        return bcrypt.compare(password, admin.password)
+        return (await bcrypt.compare(password, admin.password))
           ? Promise.resolve(admin)
           : Promise.reject(new Error(responses.INVALID_PASSWORD));
       else return Promise.reject(new Error(responses.INVALID_EMAIL));
@@ -32,8 +32,9 @@ export async function login(email, password) {
       // sign a new jsonwebtoken using the newly-created admin's
       // name, email, and associated organization. as of now, the
       // token will only last for an hour.
-      jwt.sign(
+      return jwt.sign(
         {
+          id: admin._id,
           firstName: admin.firstName,
           lastName: admin.lastName,
           email: admin.email,
@@ -79,6 +80,7 @@ export async function signup(fname, lname, email, password, org) {
           // token will only last for an hour.
           jwt.sign(
             {
+              id: admin._id,
               firstName: admin.firstName,
               lastName: admin.lastName,
               email: admin.email,
