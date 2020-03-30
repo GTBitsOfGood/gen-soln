@@ -1,5 +1,8 @@
 import { createNonprofit } from "server/actions/nonprofit";
 
+// @route   POST api/createNonprofit
+// @desc    Creates an Organization
+// @access  Public
 const handler = (req, res) => {
   createNonprofit(req.body.name, req.body.about, req.body.logo, req.body.colors)
     .then(nonprofit => {

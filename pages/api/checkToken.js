@@ -1,5 +1,8 @@
 import { checkToken } from "server/actions/admin.js";
 
+// @route   POST api/checkToken
+// @desc    Verifies Admin Token
+// @access  Public
 const handler = (req, res) => {
   if (!req.body.token)
     res.status(400).json({

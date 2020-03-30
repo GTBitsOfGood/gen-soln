@@ -21,3 +21,17 @@ export async function createNonprofit(name, about, logo, colors) {
         });
   });
 }
+
+export async function getOrgNames() {
+  await Mongo();
+
+  // search through the 'nonprofit' collection with no filter, thus
+  // returning every document present in the database.
+  return Nonprofit.find().then(organizations => {
+    // compile and return an array containing only the names of
+    // the organizations.
+    const names = [];
+    organizations.forEach(org => names.push(org.name));
+    return names;
+  });
+}

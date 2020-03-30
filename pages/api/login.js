@@ -1,5 +1,8 @@
 import { login } from "server/actions/admin";
 
+// @route   POST api/login
+// @desc    Requests Admin Login
+// @access  Public
 const handler = (req, res) => {
   login(req.body.email, req.body.password)
     .then(token => {

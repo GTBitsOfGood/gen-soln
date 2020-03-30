@@ -1,5 +1,8 @@
 import { createDonation } from "server/actions/donation";
 
+// @route   POST api/createDonation
+// @desc    Creates a Donation
+// @access  Public
 const handler = (req, res) => {
   createDonation(req.body.fname, req.body.lname, req.body.amount, req.body.org)
     .then(donation => {

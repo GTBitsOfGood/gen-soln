@@ -1,20 +1,14 @@
-import { signup } from "server/actions/admin";
+import { getOrgNames } from "server/actions/nonprofit";
 
-// @route   POST api/signup
-// @desc    Requests Admin Creation
+// @route   GET api/getOrgNames
+// @desc    Requests List of Nonprofits
 // @access  Public
 const handler = (req, res) => {
-  signup(
-    req.body.fname,
-    req.body.lname,
-    req.body.email,
-    req.body.password,
-    req.body.org
-  )
-    .then(token => {
+  getOrgNames()
+    .then(names => {
       res.status(200).json({
         success: true,
-        payload: token
+        payload: names
       });
     })
     .catch(error => {

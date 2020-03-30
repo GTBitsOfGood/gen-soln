@@ -10,6 +10,7 @@ export default {
     login: "/api/login",
     signup: "/api/signup",
     checkToken: "/api/checkToken",
+    getOrgNames: "/api/getOrgNames",
     createDonation: "/api/createDonation",
     createNonprofit: "/api/createNonprofit"
   }
