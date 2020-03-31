@@ -1,8 +1,9 @@
 import React from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+
+import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 
 const white = "white";
 const useStyles = makeStyles({
@@ -11,14 +12,11 @@ const useStyles = makeStyles({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: white,
-    margin: "15px -4px"
+    margin: "10px -4px"
   },
   button: {
     width: "50%",
     alignSelf: "center"
-  },
-  bold: {
-    fontWeight: "bold"
   },
   icon: {
     fontSize: "0.8rem"
@@ -32,26 +30,37 @@ const useStyles = makeStyles({
 interface Props {
   curStepIndex: number;
   stepTitles: string[];
+  setStepIndex: (step: number) => void;
 }
 
 const DonationPageFormNavigation: React.FC<Props> = ({
   curStepIndex,
-  stepTitles
+  stepTitles,
+  setStepIndex
 }) => {
-  const { container, bold, icon, positiveMargin } = useStyles();
+  const { container, icon, positiveMargin } = useStyles();
   const arr: React.ReactNode[] = [];
+
+  /* TODO: We want a way to navigate back to previous steps, hence the onClick prop is used here.
+   * However, we can't let the user arbitrarily navigate to a future step without ensuring that the
+   * previous steps are completed, hence the use of disabled={index > curStepIndex}. We should discuss
+   * with designers if this is the intended behavior, or/and if there are better ways to deal with this. */
+  /* Another quirky side-effect of this in the UI: the completed steps have 'secondary' color, current step
+   * has 'inherit' color but future, disabled steps are grayed out. */
 
   stepTitles.forEach((title, index) => {
     arr.push(
-      <Typography
-        key={`text_${title}`}
-        variant="subtitle1"
-        classes={{ subtitle1: bold }}
-        className={positiveMargin}
-        color={index === curStepIndex ? "initial" : "secondary"}
+      <ButtonWithLowercaseText
+        key={`button_${title}`}
+        disableRipple
+        color={index === curStepIndex ? "inherit" : "secondary"}
+        onClick={() => {
+          setStepIndex(index);
+        }}
+        disabled={index > curStepIndex}
       >
         {title}
-      </Typography>,
+      </ButtonWithLowercaseText>,
       <ArrowForwardIosIcon
         key={`arrow_${title}`}
         fontSize="small"

@@ -28,7 +28,8 @@ export default createMuiTheme({
   props: {
     MuiTextField: {
       variant: "filled",
-      size: "small"
+      size: "small",
+      color: "secondary"
     }
   },
   overrides: {

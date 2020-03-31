@@ -63,13 +63,17 @@ const DonationPageFormBody: React.FC = () => {
     false
   );
 
+  const setCurStepIndexCallback = useCallback((step: number) => {
+    // TODO: code added for temporary purposes, until the "Thank you for your donation" is implemented
+    setCurStepIndex(Math.min(Math.max(0, step), STEPS.length - 1));
+  }, []);
+
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // TODO: code added for temporary purposes, until the "Thank you for your donation" is implemented
-      setCurStepIndex(Math.min(curStepIndex + 1, STEPS.length - 1));
+      setCurStepIndexCallback(curStepIndex + 1);
     },
-    [curStepIndex]
+    [curStepIndex, setCurStepIndexCallback]
   );
 
   const handleContinueButtonDisabling = useCallback((disabled: boolean) => {
@@ -91,6 +95,7 @@ const DonationPageFormBody: React.FC = () => {
       <DonationPageFormNavigation
         curStepIndex={curStepIndex}
         stepTitles={STEPS.map(_ => _.title)}
+        setStepIndex={setCurStepIndexCallback}
       />
       <div className={contentContainer}>
         {Component && (
