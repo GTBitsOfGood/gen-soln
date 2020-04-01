@@ -12,9 +12,9 @@ export async function createDonation(fname, lname, amount, org) {
   // tied to that organization. also, update the organization's 'donations'
   // array to include this newly-created donation.
   if (!nonprofit) {
-    Promise.reject(new Error(errors.donation.INVALID_ORG));
+    return Promise.reject(new Error(errors.donation.INVALID_ORG));
   } else {
-    Donation.create({
+    return Donation.create({
       firstName: fname,
       lastName: lname,
       amount: amount,
