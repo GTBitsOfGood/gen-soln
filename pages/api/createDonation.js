@@ -1,14 +1,14 @@
-import { login } from "server/actions/admin";
+import { createDonation } from "server/actions/donation";
 
-// @route   POST api/login
-// @desc    Requests Admin Login
+// @route   POST api/createDonation
+// @desc    Creates a Donation
 // @access  Public
 const handler = (req, res) => {
-  login(req.body.email, req.body.password)
-    .then(token => {
+  createDonation(req.body.fname, req.body.lname, req.body.amount, req.body.org)
+    .then(donation => {
       res.status(200).json({
         success: true,
-        payload: token
+        payload: donation
       });
     })
     .catch(error => {

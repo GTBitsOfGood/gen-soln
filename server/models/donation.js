@@ -3,12 +3,16 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const donationSchema = new Schema({
-  amount: {
-    type: Number,
+  firstName: {
+    type: String,
     required: true
   },
-  donor: {
+  lastName: {
     type: String,
+    required: true
+  },
+  amount: {
+    type: Number,
     required: true
   },
   org: {
@@ -22,8 +26,5 @@ const donationSchema = new Schema({
   }
 });
 
-if (process.env.IS_OFFLINE) {
-  delete mongoose.connection.models.Donation;
-}
-
-module.exports = mongoose.model("Donation", donationSchema);
+module.exports =
+  mongoose.models.Donation || mongoose.model("Donation", donationSchema);
