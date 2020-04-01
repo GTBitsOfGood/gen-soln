@@ -1,9 +1,6 @@
 import Mongo from "server/index";
 import Nonprofit from "server/models/nonprofit";
-
-const responses = {
-  ALREADY_EXISTS: "There already exists a nonprofit by this name."
-};
+import errors from "utils/errors";
 
 export async function createNonprofit(name, about, logo, colors) {
   await Mongo();
@@ -12,7 +9,7 @@ export async function createNonprofit(name, about, logo, colors) {
     // if the nonprofit doesn't yet exist in the database, create a
     // new document using the passed-in parameters.
     return nonprofit
-      ? Promise.reject(new Error(responses.ALREADY_EXISTS))
+      ? Promise.reject(new Error(errors.nonprofit.ALREADY_EXISTS))
       : Nonprofit.create({
           name: name,
           about: about,
@@ -22,16 +19,10 @@ export async function createNonprofit(name, about, logo, colors) {
   });
 }
 
-export async function getOrgNames() {
+export async function getNonprofitNames() {
   await Mongo();
 
-  // search through the 'nonprofit' collection with no filter, thus
-  // returning every document present in the database.
-  return Nonprofit.find().then(organizations => {
-    // compile and return an array containing only the names of
-    // the organizations.
-    const names = [];
-    organizations.forEach(org => names.push(org.name));
-    return names;
-  });
+  // compile and return an array containing the names of every
+  // nonprofit in the collection.
+  return Nonprofit.find().then(nonprofits => nonprofits.map(org => org.name));
 }

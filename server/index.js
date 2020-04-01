@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import config from "../config";
+import config from "config";
 
 export default async () => {
   if (mongoose.connections[0].readyState) return;

@@ -1,3 +1,7 @@
+// NOTE: This endpoint is somewhat of a security threat
+// at the moment, as anyone can make a POST request and
+// claim to be an admin for some particular organization.
+
 import { signup } from "server/actions/admin";
 
 // @route   POST api/signup

@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from "react";
 
-import { login } from "../../requests/admin";
+import { login } from "requests/admin";
 import { useRouter } from "next/router";
-import urls from "../../config";
+import errors from "utils/errors";
+import urls from "config";
 
 import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 import AuthPageForm from "./AuthPageForm";
@@ -37,16 +38,20 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   );
 
   const onPressCTA = useCallback(async () => {
-    return login(email, password)
-      .then(() => {
-        router.push({
-          pathname: urls.pages.index
-        });
-      })
-      .catch(err => {
-        setError(err.message);
-        setHasError(true);
+    try {
+      await login(email, password);
+      router.push({
+        pathname: urls.pages.index
       });
+    } catch (err) {
+      setError(
+        err.message === errors.admin.INVALID_EMAIL ||
+          err.message === errors.admin.INVALID_PASSWORD
+          ? "Invalid email or password. Please try again."
+          : "An unexpected error occured. Please try again."
+      );
+      setHasError(true);
+    }
   }, [email, password, router]);
 
   const onClickForgotPassword = useCallback(() => {

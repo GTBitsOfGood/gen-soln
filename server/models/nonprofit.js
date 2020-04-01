@@ -15,8 +15,6 @@ const nonprofitSchema = new Schema({
   logo: {
     type: String,
     required: true
-    // data: { type: Buffer, required: true },
-    // contentType: { type: String, required: true }
   },
   colors: {
     type: [String],
@@ -27,10 +25,6 @@ const nonprofitSchema = new Schema({
     ref: "Donation"
   }
 });
-
-if (process.env.IS_OFFLINE) {
-  delete mongoose.connection.models.Nonprofit;
-}
 
 module.exports =
   mongoose.models.Nonprofit || mongoose.model("Nonprofit", nonprofitSchema);

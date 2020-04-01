@@ -1,10 +1,10 @@
-import { getOrgNames } from "server/actions/nonprofit";
+import { getNonprofitNames } from "server/actions/nonprofit";
 
-// @route   GET api/getOrgNames
+// @route   GET api/getNonprofitNames
 // @desc    Requests List of Nonprofits
 // @access  Public
 const handler = (req, res) => {
-  getOrgNames()
+  getNonprofitNames()
     .then(names => {
       res.status(200).json({
         success: true,

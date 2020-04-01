@@ -27,8 +27,4 @@ const adminSchema = new Schema({
   }
 });
 
-if (process.env.IS_OFFLINE) {
-  delete mongoose.connection.models.Admin;
-}
-
 module.exports = mongoose.models.Admin || mongoose.model("Admin", adminSchema);

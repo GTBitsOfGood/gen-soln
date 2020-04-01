@@ -26,9 +26,5 @@ const donationSchema = new Schema({
   }
 });
 
-if (process.env.IS_OFFLINE) {
-  delete mongoose.connection.models.Donation;
-}
-
 module.exports =
   mongoose.models.Donation || mongoose.model("Donation", donationSchema);

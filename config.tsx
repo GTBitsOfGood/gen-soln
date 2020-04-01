@@ -1,5 +1,4 @@
 export default {
-  baseUrl: "http://localhost:3000",
   dbUrl: process.env.DB_URL,
   dbName: process.env.DB_NAME,
   pages: {
@@ -10,8 +9,8 @@ export default {
     login: "/api/login",
     signup: "/api/signup",
     checkToken: "/api/checkToken",
-    getOrgNames: "/api/getOrgNames",
     createDonation: "/api/createDonation",
-    createNonprofit: "/api/createNonprofit"
+    createNonprofit: "/api/createNonprofit",
+    getNonprofitNames: "/api/getNonprofitNames"
   }
 };

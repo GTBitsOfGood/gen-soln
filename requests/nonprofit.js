@@ -1,23 +1,15 @@
 import fetch from "isomorphic-unfetch";
-import urls from "../config";
+import urls from "config";
 
-export const getOrgNames = async () => {
-  return fetch(urls.baseUrl + urls.apis.getOrgNames, {
+export const getNonprofitNames = async () => {
+  return fetch(urls.apis.getNonprofitNames, {
     method: "get",
-    mode: "same-origin",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json"
-    }
+    mode: "same-origin"
   })
     .then(res => res.json())
     .then(json => {
-      if (!json) {
-        throw new Error("Couldn't connect to API.");
-      } else if (!json.success) {
-        throw new Error(json.message);
-      } else {
-        return json.payload;
-      }
+      if (!json) throw new Error("Couldn't connect to API.");
+      if (!json.success) throw new Error(json.message);
+      return json.payload;
     });
 };
