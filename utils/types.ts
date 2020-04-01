@@ -1,15 +1,17 @@
 import {
   Palette,
-  PaletteOptions,
-  TypeBackground
+  PaletteOptions
 } from "@material-ui/core/styles/createPalette";
 import { ThemeOptions, Theme } from "@material-ui/core/styles/createMuiTheme";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
 // TODO: Possibly keep in sync with the backend schema
-interface NonProfit {
+export interface NonProfit {
   name: string;
+  id: string;
+  donationFormHeadline: string;
+  donationFormParagraph: string;
   colors: {
     primary: string;
     secondary: string;
@@ -26,11 +28,7 @@ declare module "@material-ui/core/styles/createPalette" {
   }
 
   interface PaletteOptions {
-    nonProfitColors: NonProfit["colors"];
-  }
-
-  interface TypeBackground {
-    imagePlaceholder: string;
+    nonProfitColors?: NonProfit["colors"];
   }
 }
 
@@ -42,6 +40,6 @@ declare module "@material-ui/core/styles/createMuiTheme" {
 
   interface ThemeOptions {
     margins: Record<Spacing, string>;
-    nonProfitImages: NonProfit["images"];
+    nonProfitImages?: NonProfit["images"];
   }
 }

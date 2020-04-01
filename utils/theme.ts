@@ -1,6 +1,6 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
-import { Spacing } from "./types";
+import { Spacing, NonProfit } from "./types";
 
 const margins: Record<Spacing, string> = {
   VERTICAL: "4.5vh",
@@ -8,40 +8,39 @@ const margins: Record<Spacing, string> = {
   LARGE_VERTICAL: "7vh"
 };
 
-export default createMuiTheme({
-  palette: {
-    primary: {
-      main: "#403C70"
+// Created a special variable for primary color since it is imported by _document.tsx
+export const MAIN = "#403C70";
+
+const createNonProfitMuiTheme = (nonProfit: NonProfit | undefined) =>
+  createMuiTheme({
+    palette: {
+      primary: {
+        main: MAIN
+      },
+      secondary: {
+        main: "rgba(64, 59, 112, 0.38)"
+      },
+      background: {
+        default: "#F5F5F7"
+      },
+      nonProfitColors: nonProfit?.colors
     },
-    secondary: {
-      main: "rgba(64, 59, 112, 0.38)"
-    },
-    background: {
-      default: "#F5F5F7",
-      imagePlaceholder: "#EBDEF0"
-    },
-    nonProfitColors: {
-      primary: "#95C079",
-      secondary: "#013042"
-    }
-  },
-  props: {
-    MuiTextField: {
-      variant: "filled",
-      size: "small",
-      color: "secondary"
-    }
-  },
-  overrides: {
-    MuiFilledInput: {
-      root: {
-        backgroundColor: "#F5F5F5"
+    props: {
+      MuiTextField: {
+        variant: "filled",
+        size: "small",
+        color: "secondary"
       }
-    }
-  },
-  nonProfitImages: {
-    logo: "url(nonProfitLogo.png)",
-    background: "url(nonProfitBackgroundImage.png)"
-  },
-  margins
-});
+    },
+    overrides: {
+      MuiFilledInput: {
+        root: {
+          backgroundColor: "#F5F5F5"
+        }
+      }
+    },
+    nonProfitImages: nonProfit?.images,
+    margins
+  });
+
+export default createNonProfitMuiTheme;
