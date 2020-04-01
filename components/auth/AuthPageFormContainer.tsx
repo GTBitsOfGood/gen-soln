@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   container: {
     width: "34vw",
     height: "52vh",
-    minWidth: 400,
+    minWidth: 360,
     minHeight: 250
   },
   contentContainer: {
