@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+// import { useRouter } from "next/router";
+
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import Typography from "@material-ui/core/Typography";
@@ -29,6 +31,7 @@ const useStyles = makeStyles(({ palette, typography }: Theme) =>
 
 const DonationPageHeaderSelect: React.FC = () => {
   const { container, select, selectMargin, color, input } = useStyles();
+  // const router = useRouter();
 
   const [value, setValue] = useState(0);
 
@@ -39,6 +42,8 @@ const DonationPageHeaderSelect: React.FC = () => {
     }>
   ) => {
     setValue(event.target.value as number);
+    // Uncomment the following for demo purposes:
+    // router.push("/[id]", "/46546");
   };
 
   return (
