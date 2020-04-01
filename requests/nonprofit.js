@@ -1,5 +1,5 @@
 import fetch from "isomorphic-unfetch";
-import urls from "../../config";
+import urls from "../config";
 
 export const getOrgNames = async () => {
   return fetch(urls.baseUrl + urls.apis.getOrgNames, {

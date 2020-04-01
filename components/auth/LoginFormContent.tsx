@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 
-import { login } from "../../pages/requests/admin";
+import { login } from "../../requests/admin";
 import { useRouter } from "next/router";
 import urls from "../../config";
 
