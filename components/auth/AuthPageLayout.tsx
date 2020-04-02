@@ -38,7 +38,7 @@ const AuthPageLayout: React.FC = ({ children }) => {
       <img
         className={placeholder}
         alt="Bits of Good DMS login page background"
-        src="signin-illust.png"
+        src="/signin-illust.png"
       />
     </FullPageLayout>
   );

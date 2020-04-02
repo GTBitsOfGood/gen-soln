@@ -7,20 +7,20 @@ import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
-    nonProfitColor: {
-      backgroundColor: palette.nonProfitColors.secondary
+    nonprofitColor: {
+      backgroundColor: palette.nonprofitColors.secondary
     }
   })
 );
 
-const ButtonWithNonProfitColor: React.FC<React.ComponentProps<
+const ButtonWithNonprofitColor: React.FC<React.ComponentProps<
   typeof Button
 >> = ({ children, className, color = "primary", ...rest }) => {
-  const { nonProfitColor } = useStyles();
+  const { nonprofitColor } = useStyles();
 
   return (
     <Button
-      className={clsx(className, nonProfitColor)}
+      className={clsx(className, nonprofitColor)}
       variant="contained"
       color={color}
       {...rest}
@@ -30,4 +30,4 @@ const ButtonWithNonProfitColor: React.FC<React.ComponentProps<
   );
 };
 
-export default ButtonWithNonProfitColor;
+export default ButtonWithNonprofitColor;

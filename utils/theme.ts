@@ -1,6 +1,6 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
-import { Spacing, NonProfit } from "./types";
+import { Spacing, Nonprofit } from "./types";
 
 const margins: Record<Spacing, string> = {
   VERTICAL: "4.5vh",
@@ -11,7 +11,7 @@ const margins: Record<Spacing, string> = {
 // Created a special variable for primary color since it is imported by _document.tsx
 export const MAIN = "#403C70";
 
-const createNonProfitMuiTheme = (nonProfit: NonProfit | undefined) =>
+const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined) =>
   createMuiTheme({
     palette: {
       primary: {
@@ -23,7 +23,7 @@ const createNonProfitMuiTheme = (nonProfit: NonProfit | undefined) =>
       background: {
         default: "#F5F5F7"
       },
-      nonProfitColors: nonProfit?.colors
+      nonprofitColors: nonprofit?.colors
     },
     props: {
       MuiTextField: {
@@ -39,8 +39,8 @@ const createNonProfitMuiTheme = (nonProfit: NonProfit | undefined) =>
         }
       }
     },
-    nonProfitImages: nonProfit?.images,
+    nonprofitImages: nonprofit?.images,
     margins
   });
 
-export default createNonProfitMuiTheme;
+export default createNonprofitMuiTheme;

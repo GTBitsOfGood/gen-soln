@@ -1,6 +1,6 @@
-import { NonProfit } from "./types";
+import { Nonprofit } from "./types";
 
-const nonProfits: NonProfit[] = [
+const nonprofits: Nonprofit[] = [
   {
     name: "Hearts2Heart",
     id: "21311",
@@ -12,8 +12,8 @@ const nonProfits: NonProfit[] = [
       secondary: "#013042"
     },
     images: {
-      logo: "url(21311_logo.png)",
-      background: "url(21311_backgroundImage.png)"
+      logo: "url(/21311_logo.png)",
+      background: "url(/21311_backgroundImage.png)"
     }
   },
   {
@@ -27,18 +27,18 @@ const nonProfits: NonProfit[] = [
       secondary: "#e11b22"
     },
     images: {
-      logo: "url(46546_logo.jpg)",
-      background: "url(46546_backgroundImage.jpeg)"
+      logo: "url(/46546_logo.jpg)",
+      background: "url(/46546_backgroundImage.jpeg)"
     }
   }
 ];
 
-// Map a non-profit's URL path to NonProfit object. For now, use id as URL path
-const nonProfitsURLMap = new Map<string, NonProfit>();
-nonProfits.forEach(
-  nonProfit => void nonProfitsURLMap.set(nonProfit.id, nonProfit)
+// Map a non-profit's URL path to Nonprofit object. For now, use id as URL path
+const nonprofitsURLMap = new Map<string, Nonprofit>();
+nonprofits.forEach(
+  nonprofit => void nonprofitsURLMap.set(nonprofit.id, nonprofit)
 );
 
-const DEFAULT_NON_PROFIT_URL = nonProfitsURLMap.keys().next().value;
+const DEFAULT_NON_PROFIT_URL = nonprofitsURLMap.keys().next().value;
 
-export { DEFAULT_NON_PROFIT_URL, nonProfitsURLMap };
+export { DEFAULT_NON_PROFIT_URL, nonprofitsURLMap };

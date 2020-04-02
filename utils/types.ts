@@ -7,7 +7,7 @@ import { ThemeOptions, Theme } from "@material-ui/core/styles/createMuiTheme";
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
 // TODO: Possibly keep in sync with the backend schema
-export interface NonProfit {
+export interface Nonprofit {
   name: string;
   id: string;
   donationFormHeadline: string;
@@ -24,22 +24,22 @@ export interface NonProfit {
 
 declare module "@material-ui/core/styles/createPalette" {
   interface Palette {
-    nonProfitColors: NonProfit["colors"];
+    nonprofitColors: Nonprofit["colors"];
   }
 
   interface PaletteOptions {
-    nonProfitColors?: NonProfit["colors"];
+    nonprofitColors?: Nonprofit["colors"];
   }
 }
 
 declare module "@material-ui/core/styles/createMuiTheme" {
   interface Theme {
     margins: Record<Spacing, string>;
-    nonProfitImages: NonProfit["images"];
+    nonprofitImages: Nonprofit["images"];
   }
 
   interface ThemeOptions {
     margins: Record<Spacing, string>;
-    nonProfitImages?: NonProfit["images"];
+    nonprofitImages?: Nonprofit["images"];
   }
 }

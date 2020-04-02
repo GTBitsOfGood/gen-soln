@@ -6,7 +6,7 @@ import DonationPageHeader from "./DonationPageHeader";
 
 import FullPageLayout from "components/FullPageLayout";
 
-const useStyles = makeStyles(({ margins, nonProfitImages }: Theme) =>
+const useStyles = makeStyles(({ margins, nonprofitImages }: Theme) =>
   createStyles({
     container: {
       flexDirection: "column"
@@ -14,7 +14,7 @@ const useStyles = makeStyles(({ margins, nonProfitImages }: Theme) =>
     content: {
       flex: 1,
       display: "flex",
-      backgroundImage: nonProfitImages.background,
+      backgroundImage: nonprofitImages.background,
       backgroundSize: "cover",
       backgroundRepeat: "repeat-y",
       backgroundPosition: "center",
