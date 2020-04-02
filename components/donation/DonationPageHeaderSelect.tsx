@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
@@ -10,7 +10,7 @@ import Select from "@material-ui/core/Select";
 
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { pathWithDonate } from "utils/util";
+// import { pathWithDonate } from "utils/util";
 
 const useStyles = makeStyles(({ palette, typography }: Theme) =>
   createStyles({
@@ -33,7 +33,7 @@ const useStyles = makeStyles(({ palette, typography }: Theme) =>
 
 const DonationPageHeaderSelect: React.FC = () => {
   const { container, select, selectMargin, color, input } = useStyles();
-  const router = useRouter();
+  // const router = useRouter();
 
   const [value, setValue] = useState(0);
 
@@ -45,7 +45,7 @@ const DonationPageHeaderSelect: React.FC = () => {
   ) => {
     setValue(event.target.value as number);
     // Uncomment the following for demo purposes:
-    router.push(pathWithDonate(), pathWithDonate("46546"));
+    // router.push(pathWithDonate(), pathWithDonate("46546"));
   };
 
   return (
