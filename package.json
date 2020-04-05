@@ -16,12 +16,16 @@
     "@unicef/material-ui-currency-textfield": "^0.8.6",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.1",
     "next": "^9.3.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^8.3.8",
     "@types/material-ui": "^0.21.7",
     "@types/node": "^13.7.0",
     "@types/react": "^16.9.19",

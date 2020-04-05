@@ -1,14 +1,14 @@
-import { login } from "server/actions/admin";
+import { getNonprofitNames } from "server/actions/nonprofit";
 
-// @route   POST api/login
-// @desc    Requests Admin Login
+// @route   GET api/getNonprofitNames
+// @desc    Requests List of Nonprofits
 // @access  Public
 const handler = (req, res) => {
-  login(req.body.email, req.body.password)
-    .then(token => {
+  getNonprofitNames()
+    .then(names => {
       res.status(200).json({
         success: true,
-        payload: token
+        payload: names
       });
     })
     .catch(error => {

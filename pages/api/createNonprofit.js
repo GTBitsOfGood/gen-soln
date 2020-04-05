@@ -1,14 +1,14 @@
-import { login } from "server/actions/admin";
+import { createNonprofit } from "server/actions/nonprofit";
 
-// @route   POST api/login
-// @desc    Requests Admin Login
+// @route   POST api/createNonprofit
+// @desc    Creates an Organization
 // @access  Public
 const handler = (req, res) => {
-  login(req.body.email, req.body.password)
-    .then(token => {
+  createNonprofit(req.body.name, req.body.about, req.body.logo, req.body.colors)
+    .then(nonprofit => {
       res.status(200).json({
         success: true,
-        payload: token
+        payload: nonprofit
       });
     })
     .catch(error => {
