@@ -4,7 +4,7 @@ import dynamic, { DynamicOptions } from "next/dynamic";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 
-import ButtonWithNonProfitColor from "components/ButtonWithNonProfitColor";
+import ButtonWithNonprofitColor from "components/ButtonWithNonprofitColor";
 import DonationPageFormNavigation from "./DonationPageFormNavigation";
 
 import { ContentComponentProps } from "./types";
@@ -105,12 +105,12 @@ const DonationPageFormBody: React.FC = () => {
         )}
       </div>
       <div className={buttonContainer}>
-        <ButtonWithNonProfitColor
+        <ButtonWithNonprofitColor
           disabled={isContinueButtonDisabled}
           type="submit"
         >
           Continue
-        </ButtonWithNonProfitColor>
+        </ButtonWithNonprofitColor>
       </div>
     </form>
   );

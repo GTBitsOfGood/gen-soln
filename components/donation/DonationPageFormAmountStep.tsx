@@ -18,7 +18,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       flexDirection: "column"
     },
     checkedRadioButton: {
-      color: palette.nonProfitColors.secondary
+      color: palette.nonprofitColors.secondary
     },
     width: {
       width: "33%"
