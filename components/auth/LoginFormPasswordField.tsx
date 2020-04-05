@@ -32,7 +32,6 @@ const LoginFormPasswordField: React.FC<Props> = ({
       required
       fullWidth
       variant="standard"
-      color="secondary"
       placeholder="Enter password"
       value={password}
       onChange={onChangePassword}

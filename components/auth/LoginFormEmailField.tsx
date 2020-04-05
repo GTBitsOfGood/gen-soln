@@ -33,7 +33,6 @@ const LoginFormEmailField: React.FC<Props> = ({
       required
       fullWidth
       variant="standard"
-      color="secondary"
       type="email"
       placeholder="email@nonprofit.com"
       value={email}

@@ -58,7 +58,7 @@ const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
   return (
     <AuthPageForm
       title="Recover Password"
-      hasBackButton
+      hasBackButton={currentState !== "FINAL"}
       onPressBackButton={onClickGoBack}
       ctaText={states[currentState].ctaText}
       onPressCTA={onPressCTA}

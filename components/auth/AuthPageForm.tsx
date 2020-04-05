@@ -4,9 +4,9 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
 
 import AuthPageFormContainer from "./AuthPageFormContainer";
-import ButtonWithNonProfitColor from "components/ButtonWithNonProfitColor";
 
 const useStyles = makeStyles({
   form: {
@@ -81,7 +81,12 @@ const AuthPageForm: React.FC<Props &
         <div className={formContent}>{children}</div>
         <div className={formFooterContainer}>
           <div className={formFooter}>
-            <ButtonWithNonProfitColor type="submit" disabled={isSubmitting}>
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              disabled={isSubmitting}
+            >
               {isSubmitting && (
                 <CircularProgress
                   className={rightMargin}
@@ -90,7 +95,7 @@ const AuthPageForm: React.FC<Props &
                 />
               )}
               {ctaText}
-            </ButtonWithNonProfitColor>
+            </Button>
             {footer}
           </div>
         </div>
