@@ -8,6 +8,7 @@ import ButtonWithNonprofitColor from "components/ButtonWithNonprofitColor";
 import DonationPageFormNavigation from "./DonationPageFormNavigation";
 
 import { ContentComponentProps } from "./types";
+import AdminLoginLink from "components/AdminLoginLink";
 
 const white = "white";
 const useStyles = makeStyles({
@@ -111,6 +112,7 @@ const DonationPageFormBody: React.FC = () => {
         >
           Continue
         </ButtonWithNonprofitColor>
+        <AdminLoginLink />
       </div>
     </form>
   );
