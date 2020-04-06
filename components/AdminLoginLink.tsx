@@ -1,7 +1,5 @@
 import React from "react";
 
-import clsx from "clsx";
-
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import Link from "@material-ui/core/Link";
@@ -20,26 +18,20 @@ const useStyles = makeStyles({
   }
 });
 
-const AdminLoginLink: React.FC<React.ComponentProps<typeof Link>> = ({
-  children,
-  className,
-  color = "secondary",
-  ...rest
-}) => {
+const AdminLoginLink: React.FC = () => {
   const { container, text } = useStyles();
 
   return (
     <div className={container}>
-      <Typography className={text} color={color} {...rest} variant="subtitle2">
+      <Typography className={text} variant="subtitle2" color="secondary">
         Are you an admin?
       </Typography>
       <Link
         className={text}
-        color={color}
-        {...rest}
         href="/login"
         variant="subtitle2"
         underline="always"
+        color="secondary"
       >
         Login here
       </Link>
