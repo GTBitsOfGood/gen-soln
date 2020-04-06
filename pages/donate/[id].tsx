@@ -2,18 +2,16 @@ import React from "react";
 import { NextPage, GetStaticProps, GetStaticPaths } from "next";
 
 import { nonprofitsURLMap } from "utils/DummyData";
-import { Nonprofit } from "utils/types";
+import { Dropdown } from "utils/types";
 import { pathWithDonate } from "utils/util";
 
 import DonationPage from "components/donation/DonationPage";
 
-interface Props {
-  nonprofit: Nonprofit;
-}
-
-const NonprofitDonationPage: NextPage<Props> = ({ nonprofit }) => {
+const NonprofitDonationPage: NextPage<React.ComponentProps<
+  typeof DonationPage
+>> = props => {
   // TODO: Pass this nonprofit object to DonationPage
-  return <DonationPage />;
+  return <DonationPage {...props} />;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -31,10 +29,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   // TODO: Get all information about non-profit with URL = params.id, also get the list of all non-profit names and URLs; for now, use DummyData.
   // Again, write server-side code directly, don't make a request to our API.
+  const items: Dropdown[] = [];
+  nonprofitsURLMap.forEach(({ name }, key) => {
+    items.push({ text: name, value: key });
+  });
 
-  const nonprofit = nonprofitsURLMap.get(params?.id as string);
+  const id = params?.id as string;
 
-  return { props: { nonprofit } };
+  return {
+    props: { nonprofit: nonprofitsURLMap.get(id), items, selectedValue: id }
+  };
 };
 
 export default NonprofitDonationPage;

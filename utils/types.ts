@@ -22,6 +22,16 @@ export interface Nonprofit {
   };
 }
 
+export interface Dropdown {
+  text: string;
+  value: string;
+}
+
+export interface DropdownProps {
+  items: Dropdown[];
+  selectedValue: Dropdown["value"];
+}
+
 declare module "@material-ui/core/styles/createPalette" {
   interface Palette {
     nonprofitColors: Nonprofit["colors"];
