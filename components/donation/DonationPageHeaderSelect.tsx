@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useContext, useEffect } from "react";
 
-// import { useRouter } from "next/router";
+import clsx from "clsx";
+
+import { useRouter, Router } from "next/router";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
@@ -10,7 +12,14 @@ import Select from "@material-ui/core/Select";
 
 import MenuItem from "@material-ui/core/MenuItem";
 
-// import { pathWithDonate } from "utils/util";
+import { pathWithDonate } from "utils/util";
+import { DropdownProps } from "utils/types";
+
+import {
+  DonationPageStateDispatch,
+  resetState,
+  setIsContinueButtonDisabled
+} from "./reducer";
 
 const useStyles = makeStyles(({ palette, typography }: Theme) =>
   createStyles({
@@ -24,29 +33,62 @@ const useStyles = makeStyles(({ palette, typography }: Theme) =>
     selectMargin: {
       marginLeft: 16
     },
-    input: { ...typography.h6, paddingLeft: 6 },
+    input: {
+      ...typography.h6,
+      paddingLeft: 6
+    },
     color: {
       color: palette.nonprofitColors.secondary
     }
   })
 );
 
-const DonationPageHeaderSelect: React.FC = () => {
+const DonationPageHeaderSelect: React.FC<DropdownProps> = ({
+  items,
+  selectedValue
+}) => {
   const { container, select, selectMargin, color, input } = useStyles();
-  // const router = useRouter();
+  const router = useRouter();
+  const [value, setValue] = useState(selectedValue);
+  const [disabled, setDisabled] = useState(false);
+  const dispatch = useContext(DonationPageStateDispatch);
 
-  const [value, setValue] = useState(0);
+  const routeChangeStart = useCallback(() => {
+    dispatch && dispatch(setIsContinueButtonDisabled(true));
+    setDisabled(true);
+  }, [dispatch]);
 
-  const onChange = (
-    event: React.ChangeEvent<{
-      name?: string | undefined;
-      value: unknown;
-    }>
-  ) => {
-    setValue(event.target.value as number);
-    // Uncomment the following for demo purposes:
-    // router.push(pathWithDonate(), pathWithDonate("46546"));
-  };
+  const routeChangeComplete = useCallback(() => {
+    dispatch && dispatch(resetState()); // Takes care of setIsContinueButtonDisabled(false)
+    setDisabled(false);
+  }, [dispatch]);
+
+  const onChange = useCallback(
+    (
+      event: React.ChangeEvent<{
+        name?: string | undefined;
+        value: unknown;
+      }>
+    ) => {
+      setValue(event.target.value as typeof selectedValue);
+
+      Router.events.on("routeChangeStart", routeChangeStart);
+      Router.events.on("routeChangeComplete", routeChangeComplete);
+
+      router.push(
+        pathWithDonate(),
+        pathWithDonate(event.target.value as string)
+      );
+    },
+    [router, selectedValue, routeChangeStart, routeChangeComplete]
+  );
+
+  useEffect(() => {
+    return () => {
+      Router.events.off("routeChangeStart", routeChangeStart);
+      Router.events.off("routeChangeComplete", routeChangeComplete);
+    };
+  }, [routeChangeStart, routeChangeComplete]);
 
   return (
     <div className={container}>
@@ -54,18 +96,21 @@ const DonationPageHeaderSelect: React.FC = () => {
       <Select
         classes={{ select, icon: color }}
         value={value}
+        disabled={disabled}
         onChange={onChange}
         className={selectMargin}
         disableUnderline={true}
         inputProps={{
           classes: {
-            root: `${color} ${input}`
+            root: clsx(input, !disabled && color)
           }
         }}
       >
-        <MenuItem value={0}>Hearts2Hearts</MenuItem>
-        <MenuItem value={1}>American Red Cross</MenuItem>
-        <MenuItem value={2}>Goodwill </MenuItem>
+        {items.map(({ text, value }) => (
+          <MenuItem key={value} value={value}>
+            {text}
+          </MenuItem>
+        ))}
       </Select>
     </div>
   );
