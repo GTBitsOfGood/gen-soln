@@ -2,9 +2,9 @@ import React from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-import Link from "@material-ui/core/Link";
-
 import Typography from "@material-ui/core/Typography";
+
+import Link from "components/Link";
 
 const useStyles = makeStyles({
   container: {
