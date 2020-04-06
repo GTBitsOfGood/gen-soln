@@ -29,17 +29,12 @@ const AdminLoginLink: React.FC<React.ComponentProps<typeof Link>> = ({
   const { container, text } = useStyles();
 
   return (
-    <div className={clsx(container)}>
-      <Typography
-        className={clsx(text)}
-        color={color}
-        {...rest}
-        variant="subtitle2"
-      >
+    <div className={container}>
+      <Typography className={text} color={color} {...rest} variant="subtitle2">
         Are you an admin?
       </Typography>
       <Link
-        className={clsx(text)}
+        className={text}
         color={color}
         {...rest}
         href="/login"
