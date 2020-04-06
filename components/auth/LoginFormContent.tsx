@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 
 import { login } from "requests/admin";
 import { useRouter } from "next/router";
@@ -19,7 +19,8 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [hasError, setHasError] = useState(false);
+
+  const hasError = useMemo(() => error !== "", [error]);
 
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,22 +36,24 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
     []
   );
 
-  const onPressCTA = useCallback(async () => {
-    try {
-      await login(email, password);
-      router.push({
-        pathname: urls.pages.index
-      });
-    } catch (err) {
-      setError(
-        err.message === errors.admin.INVALID_EMAIL ||
-          err.message === errors.admin.INVALID_PASSWORD
-          ? "Invalid email or password. Please try again."
-          : "An unexpected error occured. Please try again."
-      );
-      setHasError(true);
-    }
-  }, [email, password, router]);
+  const onPressCTA = useCallback(
+    async (stopLoading: () => void) => {
+      try {
+        await login(email, password);
+        // Currently, it takes a long time to navigate and load the index page, so don't stop loading:
+        router.push(urls.pages.index);
+      } catch (err) {
+        setError(
+          err.message === errors.admin.INVALID_EMAIL ||
+            err.message === errors.admin.INVALID_PASSWORD
+            ? "Invalid email or password. Please try again."
+            : "An unexpected error occurred. Please try again."
+        );
+        stopLoading();
+      }
+    },
+    [email, password, router]
+  );
 
   const onClickForgotPassword = useCallback(() => {
     navigateToContent("forgotPassword");
@@ -62,7 +65,6 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
       title="Sign in"
       ctaText="SIGN IN"
       onPressCTA={onPressCTA}
-      setHasError={setHasError}
       footer={
         <ButtonWithLowercaseText
           disableRipple

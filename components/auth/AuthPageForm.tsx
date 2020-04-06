@@ -1,4 +1,4 @@
-import React, { useState, useCallback, SetStateAction, Dispatch } from "react";
+import React, { useState, useCallback } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
@@ -33,8 +33,7 @@ const useStyles = makeStyles({
 interface Props {
   title: string;
   ctaText: string;
-  onPressCTA: () => Promise<void>;
-  setHasError: Dispatch<SetStateAction<boolean>>;
+  onPressCTA: (stopLoading: () => void) => Promise<void>;
   footer?: React.ReactNode;
 }
 
@@ -43,7 +42,6 @@ const AuthPageForm: React.FC<Props &
   children,
   title,
   onPressCTA,
-  setHasError,
   ctaText,
   footer,
   ...rest
@@ -58,20 +56,18 @@ const AuthPageForm: React.FC<Props &
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const stopLoading = useCallback(() => {
+    setIsSubmitting(false);
+  }, []);
+
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      try {
-        setIsSubmitting(true);
-        setHasError(false);
-        await onPressCTA();
-      } catch (_) {
-        setHasError(true);
-      } finally {
-        setIsSubmitting(false);
-      }
+      setIsSubmitting(true);
+      // Let onPressCTA control when to stop loading
+      await onPressCTA(stopLoading);
     },
-    [onPressCTA, setHasError]
+    [onPressCTA, stopLoading]
   );
 
   return (

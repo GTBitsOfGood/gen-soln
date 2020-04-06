@@ -23,7 +23,7 @@ const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
 }) => {
   const [email, setEmail] = useState("");
-  const [hasError, setHasError] = useState(false);
+  const [hasError] = useState(false);
   const [currentState, setCurrentState] = useState<keyof typeof states>(
     "INITIAL"
   );
@@ -62,7 +62,6 @@ const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
       onPressBackButton={onClickGoBack}
       ctaText={states[currentState].ctaText}
       onPressCTA={onPressCTA}
-      setHasError={setHasError}
     >
       <LoginFormEmailField
         email={email}
