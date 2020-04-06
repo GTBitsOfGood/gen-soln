@@ -4,94 +4,69 @@ import Mongo from "server/index";
 import Admin from "server/models/admin";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
+import config from "config";
 
-export async function login(email, password) {
+const SALT_ROUNDS = 10;
+const JWT_EXPIRES_IN = "1h";
+
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+const jwtSignAdmin = ({ _id, firstName, lastName, email, org }) =>
+  jwt.sign(
+    {
+      id: _id,
+      firstName,
+      lastName,
+      email,
+      org
+    },
+    config.jwtSecret,
+    {
+      expiresIn: JWT_EXPIRES_IN
+    }
+  );
+
+export async function login({ email, password }) {
   await Mongo();
 
-  return Admin.findOne({ email: email })
-    .then(async admin => {
-      // if an admin with the provided email exists, use bcrypt's .compare()
-      // function to determine whether the passed-in password matches the
-      // hashed password stored in the database.
-      if (admin)
-        // if the provided password matches the one stored in the
-        // database, resolve the promise.
-        return (await bcrypt.compare(password, admin.password))
-          ? Promise.resolve(admin)
-          : Promise.reject(new Error(errors.admin.INVALID_PASSWORD));
-      else return Promise.reject(new Error(errors.admin.INVALID_EMAIL));
-    })
-    .then(admin => {
-      // sign a new jsonwebtoken using the newly-created admin's
-      // name, email, and associated organization. as of now, the
-      // token will only last for an hour.
-      return jwt.sign(
-        {
-          id: admin._id,
-          firstName: admin.firstName,
-          lastName: admin.lastName,
-          email: admin.email,
-          org: admin.org
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: "1h"
-        }
-      );
-    });
+  const admin = await Admin.findOne({ email });
+  if (admin) {
+    if (!(await bcrypt.compare(password, admin.password))) {
+      throw new Error(errors.admin.INVALID_PASSWORD);
+    }
+
+    return jwtSignAdmin(admin);
+  }
+
+  throw new Error(errors.admin.INVALID_EMAIL);
 }
 
-export async function signup(fname, lname, email, password, org) {
+export async function signup({ firstName, lastName, email, password, org }) {
   await Mongo();
 
-  return Admin.countDocuments({ email: email })
-    .then(count => {
-      // if the admin doesn't already exist, use bcrypt's .hashSync()
-      // function to salt, hash, and return the passed-in password.
-      return count > 0
-        ? Promise.reject(new Error(errors.admin.USER_EXISTS))
-        : bcrypt.hashSync(password, 10);
-    })
-    .then(hashed => {
-      return Nonprofit.findOne({ name: org })
-        .then(nonprofit => {
-          // if the passed-in nonprofit exists, create a new admin
-          // & associate it with the provided organization.
-          return !nonprofit
-            ? Promise.reject(new Error(errors.admin.INVALID_ORG))
-            : Admin.create({
-                firstName: fname,
-                lastName: lname,
-                email: email,
-                password: hashed,
-                org: nonprofit._id
-              });
-        })
-        .then(admin => {
-          // sign a new jsonwebtoken using the newly-created admin's
-          // name, email, and associated organization. as of now, the
-          // token will only last for an hour.
-          jwt.sign(
-            {
-              id: admin._id,
-              firstName: admin.firstName,
-              lastName: admin.lastName,
-              email: admin.email,
-              org: admin.org
-            },
-            process.env.JWT_SECRET,
-            {
-              expiresIn: "1h"
-            }
-          );
-        });
+  if (await Admin.findOne({ email })) {
+    throw new Error(errors.admin.USER_EXISTS);
+  }
+
+  const nonprofit = await Nonprofit.findOne({ name: org });
+  if (nonprofit) {
+    const admin = await Admin.create({
+      firstName,
+      lastName,
+      email,
+      password: await bcrypt.hashSync(password, SALT_ROUNDS),
+      org: nonprofit._id
     });
+
+    return jwtSignAdmin(admin);
+  }
+
+  throw new Error(errors.admin.INVALID_ORG);
 }
 
-export async function checkToken(token) {
-  return jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    return decoded
-      ? Promise.resolve(decoded)
-      : Promise.reject(new Error(errors.admin.INVALID_TOKEN));
-  });
+export function checkToken({ token }) {
+  try {
+    return jwt.verify(token, config.jwtSecret);
+  } catch {
+    throw new Error(errors.admin.INVALID_TOKEN);
+  }
 }
