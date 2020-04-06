@@ -2,35 +2,51 @@ import React from "react";
 
 import clsx from "clsx";
 
-import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import Link from "@material-ui/core/Link";
 
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles(({ palette }: Theme) =>
-  createStyles({
-    nonProfitColor: {
-      backgroundColor: palette.nonprofitColors.secondary
-    }
-  })
-);
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20
+  },
+  text: {
+    marginRight: 6
+  }
+});
 
 const AdminLoginLink: React.FC<React.ComponentProps<typeof Link>> = ({
   children,
   className,
-  color = "primary",
+  color = "secondary",
   ...rest
 }) => {
-  const { nonProfitColor } = useStyles();
+  const { container, text } = useStyles();
 
   return (
-    <div>
-      <Typography className={clsx(className)} color={color} {...rest}>
+    <div className={clsx(container)}>
+      <Typography
+        className={clsx(text)}
+        color={color}
+        {...rest}
+        variant="subtitle2"
+      >
         Are you an admin?
       </Typography>
-      <Link className={clsx(className)} color={color} {...rest} href="/login">
-        Click here to login!
+      <Link
+        className={clsx(text)}
+        color={color}
+        {...rest}
+        href="/login"
+        variant="subtitle2"
+        underline="always"
+      >
+        Login here
       </Link>
     </div>
   );

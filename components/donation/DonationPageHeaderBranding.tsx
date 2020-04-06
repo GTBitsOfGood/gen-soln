@@ -12,8 +12,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 import Branding from "components/Branding";
 
-import AdminLoginLink from "components/AdminLoginLink";
-
 const useStyles = makeStyles({
   container: {
     display: "flex",
@@ -58,7 +56,6 @@ const DonationPageHeaderBranding: React.FC = () => {
           <HelpOutlineIcon classes={{ fontSizeSmall: icon }} fontSize="small" />
         </IconButton>
       </Tooltip>
-      <AdminLoginLink />
     </div>
   );
 };
