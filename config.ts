@@ -12,6 +12,6 @@ export default {
     checkToken: "/api/checkToken",
     createDonation: "/api/createDonation",
     createNonprofit: "/api/createNonprofit",
-    getNonprofitNames: "/api/getNonprofitNames"
+    getDefaultNonprofitId: "/api/getDefaultNonprofitId"
   }
 };

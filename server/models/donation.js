@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
 
 const donationSchema = new Schema({
   firstName: {
@@ -15,8 +14,8 @@ const donationSchema = new Schema({
     type: Number,
     required: true
   },
-  org: {
-    type: ObjectId,
+  nonprofitId: {
+    type: String,
     ref: "Nonprofit",
     required: true
   },
@@ -27,4 +26,4 @@ const donationSchema = new Schema({
 });
 
 module.exports =
-  mongoose.models.Donation || mongoose.model("Donation", donationSchema);
+  mongoose.models?.Donation || mongoose.model("Donation", donationSchema);
