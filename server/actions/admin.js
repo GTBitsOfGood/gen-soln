@@ -63,7 +63,7 @@ export async function signup({ firstName, lastName, email, password, org }) {
   throw new Error(errors.admin.INVALID_ORG);
 }
 
-export function checkToken({ token }) {
+export async function checkToken({ token }) {
   try {
     return jwt.verify(token, config.jwtSecret);
   } catch {
