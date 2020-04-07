@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useContext } from "react";
 import clsx from "clsx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
@@ -9,7 +9,16 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 // @ts-ignore
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 
-import { ContentComponentProps } from "./types";
+import {
+  AmountStepProps,
+  DonationPageStateDispatch,
+  setRadioButtonAmount,
+  setOtherAmount,
+  setIsContinueButtonDisabled,
+  AMOUNTS,
+  MIN_OTHER_AMOUNT,
+  MAX_OTHER_AMOUNT
+} from "./reducer";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -32,21 +41,16 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   })
 );
 
-const AMOUNTS = [25, 50, 100, 250, 500];
-
-const MIN_OTHER_AMOUNT = "0";
-const MAX_OTHER_AMOUNT = "2000";
-
-const DonationPageFormAmountStep: React.FC<ContentComponentProps> = ({
-  setIsContinueButtonDisabled
+const DonationPageFormAmountStep: React.FC<AmountStepProps> = ({
+  radioButtonAmount,
+  otherAmount
 }) => {
   const { checkedRadioButton, textField, container, root, width } = useStyles();
+  const dispatch = useContext(DonationPageStateDispatch);
 
-  const [selectedRadioButtonAmount, setSelectedRadioButtonAmount] = useState<
-    number | null
-  >(AMOUNTS[0]);
-  const [otherAmount, setOtherAmount] = useState(0);
-  const [hasSelectedOther, setHasSelectedOther] = useState(false);
+  const hasSelectedOther = useMemo(() => radioButtonAmount == null, [
+    radioButtonAmount
+  ]);
 
   const isContinueButtonDisabled = useMemo(
     () => hasSelectedOther && otherAmount <= 0,
@@ -54,25 +58,29 @@ const DonationPageFormAmountStep: React.FC<ContentComponentProps> = ({
   );
 
   useEffect(() => {
-    setIsContinueButtonDisabled(isContinueButtonDisabled);
-  }, [setIsContinueButtonDisabled, isContinueButtonDisabled]);
+    dispatch && dispatch(setIsContinueButtonDisabled(isContinueButtonDisabled));
+  }, [dispatch, isContinueButtonDisabled]);
 
-  const handleRadioAmountChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setOtherAmount(0);
-    setHasSelectedOther(false);
-    setSelectedRadioButtonAmount(+event.target.value);
-  };
+  const handleRadioAmountChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (dispatch) {
+        dispatch(setOtherAmount(0));
+        dispatch(setRadioButtonAmount(+event.target.value));
+      }
+    },
+    [dispatch]
+  );
 
-  const handleOtherAmountChange = useCallback((_, value) => {
-    setOtherAmount(value);
-  }, []);
+  const handleOtherAmountChange = useCallback(
+    (_, value) => {
+      dispatch && dispatch(setOtherAmount(value));
+    },
+    [dispatch]
+  );
 
   const handleHasSelectedOther = useCallback(() => {
-    setHasSelectedOther(!hasSelectedOther);
-    setSelectedRadioButtonAmount(null);
-  }, [hasSelectedOther]);
+    dispatch && dispatch(setRadioButtonAmount(null));
+  }, [dispatch]);
 
   const radioButtons = AMOUNTS.map(amount => (
     <FormControlLabel
@@ -82,9 +90,7 @@ const DonationPageFormAmountStep: React.FC<ContentComponentProps> = ({
       control={
         <Radio
           color="default"
-          className={clsx(
-            amount === selectedRadioButtonAmount && checkedRadioButton
-          )}
+          className={clsx(amount === radioButtonAmount && checkedRadioButton)}
         />
       }
       label={`$${amount}`}
@@ -95,7 +101,7 @@ const DonationPageFormAmountStep: React.FC<ContentComponentProps> = ({
     <div className={container}>
       <RadioGroup
         row
-        value={selectedRadioButtonAmount}
+        value={radioButtonAmount}
         onChange={handleRadioAmountChange}
       >
         {radioButtons}

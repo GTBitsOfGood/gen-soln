@@ -40,7 +40,11 @@ const useStyles = makeStyles(({ palette, nonprofitImages }: Theme) =>
   })
 );
 
-const DonationPageFormHeader: React.FC = () => {
+interface Props {
+  headline: string;
+}
+
+const DonationPageFormHeader: React.FC<Props> = ({ headline }) => {
   const {
     container,
     text,
@@ -56,7 +60,7 @@ const DonationPageFormHeader: React.FC = () => {
         alt="Nonprofit logo"
       />
       <Typography variant="h5" className={clsx(text, horizontalPositiveMargin)}>
-        Bring smiles to children
+        {headline}
       </Typography>
     </div>
   );

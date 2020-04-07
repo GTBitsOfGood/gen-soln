@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext, useCallback } from "react";
 import clsx from "clsx";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import TextField from "@material-ui/core/TextField";
 
-import { ContentComponentProps } from "./types";
+import {
+  ContactStepProps,
+  DonationPageStateDispatch,
+  setContactStepField
+} from "./reducer";
 
 const useStyles = makeStyles({
   container: {
@@ -28,7 +32,11 @@ const useStyles = makeStyles({
   }
 });
 
-const DonationPageFormContactStep: React.FC<ContentComponentProps> = () => {
+const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
+  firstName,
+  lastName,
+  email
+}) => {
   const {
     container,
     name,
@@ -36,6 +44,17 @@ const DonationPageFormContactStep: React.FC<ContentComponentProps> = () => {
     verticalNegativeMargin,
     verticalPositiveMargin
   } = useStyles();
+  const dispatch = useContext(DonationPageStateDispatch);
+
+  const onChange = useCallback(
+    (
+      key: keyof ContactStepProps,
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+      dispatch && dispatch(setContactStepField({ key, value: e.target.value }));
+    },
+    [dispatch]
+  );
 
   return (
     <div className={clsx(container, verticalNegativeMargin)}>
@@ -45,8 +64,20 @@ const DonationPageFormContactStep: React.FC<ContentComponentProps> = () => {
           fullWidth
           required
           label="First Name"
+          value={firstName}
+          onChange={e => {
+            onChange("firstName", e);
+          }}
         />
-        <TextField fullWidth required label="Last Name" />
+        <TextField
+          fullWidth
+          required
+          label="Last Name"
+          value={lastName}
+          onChange={e => {
+            onChange("lastName", e);
+          }}
+        />
       </div>
       <TextField
         required
@@ -54,6 +85,10 @@ const DonationPageFormContactStep: React.FC<ContentComponentProps> = () => {
         type="email"
         label="Email"
         className={verticalPositiveMargin}
+        value={email}
+        onChange={e => {
+          onChange("email", e);
+        }}
       />
     </div>
   );

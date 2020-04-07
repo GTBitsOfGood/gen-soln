@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useReducer } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import ContainerWithShadow from "components/ContainerWithShadow";
+import { Nonprofit, DropdownProps } from "utils/types";
 
 import DonationPageLayout from "./DonationPageLayout";
 import DonationPageFormHeader from "./DonationPageFormHeader";
 import DonationPageFormBody from "./DonationPageFormBody";
+
+import reducer, { initialState, DonationPageStateDispatch } from "./reducer";
 
 const useStyles = makeStyles({
   container: {
@@ -15,16 +18,29 @@ const useStyles = makeStyles({
   }
 });
 
-const DonationPage: React.FC = () => {
+interface Props {
+  nonprofit: Nonprofit;
+}
+
+const DonationPage: React.FC<Props & DropdownProps> = ({
+  nonprofit,
+  ...dropdownProps
+}) => {
   const { container } = useStyles();
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <DonationPageLayout>
-      <ContainerWithShadow className={container}>
-        <DonationPageFormHeader />
-        <DonationPageFormBody />
-      </ContainerWithShadow>
-    </DonationPageLayout>
+    <DonationPageStateDispatch.Provider value={dispatch}>
+      <DonationPageLayout {...dropdownProps}>
+        <ContainerWithShadow className={container}>
+          <DonationPageFormHeader headline={nonprofit.donationFormHeadline} />
+          <DonationPageFormBody
+            state={state}
+            description={nonprofit.donationFormParagraph}
+          />
+        </ContainerWithShadow>
+      </DonationPageLayout>
+    </DonationPageStateDispatch.Provider>
   );
 };
 

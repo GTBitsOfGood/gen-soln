@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
+
+import { DonationPageStateDispatch, setStep } from "./reducer";
 
 const white = "white";
 const useStyles = makeStyles({
@@ -30,16 +32,15 @@ const useStyles = makeStyles({
 interface Props {
   curStepIndex: number;
   stepTitles: string[];
-  setStepIndex: (step: number) => void;
 }
 
 const DonationPageFormNavigation: React.FC<Props> = ({
   curStepIndex,
-  stepTitles,
-  setStepIndex
+  stepTitles
 }) => {
   const { container, icon, positiveMargin } = useStyles();
   const arr: React.ReactNode[] = [];
+  const dispatch = useContext(DonationPageStateDispatch);
 
   /* TODO: We want a way to navigate back to previous steps, hence the onClick prop is used here.
    * However, we can't let the user arbitrarily navigate to a future step without ensuring that the
@@ -55,7 +56,7 @@ const DonationPageFormNavigation: React.FC<Props> = ({
         disableRipple
         color={index === curStepIndex ? "inherit" : "secondary"}
         onClick={() => {
-          setStepIndex(index);
+          dispatch && dispatch(setStep(index));
         }}
         disabled={index > curStepIndex}
       >

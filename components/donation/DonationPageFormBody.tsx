@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useMemo } from "react";
-import dynamic, { DynamicOptions } from "next/dynamic";
+import React, { useCallback, useMemo, useContext } from "react";
+import dynamic from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
@@ -7,7 +7,13 @@ import Typography from "@material-ui/core/Typography";
 import ButtonWithNonprofitColor from "components/ButtonWithNonprofitColor";
 import DonationPageFormNavigation from "./DonationPageFormNavigation";
 
-import { ContentComponentProps } from "./types";
+import {
+  AmountStepProps,
+  ContactStepProps,
+  DonationPageStateDispatch,
+  State,
+  incrementStep
+} from "./reducer";
 
 const white = "white";
 const useStyles = makeStyles({
@@ -25,85 +31,94 @@ const useStyles = makeStyles({
     textAlign: "center",
     flex: 0.75
   },
-  text: {
-    flex: 1,
-    marginBottom: "1vh"
+  textContainer: {
+    flex: 1.5
   }
 });
 
-const options: DynamicOptions<ContentComponentProps> = {
+const options = {
   ssr: false
 };
 
 const STEPS = [
   {
-    title: "Donation Amount",
-    component: dynamic<ContentComponentProps>(
+    title: "Donation Amount" as const,
+    component: dynamic<AmountStepProps>(
       () => import("./DonationPageFormAmountStep"),
       options
     )
   },
   {
-    title: "Contact",
-    component: dynamic<ContentComponentProps>(
+    title: "Contact" as const,
+    component: dynamic<ContactStepProps>(
       () => import("./DonationPageFormContactStep"),
       options
     )
   },
   {
-    title: "Payment",
+    title: "Payment" as const,
     component: null
   }
 ];
 
-const DonationPageFormBody: React.FC = () => {
-  const { container, contentContainer, buttonContainer, text } = useStyles();
-  const [curStepIndex, setCurStepIndex] = useState(0);
-  const [isContinueButtonDisabled, setIsContinueButtonDisabled] = useState(
-    false
-  );
+interface Props {
+  description: string;
+  state: State;
+}
 
-  const setCurStepIndexCallback = useCallback((step: number) => {
-    // TODO: code added for temporary purposes, until the "Thank you for your donation" is implemented
-    setCurStepIndex(Math.min(Math.max(0, step), STEPS.length - 1));
-  }, []);
+const DonationPageFormBody: React.FC<Props> = ({
+  description,
+  state: { curStepIndex, isContinueButtonDisabled, contactStep, amountStep }
+}) => {
+  const {
+    container,
+    contentContainer,
+    buttonContainer,
+    textContainer
+  } = useStyles();
+  const dispatch = useContext(DonationPageStateDispatch);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      setCurStepIndexCallback(curStepIndex + 1);
+      // TODO: code added for temporary purposes, until the "Thank you for your donation" is implemented
+      curStepIndex < STEPS.length - 1 && dispatch && dispatch(incrementStep());
     },
-    [curStepIndex, setCurStepIndexCallback]
+    [dispatch, curStepIndex]
   );
 
-  const handleContinueButtonDisabling = useCallback((disabled: boolean) => {
-    // I am not that familiar with HTML's form validation API, so instead disable the button to handle custom logic:
-    setIsContinueButtonDisabled(disabled);
-  }, []);
+  const step = STEPS[curStepIndex];
+  const componentJSX = useMemo(() => {
+    let Component;
+    switch (step.title) {
+      case "Donation Amount":
+        Component = step.component;
+        return <Component {...amountStep} />;
 
-  const Component = useMemo(() => STEPS[curStepIndex].component, [
-    curStepIndex
-  ]);
+      case "Contact":
+        Component = step.component;
+        return <Component {...contactStep} />;
+
+      case "Payment":
+        return null;
+
+      default: {
+        const _exhaustiveCheck: never = step;
+        return _exhaustiveCheck;
+      }
+    }
+  }, [step, contactStep, amountStep]);
 
   return (
     <form className={container} onSubmit={handleSubmit}>
-      <Typography className={text}>
-        Mother Theresa once said, &quot;The needs are great, and none of us,
-        including me, ever do great things. But we can all do small things, with
-        great love, and together we can do something wonderful.&quot;
-      </Typography>
+      <div className={textContainer}>
+        <Typography>{description}</Typography>
+      </div>
       <DonationPageFormNavigation
         curStepIndex={curStepIndex}
         stepTitles={STEPS.map(_ => _.title)}
-        setStepIndex={setCurStepIndexCallback}
       />
-      <div className={contentContainer}>
-        {Component && (
-          <Component
-            setIsContinueButtonDisabled={handleContinueButtonDisabling}
-          />
-        )}
-      </div>
+      <div className={contentContainer}>{componentJSX}</div>
       <div className={buttonContainer}>
         <ButtonWithNonprofitColor
           disabled={isContinueButtonDisabled}
