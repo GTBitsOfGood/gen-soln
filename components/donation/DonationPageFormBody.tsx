@@ -14,6 +14,7 @@ import {
   State,
   incrementStep
 } from "./reducer";
+import AdminLoginLink from "components/AdminLoginLink";
 
 const white = "white";
 const useStyles = makeStyles({
@@ -126,6 +127,7 @@ const DonationPageFormBody: React.FC<Props> = ({
         >
           Continue
         </ButtonWithNonprofitColor>
+        <AdminLoginLink />
       </div>
     </form>
   );
