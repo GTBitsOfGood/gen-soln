@@ -21,7 +21,7 @@ const nonprofits: Nonprofit[] = [
     id: "46546",
     donationFormHeadline: "You Can Make a Difference",
     donationFormParagraph:
-      "Each day, thousands of people – people just like you – provide compassionate care to those in need. Our network of generous donors, volunteers and employees share a mission of preventing and relieving suffering, here at home and around the world. We roll up our sleeves and donate time, money and blood. We learn or teach life-saving skills so our communities can be better prepared when the need arises. We do this every day because the Red Cross is needed - every day.",
+      "Each day, thousands of people – people just like you – provide compassionate care to those in need. Our network of generous donors, volunteers and employees share a mission of preventing and relieving suffering, here at home and around the world. We do this every day because the Red Cross is needed - every day.",
     colors: {
       primary: "#cccccc",
       secondary: "#e11b22"

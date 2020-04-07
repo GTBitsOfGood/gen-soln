@@ -13,12 +13,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "strict": true,
-    "baseUrl": "./",
-    "paths": {
-      "components/*": ["components/*"],
-      "utils/*": ["utils/*"],
-      "server/*": ["server/*"]
-    }
+    "baseUrl": "./"
   },
   "exclude": ["node_modules"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
