@@ -23,7 +23,8 @@ const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined) =>
       background: {
         default: "#F5F5F7"
       },
-      nonprofitColors: nonprofit?.colors
+      nonprofitPrimary: nonprofit?.primaryColor,
+      nonprofitSecondary: nonprofit?.secondaryColor
     },
     props: {
       MuiTextField: {
@@ -39,7 +40,8 @@ const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined) =>
         }
       }
     },
-    nonprofitImages: nonprofit?.images,
+    nonprofitBackgroundImage: nonprofit?.background,
+    nonprofitLogoImage: nonprofit?.logo,
     margins
   });
 
