@@ -27,7 +27,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       flexDirection: "column"
     },
     checkedRadioButton: {
-      color: palette.nonprofitColors.secondary
+      color: palette.nonprofitSecondary
     },
     width: {
       width: "33%"
@@ -53,7 +53,7 @@ const DonationPageFormAmountStep: React.FC<AmountStepProps> = ({
   ]);
 
   const isContinueButtonDisabled = useMemo(
-    () => hasSelectedOther && otherAmount <= 0,
+    () => hasSelectedOther && otherAmount < +MIN_OTHER_AMOUNT,
     [hasSelectedOther, otherAmount]
   );
 
@@ -64,7 +64,7 @@ const DonationPageFormAmountStep: React.FC<AmountStepProps> = ({
   const handleRadioAmountChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (dispatch) {
-        dispatch(setOtherAmount(0));
+        dispatch(setOtherAmount(+MIN_OTHER_AMOUNT));
         dispatch(setRadioButtonAmount(+event.target.value));
       }
     },
@@ -123,7 +123,7 @@ const DonationPageFormAmountStep: React.FC<AmountStepProps> = ({
         variant="filled"
         value={otherAmount}
         disabled={!hasSelectedOther}
-        placeholder={"0.00"}
+        placeholder={MIN_OTHER_AMOUNT}
         minimumValue={MIN_OTHER_AMOUNT}
         maximumValue={MAX_OTHER_AMOUNT}
         onChange={handleOtherAmountChange}

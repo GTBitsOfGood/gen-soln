@@ -9,12 +9,11 @@ import Link from "components/Link";
 const useStyles = makeStyles({
   container: {
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20
+    margin: "auto -4px"
   },
   text: {
-    marginRight: 6
+    marginLeft: 4,
+    marginRight: 4
   }
 });
 

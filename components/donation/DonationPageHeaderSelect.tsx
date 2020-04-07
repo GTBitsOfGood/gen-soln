@@ -38,7 +38,7 @@ const useStyles = makeStyles(({ palette, typography }: Theme) =>
       paddingLeft: 6
     },
     color: {
-      color: palette.nonprofitColors.secondary
+      color: palette.nonprofitSecondary
     }
   })
 );

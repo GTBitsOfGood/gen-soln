@@ -1,14 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { createNonprofit } from "server/actions/nonprofit";
-import { handleRequestsWithPayloadResponse } from "utils/util";
+import { handleRequestWithPayloadResponse } from "utils/util";
 
 // @route   POST api/createNonprofit
 // @desc    Creates an Organization
 // @access  Public
 export default async (req: NextApiRequest, res: NextApiResponse) =>
-  await handleRequestsWithPayloadResponse(req, res, createNonprofit, [
+  await handleRequestWithPayloadResponse(req, res, createNonprofit, [
     "name",
+    "headline",
     "about",
+    "background",
     "logo",
-    "colors"
+    "primaryColor",
+    "secondaryColor"
   ]);

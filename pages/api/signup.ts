@@ -3,16 +3,16 @@
 // claim to be an admin for some particular organization.
 import { NextApiRequest, NextApiResponse } from "next";
 import { signup } from "server/actions/admin";
-import { handleRequestsWithPayloadResponse } from "utils/util";
+import { handleRequestWithPayloadResponse } from "utils/util";
 
 // @route   POST api/signup
 // @desc    Requests Admin Creation
 // @access  Public
 export default async (req: NextApiRequest, res: NextApiResponse) =>
-  await handleRequestsWithPayloadResponse(req, res, signup, [
+  await handleRequestWithPayloadResponse(req, res, signup, [
     "firstName",
     "lastName",
     "email",
     "password",
-    "org"
+    "nonprofitId"
   ]);
