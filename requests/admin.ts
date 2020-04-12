@@ -9,3 +9,12 @@ export const login = async (email: string, password: string) =>
     },
     body: JSON.stringify({ email, password })
   });
+
+export const checkToken = async (token: any) =>
+  fetchRequestWithPayloadResponse(urls.apis.checkToken, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ token })
+  });

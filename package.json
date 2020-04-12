@@ -18,10 +18,12 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "isomorphic-unfetch": "^3.0.0",
+    "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.1",
     "nanoid": "^3.0.2",
     "next": "^9.3.2",
+    "next-cookies": "^2.0.3",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },

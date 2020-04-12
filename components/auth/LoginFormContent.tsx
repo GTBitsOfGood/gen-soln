@@ -4,6 +4,7 @@ import { login } from "requests/admin";
 import { useRouter } from "next/router";
 import errors from "utils/errors";
 import urls from "config";
+// import cookie from "js-cookie";
 
 import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 import AuthPageForm from "./AuthPageForm";
@@ -39,7 +40,8 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const onPressCTA = useCallback(
     async (stopLoading: () => void) => {
       try {
-        await login(email, password);
+        const token = await login(email, password);
+        // cookie.set("token", token);
         // Currently, it takes a long time to navigate and load the index page, so don't stop loading:
         router.push(urls.pages.index);
       } catch (err) {
