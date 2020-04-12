@@ -57,7 +57,6 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
 
   const onClickForgotPassword = useCallback(() => {
     navigateToContent("forgotPassword");
-    // TODO: Code for forgot password
   }, [navigateToContent]);
 
   return (

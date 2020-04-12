@@ -1,43 +1,50 @@
 import React from "react";
 import { NextPage, GetStaticProps, GetStaticPaths } from "next";
 
-import { nonprofitsURLMap } from "utils/DummyData";
 import { Dropdown } from "utils/types";
 import { pathWithDonate } from "utils/util";
+
+import {
+  getNonprofitIds,
+  getNonprofitNames,
+  getNonprofitById
+} from "server/actions/nonprofit";
 
 import DonationPage from "components/donation/DonationPage";
 
 const NonprofitDonationPage: NextPage<React.ComponentProps<
   typeof DonationPage
->> = props => {
-  // TODO: Pass this nonprofit object to DonationPage
-  return <DonationPage {...props} />;
-};
+>> = props => <DonationPage {...props} />;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // TODO: Get list of non-profit URLs we support from the back-end; for now, use DummyData.
-  // Keep in mind, "You should not fetch an API route from getStaticProps — instead, you can write the server-side code directly in getStaticProps."
-  const paths: string[] = [];
+  const ids = await getNonprofitIds();
 
-  nonprofitsURLMap.forEach((_, key) => {
-    paths.push(pathWithDonate(key));
-  });
-
-  return { paths, fallback: false };
+  return { paths: ids.map(id => pathWithDonate(id)), fallback: false };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  // TODO: Get all information about non-profit with URL = params.id, also get the list of all non-profit names and URLs; for now, use DummyData.
-  // Again, write server-side code directly, don't make a request to our API.
-  const items: Dropdown[] = [];
-  nonprofitsURLMap.forEach(({ name }, key) => {
-    items.push({ text: name, value: key });
-  });
-
   const id = params?.id as string;
 
+  /* For now, getNonprofitById excludes Nonprofit's donation field. If you were fetching it, ensure
+   * that donation IDs are mapped to a string array so that the nonprofit object is JSON serializable. */
+  const [names, nonprofit] = await Promise.all([
+    getNonprofitNames(),
+    getNonprofitById(id)
+  ]);
+
+  const items = names.map(
+    ({ _id, name }): Dropdown => ({
+      value: _id,
+      text: name
+    })
+  );
+
   return {
-    props: { nonprofit: nonprofitsURLMap.get(id), items, selectedValue: id }
+    props: {
+      nonprofit,
+      items,
+      selectedValue: id
+    }
   };
 };
 

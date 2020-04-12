@@ -5,18 +5,18 @@ import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
 const white = "white";
-const useStyles = makeStyles(({ palette, nonprofitImages }: Theme) =>
+const useStyles = makeStyles(({ palette, nonprofitLogoImage }: Theme) =>
   createStyles({
     container: {
       display: "flex",
       alignItems: "center",
-      backgroundColor: palette.nonprofitColors.primary,
+      backgroundColor: palette.nonprofitPrimary,
       padding: "3vh"
     },
     logo: {
       borderWidth: 3,
       borderStyle: "solid",
-      content: nonprofitImages.logo,
+      content: nonprofitLogoImage,
       borderRadius: "50%",
       backgroundColor: white,
       height: 80,

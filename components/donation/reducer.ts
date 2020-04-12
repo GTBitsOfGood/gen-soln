@@ -15,6 +15,7 @@ export interface ContactStepProps {
 
 export type State = {
   curStepIndex: number;
+  maxCurStepIndex: number;
   isContinueButtonDisabled: boolean;
   contactStep: ContactStepProps;
   amountStep: AmountStepProps;
@@ -22,11 +23,12 @@ export type State = {
 
 export const AMOUNTS = [25, 50, 100, 250, 500];
 
-export const MIN_OTHER_AMOUNT = "0";
+export const MIN_OTHER_AMOUNT = "0.5";
 export const MAX_OTHER_AMOUNT = "2000";
 
 export const initialState: State = {
   curStepIndex: 0,
+  maxCurStepIndex: 0,
   isContinueButtonDisabled: false,
   contactStep: {
     firstName: "",
@@ -35,11 +37,15 @@ export const initialState: State = {
   },
   amountStep: {
     radioButtonAmount: AMOUNTS[0],
-    otherAmount: 0
+    otherAmount: +MIN_OTHER_AMOUNT
   }
 };
 
 const name = "donationPageSlice";
+
+const setMaxCurStepIndex = (state: State) => {
+  state.maxCurStepIndex = Math.max(state.maxCurStepIndex, state.curStepIndex);
+};
 
 const { actions, reducer } = createSlice({
   name,
@@ -48,9 +54,11 @@ const { actions, reducer } = createSlice({
     resetState: () => initialState,
     incrementStep(state) {
       state.curStepIndex++;
+      setMaxCurStepIndex(state);
     },
     setStep(state, { payload }: PayloadAction<number>) {
       state.curStepIndex = payload;
+      setMaxCurStepIndex(state);
     },
     setIsContinueButtonDisabled(state, { payload }: PayloadAction<boolean>) {
       state.isContinueButtonDisabled = payload;

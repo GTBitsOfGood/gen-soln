@@ -29,8 +29,11 @@ const useStyles = makeStyles({
     flex: 3
   },
   buttonContainer: {
-    textAlign: "center",
-    flex: 0.75
+    display: "flex",
+    flex: 0.75,
+    flexDirection: "column",
+    alignItems: "center",
+    minHeight: 72
   },
   textContainer: {
     flex: 1.5
@@ -69,7 +72,13 @@ interface Props {
 
 const DonationPageFormBody: React.FC<Props> = ({
   description,
-  state: { curStepIndex, isContinueButtonDisabled, contactStep, amountStep }
+  state: {
+    curStepIndex,
+    maxCurStepIndex,
+    isContinueButtonDisabled,
+    contactStep,
+    amountStep
+  }
 }) => {
   const {
     container,
@@ -117,6 +126,7 @@ const DonationPageFormBody: React.FC<Props> = ({
       </div>
       <DonationPageFormNavigation
         curStepIndex={curStepIndex}
+        maxCurStepIndex={maxCurStepIndex}
         stepTitles={STEPS.map(_ => _.title)}
       />
       <div className={contentContainer}>{componentJSX}</div>

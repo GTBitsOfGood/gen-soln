@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
 
 const adminSchema = new Schema({
   firstName: {
@@ -20,11 +19,11 @@ const adminSchema = new Schema({
     type: String,
     required: true
   },
-  org: {
-    type: ObjectId,
+  nonprofitId: {
+    type: String,
     ref: "Nonprofit",
     required: true
   }
 });
 
-module.exports = mongoose.models.Admin || mongoose.model("Admin", adminSchema);
+module.exports = mongoose.models?.Admin || mongoose.model("Admin", adminSchema);

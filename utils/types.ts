@@ -6,20 +6,17 @@ import { ThemeOptions, Theme } from "@material-ui/core/styles/createMuiTheme";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
-// TODO: Possibly keep in sync with the backend schema
+// Keep in sync with the backend schema
 export interface Nonprofit {
+  _id: string;
   name: string;
-  id: string;
-  donationFormHeadline: string;
-  donationFormParagraph: string;
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  images: {
-    logo: string; // URL of logo image (currently stored in public/), eventually fetch from S3
-    background: string; // URL of logo image (currently stored in public/), eventually fetch from S3
-  };
+  headline: string;
+  about: string;
+  background: string;
+  logo: string;
+  primaryColor: string;
+  secondaryColor: string;
+  // TODO: consider adding the donations field?
 }
 
 export interface Dropdown {
@@ -32,24 +29,38 @@ export interface DropdownProps {
   selectedValue: Dropdown["value"];
 }
 
+export interface APISuccessResponse<T> {
+  success: true;
+  payload: T;
+}
+
+export interface APIFailureResponse {
+  success: false;
+  message: string;
+}
+
 declare module "@material-ui/core/styles/createPalette" {
   interface Palette {
-    nonprofitColors: Nonprofit["colors"];
+    nonprofitPrimary: Nonprofit["primaryColor"];
+    nonprofitSecondary: Nonprofit["secondaryColor"];
   }
 
   interface PaletteOptions {
-    nonprofitColors?: Nonprofit["colors"];
+    nonprofitPrimary?: Nonprofit["primaryColor"];
+    nonprofitSecondary?: Nonprofit["secondaryColor"];
   }
 }
 
 declare module "@material-ui/core/styles/createMuiTheme" {
   interface Theme {
     margins: Record<Spacing, string>;
-    nonprofitImages: Nonprofit["images"];
+    nonprofitBackgroundImage: Nonprofit["background"];
+    nonprofitLogoImage: Nonprofit["logo"];
   }
 
   interface ThemeOptions {
     margins: Record<Spacing, string>;
-    nonprofitImages?: Nonprofit["images"];
+    nonprofitBackgroundImage?: Nonprofit["background"];
+    nonprofitLogoImage?: Nonprofit["logo"];
   }
 }

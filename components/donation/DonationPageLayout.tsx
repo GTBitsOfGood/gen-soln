@@ -7,7 +7,7 @@ import DonationPageHeader from "./DonationPageHeader";
 import FullPageLayout from "components/FullPageLayout";
 import { DropdownProps } from "utils/types";
 
-const useStyles = makeStyles(({ margins, nonprofitImages }: Theme) =>
+const useStyles = makeStyles(({ margins, nonprofitBackgroundImage }: Theme) =>
   createStyles({
     container: {
       flexDirection: "column"
@@ -15,7 +15,7 @@ const useStyles = makeStyles(({ margins, nonprofitImages }: Theme) =>
     content: {
       flex: 1,
       display: "flex",
-      backgroundImage: nonprofitImages.background,
+      backgroundImage: nonprofitBackgroundImage,
       backgroundSize: "cover",
       backgroundRepeat: "repeat-y",
       backgroundPosition: "center",

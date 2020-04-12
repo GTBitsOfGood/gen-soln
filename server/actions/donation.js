@@ -3,10 +3,15 @@ import Donation from "server/models/donation";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 
-export async function createDonation({ firstName, lastName, amount, org }) {
+export async function createDonation({
+  firstName,
+  lastName,
+  amount,
+  nonprofitId
+}) {
   await Mongo();
 
-  const nonprofit = await Nonprofit.findOne({ name: org });
+  const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
 
   if (!nonprofit) {
     throw new Error(errors.donation.INVALID_ORG);
@@ -16,7 +21,7 @@ export async function createDonation({ firstName, lastName, amount, org }) {
     firstName,
     lastName,
     amount,
-    org: nonprofit._id
+    nonprofitId
   });
 
   nonprofit.donations.push(donation);

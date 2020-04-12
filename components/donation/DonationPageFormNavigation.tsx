@@ -31,23 +31,18 @@ const useStyles = makeStyles({
 
 interface Props {
   curStepIndex: number;
+  maxCurStepIndex: number;
   stepTitles: string[];
 }
 
 const DonationPageFormNavigation: React.FC<Props> = ({
   curStepIndex,
+  maxCurStepIndex,
   stepTitles
 }) => {
   const { container, icon, positiveMargin } = useStyles();
   const arr: React.ReactNode[] = [];
   const dispatch = useContext(DonationPageStateDispatch);
-
-  /* TODO: We want a way to navigate back to previous steps, hence the onClick prop is used here.
-   * However, we can't let the user arbitrarily navigate to a future step without ensuring that the
-   * previous steps are completed, hence the use of disabled={index > curStepIndex}. We should discuss
-   * with designers if this is the intended behavior, or/and if there are better ways to deal with this. */
-  /* Another quirky side-effect of this in the UI: the completed steps have 'secondary' color, current step
-   * has 'inherit' color but future, disabled steps are grayed out. */
 
   stepTitles.forEach((title, index) => {
     arr.push(
@@ -58,7 +53,7 @@ const DonationPageFormNavigation: React.FC<Props> = ({
         onClick={() => {
           dispatch && dispatch(setStep(index));
         }}
-        disabled={index > curStepIndex}
+        disabled={index > maxCurStepIndex}
       >
         {title}
       </ButtonWithLowercaseText>,

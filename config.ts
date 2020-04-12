@@ -12,6 +12,7 @@ export default {
     checkToken: "/api/checkToken",
     createDonation: "/api/createDonation",
     createNonprofit: "/api/createNonprofit",
-    getNonprofitNames: "/api/getNonprofitNames"
+    // Remove this endpoint when we no longer need to redirect from index.ts
+    getDefaultNonprofitId: "/api/getDefaultNonprofitId"
   }
 };

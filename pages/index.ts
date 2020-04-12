@@ -1,12 +1,14 @@
 import { NextPage } from "next";
 import Router from "next/router";
-import { DEFAULT_NON_PROFIT_URL } from "utils/DummyData";
 import { pathWithDonate } from "utils/util";
+
+import { getDefaultNonprofitId } from "server/actions/nonprofit";
+
+import { getDefaultNonprofitIdRequest } from "requests/nonprofit";
 
 const IndexPage: NextPage = () => {
   /* TODO: For now, we don't show anything and redirect users to a default non-profit's donation page.
-   * Modify this behavior when the actual IndexPage UI gets built. Don't use DEFAULT_NON_PROFIT_URL for other
-   * purposes for now. */
+   * Modify this behavior when the actual IndexPage UI gets built. */
   return null;
 };
 
@@ -15,11 +17,14 @@ const IndexPage: NextPage = () => {
  * getInitialProps with getServerSideProps; while that will get rid of the above error, the redirection behavior
  * may fail on certain browsers like Safari. */
 IndexPage.getInitialProps = async ({ res }) => {
-  const url = pathWithDonate(DEFAULT_NON_PROFIT_URL);
   if (res) {
-    res.writeHead(302, { Location: url }).end();
+    // server-side code:
+    const id = await getDefaultNonprofitId();
+    res.writeHead(302, { Location: pathWithDonate(id) }).end();
   } else {
-    Router.push(url);
+    // client-side code:
+    const id = await getDefaultNonprofitIdRequest();
+    Router.push(pathWithDonate(id));
   }
 
   // Literally return any object instead of an empty one to allow Next.js optimization
