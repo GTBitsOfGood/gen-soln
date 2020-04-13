@@ -1,12 +1,8 @@
 import React from "react";
-import urls from "config";
-import nextCookie from "next-cookies";
-import Router from "next/router";
 import { NextPage, GetStaticProps, GetStaticPaths } from "next";
 
 import { Dropdown } from "utils/types";
 import { pathWithDonate } from "utils/util";
-import { checkToken } from "requests/admin";
 
 import {
   getNonprofitIds,
@@ -19,22 +15,6 @@ import DonationPage from "components/donation/DonationPage";
 const NonprofitDonationPage: NextPage<React.ComponentProps<
   typeof DonationPage
 >> = props => <DonationPage {...props} />;
-
-// NonprofitDonationPage.getInitialProps = async (ctx) => {
-//     const { token } = nextCookie(ctx);
-
-//     try {
-//       const admin = await checkToken(token);
-//       return admin;
-//     } catch (error) {
-//       if (ctx.res) {
-//         ctx.res.writeHead(302, { Location: urls.pages.login });
-//         ctx.res.end();
-//       } else {
-//         Router.push(urls.pages.login);
-//       }
-//     }
-// }
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const ids = await getNonprofitIds();

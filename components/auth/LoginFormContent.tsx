@@ -40,8 +40,9 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const onPressCTA = useCallback(
     async (stopLoading: () => void) => {
       try {
-        const token = await login(email, password);
-        // cookie.set("token", token);
+        await login(email, password);
+        // const  { token } = await login(email, password);
+        // cookie.set("token", token, { expires: 1 });
         // Currently, it takes a long time to navigate and load the index page, so don't stop loading:
         router.push(urls.pages.index);
       } catch (err) {

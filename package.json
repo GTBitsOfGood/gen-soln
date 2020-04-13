@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/js-cookie": "^2.2.6",
     "@types/jsonwebtoken": "^8.3.8",
     "@types/material-ui": "^0.21.7",
     "@types/node": "^13.7.0",
