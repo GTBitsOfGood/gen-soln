@@ -31,7 +31,7 @@ const useStyles = makeStyles(({ palette, typography }: Theme) =>
       minWidth: 180
     },
     selectMargin: {
-      marginLeft: 16
+      marginLeft: 5
     },
     input: {
       ...typography.h6,
