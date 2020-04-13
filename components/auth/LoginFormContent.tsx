@@ -46,8 +46,8 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
         setError(
           err.message === errors.admin.INVALID_EMAIL ||
             err.message === errors.admin.INVALID_PASSWORD
-            ? "Invalid email or password. Please try again."
-            : "An unexpected error occurred. Please try again."
+            ? "Incorrect email or password."
+            : "An unexpected error occurred."
         );
         stopLoading();
       }
@@ -61,7 +61,7 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
 
   return (
     <AuthPageForm
-      title="Sign in"
+      title="Sign In"
       ctaText="SIGN IN"
       onPressCTA={onPressCTA}
       footer={
