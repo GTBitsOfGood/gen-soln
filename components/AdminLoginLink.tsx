@@ -13,7 +13,8 @@ const useStyles = makeStyles({
   },
   text: {
     marginLeft: 4,
-    marginRight: 4
+    marginRight: 4,
+    marginTop: 15
   }
 });
 

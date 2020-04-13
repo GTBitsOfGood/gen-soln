@@ -57,7 +57,7 @@ const DonationPageFormHeader: React.FC<Props> = ({ headline }) => {
     <div className={clsx(container, horizontalNegativeMargin)}>
       <img
         className={clsx(logo, horizontalPositiveMargin)}
-        alt="Nonprofit logo"
+        alt="Nonprofit Logo"
       />
       <Typography variant="h5" className={clsx(text, horizontalPositiveMargin)}>
         {headline}
