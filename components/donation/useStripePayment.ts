@@ -3,6 +3,8 @@ import { useCallback, useMemo } from "react";
 import { useElements, useStripe } from "@stripe/react-stripe-js";
 import * as stripeJs from "@stripe/stripe-js";
 
+import { createPaymentIntent } from "requests/donation";
+
 const CENTS_IN_DOLLAR = 100;
 
 const useStripePayment = () => {
@@ -16,48 +18,48 @@ const useStripePayment = () => {
       if (!elements || !stripe) {
         throw new Error("Not ready to process payments just yet!");
       }
-      // TODO: Finalize the below code:
 
-      // const card = elements.getElement("cardNumber");
-      // if (!card) {
-      //   throw new Error("Couldn't get cardNumber Stripe element!");
-      // }
+      const card = elements.getElement("cardNumber");
+      if (!card) {
+        throw new Error("Couldn't get cardNumber Stripe element!");
+      }
 
-      // const billingDetails: stripeJs.PaymentMethodCreateParams.BillingDetails = {
-      //   name,
-      //   email,
-      //   address: {
-      //     postal_code: zipcode
-      //   }
-      // };
+      const billingDetails: stripeJs.PaymentMethodCreateParams.BillingDetails = {
+        name,
+        email,
+        address: {
+          postal_code: zipcode
+        }
+      };
 
-      // // NOTE: amount needs to be converted to cents via CENTS_IN_DOLLAR
-      // const [paymentMethodReq, paymentIntentReq] = await Promise.all([
-      //   stripe.createPaymentMethod({
-      //     type: "card",
-      //     card,
-      //     billing_details: billingDetails
-      //   }),
-      //   fetch("TODO")
-      // ]);
+      // NOTE: amount needs to be converted to cents via CENTS_IN_DOLLAR
+      const [paymentMethodReq, clientSecret] = await Promise.all([
+        stripe.createPaymentMethod({
+          type: "card",
+          card,
+          billing_details: billingDetails
+        }),
+        createPaymentIntent(amount * CENTS_IN_DOLLAR)
+      ]);
 
-      // if (paymentMethodReq.error) {
-      //   throw new Error(paymentMethodReq.error.message);
-      // }
+      if (paymentMethodReq.error) {
+        throw new Error(paymentMethodReq.error.message);
+      }
 
-      // if (!paymentMethodReq.paymentMethod) {
-      //   throw new Error(
-      //     "createPaymentMethod returned an invalid payment method!"
-      //   );
-      // }
+      if (!paymentMethodReq.paymentMethod) {
+        throw new Error(
+          "createPaymentMethod returned an invalid payment method!"
+        );
+      }
 
-      // const { error } = await stripe.confirmCardPayment(paymentIntentReq.data, {
-      //   payment_method: paymentMethodReq.paymentMethod.id
-      // });
+      const { error } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: paymentMethodReq.paymentMethod.id,
+        receipt_email: email
+      });
 
-      // if (error) {
-      //   throw error;
-      // }
+      if (error) {
+        throw error;
+      }
     },
     [elements, stripe]
   );

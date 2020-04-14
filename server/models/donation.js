@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// Keep in sync with utils/types Donation
 const donationSchema = new Schema({
-  firstName: {
+  name: {
     type: String,
     required: true
   },
-  lastName: {
+  email: {
     type: String,
     required: true
   },

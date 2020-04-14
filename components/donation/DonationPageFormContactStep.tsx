@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useEffect } from "react";
 import clsx from "clsx";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
@@ -7,7 +7,8 @@ import TextField from "@material-ui/core/TextField";
 import {
   ContactStepProps,
   DonationPageStateDispatch,
-  setContactStepField
+  setContactStepField,
+  setIsContinueButtonDisabled
 } from "./reducer";
 
 const useStyles = makeStyles({
@@ -45,6 +46,10 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
     verticalPositiveMargin
   } = useStyles();
   const dispatch = useContext(DonationPageStateDispatch);
+
+  useEffect(() => {
+    dispatch && dispatch(setIsContinueButtonDisabled(false));
+  }, [dispatch]);
 
   const onChange = useCallback(
     (
