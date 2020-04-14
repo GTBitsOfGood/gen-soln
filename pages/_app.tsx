@@ -8,7 +8,9 @@ import { Nonprofit } from "utils/types";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe("pk_test_gM41BNgzCQfEG0G5CgPsPx7v00345tjQxr");
+// Accessing env variables on client side is a bit weird. See next.config.js
+/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE!);
 
 export default class MyApp extends App {
   componentDidMount() {
