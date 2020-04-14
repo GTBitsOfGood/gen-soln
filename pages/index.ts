@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import Router from "next/router";
-import { pathWithDonate } from "utils/util";
+import urls from "config";
 
 import { getDefaultNonprofitId } from "server/actions/nonprofit";
 
@@ -20,11 +20,11 @@ IndexPage.getInitialProps = async ({ res }) => {
   if (res) {
     // server-side code:
     const id = await getDefaultNonprofitId();
-    res.writeHead(302, { Location: pathWithDonate(id) }).end();
+    res.writeHead(302, { Location: urls.pages.donate(id) }).end();
   } else {
     // client-side code:
     const id = await getDefaultNonprofitIdRequest();
-    Router.push(pathWithDonate(id));
+    Router.push(urls.pages.donate(id));
   }
 
   // Literally return any object instead of an empty one to allow Next.js optimization

@@ -5,6 +5,12 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import createNonprofitMuiTheme from "utils/theme";
 import { Nonprofit } from "utils/types";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+// Accessing env variables on client side in Next.js is a bit weird. See next.config.js
+/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE!);
 
 export default class MyApp extends App {
   componentDidMount() {
@@ -17,7 +23,7 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
 
     return (
-      <>
+      <Elements stripe={stripePromise}>
         <Head>
           <title>Donation Marketplace Solution</title>
           <meta
@@ -34,7 +40,7 @@ export default class MyApp extends App {
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
-      </>
+      </Elements>
     );
   }
 }

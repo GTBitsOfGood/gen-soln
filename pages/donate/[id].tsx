@@ -2,7 +2,6 @@ import React from "react";
 import { NextPage, GetStaticProps, GetStaticPaths } from "next";
 
 import { Dropdown } from "utils/types";
-import { pathWithDonate } from "utils/util";
 
 import {
   getNonprofitIds,
@@ -12,6 +11,8 @@ import {
 
 import DonationPage from "components/donation/DonationPage";
 
+import urls from "config";
+
 const NonprofitDonationPage: NextPage<React.ComponentProps<
   typeof DonationPage
 >> = props => <DonationPage {...props} />;
@@ -19,7 +20,7 @@ const NonprofitDonationPage: NextPage<React.ComponentProps<
 export const getStaticPaths: GetStaticPaths = async () => {
   const ids = await getNonprofitIds();
 
-  return { paths: ids.map(id => pathWithDonate(id)), fallback: false };
+  return { paths: ids.map(urls.pages.donate), fallback: false };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {

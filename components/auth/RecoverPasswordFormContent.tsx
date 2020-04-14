@@ -9,12 +9,11 @@ import { ContentComponentProps } from "./types";
 
 const states = {
   INITIAL: {
-    caption:
-      "Enter the email address associated with your Donation Marketplace Solution account.",
+    caption: "Enter the email address associated with your account.",
     ctaText: "Get Password"
   },
   FINAL: {
-    caption: "We have sent a new password to this email.",
+    caption: "A new password has been sent to this email.",
     ctaText: "Back to Sign In"
   }
 };

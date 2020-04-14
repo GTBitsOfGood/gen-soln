@@ -33,9 +33,8 @@ const useStyles = makeStyles({
   }
 });
 
-// TODO: Need to update this
 const TOOLTIP_TEXT =
-  "What is bits of good? Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. What we do balabala";
+  "Bits of Good is a student-run organization in which talented software developers are given the opportunity to build online tools for local nonprofits.";
 
 const DonationPageHeaderBranding: React.FC = () => {
   const { container, text, buttonContainer, buttonRoot, icon } = useStyles();

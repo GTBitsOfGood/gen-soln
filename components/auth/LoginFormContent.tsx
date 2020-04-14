@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 
 import { login } from "requests/admin";
 import { useRouter } from "next/router";
@@ -20,8 +20,6 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const hasError = useMemo(() => error !== "", [error]);
 
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,8 +49,8 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
         setError(
           err.message === errors.admin.INVALID_EMAIL ||
             err.message === errors.admin.INVALID_PASSWORD
-            ? "Invalid email or password. Please try again."
-            : "An unexpected error occurred. Please try again."
+            ? "Incorrect email or password."
+            : "An unexpected error occurred."
         );
         stopLoading();
       }
@@ -66,7 +64,7 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
 
   return (
     <AuthPageForm
-      title="Sign in"
+      title="Sign In"
       ctaText="SIGN IN"
       onPressCTA={onPressCTA}
       footer={
@@ -82,12 +80,12 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
       <LoginFormEmailField
         email={email}
         onChangeEmail={onChangeEmail}
-        hasError={hasError}
+        hasError={Boolean(error)}
       />
       <LoginFormPasswordField
         password={password}
         onChangePassword={onChangePassword}
-        hasError={hasError}
+        hasError={Boolean(error)}
         hasErrorHelperText={error}
       />
     </AuthPageForm>

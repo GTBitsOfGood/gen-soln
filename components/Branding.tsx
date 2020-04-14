@@ -17,7 +17,7 @@ const Branding: React.FC = () => {
 
   return (
     <a className={imglink} href="https://www.bitsofgood.org/">
-      <img className={logo} alt="Bits of Good Logo" src="/bog-logo.svg" />
+      <img className={logo} alt="Bits of Good Logo" src="/site/bog-logo.svg" />
     </a>
   );
 };

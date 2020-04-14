@@ -12,8 +12,9 @@ import Select from "@material-ui/core/Select";
 
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { pathWithDonate } from "utils/util";
 import { DropdownProps } from "utils/types";
+
+import urls from "config";
 
 import {
   DonationPageStateDispatch,
@@ -31,7 +32,7 @@ const useStyles = makeStyles(({ palette, typography }: Theme) =>
       minWidth: 180
     },
     selectMargin: {
-      marginLeft: 16
+      marginLeft: 5
     },
     input: {
       ...typography.h6,
@@ -76,8 +77,8 @@ const DonationPageHeaderSelect: React.FC<DropdownProps> = ({
       Router.events.on("routeChangeComplete", routeChangeComplete);
 
       router.push(
-        pathWithDonate(),
-        pathWithDonate(event.target.value as string)
+        urls.pages.donate(),
+        urls.pages.donate(event.target.value as string)
       );
     },
     [router, selectedValue, routeChangeStart, routeChangeComplete]
