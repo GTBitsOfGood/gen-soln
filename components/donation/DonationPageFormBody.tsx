@@ -16,8 +16,7 @@ import {
   PaymentStepProps,
   DonationPageStateDispatch,
   State,
-  incrementStep,
-  setIsContinueButtonDisabled
+  incrementStep
 } from "./reducer";
 import AdminLoginLink from "components/AdminLoginLink";
 
@@ -141,14 +140,14 @@ const DonationPageFormBody: React.FC<Props> = ({
     },
     [
       dispatch,
-      curStepIndex,
       amountStep.otherAmount,
       amountStep.radioButtonAmount,
       contactStep.email,
       contactStep.firstName,
       contactStep.lastName,
       paymentStep.zipcode,
-      processPayment
+      processPayment,
+      isLastStep
     ]
   );
 
