@@ -7,8 +7,8 @@ import { handleRequestWithPayloadResponse } from "utils/util";
 // @access  Public
 export default async (req: NextApiRequest, res: NextApiResponse) =>
   await handleRequestWithPayloadResponse(req, res, createDonation, [
-    "firstName",
-    "lastName",
+    "name",
+    "email",
     "amount",
     "nonprofitId"
   ]);

@@ -2,8 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import fetch from "isomorphic-unfetch";
 import { APISuccessResponse, APIFailureResponse } from "./types";
 
-export const pathWithDonate = (path = "[id]") => `/donate/${path}`;
-
 // Use this function on server side to handle incoming API requests:
 export const handleRequestWithPayloadResponse = async <T>(
   req: NextApiRequest,

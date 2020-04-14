@@ -19,6 +19,15 @@ export interface Nonprofit {
   // TODO: consider adding the donations field?
 }
 
+// Keep in sync with the backend schema
+export interface Donation {
+  name: string;
+  email: string;
+  amount: number;
+  nonprofitId: string;
+  timestamp: Date;
+}
+
 export interface Dropdown {
   text: string;
   value: string;

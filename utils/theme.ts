@@ -38,6 +38,12 @@ const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined) =>
         root: {
           backgroundColor: "#F5F5F5"
         }
+      },
+      MuiFormHelperText: {
+        contained: {
+          marginLeft: 0,
+          marginRight: 0
+        }
       }
     },
     nonprofitBackgroundImage: nonprofit?.background,

@@ -34,7 +34,11 @@ const DonationPage: React.FC<Props & DropdownProps> = ({
       <DonationPageLayout {...dropdownProps}>
         <ContainerWithShadow className={container}>
           <DonationPageFormHeader headline={nonprofit.headline} />
-          <DonationPageFormBody state={state} description={nonprofit.about} />
+          <DonationPageFormBody
+            state={state}
+            description={nonprofit.about}
+            selectedNonprofitId={dropdownProps.selectedValue}
+          />
         </ContainerWithShadow>
       </DonationPageLayout>
     </DonationPageStateDispatch.Provider>
