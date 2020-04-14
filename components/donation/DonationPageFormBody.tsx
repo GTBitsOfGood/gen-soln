@@ -145,7 +145,7 @@ const DonationPageFormBody: React.FC<Props> = ({
             paymentStep.zipcode,
             amount
           );
-          // TODO: What should we do if Strip has processed the payment correctly, but our createDonation API call errored?
+          // TODO: What should we do if Stripe has processed the payment correctly, but our createDonation API call errored?
           await createDonation({
             name,
             email,

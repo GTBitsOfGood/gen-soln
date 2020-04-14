@@ -1,5 +1,5 @@
 export default {
-  // Use these env variables client side may not work
+  // These env variables client side may not work
   dbUrl: process.env.DB_URL,
   dbName: process.env.DB_NAME,
   jwtSecret: process.env.JWT_SECRET,

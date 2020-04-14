@@ -66,6 +66,7 @@ const { actions, reducer } = createSlice({
     resetState: () => initialState,
     incrementStep(state) {
       state.curStepIndex++;
+      // A safe assumption to make, may not always hold true. Also, maybe the form UI takes time to load, in that case it won't be prudent to enable the continue button:
       state.isContinueButtonDisabled = true;
       setMaxCurStepIndex(state);
     },
