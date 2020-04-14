@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useMemo,
-  useContext,
-  useEffect,
-  useState
-} from "react";
+import React, { useCallback, useMemo, useContext, useState } from "react";
 import dynamic from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -37,7 +31,7 @@ const useStyles = makeStyles({
     backgroundColor: white
   },
   contentContainer: {
-    flex: 5,
+    flex: 7,
     marginTop: 8,
     marginBottom: 8,
     minHeight: 260
@@ -114,12 +108,16 @@ const DonationPageFormBody: React.FC<Props> = ({
 
   const { isReady, processPayment } = useStripePayment();
 
+  const isLastStep = useMemo(() => curStepIndex === STEPS.length - 1, [
+    curStepIndex
+  ]);
+
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!e.currentTarget.reportValidity()) return;
 
-      if (curStepIndex === STEPS.length - 1) {
+      if (isLastStep) {
         try {
           setIsSubmitting(true);
           // TODO: Check if we should use paymentStep.name instead
@@ -132,7 +130,8 @@ const DonationPageFormBody: React.FC<Props> = ({
             amount
           );
         } catch (err) {
-          // setCheckoutError(err);
+          // TODO: Not sure how else to handle and display the error
+          alert(err);
         } finally {
           setIsSubmitting(false);
         }
@@ -152,10 +151,6 @@ const DonationPageFormBody: React.FC<Props> = ({
       processPayment
     ]
   );
-
-  useEffect(() => {
-    dispatch && dispatch(setIsContinueButtonDisabled(!isReady || isSubmitting));
-  }, [dispatch, isReady, isSubmitting]);
 
   const step = STEPS[curStepIndex];
   const componentJSX = useMemo(() => {
@@ -193,7 +188,7 @@ const DonationPageFormBody: React.FC<Props> = ({
       <div className={contentContainer}>{componentJSX}</div>
       <div className={buttonContainer}>
         <ButtonWithNonprofitColor
-          disabled={isContinueButtonDisabled}
+          disabled={isContinueButtonDisabled || !isReady || isSubmitting}
           type="submit"
         >
           {isSubmitting && (
@@ -203,7 +198,7 @@ const DonationPageFormBody: React.FC<Props> = ({
               size={16}
             />
           )}
-          Continue
+          {isLastStep ? "Submit" : "Continue"}
         </ButtonWithNonprofitColor>
         <AdminLoginLink />
       </div>

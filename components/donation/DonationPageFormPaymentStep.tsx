@@ -41,8 +41,8 @@ const useStyles = makeStyles({
     marginTop: -7,
     marginBottom: -7
   },
-  fullWidth: {
-    width: "100%"
+  width: {
+    width: "55%"
   }
 });
 
@@ -58,7 +58,7 @@ const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
     rightMargin,
     verticalNegativeMargin,
     verticalPositiveMargin,
-    fullWidth
+    width
   } = useStyles();
   const dispatch = useContext(DonationPageStateDispatch);
   const [hasCompletedCardNumber, setHasCompletedCardNumber] = useState(false);
@@ -97,8 +97,9 @@ const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
         }}
       />
       <StripeTextField
-        className={verticalPositiveMargin}
+        fullWidth
         label="Card Number"
+        className={verticalPositiveMargin}
         stripeElement={CardNumberElement}
         setHasCompleted={(val: boolean) => {
           setHasCompletedCardNumber(val);
@@ -106,8 +107,9 @@ const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
       />
       <div className={clsx(rowFlex, verticalPositiveMargin)}>
         <StripeTextField
-          className={rightMargin}
+          fullWidth
           label="Expiration Date"
+          className={rightMargin}
           stripeElement={CardExpiryElement}
           setHasCompleted={(val: boolean) => {
             setHasCompletedExpirationDate(val);
@@ -115,6 +117,7 @@ const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
         />
         <StripeTextField
           label="CVC"
+          className={width}
           stripeElement={CardCvcElement}
           setHasCompleted={(val: boolean) => {
             setHasCompletedCVC(val);
@@ -139,7 +142,7 @@ const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
           }}
           placeholder={"0".repeat(MAX_ZIP_CODE_LENGTH)}
         />
-        <div className={fullWidth} />
+        <div className={width} />
       </div>
     </div>
   );

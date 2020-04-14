@@ -28,7 +28,6 @@ const StripeTextField = ({
 
   return (
     <TextField
-      fullWidth
       InputLabelProps={{
         ...InputLabelProps,
         shrink: true

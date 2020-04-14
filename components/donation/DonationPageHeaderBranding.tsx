@@ -33,7 +33,6 @@ const useStyles = makeStyles({
   }
 });
 
-// TODO: Need to update this
 const TOOLTIP_TEXT =
   "Bits of Good is a student-run organization in which talented software developers are given the opportunity to build online tools for local nonprofits.";
 
