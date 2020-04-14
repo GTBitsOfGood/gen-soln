@@ -25,6 +25,7 @@ export type State = {
   contactStep: ContactStepProps;
   amountStep: AmountStepProps;
   paymentStep: PaymentStepProps;
+  donationCompleted: boolean;
 };
 
 export const AMOUNTS = [25, 50, 100, 250, 500];
@@ -48,7 +49,8 @@ export const initialState: State = {
   paymentStep: {
     nameOnCard: "",
     zipcode: ""
-  }
+  },
+  donationCompleted: false
 };
 
 const name = "donationPageSlice";
@@ -64,6 +66,7 @@ const { actions, reducer } = createSlice({
     resetState: () => initialState,
     incrementStep(state) {
       state.curStepIndex++;
+      state.isContinueButtonDisabled = true;
       setMaxCurStepIndex(state);
     },
     setStep(state, { payload }: PayloadAction<number>) {
@@ -94,6 +97,9 @@ const { actions, reducer } = createSlice({
     setZipcode({ paymentStep }, { payload }: PayloadAction<string>) {
       // From https://github.com/medipass/react-credit-card-input/blob/master/src/utils/formatter.js#L135
       paymentStep.zipcode = (payload.match(/\d+/g) || []).join("");
+    },
+    setDonationCompleted(state, { payload }: PayloadAction<boolean>) {
+      state.donationCompleted = payload;
     }
   }
 });
@@ -111,7 +117,8 @@ export const {
   setOtherAmount,
   setContactStepField,
   setNameOnCard,
-  setZipcode
+  setZipcode,
+  setDonationCompleted
 } = actions;
 
 export default reducer;

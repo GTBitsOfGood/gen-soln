@@ -31,6 +31,7 @@ const StripeInput = props => {
     [mountNode]
   );
 
+  // TODO: These styles don't seem to be doing anything?
   return (
     <Component
       onReady={setMountNode}
