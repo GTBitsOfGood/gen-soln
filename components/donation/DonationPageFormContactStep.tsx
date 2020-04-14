@@ -23,12 +23,12 @@ const useStyles = makeStyles({
     marginRight: 24
   },
   verticalPositiveMargin: {
-    marginTop: 14,
-    marginBottom: 14
+    marginTop: 7,
+    marginBottom: 7
   },
   verticalNegativeMargin: {
-    marginTop: -14,
-    marginBottom: -14
+    marginTop: -7,
+    marginBottom: -7
   }
 });
 
@@ -68,6 +68,7 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
           onChange={e => {
             onChange("firstName", e);
           }}
+          autoComplete="given-name"
         />
         <TextField
           fullWidth
@@ -77,6 +78,7 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
           onChange={e => {
             onChange("lastName", e);
           }}
+          autoComplete="family-name"
         />
       </div>
       <TextField
@@ -89,6 +91,7 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
         onChange={e => {
           onChange("email", e);
         }}
+        autoComplete="email"
       />
     </div>
   );

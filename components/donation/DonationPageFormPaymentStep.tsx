@@ -1,126 +1,145 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import clsx from "clsx";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import TextField from "@material-ui/core/TextField";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import NativeSelect from "@material-ui/core/NativeSelect";
 
-import { ContentComponentProps } from "components/auth/types";
+import {
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement
+} from "@stripe/react-stripe-js";
 
-const useStyles = makeStyles(({ palette }: Theme) =>
-  createStyles({
-    container: {
-      display: "flex",
-      flexDirection: "column"
-    },
-    name: {
-      display: "flex",
-      justifyContent: "space-between"
-    },
-    checkedRadioButton: {
-      color: "secondary"
-    },
-    width: {
-      width: "33%"
-    },
-    textField: {
-      paddingTop: 16
-    },
-    rightMargin: {
-      marginRight: 24
-    },
-    verticalPositiveMargin: {
-      marginTop: 14,
-      marginBottom: 14
-    },
-    verticalNegativeMargin: {
-      marginTop: -14,
-      marginBottom: -14
-    },
-    formControl: {
-      minWidth: 120
-    }
-  })
-);
+import StripeTextField from "./StripeTextField";
 
-const PAYMENTTYPES = ["Card", "Paypal"];
-const COUNTRIES = ["United States of America", "Canada"];
+import {
+  DonationPageStateDispatch,
+  PaymentStepProps,
+  setNameOnCard,
+  setZipcode,
+  setIsContinueButtonDisabled
+} from "./reducer";
 
-const DonationPageFormPaymentStep: React.FC<ContentComponentProps> = () => {
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1
+  },
+  rowFlex: {
+    display: "flex",
+    justifyContent: "space-between"
+  },
+  rightMargin: {
+    marginRight: 24
+  },
+  verticalPositiveMargin: {
+    marginTop: 7,
+    marginBottom: 7
+  },
+  verticalNegativeMargin: {
+    marginTop: -7,
+    marginBottom: -7
+  },
+  fullWidth: {
+    width: "100%"
+  }
+});
+
+const MAX_ZIP_CODE_LENGTH = 5;
+
+const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
+  nameOnCard,
+  zipcode
+}) => {
   const {
     container,
-    name,
+    rowFlex,
     rightMargin,
     verticalNegativeMargin,
     verticalPositiveMargin,
-    checkedRadioButton,
-    textField,
-    width
+    fullWidth
   } = useStyles();
-
-  const [selectedRadioButtonType, setSelectedRadioButtonType] = useState(
-    PAYMENTTYPES[0]
+  const dispatch = useContext(DonationPageStateDispatch);
+  const [hasCompletedCardNumber, setHasCompletedCardNumber] = useState(false);
+  const [hasCompletedExpirationDate, setHasCompletedExpirationDate] = useState(
+    false
   );
-  const [countryOrRegion, setCountryOrRegion] = useState(COUNTRIES[0]);
+  const [hasCompletedCVC, setHasCompletedCVC] = useState(false);
+
+  useEffect(() => {
+    dispatch &&
+      dispatch(
+        setIsContinueButtonDisabled(
+          !hasCompletedCardNumber ||
+            !hasCompletedExpirationDate ||
+            !hasCompletedCVC
+        )
+      );
+  }, [
+    dispatch,
+    hasCompletedCardNumber,
+    hasCompletedExpirationDate,
+    hasCompletedCVC
+  ]);
 
   return (
     <div className={clsx(container, verticalNegativeMargin)}>
       <TextField
         fullWidth
         required
+        autoComplete="cc-name"
         label="Name on Card"
         className={verticalPositiveMargin}
+        value={nameOnCard}
+        onChange={e => {
+          dispatch && dispatch(setNameOnCard(e.target.value));
+        }}
       />
-      <TextField
-        fullWidth
-        required
+      <StripeTextField
+        className={verticalPositiveMargin}
         label="Card Number"
-        className={verticalPositiveMargin}
+        stripeElement={CardNumberElement}
+        setHasCompleted={(val: boolean) => {
+          setHasCompletedCardNumber(val);
+        }}
       />
-      <TextField
-        required
-        fullWidth
-        type="email"
-        label="Email"
-        className={verticalPositiveMargin}
-      />
-      <div className={clsx(name, verticalPositiveMargin)}>
-        <TextField
+      <div className={clsx(rowFlex, verticalPositiveMargin)}>
+        <StripeTextField
           className={rightMargin}
-          fullWidth
-          required
           label="Expiration Date"
+          stripeElement={CardExpiryElement}
+          setHasCompleted={(val: boolean) => {
+            setHasCompletedExpirationDate(val);
+          }}
         />
-        <TextField fullWidth required label="CVC" />
+        <StripeTextField
+          label="CVC"
+          stripeElement={CardCvcElement}
+          setHasCompleted={(val: boolean) => {
+            setHasCompletedCVC(val);
+          }}
+        />
       </div>
-      <div className={clsx(name, verticalPositiveMargin)}>
+      <div className={clsx(rowFlex, verticalPositiveMargin)}>
         <TextField
-          className={rightMargin}
           fullWidth
           required
-          label="First Name"
+          type="tel"
+          label="Zipcode"
+          autoComplete="postal-code"
+          className={rightMargin}
+          inputProps={{
+            maxLength: MAX_ZIP_CODE_LENGTH,
+            pattern: `[0-9s]{${MAX_ZIP_CODE_LENGTH}}`
+          }}
+          value={zipcode}
+          onChange={e => {
+            dispatch && dispatch(setZipcode(e.target.value));
+          }}
+          placeholder={"0".repeat(MAX_ZIP_CODE_LENGTH)}
         />
-        <FormControl variant="outlined" className={"formControl"}>
-          <InputLabel htmlFor="outlined-country-native-simple">Age</InputLabel>
-          <Select
-            native
-            value={countryOrRegion}
-            inputProps={{
-              name: "Country or Region",
-              id: "outlined-country-native-simple"
-            }}
-          >
-            <option aria-label="None" value="" />
-            <option value={COUNTRIES[0]}>United States of America</option>
-            <option value={COUNTRIES[1]}>Canada</option>
-          </Select>
-        </FormControl>
+        <div className={fullWidth} />
       </div>
     </div>
   );

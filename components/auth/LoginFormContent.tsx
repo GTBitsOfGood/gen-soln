@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 
 import { login } from "requests/admin";
 import { useRouter } from "next/router";
@@ -19,8 +19,6 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const hasError = useMemo(() => error !== "", [error]);
 
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,12 +75,12 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
       <LoginFormEmailField
         email={email}
         onChangeEmail={onChangeEmail}
-        hasError={hasError}
+        hasError={Boolean(error)}
       />
       <LoginFormPasswordField
         password={password}
         onChangePassword={onChangePassword}
-        hasError={hasError}
+        hasError={Boolean(error)}
         hasErrorHelperText={error}
       />
     </AuthPageForm>

@@ -11,10 +11,12 @@ const white = "white";
 const useStyles = makeStyles({
   container: {
     display: "flex",
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: white,
-    margin: "10px -4px"
+    marginLeft: -4,
+    marginRight: -4
   },
   button: {
     width: "50%",

@@ -13,12 +13,18 @@ export interface ContactStepProps {
   email: string;
 }
 
+export interface PaymentStepProps {
+  nameOnCard: string;
+  zipcode: string;
+}
+
 export type State = {
   curStepIndex: number;
   maxCurStepIndex: number;
   isContinueButtonDisabled: boolean;
   contactStep: ContactStepProps;
   amountStep: AmountStepProps;
+  paymentStep: PaymentStepProps;
 };
 
 export const AMOUNTS = [25, 50, 100, 250, 500];
@@ -38,6 +44,10 @@ export const initialState: State = {
   amountStep: {
     radioButtonAmount: AMOUNTS[0],
     otherAmount: +MIN_OTHER_AMOUNT
+  },
+  paymentStep: {
+    nameOnCard: "",
+    zipcode: ""
   }
 };
 
@@ -77,6 +87,13 @@ const { actions, reducer } = createSlice({
       { payload }: PayloadAction<{ key: keyof ContactStepProps; value: string }>
     ) {
       contactStep[payload.key] = payload.value;
+    },
+    setNameOnCard({ paymentStep }, { payload }: PayloadAction<string>) {
+      paymentStep.nameOnCard = payload;
+    },
+    setZipcode({ paymentStep }, { payload }: PayloadAction<string>) {
+      // From https://github.com/medipass/react-credit-card-input/blob/master/src/utils/formatter.js#L135
+      paymentStep.zipcode = (payload.match(/\d+/g) || []).join("");
     }
   }
 });
@@ -92,7 +109,9 @@ export const {
   setIsContinueButtonDisabled,
   setRadioButtonAmount,
   setOtherAmount,
-  setContactStepField
+  setContactStepField,
+  setNameOnCard,
+  setZipcode
 } = actions;
 
 export default reducer;
