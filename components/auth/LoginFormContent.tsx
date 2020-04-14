@@ -4,7 +4,7 @@ import { login } from "requests/admin";
 import { useRouter } from "next/router";
 import errors from "utils/errors";
 import urls from "config";
-// import cookie from "js-cookie";
+import cookie from "js-cookie";
 
 import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 import AuthPageForm from "./AuthPageForm";
@@ -40,9 +40,11 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   const onPressCTA = useCallback(
     async (stopLoading: () => void) => {
       try {
-        await login(email, password);
-        // const  { token } = await login(email, password);
-        // cookie.set("token", token, { expires: 1 });
+        const token = await login(email, password);
+        /* Not setting expires explicitly - the time of expiry is taken care of by the server when it creates the token.
+         * A browser may still store the expired token, however calling checkToken on it would return false.
+         * If a user logs in again, the expired token will be re-written with a freshly generated one. */
+        cookie.set("token", token);
         // Currently, it takes a long time to navigate and load the index page, so don't stop loading:
         router.push(urls.pages.index);
       } catch (err) {

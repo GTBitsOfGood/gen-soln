@@ -1,29 +1,37 @@
 import React from "react";
 import { NextPage } from "next";
+import nextCookie from "next-cookies";
+import Router from "next/router";
 
-// import urls from "config";
-// import nextCookie from "next-cookies";
-// import Router from "next/router";
+import urls from "config";
 
 import AuthPage from "components/auth/AuthPage";
-// import { checkToken } from "requests/admin";
+
+import { checkToken } from "server/actions/admin";
+
+import { checkTokenRequest } from "requests/admin";
 
 const LoginPage: NextPage = () => <AuthPage />;
 
-// LoginPage.getInitialProps = async ctx => {
-//     const { token } = nextCookie(ctx);
-
-//     try {
-//         await checkToken(token);
-//         if (ctx.res) {
-//             ctx.res.writeHead(302, { Location: urls.pages.index });
-//             ctx.res.end();
-//         } else {
-//             await Router.push(urls.pages.index);
-//         }
-//     } catch (e) {
-//         console.log(e);
-//     }
-// }
+LoginPage.getInitialProps = async ctx => {
+  try {
+    const { token } = nextCookie(ctx);
+    if (token != null) {
+      if (ctx.res) {
+        // server-side code:
+        await checkToken({ token });
+        ctx.res.writeHead(302, { Location: urls.pages.index }).end();
+      } else {
+        // client-side code:
+        await checkTokenRequest(token);
+        Router.push(urls.pages.index);
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+  // Literally return any object instead of an empty one to allow Next.js optimization
+  return { foo: "bar" };
+};
 
 export default LoginPage;

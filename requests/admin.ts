@@ -2,7 +2,7 @@ import urls from "config";
 import { fetchRequestWithPayloadResponse } from "utils/util";
 
 export const login = async (email: string, password: string) =>
-  fetchRequestWithPayloadResponse(urls.apis.login, {
+  fetchRequestWithPayloadResponse<string>(urls.apis.login, {
     method: "post",
     headers: {
       "Content-Type": "application/json"
@@ -10,7 +10,7 @@ export const login = async (email: string, password: string) =>
     body: JSON.stringify({ email, password })
   });
 
-export const checkToken = async (token: any) =>
+export const checkTokenRequest = async (token: string) =>
   fetchRequestWithPayloadResponse(urls.apis.checkToken, {
     method: "post",
     headers: {
