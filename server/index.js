@@ -4,6 +4,8 @@ import config from "config";
 export default async () => {
   if (mongoose.connections[0].readyState) return;
 
+  console.log(config.dbName);
+
   await mongoose
     .connect(config.dbUrl, {
       useNewUrlParser: true,
