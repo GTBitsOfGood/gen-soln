@@ -1,3 +1,10 @@
 {
-  "version": 2
+  "version": 2,
+  "env": {
+    "DB_NAME": "@dms_db_name",
+    "DB_URL": "@dms_db_url",
+    "JWT_SECRET": "@dms_jwt_secret",
+    "STRIPE_PUBLISHABLE": "@dms_stripe_publishable",
+    "STRIPE_SECRET": "@dms_stripe_secret"
+  }
 }
