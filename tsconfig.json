@@ -13,8 +13,16 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "strict": true,
-    "baseUrl": "./"
+    "baseUrl": "."
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+  "include": [
+    "next-env.d.ts",
+    ".eslintrc.json",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.json"
+  ]
 }
