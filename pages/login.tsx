@@ -19,7 +19,7 @@ LoginPage.getInitialProps = async ctx => {
     if (token != null) {
       if (ctx.res) {
         // server-side code:
-        await checkToken({ token });
+        checkToken({ token });
         ctx.res.writeHead(302, { Location: urls.pages.index }).end();
       } else {
         // client-side code:

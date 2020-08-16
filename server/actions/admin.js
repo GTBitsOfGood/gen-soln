@@ -60,7 +60,7 @@ export async function signup({
       lastName,
       email,
       nonprofitId,
-      password: await bcrypt.hashSync(password, SALT_ROUNDS)
+      password: bcrypt.hashSync(password, SALT_ROUNDS)
     });
 
     return jwtSignAdmin(admin);
@@ -69,7 +69,7 @@ export async function signup({
   throw new Error(errors.admin.INVALID_ORG);
 }
 
-export async function checkToken({ token }) {
+export function checkToken({ token }) {
   try {
     return jwt.verify(token, config.jwtSecret);
   } catch {

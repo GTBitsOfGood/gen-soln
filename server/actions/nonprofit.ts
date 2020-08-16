@@ -32,9 +32,7 @@ export async function createNonprofit({
 export async function getNonprofitNames() {
   await Mongo();
 
-  return Nonprofit.find({}, { name: 1 })
-    .lean()
-    .sort({ name: 1 }) as Array<
+  return Nonprofit.find({}, { name: 1 }).lean().sort({ name: 1 }) as Array<
     Pick<NonprofitType, "name"> & Pick<NonprofitType, "_id">
   >;
 }

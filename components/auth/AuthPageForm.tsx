@@ -37,15 +37,9 @@ interface Props {
   footer?: React.ReactNode;
 }
 
-const AuthPageForm: React.FC<Props &
-  React.ComponentProps<typeof AuthPageFormContainer>> = ({
-  children,
-  title,
-  onPressCTA,
-  ctaText,
-  footer,
-  ...rest
-}) => {
+const AuthPageForm: React.FC<
+  Props & React.ComponentProps<typeof AuthPageFormContainer>
+> = ({ children, title, onPressCTA, ctaText, footer, ...rest }) => {
   const {
     form,
     formContent,
