@@ -8,9 +8,7 @@
     "start": "next start",
     "lint": "yarn lint:tsc ; yarn lint:eslint",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
-    "lint:eslint": "eslint '**/*.{tsx,ts,js,jsx,json}' --fix",
-    "secrets-setup": "npm install -g @bitwarden/cli && bw login product@bitsofgood.org --raw",
-    "secrets-sync": "bw sync && echo `bw get item 007e070e-2d50-47a0-bd70-abbc0117ab3a | jq -r \".notes\"` > ./.env"
+    "lint:eslint": "eslint '**/*.{tsx,ts,js,jsx,json}' --fix"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.2",
