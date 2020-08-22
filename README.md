@@ -2,7 +2,7 @@
 Centralized platform designed to provide nonprofits with the opportunity to sell their merchandise in an online marketplace and receive donations from their sponsors.
 
 # nextjs-starter template
-From https://github.com/GTBitsOfGood/nextjs-starter/ 
+From https://github.com/GTBitsOfGood/nextjs-starter-typescript
 
 ## Setup
 ### Development
