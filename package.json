@@ -9,7 +9,7 @@
     "lint": "yarn lint:tsc ; yarn lint:eslint",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "lint:eslint": "eslint '**/*.{tsx,ts,js,jsx,json}' --fix",
-    "secrets": "npm run secrets:logout && npm run secrets:login 'npm run secrets:sync'",
+    "secrets": "yarn run secrets:logout && yarn run secrets:login 'yarn run secrets:sync'",
     "secrets:logout": "(bw logout || true)",
     "secrets:login": "cross-env-shell BW_SESSION=`bw login product@bitsofgood.org --raw`",
     "secrets:sync": "bw sync && bw get item gen-soln/.env | fx .notes > '.env'"
