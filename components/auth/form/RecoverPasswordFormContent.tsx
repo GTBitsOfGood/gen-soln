@@ -1,13 +1,11 @@
 import React, { useState, useCallback, useRef } from "react";
 
 import Typography from "@material-ui/core/Typography";
-import LoginFormEmailField, {
-  EMAIL_INPUT_FIELD_NAME
-} from "./LoginFormEmailField";
+import EmailTextField, { EMAIL_INPUT_FIELD_NAME } from "./EmailTextField";
 
 import AuthPageForm from "./AuthPageForm";
 
-import { ContentComponentProps } from "./types";
+import { ContentComponentProps } from "../types";
 
 const states = {
   INITIAL: {
@@ -66,7 +64,7 @@ const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
       ctaText={states[currentState].ctaText}
       onPressCTA={onPressCTA}
     >
-      <LoginFormEmailField
+      <EmailTextField
         hasError={hasError}
         hasErrorHelperText="Something went wrong, please try later."
       />

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import dynamic, { DynamicOptions } from "next/dynamic";
 
-import AuthPageFormContainer from "./AuthPageFormContainer";
+import AuthPageFormContainer from "./form/AuthPageFormContainer";
 import { Content, ContentComponentProps } from "./types";
 
 const options: DynamicOptions<ContentComponentProps> = {
@@ -14,11 +14,11 @@ const contentComponents: Record<
   React.ComponentType<ContentComponentProps>
 > = {
   login: dynamic<ContentComponentProps>(
-    () => import("./LoginFormContent"),
+    () => import("./form/LoginFormContent"),
     options
   ),
   forgotPassword: dynamic<ContentComponentProps>(
-    () => import("./RecoverPasswordFormContent"),
+    () => import("./form/RecoverPasswordFormContent"),
     options
   )
 };

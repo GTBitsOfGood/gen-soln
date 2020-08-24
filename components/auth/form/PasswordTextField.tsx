@@ -15,7 +15,7 @@ interface Props {
   hasErrorHelperText: string;
 }
 
-const LoginFormPasswordField: React.FC<Props> = ({
+const PasswordTextField: React.FC<Props> = ({
   hasError,
   hasErrorHelperText
 }) => {
@@ -56,4 +56,4 @@ const LoginFormPasswordField: React.FC<Props> = ({
   );
 };
 
-export default LoginFormPasswordField;
+export default PasswordTextField;

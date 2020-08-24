@@ -19,7 +19,7 @@ interface Props {
   hasErrorHelperText?: string;
 }
 
-const LoginFormEmailField: React.FC<Props> = ({
+const EmailTextField: React.FC<Props> = ({
   hasError,
   hasErrorHelperText = ""
 }) => {
@@ -47,4 +47,4 @@ const LoginFormEmailField: React.FC<Props> = ({
   );
 };
 
-export default LoginFormEmailField;
+export default EmailTextField;
