@@ -18,14 +18,12 @@ export interface PaymentStepProps {
   zipcode: string;
 }
 
-export type State = {
+type State = {
   curStepIndex: number;
-  maxCurStepIndex: number;
   isContinueButtonDisabled: boolean;
   contactStep: ContactStepProps;
   amountStep: AmountStepProps;
   paymentStep: PaymentStepProps;
-  donationCompleted: boolean;
 };
 
 export const AMOUNTS = [25, 50, 100, 250, 500];
@@ -35,7 +33,6 @@ export const MAX_OTHER_AMOUNT = "2000";
 
 export const initialState: State = {
   curStepIndex: 0,
-  maxCurStepIndex: 0,
   isContinueButtonDisabled: false,
   contactStep: {
     firstName: "",
@@ -49,30 +46,21 @@ export const initialState: State = {
   paymentStep: {
     nameOnCard: "",
     zipcode: ""
-  },
-  donationCompleted: false
+  }
 };
 
 const name = "donationPageSlice";
-
-const setMaxCurStepIndex = (state: State) => {
-  state.maxCurStepIndex = Math.max(state.maxCurStepIndex, state.curStepIndex);
-};
-
 const { actions, reducer } = createSlice({
   name,
   initialState,
   reducers: {
-    resetState: () => initialState,
     incrementStep(state) {
       state.curStepIndex++;
       // A safe assumption to make, may not always hold true. Also, maybe the form UI takes time to load, in that case it won't be prudent to enable the continue button:
       state.isContinueButtonDisabled = true;
-      setMaxCurStepIndex(state);
     },
     setStep(state, { payload }: PayloadAction<number>) {
       state.curStepIndex = payload;
-      setMaxCurStepIndex(state);
     },
     setIsContinueButtonDisabled(state, { payload }: PayloadAction<boolean>) {
       state.isContinueButtonDisabled = payload;
@@ -98,9 +86,6 @@ const { actions, reducer } = createSlice({
     setZipcode({ paymentStep }, { payload }: PayloadAction<string>) {
       // From https://github.com/medipass/react-credit-card-input/blob/master/src/utils/formatter.js#L135
       paymentStep.zipcode = (payload.match(/\d+/g) || []).join("");
-    },
-    setDonationCompleted(state, { payload }: PayloadAction<boolean>) {
-      state.donationCompleted = payload;
     }
   }
 });
@@ -110,7 +95,6 @@ export const DonationPageStateDispatch = createContext<Dispatch<
 > | null>(null);
 
 export const {
-  resetState,
   incrementStep,
   setStep,
   setIsContinueButtonDisabled,
@@ -118,8 +102,8 @@ export const {
   setOtherAmount,
   setContactStepField,
   setNameOnCard,
-  setZipcode,
-  setDonationCompleted
+  setZipcode
+  // setDonationCompleted
 } = actions;
 
 export default reducer;

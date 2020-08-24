@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 import clsx from "clsx";
 
@@ -15,12 +15,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { DropdownProps } from "utils/types";
 
 import urls from "config";
-
-import {
-  DonationPageStateDispatch,
-  resetState,
-  setIsContinueButtonDisabled
-} from "./reducer";
 
 const useStyles = makeStyles(({ palette, typography }: Theme) =>
   createStyles({
@@ -52,17 +46,14 @@ const DonationPageHeaderSelect: React.FC<DropdownProps> = ({
   const router = useRouter();
   const [value, setValue] = useState(selectedValue);
   const [disabled, setDisabled] = useState(false);
-  const dispatch = useContext(DonationPageStateDispatch);
 
   const routeChangeStart = useCallback(() => {
-    dispatch && dispatch(setIsContinueButtonDisabled(true));
     setDisabled(true);
-  }, [dispatch]);
+  }, []);
 
   const routeChangeComplete = useCallback(() => {
-    dispatch && dispatch(resetState()); // Takes care of setIsContinueButtonDisabled(false)
     setDisabled(false);
-  }, [dispatch]);
+  }, []);
 
   const onChange = useCallback(
     (

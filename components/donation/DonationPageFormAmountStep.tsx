@@ -53,7 +53,9 @@ const DonationPageFormAmountStep: React.FC<AmountStepProps> = ({
   ]);
 
   const isContinueButtonDisabled = useMemo(
-    () => hasSelectedOther && otherAmount < +MIN_OTHER_AMOUNT,
+    () =>
+      hasSelectedOther &&
+      (otherAmount < +MIN_OTHER_AMOUNT || otherAmount > +MAX_OTHER_AMOUNT),
     [hasSelectedOther, otherAmount]
   );
 
@@ -127,6 +129,7 @@ const DonationPageFormAmountStep: React.FC<AmountStepProps> = ({
         minimumValue={MIN_OTHER_AMOUNT}
         maximumValue={MAX_OTHER_AMOUNT}
         onChange={handleOtherAmountChange}
+        overrideMinMaxLimits="invalid"
       />
     </div>
   );
