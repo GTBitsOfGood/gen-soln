@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "yarn lint:tsc ; yarn lint:eslint",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
-    "lint:eslint": "eslint '**/*.{tsx,ts,js,jsx,json}' --fix"
+    "lint:eslint": "eslint '**/*.{tsx,ts,js,jsx,json}' --fix",
+    "secrets": "yarn run secrets:logout && yarn run secrets:login 'yarn run secrets:sync'",
+    "secrets:logout": "(bw logout || true)",
+    "secrets:login": "cross-env-shell BW_SESSION=`bw login product@bitsofgood.org --raw`",
+    "secrets:sync": "bw sync && bw get item gen-soln/.env | fx .notes > '.env'"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.2",
@@ -31,6 +35,7 @@
     "stripe": "^8.40.0"
   },
   "devDependencies": {
+    "@bitwarden/cli": "^1.11.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/js-cookie": "^2.2.6",
     "@types/jsonwebtoken": "^8.3.8",
@@ -39,6 +44,7 @@
     "@types/react": "^16.9.19",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
+    "cross-env": "^7.0.2",
     "eslint": "^7.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.20.2",
@@ -47,6 +53,7 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.4",
     "eslint-plugin-tsc": "^1.2.0",
+    "fx": "^19.0.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.7",
     "prettier": "^2.0.5",
