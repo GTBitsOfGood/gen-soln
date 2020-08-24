@@ -38,9 +38,9 @@ const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
     async (stopLoading: () => void) => {
       switch (currentState) {
         case "INITIAL": {
-          const data = new FormData(formRef.current ?? undefined);
-          const email = data.get(EMAIL_INPUT_FIELD_NAME) as string;
           // TODO: await some async function that sends password recovery email to the user
+          // const data = new FormData(formRef.current ?? undefined);
+          // const email = data.get(EMAIL_INPUT_FIELD_NAME) as string;
           stopLoading();
           setCurrentState("FINAL");
           break;

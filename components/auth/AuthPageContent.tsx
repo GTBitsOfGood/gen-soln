@@ -11,7 +11,7 @@ const options: DynamicOptions<ContentComponentProps> = {
 
 const contentComponents: Record<
   Content,
-  React.ComponentType<ContentComponentProps> | null
+  React.ComponentType<ContentComponentProps>
 > = {
   login: dynamic<ContentComponentProps>(
     () => import("./LoginFormContent"),
@@ -20,8 +20,7 @@ const contentComponents: Record<
   forgotPassword: dynamic<ContentComponentProps>(
     () => import("./RecoverPasswordFormContent"),
     options
-  ),
-  chooseService: null
+  )
 };
 
 const AuthPageContent: React.FC = () => {
@@ -38,7 +37,7 @@ const AuthPageContent: React.FC = () => {
     activeContent
   ]);
 
-  return Component && <Component navigateToContent={navigateToContent} />;
+  return <Component navigateToContent={navigateToContent} />;
 };
 
 export default AuthPageContent;
