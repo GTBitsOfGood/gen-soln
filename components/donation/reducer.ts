@@ -103,7 +103,6 @@ export const {
   setContactStepField,
   setNameOnCard,
   setZipcode
-  // setDonationCompleted
 } = actions;
 
 export default reducer;
