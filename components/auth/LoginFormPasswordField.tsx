@@ -8,16 +8,14 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
+export const PASSWORD_INPUT_FIELD_NAME = "user_password";
+
 interface Props {
-  password: string;
-  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   hasError: boolean;
   hasErrorHelperText: string;
 }
 
 const LoginFormPasswordField: React.FC<Props> = ({
-  password,
-  onChangePassword,
   hasError,
   hasErrorHelperText
 }) => {
@@ -33,8 +31,7 @@ const LoginFormPasswordField: React.FC<Props> = ({
       fullWidth
       variant="standard"
       placeholder="Enter password"
-      value={password}
-      onChange={onChangePassword}
+      name={PASSWORD_INPUT_FIELD_NAME}
       error={hasError}
       type={showPassword ? "text" : "password"}
       helperText={hasError ? hasErrorHelperText : ""}
