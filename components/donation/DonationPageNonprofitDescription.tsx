@@ -13,9 +13,7 @@ interface Props {
   description: string;
 }
 
-const DonationPageFormBodyNonprofitDescription: React.FC<Props> = ({
-  description
-}) => {
+const DonationPageNonprofitDescription: React.FC<Props> = ({ description }) => {
   const { textContainer } = useStyles();
 
   return (
@@ -25,4 +23,4 @@ const DonationPageFormBodyNonprofitDescription: React.FC<Props> = ({
   );
 };
 
-export default DonationPageFormBodyNonprofitDescription;
+export default DonationPageNonprofitDescription;

@@ -3,8 +3,8 @@ import dynamic from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-import DonationPageFormBodyNonprofitDescription from "./DonationPageFormBodyNonprofitDescription";
-import DonationPageFormBodyStateProvider from "./DonationPageFormBodyStateProvider";
+import DonationPageNonprofitDescription from "./DonationPageNonprofitDescription";
+import DonationPageForm from "./form/DonationPageForm";
 
 const DonationPageThankYou = dynamic(() => import("./DonationPageThankYou"));
 
@@ -24,7 +24,7 @@ interface Props {
   selectedNonprofitId: string;
 }
 
-const DonationPageFormBody: React.FC<Props> = ({
+const DonationPageMainContent: React.FC<Props> = ({
   description,
   selectedNonprofitId
 }) => {
@@ -37,11 +37,11 @@ const DonationPageFormBody: React.FC<Props> = ({
 
   return (
     <div className={container}>
-      <DonationPageFormBodyNonprofitDescription description={description} />
+      <DonationPageNonprofitDescription description={description} />
       {hasDonationCompleted ? (
         <DonationPageThankYou />
       ) : (
-        <DonationPageFormBodyStateProvider
+        <DonationPageForm
           donationCompletedCallback={donationCompletedCallback}
           selectedNonprofitId={selectedNonprofitId}
         />
@@ -50,4 +50,4 @@ const DonationPageFormBody: React.FC<Props> = ({
   );
 };
 
-export default DonationPageFormBody;
+export default DonationPageMainContent;
