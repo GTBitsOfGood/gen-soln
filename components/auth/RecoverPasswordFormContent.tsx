@@ -1,7 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 
 import Typography from "@material-ui/core/Typography";
-import LoginFormEmailField from "./LoginFormEmailField";
+import LoginFormEmailField, {
+  EMAIL_INPUT_FIELD_NAME
+} from "./LoginFormEmailField";
 
 import AuthPageForm from "./AuthPageForm";
 
@@ -21,41 +23,43 @@ const states = {
 const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
 }) => {
-  const [email, setEmail] = useState("");
+  // TODO: Use this to show an error message below the email input field
   const [hasError] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
   const [currentState, setCurrentState] = useState<keyof typeof states>(
     "INITIAL"
-  );
-
-  const onChangeEmail = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setEmail(e.target.value);
-    },
-    []
   );
 
   const onClickGoBack = useCallback(() => {
     navigateToContent("login");
   }, [navigateToContent]);
 
-  const onPressCTA = useCallback(async () => {
-    switch (currentState) {
-      case "INITIAL":
-        // TODO: await some async function that sends password recovery email to the user
-        setCurrentState("FINAL");
-        break;
-      case "FINAL":
-        onClickGoBack();
-        break;
-      default: {
-        const _exhaustiveCheck: never = currentState;
-        return _exhaustiveCheck;
+  const onPressCTA = useCallback(
+    async (stopLoading: () => void) => {
+      switch (currentState) {
+        case "INITIAL": {
+          // TODO: await some async function that sends password recovery email to the user
+          // const data = new FormData(formRef.current ?? undefined);
+          // const email = data.get(EMAIL_INPUT_FIELD_NAME) as string;
+          stopLoading();
+          setCurrentState("FINAL");
+          break;
+        }
+        case "FINAL":
+          onClickGoBack();
+          break;
+        default: {
+          const _exhaustiveCheck: never = currentState;
+          return _exhaustiveCheck;
+        }
       }
-    }
-  }, [currentState, onClickGoBack]);
+    },
+    [currentState, onClickGoBack]
+  );
 
   return (
     <AuthPageForm
+      ref={formRef}
       title="Recover Password"
       hasBackButton={currentState !== "FINAL"}
       onPressBackButton={onClickGoBack}
@@ -63,8 +67,6 @@ const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
       onPressCTA={onPressCTA}
     >
       <LoginFormEmailField
-        email={email}
-        onChangeEmail={onChangeEmail}
         hasError={hasError}
         hasErrorHelperText="Something went wrong, please try later."
       />
