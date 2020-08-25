@@ -15,4 +15,4 @@ From https://github.com/GTBitsOfGood/nextjs-starter-typescript
 - Run the dev version of this project by entering `yarn dev`.
 ### Syncing Forked Repository
 - Add the gen-soln repository as a remote by running `git remote add upstream https://github.com/GTBitsOfGood/gen-soln.git`
-- Fetch changes to gen-soln repository with `git fetch upstream` and run `git merge upstream/develop develop` to merge changes to the develop branch of your personal repository.
+- Fetch changes from gen-soln repository and merge to the develop branch of your personal repository with `git pull upstream develop`.
