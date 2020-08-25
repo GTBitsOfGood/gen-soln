@@ -1,57 +1,35 @@
-import React, { useCallback, useMemo, useContext, useState } from "react";
+import React, { useCallback, useMemo, useState, useReducer } from "react";
 import dynamic from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import useStripePayment from "./useStripePayment";
 
-import ButtonWithNonprofitColor from "components/ButtonWithNonprofitColor";
 import DonationPageFormNavigation from "./DonationPageFormNavigation";
-
-const DonationPageThankYou = dynamic(() => import("./DonationPageThankYou"));
+import DonationPageFormButton from "./DonationPageFormButton";
 
 import { createDonation } from "requests/donation";
 
-import {
+import reducer, {
   AmountStepProps,
   ContactStepProps,
   PaymentStepProps,
+  initialState,
   DonationPageStateDispatch,
-  State,
-  incrementStep,
-  setDonationCompleted
+  incrementStep
 } from "./reducer";
-import AdminLoginLink from "components/AdminLoginLink";
 
-const white = "white";
 const useStyles = makeStyles({
   container: {
     display: "flex",
-    flex: 1,
-    flexDirection: "column",
-    padding: "3.5vh 3vh", // Keep in sync with footerContainer style in DonationPageThankYou
-    backgroundColor: white
+    flex: 0.8,
+    flexDirection: "column"
   },
   contentContainer: {
     flex: 7,
     marginTop: 8,
     marginBottom: 8,
     minHeight: 260
-  },
-  buttonContainer: {
-    display: "flex",
-    flex: 0.75,
-    flexDirection: "column",
-    alignItems: "center",
-    minHeight: 72
-  },
-  textContainer: {
-    flex: 1.5
-  },
-  rightMargin: {
-    marginRight: 8
   }
 });
 
@@ -84,32 +62,25 @@ const STEPS = [
 ];
 
 interface Props {
-  description: string;
-  state: State;
+  donationCompletedCallback: () => void;
   selectedNonprofitId: string;
 }
 
-const DonationPageFormBody: React.FC<Props> = ({
-  description,
-  selectedNonprofitId,
-  state: {
-    curStepIndex,
-    maxCurStepIndex,
-    isContinueButtonDisabled,
-    contactStep,
-    amountStep,
-    paymentStep,
-    donationCompleted
-  }
+const DonationPageForm: React.FC<Props> = ({
+  donationCompletedCallback,
+  selectedNonprofitId
 }) => {
-  const {
-    container,
-    contentContainer,
-    buttonContainer,
-    textContainer,
-    rightMargin
-  } = useStyles();
-  const dispatch = useContext(DonationPageStateDispatch);
+  const { container, contentContainer } = useStyles();
+  const [
+    {
+      curStepIndex,
+      isContinueButtonDisabled,
+      contactStep,
+      amountStep,
+      paymentStep
+    },
+    dispatch
+  ] = useReducer(reducer, initialState);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -153,15 +124,15 @@ const DonationPageFormBody: React.FC<Props> = ({
             nonprofitId: selectedNonprofitId
           });
 
-          dispatch && dispatch(setDonationCompleted(true));
+          donationCompletedCallback();
+          // Don't call setIsSubmitting(false) after this -- donationCompletedCallback() will unmount this component
         } catch (err) {
           // TODO: Not sure how else to handle and display the error
-          alert(err.message);
-        } finally {
           setIsSubmitting(false);
+          alert(err.message);
         }
       } else {
-        dispatch && dispatch(incrementStep());
+        dispatch(incrementStep());
       }
     },
     [
@@ -173,7 +144,8 @@ const DonationPageFormBody: React.FC<Props> = ({
       paymentStep.zipcode,
       processPayment,
       isLastStep,
-      selectedNonprofitId
+      selectedNonprofitId,
+      donationCompletedCallback
     ]
   );
 
@@ -200,44 +172,22 @@ const DonationPageFormBody: React.FC<Props> = ({
     }
   }, [step, contactStep, amountStep, paymentStep]);
 
-  const nonprofitDescriptionJSX = (
-    <div className={textContainer}>
-      <Typography>{description}</Typography>
-    </div>
-  );
-
-  return donationCompleted ? (
-    <div className={container}>
-      {nonprofitDescriptionJSX}
-      <DonationPageThankYou />
-    </div>
-  ) : (
-    <form className={container} onSubmit={handleSubmit}>
-      {nonprofitDescriptionJSX}
-      <DonationPageFormNavigation
-        curStepIndex={curStepIndex}
-        maxCurStepIndex={maxCurStepIndex}
-        stepTitles={STEPS.map(_ => _.title)}
-      />
-      <div className={contentContainer}>{componentJSX}</div>
-      <div className={buttonContainer}>
-        <ButtonWithNonprofitColor
+  return (
+    <DonationPageStateDispatch.Provider value={dispatch}>
+      <form className={container} onSubmit={handleSubmit}>
+        <DonationPageFormNavigation
+          curStepIndex={curStepIndex}
+          stepTitles={STEPS.map(_ => _.title)}
+        />
+        <div className={contentContainer}>{componentJSX}</div>
+        <DonationPageFormButton
           disabled={isContinueButtonDisabled || !isReady || isSubmitting}
-          type="submit"
-        >
-          {isSubmitting && (
-            <CircularProgress
-              className={rightMargin}
-              color="inherit"
-              size={16}
-            />
-          )}
-          {ctaText}
-        </ButtonWithNonprofitColor>
-        <AdminLoginLink />
-      </div>
-    </form>
+          ctaText={ctaText}
+          showLoadingIndicator={isSubmitting}
+        />
+      </form>
+    </DonationPageStateDispatch.Provider>
   );
 };
 
-export default DonationPageFormBody;
+export default DonationPageForm;

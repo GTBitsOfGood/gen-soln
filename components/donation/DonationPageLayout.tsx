@@ -2,7 +2,7 @@ import React from "react";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-import DonationPageHeader from "./DonationPageHeader";
+import DonationPageHeader from "./header/DonationPageHeader";
 
 import FullPageLayout from "components/FullPageLayout";
 import { DropdownProps } from "utils/types";
