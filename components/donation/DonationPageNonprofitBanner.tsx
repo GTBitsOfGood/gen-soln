@@ -44,7 +44,7 @@ interface Props {
   headline: string;
 }
 
-const DonationPageFormHeader: React.FC<Props> = ({ headline }) => {
+const DonationPageNonprofitBanner: React.FC<Props> = ({ headline }) => {
   const {
     container,
     text,
@@ -66,4 +66,4 @@ const DonationPageFormHeader: React.FC<Props> = ({ headline }) => {
   );
 };
 
-export default DonationPageFormHeader;
+export default DonationPageNonprofitBanner;

@@ -13,7 +13,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "strict": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@horizon/*": ["components/core/*"]
+    }
   },
   "exclude": ["node_modules"],
   "include": [
