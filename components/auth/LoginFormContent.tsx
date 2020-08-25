@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 
 import { login } from "requests/admin";
 import { useRouter } from "next/router";
@@ -8,8 +8,12 @@ import cookie from "js-cookie";
 
 import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 import AuthPageForm from "./AuthPageForm";
-import LoginFormEmailField from "./LoginFormEmailField";
-import LoginFormPasswordField from "./LoginFormPasswordField";
+import LoginFormEmailField, {
+  EMAIL_INPUT_FIELD_NAME
+} from "./LoginFormEmailField";
+import LoginFormPasswordField, {
+  PASSWORD_INPUT_FIELD_NAME
+} from "./LoginFormPasswordField";
 
 import { ContentComponentProps } from "./types";
 
@@ -17,27 +21,16 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
 }) => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState("");
-
-  const onChangeEmail = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setEmail(e.target.value);
-    },
-    []
-  );
-
-  const onChangePassword = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(e.target.value);
-    },
-    []
-  );
 
   const onPressCTA = useCallback(
     async (stopLoading: () => void) => {
       try {
+        const data = new FormData(formRef.current ?? undefined);
+        const email = data.get(EMAIL_INPUT_FIELD_NAME) as string;
+        const password = data.get(PASSWORD_INPUT_FIELD_NAME) as string;
+
         /* Not setting expires explicitly - the time of expiry is taken care of by the server when it creates the token.
          * A browser may still store the expired token, however calling checkToken on it would return false.
          * If a user logs in again, the expired token will be re-written with a freshly generated one. */
@@ -54,7 +47,7 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
         stopLoading();
       }
     },
-    [email, password, router]
+    [router]
   );
 
   const onClickForgotPassword = useCallback(() => {
@@ -63,6 +56,7 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
 
   return (
     <AuthPageForm
+      ref={formRef}
       title="Sign In"
       ctaText="SIGN IN"
       onPressCTA={onPressCTA}
@@ -76,14 +70,8 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
         </ButtonWithLowercaseText>
       }
     >
-      <LoginFormEmailField
-        email={email}
-        onChangeEmail={onChangeEmail}
-        hasError={Boolean(error)}
-      />
+      <LoginFormEmailField hasError={Boolean(error)} />
       <LoginFormPasswordField
-        password={password}
-        onChangePassword={onChangePassword}
         hasError={Boolean(error)}
         hasErrorHelperText={error}
       />

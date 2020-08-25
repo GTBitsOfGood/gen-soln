@@ -2,12 +2,11 @@ import React, { useCallback, useMemo, useState, useReducer } from "react";
 import dynamic from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import useStripePayment from "./useStripePayment";
 
-import ButtonWithNonprofitColor from "components/ButtonWithNonprofitColor";
 import DonationPageFormNavigation from "./DonationPageFormNavigation";
+import DonationPageFormButton from "./DonationPageFormButton";
 
 import { createDonation } from "requests/donation";
 
@@ -19,7 +18,6 @@ import reducer, {
   DonationPageStateDispatch,
   incrementStep
 } from "./reducer";
-import AdminLoginLink from "components/AdminLoginLink";
 
 const useStyles = makeStyles({
   container: {
@@ -32,16 +30,6 @@ const useStyles = makeStyles({
     marginTop: 8,
     marginBottom: 8,
     minHeight: 260
-  },
-  buttonContainer: {
-    display: "flex",
-    flex: 0.75,
-    flexDirection: "column",
-    alignItems: "center",
-    minHeight: 72
-  },
-  rightMargin: {
-    marginRight: 8
   }
 });
 
@@ -78,16 +66,11 @@ interface Props {
   selectedNonprofitId: string;
 }
 
-const DonationPageFormBodyStateProvider: React.FC<Props> = ({
+const DonationPageForm: React.FC<Props> = ({
   donationCompletedCallback,
   selectedNonprofitId
 }) => {
-  const {
-    container,
-    contentContainer,
-    buttonContainer,
-    rightMargin
-  } = useStyles();
+  const { container, contentContainer } = useStyles();
   const [
     {
       curStepIndex,
@@ -197,25 +180,14 @@ const DonationPageFormBodyStateProvider: React.FC<Props> = ({
           stepTitles={STEPS.map(_ => _.title)}
         />
         <div className={contentContainer}>{componentJSX}</div>
-        <div className={buttonContainer}>
-          <ButtonWithNonprofitColor
-            disabled={isContinueButtonDisabled || !isReady || isSubmitting}
-            type="submit"
-          >
-            {isSubmitting && (
-              <CircularProgress
-                className={rightMargin}
-                color="inherit"
-                size={16}
-              />
-            )}
-            {ctaText}
-          </ButtonWithNonprofitColor>
-          <AdminLoginLink />
-        </div>
+        <DonationPageFormButton
+          disabled={isContinueButtonDisabled || !isReady || isSubmitting}
+          ctaText={ctaText}
+          showLoadingIndicator={isSubmitting}
+        />
       </form>
     </DonationPageStateDispatch.Provider>
   );
 };
 
-export default DonationPageFormBodyStateProvider;
+export default DonationPageForm;

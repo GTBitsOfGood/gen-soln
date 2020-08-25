@@ -6,6 +6,8 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 
+export const EMAIL_INPUT_FIELD_NAME = "user_email";
+
 const useStyles = makeStyles({
   verticalMargins: {
     margin: "5vh 0"
@@ -13,15 +15,11 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  email: string;
-  onChangeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
   hasError: boolean;
   hasErrorHelperText?: string;
 }
 
 const LoginFormEmailField: React.FC<Props> = ({
-  email,
-  onChangeEmail,
   hasError,
   hasErrorHelperText = ""
 }) => {
@@ -35,8 +33,7 @@ const LoginFormEmailField: React.FC<Props> = ({
       variant="standard"
       type="email"
       placeholder="email@nonprofit.com"
-      value={email}
-      onChange={onChangeEmail}
+      name={EMAIL_INPUT_FIELD_NAME}
       error={hasError}
       helperText={hasError ? hasErrorHelperText : ""}
       InputProps={{

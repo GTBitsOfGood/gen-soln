@@ -52,7 +52,7 @@ export type LinkProps = LinkPropsBase &
 
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
-function Link(props: LinkProps) {
+function HorizonLink(props: LinkProps) {
   const {
     href,
     activeClassName = "active",
@@ -91,5 +91,5 @@ function Link(props: LinkProps) {
 }
 
 export default React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
-  <Link {...props} innerRef={ref} />
+  <HorizonLink {...props} innerRef={ref} />
 ));
