@@ -37,9 +37,8 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
         router.push(urls.pages.index);
       } catch (err) {
         setError(
-          err.message === errors.admin.INVALID_EMAIL ||
-            err.message === errors.admin.INVALID_PASSWORD
-            ? "Incorrect email or password."
+          err.message === errors.admin.INVALID_LOGIN
+            ? errors.admin.INVALID_LOGIN
             : "An unexpected error occurred."
         );
         stopLoading();

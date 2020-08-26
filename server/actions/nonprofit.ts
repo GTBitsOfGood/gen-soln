@@ -14,7 +14,7 @@ export async function createNonprofit({
 }: NonprofitType) {
   await Mongo();
 
-  if (await Nonprofit.findOne({ name })) {
+  if (await Nonprofit.exists({ name })) {
     throw new Error(errors.nonprofit.ALREADY_EXISTS);
   }
 
