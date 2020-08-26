@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { checkToken } from "server/actions/admin.js";
+import { checkToken } from "server/actions/admin";
 import { handleRequestWithPayloadResponse } from "utils/util";
 
 // @route   POST api/checkToken
