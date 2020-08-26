@@ -1,6 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import fetch from "isomorphic-unfetch";
-import { APISuccessResponse, APIFailureResponse } from "./types";
+
+interface APISuccessResponse<T> {
+  success: true;
+  payload: T;
+}
+
+interface APIFailureResponse {
+  success: false;
+  message: string;
+}
 
 // Use this function on server side to handle incoming API requests:
 export const handleRequestWithPayloadResponse = async <T>(

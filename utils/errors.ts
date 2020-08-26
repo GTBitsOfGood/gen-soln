@@ -1,7 +1,6 @@
 export default {
   admin: {
-    INVALID_EMAIL: "Please enter a valid email address.",
-    INVALID_PASSWORD: "The password you entered is incorrect.",
+    INVALID_LOGIN: "Incorrect email or password.",
     INVALID_ORG: "Please enter a valid nonprofit organization.",
     INVALID_TOKEN: "The current token is expired or invalid.",
     USER_EXISTS: "A user with this email already exists."

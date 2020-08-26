@@ -38,16 +38,6 @@ export interface DropdownProps {
   selectedValue: Dropdown["value"];
 }
 
-export interface APISuccessResponse<T> {
-  success: true;
-  payload: T;
-}
-
-export interface APIFailureResponse {
-  success: false;
-  message: string;
-}
-
 declare module "@material-ui/core/styles/createPalette" {
   interface Palette {
     nonprofitPrimary: Nonprofit["primaryColor"];

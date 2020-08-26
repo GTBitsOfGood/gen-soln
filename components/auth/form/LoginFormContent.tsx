@@ -36,10 +36,10 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
         // Currently, it takes a long time to navigate and load the index page, so don't stop loading:
         router.push(urls.pages.index);
       } catch (err) {
+        console.log(err.message === errors.admin.INVALID_LOGIN);
         setError(
-          err.message === errors.admin.INVALID_EMAIL ||
-            err.message === errors.admin.INVALID_PASSWORD
-            ? "Incorrect email or password."
+          err.message === errors.admin.INVALID_LOGIN
+            ? errors.admin.INVALID_LOGIN
             : "An unexpected error occurred."
         );
         stopLoading();
