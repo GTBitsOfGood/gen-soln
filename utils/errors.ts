@@ -1,4 +1,5 @@
 export default {
+  GENERIC_TEXT: "An unexpected error occurred.",
   admin: {
     INVALID_LOGIN: "Incorrect email or password.",
     INVALID_ORG: "Please enter a valid nonprofit organization.",

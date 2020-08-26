@@ -8,11 +8,11 @@
     "start": "next start",
     "lint": "yarn lint:tsc ; yarn lint:eslint",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
-    "lint:eslint": "eslint '**/*.{tsx,ts,js,jsx,json}' --fix",
-    "secrets": "yarn run secrets:logout && yarn run secrets:login 'yarn run secrets:sync'",
+    "lint:eslint": "eslint '**/*.{tsx,ts,js,jsx}' --fix",
+    "secrets": "yarn secrets:logout && yarn secrets:login 'yarn secrets:sync'",
     "secrets:logout": "(bw logout || true)",
     "secrets:login": "cross-env-shell BW_SESSION=`bw login product@bitsofgood.org --raw`",
-    "secrets:sync": "bw sync && bw get item gen-soln/.env | fx .notes > '.env'"
+    "secrets:sync": "bw sync && bw get item gen-soln/.env.local | fx .notes > '.env.local' && bw get item gen-soln/.env.development.local | fx .notes > '.env.development.local'"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.2",
@@ -42,8 +42,9 @@
     "@types/material-ui": "^0.21.7",
     "@types/node": "^14.6.0",
     "@types/react": "^16.9.47",
-    "@typescript-eslint/eslint-plugin": "^2.19.0",
-    "@typescript-eslint/parser": "^2.19.0",
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
+    "@typescript-eslint/parser": "^3.10.1",
+    "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.2",
     "eslint": "^7.1.0",
     "eslint-config-prettier": "^6.11.0",
@@ -65,7 +66,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{tsx,ts,js,jsx,json}": [
+    "**/*.{tsx,ts,js,jsx}": [
       "eslint --fix --plugin tsc --rule 'tsc/config: [2, {configFile: \"./tsconfig.json\"}]'"
     ]
   }

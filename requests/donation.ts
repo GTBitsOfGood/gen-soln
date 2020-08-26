@@ -2,7 +2,7 @@ import urls from "config";
 import { fetchRequestWithPayloadResponse } from "utils/util";
 import { Donation } from "utils/types";
 
-export const createPaymentIntent = async (amount: number) =>
+export const createPaymentIntent = async (amount: number): Promise<string> =>
   fetchRequestWithPayloadResponse<string>(urls.apis.paymentIntents, {
     method: "post",
     headers: {
@@ -16,7 +16,7 @@ export const createDonation = async ({
   email,
   amount,
   nonprofitId
-}: Omit<Donation, "timestamp">) =>
+}: Omit<Donation, "timestamp">): Promise<boolean> =>
   fetchRequestWithPayloadResponse<boolean>(urls.apis.createDonation, {
     method: "post",
     headers: {

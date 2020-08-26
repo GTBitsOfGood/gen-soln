@@ -67,12 +67,12 @@ const DonationPageHeaderSelect: React.FC<DropdownProps> = ({
       Router.events.on("routeChangeStart", routeChangeStart);
       Router.events.on("routeChangeComplete", routeChangeComplete);
 
-      router.push(
+      void router.push(
         urls.pages.donate(),
         urls.pages.donate(event.target.value as string)
       );
     },
-    [router, selectedValue, routeChangeStart, routeChangeComplete]
+    [router, routeChangeStart, routeChangeComplete]
   );
 
   useEffect(() => {

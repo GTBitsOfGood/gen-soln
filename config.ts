@@ -1,13 +1,21 @@
+const isDevEnv = process.env.NODE_ENV === "development";
+
 export default {
-  // These env variables may not work on client side
-  dbUrl: process.env.DB_URL,
-  dbName: process.env.DB_NAME,
-  jwtSecret: process.env.JWT_SECRET,
-  stripeSecret: process.env.STRIPE_SECRET,
+  dbName: isDevEnv ? process.env.DEV_DB_NAME : process.env.PROD_DB_NAME,
+  dbUrl: isDevEnv ? process.env.DEV_DB_URL : process.env.PROD_DB_URL,
+  jwtSecret: isDevEnv
+    ? process.env.DEV_JWT_SECRET
+    : process.env.PROD_JWT_SECRET,
+  stripePublishable: isDevEnv
+    ? process.env.NEXT_PUBLIC_DEV_STRIPE_PUBLISHABLE
+    : process.env.NEXT_PUBLIC_PROD_STRIPE_PUBLISHABLE,
+  stripeSecret: isDevEnv
+    ? process.env.DEV_STRIPE_SECRET
+    : process.env.PROD_STRIPE_SECRET,
   pages: {
     index: "/",
     login: "/login",
-    donate: (path = "[id]") => `/donate/${path}`
+    donate: (path = "[id]"): string => `/donate/${path}`
   },
   apis: {
     login: "/api/login",

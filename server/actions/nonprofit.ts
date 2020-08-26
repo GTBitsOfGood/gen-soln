@@ -50,7 +50,7 @@ export async function getNonprofitById(_id: string) {
   return Nonprofit.findOne({ _id }, { donations: 0 }).lean() as NonprofitType;
 }
 
-export async function getDefaultNonprofitId() {
+export async function getDefaultNonprofitId(): Promise<string> {
   await Mongo();
 
   const result = (await Nonprofit.find({}, { _id: 1 })

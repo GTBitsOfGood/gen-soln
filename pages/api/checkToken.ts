@@ -5,5 +5,8 @@ import { handleRequestWithPayloadResponse } from "utils/util";
 // @route   POST api/checkToken
 // @desc    Verifies Admin Token
 // @access  Public
-export default async (req: NextApiRequest, res: NextApiResponse) =>
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> =>
   await handleRequestWithPayloadResponse(req, res, checkToken, ["token"]);

@@ -9,7 +9,6 @@ import config from "config";
 const SALT_ROUNDS = 10;
 const JWT_EXPIRES_IN = "1d";
 
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 const jwtSignAdmin = ({ _id, firstName, lastName, email, nonprofitId }) =>
   jwt.sign(
     {

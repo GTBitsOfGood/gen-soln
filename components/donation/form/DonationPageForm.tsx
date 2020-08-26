@@ -129,7 +129,7 @@ const DonationPageForm: React.FC<Props> = ({
         } catch (err) {
           // TODO: Not sure how else to handle and display the error
           setIsSubmitting(false);
-          alert(err.message);
+          err instanceof Error && alert(err.message);
         }
       } else {
         dispatch(incrementStep());

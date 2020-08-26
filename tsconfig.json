@@ -19,13 +19,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": [
-    "next-env.d.ts",
-    ".eslintrc.json",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx",
-    "**/*.json"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"]
 }
