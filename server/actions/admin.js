@@ -31,13 +31,13 @@ export async function login({ email, password }) {
   const admin = await Admin.findOne({ email });
   if (admin) {
     if (!(await bcrypt.compare(password, admin.password))) {
-      throw new Error(errors.admin.INVALID_PASSWORD);
+      throw new Error(errors.admin.INVALID_LOGIN);
     }
 
     return jwtSignAdmin(admin);
   }
 
-  throw new Error(errors.admin.INVALID_EMAIL);
+  throw new Error(errors.admin.INVALID_LOGIN);
 }
 
 export async function signup({
@@ -49,11 +49,11 @@ export async function signup({
 }) {
   await Mongo();
 
-  if (await Admin.findOne({ email })) {
+  if (await Admin.exists({ email })) {
     throw new Error(errors.admin.USER_EXISTS);
   }
 
-  const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
+  const nonprofit = await Nonprofit.exists({ _id: nonprofitId });
   if (nonprofit) {
     const admin = await Admin.create({
       firstName,

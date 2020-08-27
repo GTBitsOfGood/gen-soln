@@ -11,10 +11,8 @@ export default {
   },
   apis: {
     login: "/api/login",
-    signup: "/api/signup",
     checkToken: "/api/checkToken",
     createDonation: "/api/createDonation",
-    createNonprofit: "/api/createNonprofit",
     paymentIntents: "/api/paymentIntents",
     // Remove this endpoint when we no longer need to redirect from index.ts
     getDefaultNonprofitId: "/api/getDefaultNonprofitId"

@@ -8,14 +8,12 @@ import cookie from "js-cookie";
 
 import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 import AuthPageForm from "./AuthPageForm";
-import LoginFormEmailField, {
-  EMAIL_INPUT_FIELD_NAME
-} from "./LoginFormEmailField";
-import LoginFormPasswordField, {
+import EmailTextField, { EMAIL_INPUT_FIELD_NAME } from "./EmailTextField";
+import PasswordTextField, {
   PASSWORD_INPUT_FIELD_NAME
-} from "./LoginFormPasswordField";
+} from "./PasswordTextField";
 
-import { ContentComponentProps } from "./types";
+import { ContentComponentProps } from "../types";
 
 const LoginFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
@@ -39,9 +37,8 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
         router.push(urls.pages.index);
       } catch (err) {
         setError(
-          err.message === errors.admin.INVALID_EMAIL ||
-            err.message === errors.admin.INVALID_PASSWORD
-            ? "Incorrect email or password."
+          err.message === errors.admin.INVALID_LOGIN
+            ? errors.admin.INVALID_LOGIN
             : "An unexpected error occurred."
         );
         stopLoading();
@@ -70,11 +67,8 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
         </ButtonWithLowercaseText>
       }
     >
-      <LoginFormEmailField hasError={Boolean(error)} />
-      <LoginFormPasswordField
-        hasError={Boolean(error)}
-        hasErrorHelperText={error}
-      />
+      <EmailTextField hasError={Boolean(error)} />
+      <PasswordTextField hasError={Boolean(error)} hasErrorHelperText={error} />
     </AuthPageForm>
   );
 };
