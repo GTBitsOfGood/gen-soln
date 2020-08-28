@@ -4,31 +4,20 @@
     "browser": true,
     "es6": true
   },
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
-  "plugins": ["@typescript-eslint"],
+  "parser": "babel-eslint",
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:jsx-a11y/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:import/typescript",
-    "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
   "rules": {
     "react/prop-types": "off",
     "react/display-name": "off",
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/ban-ts-ignore": "off",
-    "@typescript-eslint/require-await": "warn",
     "import/no-unresolved": "off"
   },
   "settings": {
@@ -38,9 +27,39 @@
   },
   "overrides": [
     {
-      "files": ["*.js", "*.jsx"],
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "plugins": ["@typescript-eslint"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:jsx-a11y/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended"
+      ],
       "rules": {
-        "@typescript-eslint/no-var-requires": "off"
+        "react/prop-types": "off",
+        "react/display-name": "off",
+        "react/react-in-jsx-scope": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/ban-ts-ignore": "off",
+        "@typescript-eslint/require-await": "warn",
+        "@typescript-eslint/ban-ts-comment": [
+          "warn",
+          {
+            "ts-ignore": "allow-with-description"
+          }
+        ],
+        "import/no-unresolved": "off"
       }
     }
   ]

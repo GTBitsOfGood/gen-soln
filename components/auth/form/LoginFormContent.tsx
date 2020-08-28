@@ -34,13 +34,16 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
          * If a user logs in again, the expired token will be re-written with a freshly generated one. */
         cookie.set("token", await login(email, password));
         // Currently, it takes a long time to navigate and load the index page, so don't stop loading:
-        router.push(urls.pages.index);
+        void router.push(urls.pages.index);
       } catch (err) {
-        setError(
+        let message;
+        if (
+          err instanceof Error &&
           err.message === errors.admin.INVALID_LOGIN
-            ? errors.admin.INVALID_LOGIN
-            : "An unexpected error occurred."
-        );
+        ) {
+          message = errors.admin.INVALID_LOGIN;
+        }
+        setError(message ?? errors.GENERIC_TEXT);
         stopLoading();
       }
     },

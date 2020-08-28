@@ -7,12 +7,15 @@ import { createPaymentIntent } from "requests/donation";
 
 const CENTS_IN_DOLLAR = 100;
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const useStripePayment = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const isReady = useMemo(() => stripe && elements, [stripe, elements]);
-  /* eslint-disable @typescript-eslint/camelcase */
+  const isReady = useMemo(() => stripe != null && elements != null, [
+    stripe,
+    elements
+  ]);
   const processPayment = useCallback(
     async (name: string, email: string, zipcode: string, amount: number) => {
       if (!elements || !stripe) {
@@ -63,7 +66,6 @@ const useStripePayment = () => {
     },
     [elements, stripe]
   );
-  /* eslint-enable @typescript-eslint/camelcase */
 
   return { isReady, processPayment };
 };

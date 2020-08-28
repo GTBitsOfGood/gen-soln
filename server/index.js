@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import config from "config";
 
-export default async () => {
+const MongoConnect = async () => {
   if (mongoose.connections[0].readyState) return;
 
   await mongoose
@@ -19,3 +19,5 @@ export default async () => {
       throw error;
     });
 };
+
+export default MongoConnect;

@@ -17,13 +17,13 @@ type Props = React.ComponentProps<typeof TextField> & {
 };
 
 // Code based on https://codesandbox.io/s/stripe-0xez4
-const StripeTextField = ({
+const StripeTextField: React.FC<Props> = ({
   stripeElement,
   setHasCompleted,
   InputLabelProps,
   InputProps,
   ...other
-}: Props) => {
+}) => {
   const [error, setError] = useState("");
 
   return (
@@ -42,7 +42,7 @@ const StripeTextField = ({
       error={Boolean(error)}
       helperText={error}
       onChange={e => {
-        // @ts-ignore
+        // @ts-ignore Stripe will ensure that this error is of the right type
         const stripeEvent = e as stripeJs.StripeElementChangeEvent;
         setError(stripeEvent.error?.message ?? "");
         setHasCompleted(stripeEvent.complete);

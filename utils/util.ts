@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import fetch from "isomorphic-unfetch";
+import errors from "utils/errors";
 
 interface APISuccessResponse<T> {
   success: true;
@@ -17,12 +18,12 @@ export const handleRequestWithPayloadResponse = async <T>(
   res: NextApiResponse,
   callback: (body: NextApiRequest["body"]) => Promise<T>,
   bodyHasProperties: string[] = []
-) => {
+): Promise<void> => {
   try {
     if (bodyHasProperties.some(property => !(property in req.body))) {
       res.status(400).json({
         success: false,
-        message: `One or more of the following properties was missing in req.body: [${bodyHasProperties}]`
+        message: `One or more of the following properties was missing in req.body: [${bodyHasProperties.toString()}]`
       });
 
       return;
@@ -36,7 +37,7 @@ export const handleRequestWithPayloadResponse = async <T>(
   } catch (error) {
     const response: APIFailureResponse = {
       success: false,
-      message: error.message
+      message: (error instanceof Error && error.message) || errors.GENERIC_TEXT
     };
     res.status(400).json(response);
   }
@@ -46,7 +47,7 @@ export const handleRequestWithPayloadResponse = async <T>(
 export const fetchRequestWithPayloadResponse = async <T>(
   url: RequestInfo,
   options: RequestInit = {}
-) => {
+): Promise<T> => {
   const res = await fetch(url, {
     mode: "same-origin",
     ...options

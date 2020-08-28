@@ -2,7 +2,7 @@ import {
   Palette,
   PaletteOptions
 } from "@material-ui/core/styles/createPalette";
-import { ThemeOptions, Theme } from "@material-ui/core/styles/createMuiTheme";
+import { ThemeOptions, Theme } from "@material-ui/core/styles";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
@@ -50,7 +50,7 @@ declare module "@material-ui/core/styles/createPalette" {
   }
 }
 
-declare module "@material-ui/core/styles/createMuiTheme" {
+declare module "@material-ui/core/styles" {
   interface Theme {
     margins: Record<Spacing, string>;
     nonprofitBackgroundImage: Nonprofit["background"];
