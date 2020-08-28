@@ -15,7 +15,6 @@ From https://github.com/GTBitsOfGood/nextjs-starter-typescript
 - Run the dev version of this project by entering `yarn dev`.
 
 ### PR/Issue Guidelines
-- Fork this repository to your personal Github account
 - Once you have forked the repo, create a new branch with the feature name that you are implementing
 - When you have finished implementing your feature, push your code changes to the branch that you just created
 - Create a PR to merge the branch that you worked on with the develop branch of the GTBitsOfGood repository 
