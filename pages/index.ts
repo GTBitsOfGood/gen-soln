@@ -24,7 +24,7 @@ IndexPage.getInitialProps = async ({ res }) => {
   } else {
     // client-side code:
     const id = await getDefaultNonprofitIdRequest();
-    Router.push(urls.pages.donate(id));
+    void Router.push(urls.pages.donate(id));
   }
 
   // Literally return any object instead of an empty one to allow Next.js optimization

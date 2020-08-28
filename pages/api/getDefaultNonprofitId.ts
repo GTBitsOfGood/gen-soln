@@ -5,5 +5,8 @@ import { handleRequestWithPayloadResponse } from "utils/util";
 // @route   GET api/getDefaultNonprofitId
 // @desc    Get the default Nonprofit's ID
 // @access  Public
-export default async (req: NextApiRequest, res: NextApiResponse) =>
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> =>
   await handleRequestWithPayloadResponse(req, res, getDefaultNonprofitId);

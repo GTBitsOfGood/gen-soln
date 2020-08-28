@@ -17,7 +17,7 @@ export async function createDonation({
   email,
   amount,
   nonprofitId
-}: DonationType) {
+}: DonationType): Promise<boolean> {
   await Mongo();
 
   const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
@@ -39,7 +39,9 @@ export async function createDonation({
   return true;
 }
 
-export async function createPaymentIntent({ amount }: NextApiRequest["body"]) {
+export async function createPaymentIntent({
+  amount
+}: NextApiRequest["body"]): Promise<Stripe.PaymentIntent["client_secret"]> {
   const paymentIntent = await stripe.paymentIntents.create({
     amount,
     currency: "usd"

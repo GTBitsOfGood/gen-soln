@@ -7,19 +7,20 @@ import createNonprofitMuiTheme from "utils/theme";
 import { Nonprofit } from "utils/types";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import config from "config";
 
-// Accessing env variables on client side in Next.js is a bit weird. See next.config.js
 /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE!);
+const stripePromise = loadStripe(config.stripePublishable!);
 
 export default class MyApp extends App {
-  componentDidMount() {
+  componentDidMount(): void {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
     jssStyles?.parentElement?.removeChild(jssStyles);
   }
 
-  render() {
+  render(): JSX.Element {
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
     const { Component, pageProps } = this.props;
 
     return (
@@ -33,7 +34,10 @@ export default class MyApp extends App {
         </Head>
         <ThemeProvider
           theme={createNonprofitMuiTheme(
-            pageProps.nonprofit as Nonprofit | undefined
+            "nonprofit" in pageProps
+              ? /*eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */
+                (pageProps.nonprofit as Nonprofit)
+              : undefined
           )}
         >
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}

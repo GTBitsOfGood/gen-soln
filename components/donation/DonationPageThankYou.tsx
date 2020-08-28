@@ -76,7 +76,7 @@ const DonationPageThankYou: React.FC = () => {
         <div className={buttonContainer}>
           <ButtonWithNonprofitColor
             onClick={() => {
-              router.push(urls.pages.index);
+              void router.push(urls.pages.index);
             }}
           >
             Visit Site

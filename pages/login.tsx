@@ -24,7 +24,7 @@ LoginPage.getInitialProps = async ctx => {
       } else {
         // client-side code:
         await checkTokenRequest(token);
-        Router.push(urls.pages.index);
+        void Router.push(urls.pages.index);
       }
     }
   } catch (e) {

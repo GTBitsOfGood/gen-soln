@@ -5,7 +5,10 @@ import { handleRequestWithPayloadResponse } from "utils/util";
 // @route   POST api/createDonation
 // @desc    Creates a Donation
 // @access  Public
-export default async (req: NextApiRequest, res: NextApiResponse) =>
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> =>
   await handleRequestWithPayloadResponse(req, res, createDonation, [
     "name",
     "email",

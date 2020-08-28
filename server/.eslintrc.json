@@ -1,0 +1,10 @@
+{
+  // Our Mongoose models are not typed, so code in server/ will throw several TS eslint errors
+  "rules": {
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+  }
+}

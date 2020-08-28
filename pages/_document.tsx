@@ -4,7 +4,7 @@ import { ServerStyleSheets } from "@material-ui/core/styles";
 import { MAIN } from "utils/theme";
 
 export default class MyDocument extends Document {
-  render() {
+  render(): JSX.Element {
     return (
       <Html>
         <Head>

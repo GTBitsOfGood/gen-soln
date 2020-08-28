@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme, Theme } from "@material-ui/core/styles";
 
 import { Spacing, Nonprofit } from "./types";
 
@@ -11,7 +11,7 @@ const margins: Record<Spacing, string> = {
 // Created a special variable for primary color since it is imported by _document.tsx
 export const MAIN = "#403C70";
 
-const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined) =>
+const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined): Theme =>
   createMuiTheme({
     palette: {
       primary: {
