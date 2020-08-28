@@ -6,7 +6,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import Typography from "@material-ui/core/Typography";
 
-import urls from "config";
+import config from "config";
 
 import ButtonWithNonprofitColor from "components/ButtonWithNonprofitColor";
 
@@ -76,7 +76,7 @@ const DonationPageThankYou: React.FC = () => {
         <div className={buttonContainer}>
           <ButtonWithNonprofitColor
             onClick={() => {
-              void router.push(urls.pages.index);
+              void router.push(config.pages.index);
             }}
           >
             Visit Site

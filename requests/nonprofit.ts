@@ -1,5 +1,5 @@
-import urls from "config";
+import config from "config";
 import { fetchRequestWithPayloadResponse } from "utils/util";
 
 export const getDefaultNonprofitIdRequest = async (): Promise<string> =>
-  fetchRequestWithPayloadResponse<string>(urls.apis.getDefaultNonprofitId);
+  fetchRequestWithPayloadResponse<string>(config.apis.getDefaultNonprofitId);

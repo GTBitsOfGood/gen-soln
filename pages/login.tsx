@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import nextCookie from "next-cookies";
 import Router from "next/router";
 
-import urls from "config";
+import config from "config";
 
 import AuthPage from "components/auth/AuthPage";
 
@@ -20,11 +20,11 @@ LoginPage.getInitialProps = async ctx => {
       if (ctx.res) {
         // server-side code:
         checkToken({ token });
-        ctx.res.writeHead(302, { Location: urls.pages.index }).end();
+        ctx.res.writeHead(302, { Location: config.pages.index }).end();
       } else {
         // client-side code:
         await checkTokenRequest(token);
-        void Router.push(urls.pages.index);
+        void Router.push(config.pages.index);
       }
     }
   } catch (e) {
