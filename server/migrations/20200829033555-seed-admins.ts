@@ -16,7 +16,7 @@ export const up: MigrationFunction = async (db: Db) => {
 
   await db
     .collection("admins")
-    .insert({ ...admin, nonprofitId: idObject?._id });
+    .insertOne({ ...admin, nonprofitId: idObject?._id });
 };
 
 export const down: MigrationFunction = async (db: Db) => {

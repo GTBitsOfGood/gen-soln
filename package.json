@@ -77,6 +77,8 @@
     ]
   },
   "_moduleAliases": {
+    "server": "server",
+    "utils": "utils",
     "config": "config.ts"
   }
 }
