@@ -10,9 +10,9 @@ import {
   ILoginInput,
   ISignupInput,
   ICheckTokenInput,
-  ITokenPayload
-} from "server/types/admin";
-import { IAdmin } from "utils/types";
+  ITokenPayload,
+  IAdmin
+} from "utils/types";
 
 const SALT_ROUNDS = 10;
 const JWT_EXPIRES_IN = "1d";

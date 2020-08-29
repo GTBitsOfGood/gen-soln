@@ -7,6 +7,33 @@ import { Document } from "mongoose";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
+export interface ISignTokenInput {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  nonprofitId: string;
+}
+
+export interface ILoginInput {
+  email: string;
+  password: string;
+}
+
+export type ISignupInput = IAdmin;
+
+export interface ICheckTokenInput {
+  token: string;
+}
+
+export interface ITokenPayload {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  nonprofitId: string;
+}
+
 export interface IAdmin extends Document {
   firstName: string;
   lastName: string;
