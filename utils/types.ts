@@ -3,7 +3,7 @@ import {
   PaletteOptions
 } from "@material-ui/core/styles/createPalette";
 import { ThemeOptions, Theme } from "@material-ui/core/styles";
-import { Document } from "mongoose";
+import { Document, Schema } from "mongoose";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
@@ -20,7 +20,7 @@ export interface ILoginInput {
   password: string;
 }
 
-export type ISignupInput = IAdmin;
+export type ISignupInput = Admin;
 
 export interface ICheckTokenInput {
   token: string;
@@ -34,14 +34,21 @@ export interface ITokenPayload {
   nonprofitId: string;
 }
 
-export interface IAdmin extends Document {
+export interface IAdminDocument extends Document, Admin {}
+
+export interface INonprofitDocument extends Document, Nonprofit {
+  _id: string;
+}
+
+export interface IDonationDocument extends Document, Donation {}
+
+export interface Admin {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   nonprofitId: string;
 }
-
 // Keep in sync with the backend schema
 export interface Nonprofit {
   _id: string;
@@ -52,7 +59,7 @@ export interface Nonprofit {
   logo: string;
   primaryColor: string;
   secondaryColor: string;
-  // TODO: consider adding the donations field?
+  donations: Schema.Types.ObjectId[];
 }
 
 // Keep in sync with the backend schema

@@ -1,5 +1,5 @@
 import { Schema, model, models, Model } from "mongoose";
-import { IDonation } from "server/types/models";
+import { IDonationDocument } from "utils/types";
 
 // Keep in sync with utils/types Donation
 const donationSchema: Schema = new Schema({
@@ -26,7 +26,7 @@ const donationSchema: Schema = new Schema({
   }
 });
 
-const donationModel: Model<IDonation> =
+const donationModel: Model<IDonationDocument> =
   models?.Donation || model("Donation", donationSchema);
 
 export default donationModel;

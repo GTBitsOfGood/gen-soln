@@ -1,5 +1,5 @@
 import { Schema, model, models, Model } from "mongoose";
-import { IAdmin } from "utils/types";
+import { IAdminDocument } from "utils/types";
 
 const adminSchema: Schema = new Schema({
   firstName: {
@@ -26,6 +26,7 @@ const adminSchema: Schema = new Schema({
   }
 });
 
-const adminModel: Model<IAdmin> = models?.Admin || model("Admin", adminSchema);
+const adminModel: Model<IAdminDocument> =
+  models?.Admin || model("Admin", adminSchema);
 
 export default adminModel;

@@ -11,7 +11,7 @@ import {
   ISignupInput,
   ICheckTokenInput,
   ITokenPayload,
-  IAdmin
+  IAdminDocument
 } from "utils/types";
 
 const SALT_ROUNDS = 10;
@@ -44,7 +44,7 @@ export async function login({
 }: ILoginInput): Promise<string | never> {
   await Mongo();
 
-  const admin: IAdmin | null = await Admin.findOne({ email });
+  const admin: IAdminDocument | null = await Admin.findOne({ email });
   if (admin) {
     if (!(await bcrypt.compare(password, admin.password))) {
       throw new Error(errors.admin.INVALID_LOGIN);
@@ -71,7 +71,7 @@ export async function signup({
 
   const nonprofit: boolean = await Nonprofit.exists({ _id: nonprofitId });
   if (nonprofit) {
-    const admin: IAdmin = await Admin.create({
+    const admin: IAdminDocument = await Admin.create({
       firstName,
       lastName,
       email,

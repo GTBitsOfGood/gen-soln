@@ -1,5 +1,5 @@
 import { Schema, model, models, Model } from "mongoose";
-import { INonprofit } from "server/types/models";
+import { INonprofitDocument } from "utils/types";
 import nano from "nanoid";
 
 const ALPHABET = "0123456789";
@@ -48,7 +48,7 @@ const nonprofitSchema: Schema = new Schema({
   }
 });
 
-const Nonprofit: Model<INonprofit> =
+const Nonprofit: Model<INonprofitDocument> =
   models?.Nonprofit || model("Nonprofit", nonprofitSchema);
 
 export default Nonprofit;
