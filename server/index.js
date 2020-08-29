@@ -6,10 +6,7 @@ const MongoConnect = async () => {
 
   await mongoose
     .connect(config.dbUrl, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-      useCreateIndex: true,
+      ...config.dbOptions,
       dbName: config.dbName
     })
     .catch(error => {
