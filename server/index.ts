@@ -1,20 +1,20 @@
 import mongoose from "mongoose";
 import config from "config";
 
-const MongoConnect = async () => {
+const MongoConnect = async (): Promise<void | never> => {
   if (mongoose.connections[0].readyState) return;
 
   await mongoose
-    .connect(config.dbUrl, {
+    .connect(config.dbUrl!, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
       useCreateIndex: true,
       dbName: config.dbName
     })
-    .catch(error => {
+    .catch((error: Error) => {
       console.error("Database connection failed. 👇🏼");
-      console.error(" > " + error);
+      console.error(" > " + error.toString());
 
       throw error;
     });
