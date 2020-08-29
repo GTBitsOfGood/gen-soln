@@ -1,14 +1,14 @@
-const mongoose = require("mongoose");
-const customAlphabet = require("nanoid").customAlphabet;
-const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
+import { Schema, model, models, Model } from "mongoose";
+import { INonprofit } from "server/types/models";
+import nano from "nanoid";
 
 const ALPHABET = "0123456789";
 const ID_LENGTH = 8;
-const nanoid = customAlphabet(ALPHABET, ID_LENGTH);
+
+const nanoid: () => string = nano.customAlphabet(ALPHABET, ID_LENGTH);
 
 // Keep in sync with utils/types Nonprofit
-const nonprofitSchema = new Schema({
+const nonprofitSchema: Schema = new Schema({
   _id: {
     type: String,
     default: () => nanoid() // we can now use _id as a URL slug!
@@ -43,10 +43,12 @@ const nonprofitSchema = new Schema({
     required: true
   },
   donations: {
-    type: [ObjectId],
+    type: [Schema.Types.ObjectId],
     ref: "Donation"
   }
 });
 
-module.exports =
-  mongoose.models?.Nonprofit || mongoose.model("Nonprofit", nonprofitSchema);
+const Nonprofit: Model<INonprofit> =
+  models?.Nonprofit || model("Nonprofit", nonprofitSchema);
+
+export default Nonprofit;

@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Schema } from "mongoose";
 
 export interface IAdmin extends Document {
   firstName: string;
@@ -14,4 +14,15 @@ export interface IDonation extends Document {
   amount: string;
   nonprofitId: string;
   timestamp: Date;
+}
+
+export interface INonprofit extends Document {
+  name: string;
+  headline: string;
+  about: string;
+  background: string;
+  logo: string;
+  primaryColor: string;
+  secondaryColor: string;
+  donations: Schema.Types.ObjectId[];
 }
