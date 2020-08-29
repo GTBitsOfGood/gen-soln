@@ -18,7 +18,7 @@ export async function createNonprofit({
     throw new Error(errors.nonprofit.ALREADY_EXISTS);
   }
 
-  return Nonprofit.create({
+  return await Nonprofit.create({
     name,
     headline,
     about,
@@ -32,7 +32,9 @@ export async function createNonprofit({
 export async function getNonprofitNames() {
   await Mongo();
 
-  return Nonprofit.find({}, { name: 1 }).lean().sort({ name: 1 }) as Array<
+  return (await Nonprofit.find({}, { name: 1 })
+    .lean()
+    .sort({ name: 1 })) as Array<
     Pick<NonprofitType, "name"> & Pick<NonprofitType, "_id">
   >;
 }
@@ -40,14 +42,17 @@ export async function getNonprofitNames() {
 export async function getNonprofitIds() {
   await Mongo();
 
-  return Nonprofit.distinct("_id") as string[];
+  return (await Nonprofit.distinct("_id")) as string[];
 }
 
 export async function getNonprofitById(_id: string) {
   await Mongo();
 
   // Exclude donation information for now:
-  return Nonprofit.findOne({ _id }, { donations: 0 }).lean() as NonprofitType;
+  return (await Nonprofit.findOne(
+    { _id },
+    { donations: 0 }
+  ).lean()) as NonprofitType;
 }
 
 export async function getDefaultNonprofitId(): Promise<string> {
