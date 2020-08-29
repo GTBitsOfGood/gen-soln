@@ -38,10 +38,6 @@ const nonprofitSchema = new Schema({
     type: String,
     required: true
   },
-  rand: {
-    type: String,
-    required: true
-  },
   secondaryColor: {
     type: String,
     required: true
