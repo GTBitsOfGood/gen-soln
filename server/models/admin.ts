@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import { Schema, model, models, Model } from "mongoose";
+import { IAdmin } from "server/types/models";
 
-const adminSchema = new Schema({
+const adminSchema: Schema = new Schema({
   firstName: {
     type: String,
     required: true
@@ -26,4 +26,6 @@ const adminSchema = new Schema({
   }
 });
 
-module.exports = mongoose.models?.Admin || mongoose.model("Admin", adminSchema);
+const adminModel: Model<IAdmin> = models?.Admin || model("Admin", adminSchema);
+
+export default adminModel;
