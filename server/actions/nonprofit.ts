@@ -1,7 +1,7 @@
 import Mongo from "server/index";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
-import { Nonprofit as NonprofitType, IDonationDocument } from "utils/types";
+import { Nonprofit as NonprofitType } from "utils/types";
 
 export async function createNonprofit({
   name,
@@ -30,7 +30,7 @@ export async function createNonprofit({
 }
 
 export async function getNonprofitNames(): Promise<
-  Array<Pick<IDonationDocument, "name">>
+  Array<Pick<NonprofitType, "name"> & Pick<NonprofitType, "_id">>
 > {
   await Mongo();
 
