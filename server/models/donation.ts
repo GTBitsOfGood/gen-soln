@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import { Schema, model, models, Model } from "mongoose";
+import { IDonation } from "server/types/models";
 
 // Keep in sync with utils/types Donation
-const donationSchema = new Schema({
+const donationSchema: Schema = new Schema({
   name: {
     type: String,
     required: true
@@ -26,5 +26,7 @@ const donationSchema = new Schema({
   }
 });
 
-module.exports =
-  mongoose.models?.Donation || mongoose.model("Donation", donationSchema);
+const Donation: Model<IDonation> =
+  models?.Donation || model("Donation", donationSchema);
+
+export default Donation;
