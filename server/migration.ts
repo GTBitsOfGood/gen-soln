@@ -10,13 +10,11 @@ const envFiles = [".env.local", ".env.development.local", ".env.development"];
 envFiles.forEach(envFile => void dotenv.config({ path: `${envFile}` }));
 
 // Code based on https://github.com/seppevs/migrate-mongo/blob/master/bin/migrate-mongo.js
-import { create, up, down, status, config } from "migrate-mongo";
+import { create, up, down, status, config, database } from "migrate-mongo";
 import program from "commander";
-import mongoose from "mongoose";
 import Table from "cli-table3";
 import lodash from "lodash";
 
-import MongoConnect from "server/index";
 import appConfig from "config";
 
 type MIGRATION_DIRECTION = "UP" | "DOWN";
@@ -52,8 +50,7 @@ async function createMigrationFile(description: string) {
 
 async function migrate(direction: MIGRATION_DIRECTION) {
   try {
-    await MongoConnect();
-    const { db } = mongoose.connection;
+    const { db } = await database.connect();
 
     let migrated;
     switch (direction) {
@@ -81,8 +78,7 @@ async function migrate(direction: MIGRATION_DIRECTION) {
 
 async function getMigrationStatus() {
   try {
-    await MongoConnect();
-    const { db } = mongoose.connection;
+    const { db } = await database.connect();
 
     const statusItems = await status(db);
     const table = new Table({ head: ["Filename", "Applied At"] });
