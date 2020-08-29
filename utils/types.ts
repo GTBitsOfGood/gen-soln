@@ -3,8 +3,17 @@ import {
   PaletteOptions
 } from "@material-ui/core/styles/createPalette";
 import { ThemeOptions, Theme } from "@material-ui/core/styles";
+import { Document } from "mongoose";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
+
+export interface IAdmin extends Document {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  nonprofitId: string;
+}
 
 // Keep in sync with the backend schema
 export interface Nonprofit {

@@ -26,7 +26,7 @@ const donationSchema: Schema = new Schema({
   }
 });
 
-const Donation: Model<IDonation> =
+const donationModel: Model<IDonation> =
   models?.Donation || model("Donation", donationSchema);
 
-export default Donation;
+export default donationModel;
