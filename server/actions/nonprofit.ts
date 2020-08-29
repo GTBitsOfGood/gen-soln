@@ -1,7 +1,7 @@
 import Mongo from "server/index";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
-import { Nonprofit as NonprofitType } from "utils/types";
+import { Nonprofit as NonprofitType, IDonationDocument } from "utils/types";
 
 export async function createNonprofit({
   name,
@@ -26,34 +26,39 @@ export async function createNonprofit({
     logo,
     primaryColor,
     secondaryColor
-  });
+  } as NonprofitType);
 }
 
-export async function getNonprofitNames() {
+export async function getNonprofitNames(): Promise<
+  Array<Pick<IDonationDocument, "name">>
+> {
   await Mongo();
 
-  return Nonprofit.find({}, { name: 1 }).lean().sort({ name: 1 }) as Array<
-    Pick<NonprofitType, "name"> & Pick<NonprofitType, "_id">
-  >;
+  return Nonprofit.find({}, { name: 1 }).lean().sort({ name: 1 });
 }
 
-export async function getNonprofitIds() {
+export async function getNonprofitIds(): Promise<string[]> {
   await Mongo();
 
-  return Nonprofit.distinct("_id") as string[];
+  return await Nonprofit.distinct("_id");
 }
 
-export async function getNonprofitById(_id: string) {
+export async function getNonprofitById(
+  _id: string
+): Promise<NonprofitType | null> {
   await Mongo();
 
   // Exclude donation information for now:
-  return Nonprofit.findOne({ _id }, { donations: 0 }).lean() as NonprofitType;
+  return Nonprofit.findOne({ _id }, { donations: 0 }).lean();
 }
 
 export async function getDefaultNonprofitId(): Promise<string> {
   await Mongo();
 
-  const result = (await Nonprofit.find({}, { _id: 1 })
+  const result: Pick<NonprofitType, "_id">[] = (await Nonprofit.find(
+    {},
+    { _id: 1 }
+  )
     .lean()
     .sort({ name: 1 })
     .limit(1)) as Array<Pick<NonprofitType, "_id">>;
