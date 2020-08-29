@@ -5,7 +5,11 @@ import Donation from "server/models/donation";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import config from "config";
-import { Donation as DonationType } from "utils/types";
+import {
+  Donation as DonationType,
+  IDonationDocument,
+  INonprofitDocument
+} from "utils/types";
 
 /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
 const stripe = new Stripe(config.stripeSecret!, {
@@ -20,21 +24,23 @@ export async function createDonation({
 }: DonationType): Promise<boolean> {
   await Mongo();
 
-  const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
+  const nonprofit: INonprofitDocument | null = await Nonprofit.findOne({
+    _id: nonprofitId
+  });
 
   if (!nonprofit) {
     throw new Error(errors.donation.INVALID_ORG);
   }
 
-  const donation = await Donation.create({
+  const donation: IDonationDocument = await Donation.create({
     name,
     email,
     amount,
     nonprofitId
-  });
+  } as DonationType);
 
-  nonprofit.donations.push(donation);
-  nonprofit.save();
+  nonprofit.donations.push(donation._id);
+  void nonprofit.save();
 
   return true;
 }
