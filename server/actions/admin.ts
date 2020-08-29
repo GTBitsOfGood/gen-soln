@@ -5,11 +5,24 @@ import Admin from "server/models/admin";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import config from "config";
+import {
+  ISignTokenInput,
+  ILoginInput,
+  ISignupInput,
+  ICheckTokenInput,
+  ITokenPayload
+} from "server/types/admin";
 
 const SALT_ROUNDS = 10;
 const JWT_EXPIRES_IN = "1d";
 
-const jwtSignAdmin = ({ _id, firstName, lastName, email, nonprofitId }) =>
+const jwtSignAdmin = ({
+  _id,
+  firstName,
+  lastName,
+  email,
+  nonprofitId
+}: ISignTokenInput): string =>
   jwt.sign(
     {
       id: _id,
@@ -18,13 +31,16 @@ const jwtSignAdmin = ({ _id, firstName, lastName, email, nonprofitId }) =>
       email,
       nonprofitId
     },
-    config.jwtSecret,
+    config.jwtSecret!,
     {
       expiresIn: JWT_EXPIRES_IN
     }
   );
 
-export async function login({ email, password }) {
+export async function login({
+  email,
+  password
+}: ILoginInput): Promise<string | never> {
   await Mongo();
 
   const admin = await Admin.findOne({ email });
@@ -45,7 +61,7 @@ export async function signup({
   email,
   password,
   nonprofitId
-}) {
+}: ISignupInput): Promise<string | never> {
   await Mongo();
 
   if (await Admin.exists({ email })) {
@@ -68,9 +84,9 @@ export async function signup({
   throw new Error(errors.admin.INVALID_ORG);
 }
 
-export function checkToken({ token }) {
+export function checkToken({ token }: ICheckTokenInput): ITokenPayload | never {
   try {
-    return jwt.verify(token, config.jwtSecret);
+    return jwt.verify(token, config.jwtSecret!) as ITokenPayload;
   } catch {
     throw new Error(errors.admin.INVALID_TOKEN);
   }
