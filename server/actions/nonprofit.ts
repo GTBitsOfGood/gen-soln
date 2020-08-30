@@ -2,6 +2,10 @@ import Mongo from "server/index";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import { Nonprofit as NonprofitType } from "utils/types";
+import { Query } from "mongoose";
+
+type NonprofitNameWithId = Pick<NonprofitType, "name"> &
+  Pick<NonprofitType, "_id">;
 
 export async function createNonprofit({
   name,
@@ -14,10 +18,6 @@ export async function createNonprofit({
 }: NonprofitType) {
   await Mongo();
 
-  if (await Nonprofit.exists({ name })) {
-    throw new Error(errors.nonprofit.ALREADY_EXISTS);
-  }
-
   return Nonprofit.create({
     name,
     headline,
@@ -29,25 +29,34 @@ export async function createNonprofit({
   });
 }
 
-export async function getNonprofitNames() {
+export async function getNonprofitNamesWithIds(): Query<NonprofitNameWithId[]> {
   await Mongo();
 
-  return Nonprofit.find({}, { name: 1 }).lean().sort({ name: 1 }) as Array<
-    Pick<NonprofitType, "name"> & Pick<NonprofitType, "_id">
-  >;
+  return Nonprofit.find({}, { name: 1 }).lean().sort({ name: 1 });
 }
 
-export async function getNonprofitIds() {
+export async function getNonprofitIds(): Query<string[]> {
   await Mongo();
 
-  return Nonprofit.distinct("_id") as string[];
+  return Nonprofit.distinct("_id");
 }
 
-export async function getNonprofitById(_id: string) {
+export async function getNonprofitById(_id: string): Promise<NonprofitType> {
   await Mongo();
 
   // Exclude donation information for now:
-  return Nonprofit.findOne({ _id }, { donations: 0 }).lean() as NonprofitType;
+  const nonprofit = await Nonprofit.findOne({ _id }, { donations: 0 }).lean();
+
+  if (nonprofit == null) {
+    throw new Error(errors.nonprofit.INVALID_ID);
+  }
+
+  if (Array.isArray(nonprofit)) {
+    throw new Error(errors.GENERIC_TEXT);
+  }
+
+  // @ts-ignore: Temporary, until our Nonprofit Mongoose model is typed
+  return nonprofit;
 }
 
 export async function getDefaultNonprofitId(): Promise<string> {

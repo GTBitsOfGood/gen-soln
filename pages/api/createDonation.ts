@@ -3,13 +3,13 @@ import { createDonation } from "server/actions/donation";
 import { handleRequestWithPayloadResponse } from "utils/util";
 
 // @route   POST api/createDonation
-// @desc    Creates a Donation
+// @desc    Logs a Donation in our DB; doesn't process the payment nor interacts with Stripe
 // @access  Public
 export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> =>
-  await handleRequestWithPayloadResponse(req, res, createDonation, [
+  handleRequestWithPayloadResponse(req, res, createDonation, [
     "name",
     "email",
     "amount",

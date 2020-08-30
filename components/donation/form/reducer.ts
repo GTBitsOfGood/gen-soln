@@ -20,7 +20,7 @@ export interface PaymentStepProps {
 
 type State = {
   curStepIndex: number;
-  isContinueButtonDisabled: boolean;
+  isCurStepCompleted: boolean;
   contactStep: ContactStepProps;
   amountStep: AmountStepProps;
   paymentStep: PaymentStepProps;
@@ -33,7 +33,8 @@ export const MAX_OTHER_AMOUNT = "2000";
 
 export const initialState: State = {
   curStepIndex: 0,
-  isContinueButtonDisabled: false,
+  // The first step, DonationPageFormAmountStep, is complete by default since the first radio button is selected
+  isCurStepCompleted: true,
   contactStep: {
     firstName: "",
     lastName: "",
@@ -57,13 +58,13 @@ const { actions, reducer } = createSlice({
     incrementStep(state) {
       state.curStepIndex++;
       // A safe assumption to make, may not always hold true. Also, maybe the form UI takes time to load, in that case it won't be prudent to enable the continue button:
-      state.isContinueButtonDisabled = true;
+      state.isCurStepCompleted = false;
     },
     setStep(state, { payload }: PayloadAction<number>) {
       state.curStepIndex = payload;
     },
-    setIsContinueButtonDisabled(state, { payload }: PayloadAction<boolean>) {
-      state.isContinueButtonDisabled = payload;
+    setIsCurStepCompleted(state, { payload }: PayloadAction<boolean>) {
+      state.isCurStepCompleted = payload;
     },
     setRadioButtonAmount(
       { amountStep },
@@ -97,7 +98,7 @@ export const DonationPageStateDispatch = createContext<Dispatch<
 export const {
   incrementStep,
   setStep,
-  setIsContinueButtonDisabled,
+  setIsCurStepCompleted,
   setRadioButtonAmount,
   setOtherAmount,
   setContactStepField,

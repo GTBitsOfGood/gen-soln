@@ -8,7 +8,7 @@ import {
   ContactStepProps,
   DonationPageStateDispatch,
   setContactStepField,
-  setIsContinueButtonDisabled
+  setIsCurStepCompleted
 } from "./reducer";
 
 const useStyles = makeStyles({
@@ -48,7 +48,8 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
   const dispatch = useContext(DonationPageStateDispatch);
 
   useEffect(() => {
-    dispatch && dispatch(setIsContinueButtonDisabled(false));
+    // For this step, we will defter to the browser's API to indicate when the required TextFields have been filled
+    dispatch && dispatch(setIsCurStepCompleted(true));
   }, [dispatch]);
 
   const onChange = useCallback(

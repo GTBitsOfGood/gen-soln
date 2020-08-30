@@ -14,7 +14,7 @@ import {
   DonationPageStateDispatch,
   setRadioButtonAmount,
   setOtherAmount,
-  setIsContinueButtonDisabled,
+  setIsCurStepCompleted,
   AMOUNTS,
   MIN_OTHER_AMOUNT,
   MAX_OTHER_AMOUNT
@@ -52,16 +52,16 @@ const DonationPageFormAmountStep: React.FC<AmountStepProps> = ({
     radioButtonAmount
   ]);
 
-  const isContinueButtonDisabled = useMemo(
+  const isCurStepCompleted = useMemo(
     () =>
-      hasSelectedOther &&
-      (otherAmount < +MIN_OTHER_AMOUNT || otherAmount > +MAX_OTHER_AMOUNT),
+      !hasSelectedOther ||
+      (otherAmount >= +MIN_OTHER_AMOUNT && otherAmount <= +MAX_OTHER_AMOUNT),
     [hasSelectedOther, otherAmount]
   );
 
   useEffect(() => {
-    dispatch && dispatch(setIsContinueButtonDisabled(isContinueButtonDisabled));
-  }, [dispatch, isContinueButtonDisabled]);
+    dispatch && dispatch(setIsCurStepCompleted(isCurStepCompleted));
+  }, [dispatch, isCurStepCompleted]);
 
   const handleRadioAmountChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
