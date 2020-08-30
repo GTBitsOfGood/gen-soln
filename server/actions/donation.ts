@@ -20,7 +20,7 @@ export async function createDonation({
 }: DonationType): Promise<void> {
   await Mongo();
 
-  const nonprofit = await Nonprofit.findOne({ _id: nonprofitId }).exec();
+  const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
 
   if (!nonprofit) {
     throw new Error(errors.nonprofit.INVALID_ID);
@@ -33,11 +33,9 @@ export async function createDonation({
     nonprofitId
   });
 
-  nonprofit
-    .update({
-      $push: { d: donation }
-    })
-    .exec();
+  nonprofit.update({
+    $push: { d: donation }
+  });
 }
 
 export async function createPaymentIntent({
