@@ -1,4 +1,11 @@
-import React, { useCallback, useMemo, useState, useReducer } from "react";
+import React, {
+  useCallback,
+  useMemo,
+  useState,
+  useReducer,
+  useEffect
+} from "react";
+import { Router } from "next/router";
 import dynamic from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -72,17 +79,12 @@ const DonationPageForm: React.FC<Props> = ({
 }) => {
   const { container, contentContainer } = useStyles();
   const [
-    {
-      curStepIndex,
-      isContinueButtonDisabled,
-      contactStep,
-      amountStep,
-      paymentStep
-    },
+    { curStepIndex, isCurStepCompleted, contactStep, amountStep, paymentStep },
     dispatch
   ] = useReducer(reducer, initialState);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRouteChanging, setIsRouteChanging] = useState(false);
 
   const { isReady, processPayment } = useStripePayment();
 
@@ -172,6 +174,24 @@ const DonationPageForm: React.FC<Props> = ({
     }
   }, [step, contactStep, amountStep, paymentStep]);
 
+  const routeChangeStart = useCallback(() => {
+    setIsRouteChanging(true);
+  }, []);
+
+  useEffect(() => {
+    // No need to call setIsRouteChanging(true) on routeChangeComplete since this entire component in re-mounted when that happens
+    Router.events.on("routeChangeStart", routeChangeStart);
+
+    return () => {
+      Router.events.off("routeChangeStart", routeChangeStart);
+    };
+  }, [routeChangeStart]);
+
+  const isContinueButtonDisabled = useMemo(
+    () => !isCurStepCompleted || !isReady || isSubmitting || isRouteChanging,
+    [isCurStepCompleted, isReady, isSubmitting, isRouteChanging]
+  );
+
   return (
     <DonationPageStateDispatch.Provider value={dispatch}>
       <form className={container} onSubmit={handleSubmit}>
@@ -181,7 +201,7 @@ const DonationPageForm: React.FC<Props> = ({
         />
         <div className={contentContainer}>{componentJSX}</div>
         <DonationPageFormButton
-          disabled={isContinueButtonDisabled || !isReady || isSubmitting}
+          disabled={isContinueButtonDisabled}
           ctaText={ctaText}
           showLoadingIndicator={isSubmitting}
         />
