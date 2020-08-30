@@ -107,32 +107,34 @@ const DonationPageForm: React.FC<Props> = ({
       if (!e.currentTarget.reportValidity()) return;
 
       if (isLastStep) {
+        setIsSubmitting(true);
+        // TODO: Check if we should use paymentStep.name instead
+        const name = `${contactStep.firstName} ${contactStep.lastName}`;
+        const email = contactStep.email;
+
         try {
-          setIsSubmitting(true);
-          // TODO: Check if we should use paymentStep.name instead
-          const name = `${contactStep.firstName} ${contactStep.lastName}`;
-          const email = contactStep.email;
+          // Deliberately limit this try-catch only to Stripe's payment processing.
+          // Catching errors from other miscellaneous code might make it seem like the payment failed, even when it succeeded.
           await processPayment(
             name,
             contactStep.email,
             paymentStep.zipcode,
             amount
           );
-          // TODO: What should we do if Stripe has processed the payment correctly, but our createDonation API call errored?
-          await createDonation({
-            name,
-            email,
-            amount,
-            nonprofitId: selectedNonprofitId
-          });
-
-          donationCompletedCallback();
-          // Don't call setIsSubmitting(false) after this -- donationCompletedCallback() will unmount this component
         } catch (err) {
           // TODO: Not sure how else to handle and display the error
           setIsSubmitting(false);
           err instanceof Error && alert(err.message);
+          return;
         }
+        donationCompletedCallback(); // Don't call setIsSubmitting(false) after this -- donationCompletedCallback() will unmount this component
+        // TODO: What should we do if Stripe has processed the payment correctly, but our createDonation API call errored?
+        void createDonation({
+          name,
+          email,
+          amount,
+          nonprofitId: selectedNonprofitId
+        });
       } else {
         dispatch(incrementStep());
       }

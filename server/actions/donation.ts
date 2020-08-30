@@ -33,9 +33,13 @@ export async function createDonation({
     nonprofitId
   });
 
-  nonprofit.update({
-    $push: { d: donation }
+  const updateQuery = await nonprofit.updateOne({
+    $push: { donations: donation }
   });
+
+  if (updateQuery.ok !== 1) {
+    throw new Error(errors.nonprofit.DONATION_LOG_FAILURE);
+  }
 }
 
 export async function createPaymentIntent({
