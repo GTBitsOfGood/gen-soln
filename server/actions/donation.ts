@@ -17,13 +17,13 @@ export async function createDonation({
   email,
   amount,
   nonprofitId
-}: DonationType): Promise<boolean> {
+}: DonationType): Promise<void> {
   await Mongo();
 
-  const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
+  const nonprofit = await Nonprofit.findOne({ _id: nonprofitId }).exec();
 
   if (!nonprofit) {
-    throw new Error(errors.donation.INVALID_ORG);
+    throw new Error(errors.nonprofit.INVALID_ID);
   }
 
   const donation = await Donation.create({
@@ -33,10 +33,11 @@ export async function createDonation({
     nonprofitId
   });
 
-  nonprofit.donations.push(donation);
-  nonprofit.save();
-
-  return true;
+  nonprofit
+    .update({
+      $push: { d: donation }
+    })
+    .exec();
 }
 
 export async function createPaymentIntent({
