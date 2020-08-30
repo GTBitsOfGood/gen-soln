@@ -5,7 +5,7 @@ import { Dropdown } from "utils/types";
 
 import {
   getNonprofitIds,
-  getNonprofitNames,
+  getNonprofitNamesWithIds,
   getNonprofitById
 } from "server/actions/nonprofit";
 
@@ -28,12 +28,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   /* For now, getNonprofitById excludes Nonprofit's donation field. If you were fetching it, ensure
    * that donation IDs are mapped to a string array so that the nonprofit object is JSON serializable. */
-  const [names, nonprofit] = await Promise.all([
-    getNonprofitNames(),
+  const [namesWithIds, nonprofit] = await Promise.all([
+    getNonprofitNamesWithIds(),
     getNonprofitById(id)
   ]);
 
-  const items = names.map(
+  const items = namesWithIds.map(
     ({ _id, name }): Dropdown => ({
       value: _id,
       text: name

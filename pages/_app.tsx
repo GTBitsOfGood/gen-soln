@@ -35,7 +35,7 @@ export default class MyApp extends App {
         <ThemeProvider
           theme={createNonprofitMuiTheme(
             "nonprofit" in pageProps
-              ? /*eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */
+              ? /* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */
                 (pageProps.nonprofit as Nonprofit)
               : undefined
           )}

@@ -17,7 +17,7 @@ import {
   PaymentStepProps,
   setNameOnCard,
   setZipcode,
-  setIsContinueButtonDisabled
+  setIsCurStepCompleted
 } from "./reducer";
 
 const useStyles = makeStyles({
@@ -70,10 +70,10 @@ const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
   useEffect(() => {
     dispatch &&
       dispatch(
-        setIsContinueButtonDisabled(
-          !hasCompletedCardNumber ||
-            !hasCompletedExpirationDate ||
-            !hasCompletedCVC
+        setIsCurStepCompleted(
+          hasCompletedCardNumber &&
+            hasCompletedExpirationDate &&
+            hasCompletedCVC
         )
       );
   }, [

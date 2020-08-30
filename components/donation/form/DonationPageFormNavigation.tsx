@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
@@ -42,11 +42,6 @@ const DonationPageFormNavigation: React.FC<Props> = ({
 }) => {
   const { container, icon, positiveMargin } = useStyles();
   const dispatch = useContext(DonationPageStateDispatch);
-  const [maxCurStepIndex, setMaxCurStepIndex] = useState(-1);
-
-  useEffect(() => {
-    setMaxCurStepIndex(s => Math.max(s, curStepIndex));
-  }, [curStepIndex]);
 
   const arr: React.ReactNode[] = [];
   stepTitles.forEach((title, index) => {
@@ -58,7 +53,7 @@ const DonationPageFormNavigation: React.FC<Props> = ({
         onClick={() => {
           dispatch && dispatch(setStep(index));
         }}
-        disabled={index > maxCurStepIndex}
+        disabled={index > curStepIndex}
       >
         {title}
       </ButtonWithLowercaseText>,

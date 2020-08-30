@@ -2,14 +2,12 @@ export default {
   GENERIC_TEXT: "An unexpected error occurred.",
   admin: {
     INVALID_LOGIN: "Incorrect email or password.",
-    INVALID_ORG: "Please enter a valid nonprofit organization.",
     INVALID_TOKEN: "The current token is expired or invalid.",
     USER_EXISTS: "A user with this email already exists."
   },
-  donation: {
-    INVALID_ORG: "The nonprofit does not currently exist in our database."
-  },
   nonprofit: {
-    ALREADY_EXISTS: "There already exists a nonprofit by this name."
+    INVALID_ID:
+      "A nonprofit with the provided ID does not exist in our database.",
+    DONATION_LOG_FAILURE: "Unable to log donation for the nonprofit."
   }
 };

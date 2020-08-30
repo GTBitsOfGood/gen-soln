@@ -9,7 +9,4 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> =>
-  await handleRequestWithPayloadResponse(req, res, login, [
-    "email",
-    "password"
-  ]);
+  handleRequestWithPayloadResponse(req, res, login, ["email", "password"]);
