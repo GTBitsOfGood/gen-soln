@@ -3,6 +3,12 @@ const isDevEnv = process.env.NODE_ENV === "development";
 export default {
   dbName: isDevEnv ? process.env.DEV_DB_NAME : process.env.PROD_DB_NAME,
   dbUrl: isDevEnv ? process.env.DEV_DB_URL : process.env.PROD_DB_URL,
+  dbOptions: {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+  },
   jwtSecret: isDevEnv
     ? process.env.DEV_JWT_SECRET
     : process.env.PROD_JWT_SECRET,

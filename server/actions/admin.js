@@ -24,6 +24,8 @@ const jwtSignAdmin = ({ _id, firstName, lastName, email, nonprofitId }) =>
     }
   );
 
+export const hashPassword = password => bcrypt.hashSync(password, SALT_ROUNDS);
+
 export async function login({ email, password }) {
   await Mongo();
 
@@ -61,7 +63,7 @@ export async function signup({
       lastName,
       email,
       nonprofitId,
-      password: bcrypt.hashSync(password, SALT_ROUNDS)
+      password: hashPassword(password)
     });
 
     return jwtSignAdmin(admin);
