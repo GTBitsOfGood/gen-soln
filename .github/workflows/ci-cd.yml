@@ -1,5 +1,13 @@
 name: CI/CD
-on: [pull_request, push]
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
 jobs:
   ci:
     runs-on: ubuntu-latest
