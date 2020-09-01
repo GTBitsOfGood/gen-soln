@@ -44,17 +44,17 @@ While you are encouraged to use TypeScript, you **don't** have to. Our codebase 
 A quick overview of the various folders in this repository:
 
 - [`components/`](components): Contains _almost all_ of our front-end code. This is where we put our React components, custom hooks, reducers, etc. It has four sub-folders:
-  - [`auth/`](auth): Code that is specific to authentication (login page, sign-up, etc.)
-  - [`core/`](core): Will contain components that make up the Horizon Design System.
-  - [`donation/`](donation): Code that is specific to the donation management solution.
-  - [`volunteer/`](volunteer): Will contain code that is specific to the volunteer management solution.
+  - [`auth/`](components/auth): Code that is specific to authentication (login page, sign-up, etc.)
+  - [`core/`](components/core): Will contain components that make up the Horizon Design System.
+  - [`donation/`](components/donation): Code that is specific to the donation management solution.
+  - [`events/`](components/events): Will contain code that is specific to the volunteer management solution.
   - Any components or hooks that are **not** part of the Horizon Design System but are still **shared** across different parts of the application can be put as root files in this folder.
 - [`pages/`](pages): Self-explanatory, see Next.js' [docs](https://nextjs.org/docs/basic-features/pages).
 - [`public/`](public): Stores static files like images, see Next.js' [docs](https://nextjs.org/docs/basic-features/static-file-serving).
 - [`requests/`](requests): Contains several files, one for each entity/model in our application. We define code for fetching data on the client-side here.
 - [`server/`](server): Contains _almost all_ of our back-end code. This is where we put our Mongoose models, business logic code, and database migration scripts. It has three sub-folders:
-  - [`actions/`](actions): This folder also contains one file for each entity/model. Each file contains methods that describe various "actions" associated with that entity, often described through Mongoose queries.
-  - [`migrations/`](migrations): Contains database migration scripts. Read more about migrations [here](https://dev.to/pesse/one-does-not-simply-update-a-database--migration-based-database-development-527d).
-  - [`models/`](models): Each file in this folder defines an entity (through Mongoose schemas) in our application and creates the corresponding Mongoose model.
+  - [`actions/`](server/actions): This folder also contains one file for each entity/model. Each file contains methods that describe various "actions" associated with that entity, often described through Mongoose queries.
+  - [`migrations/`](server/migrations): Contains database migration scripts. Read more about migrations [here](https://dev.to/pesse/one-does-not-simply-update-a-database--migration-based-database-development-527d).
+  - [`models/`](server/models): Each file in this folder defines an entity (through Mongoose schemas) in our application and creates the corresponding Mongoose model.
 - [`utils/`](utils): A folder that contains miscellaneous code used throughout our application. If you find yourself writing code that is used across the various root folders, put it in a file in `utils/`.
 - [`config.ts`](config.ts): Not a folder, but a very important file that exports an object used throughout our application. You can think of this file as the single source of ground-truth. You want to use the database URL? import `config`. You want to know which API endpoints and page routes are available? import `config`.
