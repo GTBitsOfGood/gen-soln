@@ -4,21 +4,17 @@ Centralized platform designed to provide nonprofits with the opportunity to sell
 # nextjs-starter template
 From https://github.com/GTBitsOfGood/nextjs-starter-typescript
 
+# Development
 ## Setup
-### Development
-- Fork this repository to your account.
-- Clone the forked repository project to your computer.
+- Clone this repository project on your computer.
 - Install the node.js package manager [yarn](https://classic.yarnpkg.com/en/docs/install/).
 - Navigate to this project in terminal and run `yarn install`.
 - Setup bitwarden for syncing secrets and sync the secrets into a .env file by running `yarn secrets`. Contact a leadership member for the bitwarden password.
 - Run the dev version of this project by entering `yarn dev`.
 
-### Syncing Forked Repository
-- Add the gen-soln repository as a remote by running `git remote add upstream https://github.com/GTBitsOfGood/gen-soln.git`
-- Fetch changes from gen-soln repository and merge to the develop branch of your personal repository with `git pull upstream develop`.
-
-### PR/Issue Guidelines
-- Once you have forked the repo, create a new branch with the feature name that you are implementing
-- When you have finished implementing your feature, push your code changes to the branch that you just created
-- Create a PR to merge the branch that you worked on with the develop branch of the GTBitsOfGood repository 
-- In your PR, mention the feature that you have implemented with the story that it is associated with 
+## Code/PR Workflow
+- Create a new branch in the format `[NAME]/[ISSUE-NUMBER]-[SHORT_DESCRIPTION]` (issue number is optional) by running `git checkout -b [BRANCH NAME]`
+  - example branch name: `daniel/48-setup-ci`
+- Commit changes and push your branch by running `git push -u origin [BRANCH NAME]`
+- Create a pull request (PR) on GitHub to merge your branch into develop.
+- In your PR, briefly describe the changes, link the PR to its corresponding issue, and request a Senior Developer or EM as a reviewer.
