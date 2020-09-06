@@ -14,7 +14,7 @@ From https://github.com/GTBitsOfGood/nextjs-starter-typescript
 - Follow the instructions [here](https://www.notion.so/gtbitsofgood/Getting-Started-56106473076a47eaa8c863741becbf34) to install Git, Node.js (v12.X LTS at least) and the MongoDB Community Server.
 - Install the Node.js package manager [yarn](https://classic.yarnpkg.com/en/docs/install/).
 - Navigate to this project in the terminal and run `yarn install`.
-- Run `yarn secrets` to sync project secrets from Bitwarden and save them to `.env.*` files locally. Contact a leadership member for the Bitwarden password.
+- Run `yarn secrets` to sync project secrets from Bitwarden and save them to `.env.*` files locally. For Windows users, you have to run `yarn secrets:login` and then `yarn secrets:sync` instead of `yarn secrets`. Contact a leadership member for the Bitwarden password. 
 - Start your local MongoDB server by running `mongod` (this command will work if you created aliases as recommended in [this](https://zellwk.com/blog/install-mongodb/) article).
 - Next, perform migrations on your local database: `yarn dev:db:migrate up`. You should run this command whenever a new migration is added to the codebase; you can run `yarn dev:db:migrate status` to check if your local database is up to date.
 - Run the dev version of this project by entering `yarn dev`.
