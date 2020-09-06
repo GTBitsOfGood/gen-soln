@@ -10,9 +10,9 @@
     "lint": "yarn lint:tsc ; yarn lint:eslint",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "lint:eslint": "eslint '**/*.{tsx,ts,js,jsx}' --fix",
-    "secrets": "yarn secrets:logout && yarn secrets:login 'yarn secrets:sync'",
-    "secrets:logout": "(bw logout || true)",
-    "secrets:login": "cross-env-shell BW_SESSION=`bw login product@bitsofgood.org --raw`",
+    "secrets": "yarn secrets:logout && cross-env-shell BW_SESSION=`bw login product@bitsofgood.org --raw` \"yarn secrets:sync\"",
+    "secrets:logout": "(bw logout || exit 0)",
+    "secrets:login": "bw login product@bitsofgood.org",
     "secrets:sync": "bw sync && bw get item gen-soln/.env.local | fx .notes > '.env.local' && bw get item gen-soln/.env.development.local | fx .notes > '.env.development.local'"
   },
   "dependencies": {
