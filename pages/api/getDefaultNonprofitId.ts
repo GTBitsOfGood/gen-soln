@@ -9,4 +9,4 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> =>
-  await handleRequestWithPayloadResponse(req, res, getDefaultNonprofitId);
+  handleRequestWithPayloadResponse(req, res, getDefaultNonprofitId);

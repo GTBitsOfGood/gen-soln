@@ -6,6 +6,4 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> =>
-  await handleRequestWithPayloadResponse(req, res, createPaymentIntent, [
-    "amount"
-  ]);
+  handleRequestWithPayloadResponse(req, res, createPaymentIntent, ["amount"]);

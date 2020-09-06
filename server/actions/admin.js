@@ -24,19 +24,23 @@ const jwtSignAdmin = ({ _id, firstName, lastName, email, nonprofitId }) =>
     }
   );
 
+export const hashPassword = password => bcrypt.hashSync(password, SALT_ROUNDS);
+
 export async function login({ email, password }) {
   await Mongo();
 
-  const admin = await Admin.findOne({ email });
-  if (admin) {
-    if (!(await bcrypt.compare(password, admin.password))) {
-      throw new Error(errors.admin.INVALID_LOGIN);
-    }
-
-    return jwtSignAdmin(admin);
+  const admin = await Admin.findOne({ email }).lean();
+  if (!admin) {
+    throw new Error(errors.admin.INVALID_LOGIN);
+  }
+  if (Array.isArray(admin)) {
+    throw new Error(errors.GENERIC_TEXT);
+  }
+  if (!(await bcrypt.compare(password, admin.password))) {
+    throw new Error(errors.admin.INVALID_LOGIN);
   }
 
-  throw new Error(errors.admin.INVALID_LOGIN);
+  return jwtSignAdmin(admin);
 }
 
 export async function signup({
@@ -52,20 +56,20 @@ export async function signup({
     throw new Error(errors.admin.USER_EXISTS);
   }
 
-  const nonprofit = await Nonprofit.exists({ _id: nonprofitId });
-  if (nonprofit) {
+  const nonprofitExists = await Nonprofit.exists({ _id: nonprofitId });
+  if (nonprofitExists) {
     const admin = await Admin.create({
       firstName,
       lastName,
       email,
       nonprofitId,
-      password: bcrypt.hashSync(password, SALT_ROUNDS)
+      password: hashPassword(password)
     });
 
     return jwtSignAdmin(admin);
   }
 
-  throw new Error(errors.admin.INVALID_ORG);
+  throw new Error(errors.nonprofit.INVALID_ID);
 }
 
 export function checkToken({ token }) {
