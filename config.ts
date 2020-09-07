@@ -22,7 +22,7 @@ export default {
     index: "/",
     login: "/login",
     donate: (path = "[id]"): string => `/donate/${path}`,
-    events: "/events/events"
+    events: "/events"
   },
   apis: {
     login: "/api/login",
