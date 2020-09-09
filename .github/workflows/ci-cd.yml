@@ -52,8 +52,6 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Build app
-        run: yarn build
       - uses: amondnet/vercel-action@v19 # Deploys PR previews
         id: deploy-preview
         if: github.event_name == 'pull_request'
