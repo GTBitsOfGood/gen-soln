@@ -11,13 +11,13 @@ export const createPaymentIntent = async (amount: number): Promise<string> =>
     body: JSON.stringify({ amount })
   });
 
-export const createDonation = async ({
+export const logDonation = async ({
   name,
   email,
   amount,
   nonprofitId
 }: Omit<Donation, "timestamp">): Promise<boolean> =>
-  fetchRequestWithPayloadResponse<boolean>(urls.apis.createDonation, {
+  fetchRequestWithPayloadResponse<boolean>(urls.apis.logDonation, {
     method: "post",
     headers: {
       "Content-Type": "application/json"
