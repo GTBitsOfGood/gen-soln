@@ -15,7 +15,7 @@ import useStripePayment from "./useStripePayment";
 import DonationPageFormNavigation from "./DonationPageFormNavigation";
 import DonationPageFormButton from "./DonationPageFormButton";
 
-import { createDonation } from "requests/donation";
+import { logDonation } from "requests/donation";
 
 import reducer, {
   AmountStepProps,
@@ -128,8 +128,8 @@ const DonationPageForm: React.FC<Props> = ({
           return;
         }
         donationCompletedCallback(); // Don't call setIsSubmitting(false) after this -- donationCompletedCallback() will unmount this component
-        // TODO: What should we do if Stripe has processed the payment correctly, but our createDonation API call errored?
-        void createDonation({
+        // TODO: What should we do if Stripe has processed the payment correctly, but our logDonation API call errored?
+        void logDonation({
           name,
           email,
           amount,

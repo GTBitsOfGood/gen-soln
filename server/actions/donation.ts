@@ -12,7 +12,7 @@ const stripe = new Stripe(config.stripeSecret!, {
   apiVersion: "2020-03-02"
 });
 
-export async function createDonation({
+export async function logDonation({
   name,
   email,
   amount,

@@ -21,12 +21,13 @@ export default {
   pages: {
     index: "/",
     login: "/login",
-    donate: (path = "[id]"): string => `/donate/${path}`
+    donate: (path = "[id]"): string => `/donate/${path}`,
+    events: "/events"
   },
   apis: {
     login: "/api/login",
     checkToken: "/api/checkToken",
-    createDonation: "/api/createDonation",
+    logDonation: "/api/logDonation",
     paymentIntents: "/api/paymentIntents",
     // Remove this endpoint when we no longer need to redirect from index.ts
     getDefaultNonprofitId: "/api/getDefaultNonprofitId"
