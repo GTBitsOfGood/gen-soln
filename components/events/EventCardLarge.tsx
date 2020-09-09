@@ -95,7 +95,7 @@ const EventCardLarge: React.FC<Props> = ({
   return (
     <div className={cardContainer}>
       <div className={card}>
-        <img src={imagePath} className={image} alt={`${header} event`} />
+        <img src={imagePath} className={image} alt={`${headerText}`} />
         <div className={content}>
           <Typography className={clsx(meta, truncate)}>{metaText}</Typography>
           <Typography className={header}>{headerText}</Typography>
