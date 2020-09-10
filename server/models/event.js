@@ -27,12 +27,15 @@ const eventSchema = new Schema({
     type: Number,
     required: true
   },
-  volunteers: [
-    {
-      type: Schema.ObjectId,
-      ref: "Admin" //TODO replace with "User" once that schema is created
-    }
-  ],
+  volunteers: {
+    type: [
+      {
+        type: Schema.ObjectId,
+        ref: "Admin" //TODO replace with "User" once that schema is created
+      }
+    ],
+    default: []
+  },
   image: {
     type: String,
     default: 'url("/defaultImages/defaultEvent.png")'
