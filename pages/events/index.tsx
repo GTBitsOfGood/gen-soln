@@ -1,7 +1,10 @@
 import React from "react";
 import { NextPage, GetServerSideProps } from "next";
+import EventsPage from "components/events/EventsPage";
 
-const EventsPage: NextPage = () => null;
+const EventsNextPage: NextPage = () => {
+  return <EventsPage />;
+};
 
 export const getServerSideProps: GetServerSideProps = async () => {
   // make request here!
@@ -10,4 +13,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export default EventsPage;
+export default EventsNextPage;
