@@ -34,7 +34,8 @@ const eventSchema = new Schema({
     }
   ],
   image: {
-    type: String
+    type: String,
+    default: 'url("/defaultImages/defaultEvent.png")'
   }
 });
 
