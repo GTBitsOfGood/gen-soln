@@ -1,23 +1,18 @@
 import Mongo from "server/index";
 import Event from "server/models/event";
+import { Event as EventType } from "utils/types";
 
-export async function getUpcomingEvents(): Promise<Array<Event>> {
+export async function getUpcomingEvents(): Promise<EventType[]> {
   await Mongo();
 
-  const result = await Event.aggregate([
-    {
-      $project: {
-        difference: {
-          $abs: {
-            $subtract: [new Date(), "$startDate"]
-          }
-        },
-        doc: "$$ROOT"
-      }
-    },
-    { $sort: { difference: 1 } },
-    { $limit: 5 }
-  ]);
+  const result = (await Event.find({
+    startDate: {
+      $gte: new Date()
+    }
+  })
+    .lean()
+    .sort({ startDate: 1 })
+    .limit(5)) as EventType[];
 
   return result;
 }
