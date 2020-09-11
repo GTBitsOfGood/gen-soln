@@ -20,7 +20,7 @@ const eventSchema = new Schema({
     required: true
   },
   nonprofitId: {
-    type: Schema.ObjectId,
+    type: String,
     ref: "Nonprofit",
     required: true
   },
