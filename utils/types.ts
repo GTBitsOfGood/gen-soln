@@ -29,6 +29,7 @@ export interface Donation {
   timestamp: Date;
 }
 
+// Keep in sync with the backend schema
 export interface Event {
   name: string;
   nonprofitId: string;
@@ -36,7 +37,7 @@ export interface Event {
   endDate: Date;
   about: string;
   maxVolunteers: number;
-  volunteers: Array<mongoose.Types.ObjectId>;
+  volunteers: Array<string>;
   image: string;
 }
 
