@@ -14,6 +14,7 @@ const pointSchema = new Schema({
   }
 });
 
+// Keep in sync with utils/types Event
 const eventSchema = new Schema({
   name: {
     type: String,
