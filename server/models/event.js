@@ -37,6 +37,17 @@ const eventSchema = new Schema({
     type: String,
     default: ""
   },
+  address: {
+    text: {
+      type: String,
+      required: true
+    },
+    location: {
+      type: pointSchema,
+      index: "2dshere",
+      required: true
+    }
+  },
   maxVolunteers: {
     type: Number,
     required: true
