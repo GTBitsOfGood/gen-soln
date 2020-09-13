@@ -47,8 +47,9 @@ export async function getNonprofitById(_id: string): Promise<NonprofitType> {
   await Mongo();
 
   // Exclude donation information for now:
-  const nonprofit = await Nonprofit.findOne({ _id }, { donations: 0 }).lean();
-
+  const nonprofit = await Nonprofit.findOne({ _id }, { donations: 0 })
+    .select("-stripeAccount")
+    .lean();
   if (nonprofit == null) {
     throw new Error(errors.nonprofit.INVALID_ID);
   }
