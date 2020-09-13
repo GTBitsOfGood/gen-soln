@@ -94,14 +94,9 @@ export async function linkStripeAccount(
   const defaultNonprofitId = await getDefaultNonprofitId();
   const accountLink = await stripe.accountLinks.create({
     account: accountId,
-    // Placeholder URLs
     refresh_url: config.baseUrl + config.pages.donate(defaultNonprofitId),
     return_url: config.baseUrl + config.pages.donate(defaultNonprofitId),
     type: "account_onboarding"
   });
   return accountLink.url;
 }
-
-createStripeAccount()
-  .then(accountId => linkStripeAccount(accountId).then(url => console.log(url)))
-  .catch(err => console.log(err));
