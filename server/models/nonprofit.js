@@ -49,6 +49,15 @@ const nonprofitSchema = new Schema({
       }
     ],
     default: []
+  },
+  events: {
+    type: [
+      {
+        type: Schema.ObjectId,
+        ref: "Event"
+      }
+    ],
+    default: []
   }
 });
 
