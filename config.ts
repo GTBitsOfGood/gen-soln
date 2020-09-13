@@ -9,15 +9,17 @@ export default {
     useFindAndModify: false,
     useCreateIndex: true
   },
+  stripe: {
+    publishable_key: isDevEnv
+      ? process.env.NEXT_PUBLIC_DEV_STRIPE_PUBLISHABLE
+      : process.env.NEXT_PUBLIC_PROD_STRIPE_PUBLISHABLE,
+    secret_key: isDevEnv
+      ? process.env.DEV_STRIPE_SECRET
+      : process.env.PROD_STRIPE_SECRET
+  },
   jwtSecret: isDevEnv
     ? process.env.DEV_JWT_SECRET
     : process.env.PROD_JWT_SECRET,
-  stripePublishable: isDevEnv
-    ? process.env.NEXT_PUBLIC_DEV_STRIPE_PUBLISHABLE
-    : process.env.NEXT_PUBLIC_PROD_STRIPE_PUBLISHABLE,
-  stripeSecret: isDevEnv
-    ? process.env.DEV_STRIPE_SECRET
-    : process.env.PROD_STRIPE_SECRET,
   pages: {
     index: "/",
     login: "/login",

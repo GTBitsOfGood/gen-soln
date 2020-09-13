@@ -8,7 +8,7 @@ import config from "config";
 import { Donation as DonationType } from "utils/types";
 
 /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-const stripe = new Stripe(config.stripeSecret!, {
+const stripe = new Stripe(config.stripe.secret_key!, {
   apiVersion: "2020-03-02"
 });
 
