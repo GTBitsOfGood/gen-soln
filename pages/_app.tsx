@@ -10,7 +10,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import config from "config";
 
 /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-const stripePromise = loadStripe(config.stripePublishable!);
+const stripePromise = loadStripe(config.stripe.publishable_key!);
 
 export default class MyApp extends App {
   componentDidMount(): void {
