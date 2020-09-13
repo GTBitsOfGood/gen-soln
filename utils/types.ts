@@ -21,8 +21,7 @@ export interface Nonprofit {
   // TODO: consider adding the donations field?
 }
 
-// Fields from the back-end Donation schema that should be exposed to the front-end.
-// DON'T add confidential fields since those shouldn't be queried by server actions.
+// Keep in sync with the backend schema
 export interface Donation {
   name: string;
   email: string;
@@ -31,8 +30,7 @@ export interface Donation {
   timestamp: Date;
 }
 
-// Fields from the back-end Event schema that should be exposed to the front-end.
-// DON'T add confidential fields since those shouldn't be queried by server actions.
+// Keep in sync with the backend schema
 export interface Event {
   name: string;
   nonprofitId: string;
