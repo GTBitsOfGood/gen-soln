@@ -20,6 +20,9 @@ export default {
   jwtSecret: isDevEnv
     ? process.env.DEV_JWT_SECRET
     : process.env.PROD_JWT_SECRET,
+  baseUrl:
+    (isDevEnv ? process.env.DEV_BASE_URL : process.env.PROD_BASE_URL) ||
+    "http://localhost:3000",
   pages: {
     index: "/",
     login: "/login",

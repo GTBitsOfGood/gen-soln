@@ -95,8 +95,8 @@ export async function linkStripeAccount(
   const accountLink = await stripe.accountLinks.create({
     account: accountId,
     // Placeholder URLs
-    refresh_url: `http://localhost:3000${config.pages.donate(defaultNonprofitId)}`, // prettier-ignore
-    return_url: `http://localhost:3000${config.pages.donate(defaultNonprofitId)}`, // prettier-ignore
+    refresh_url: config.baseUrl + config.pages.donate(defaultNonprofitId),
+    return_url: config.baseUrl + config.pages.donate(defaultNonprofitId),
     type: "account_onboarding"
   });
   return accountLink.url;
