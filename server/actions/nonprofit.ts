@@ -95,9 +95,13 @@ export async function linkStripeAccount(
   const accountLink = await stripe.accountLinks.create({
     account: accountId,
     // Placeholder URLs
-    refresh_url: `http://localhost:3000/${config.pages.donate(defaultNonprofitId)}`, // prettier-ignore
-    return_url: `http://localhost:3000/${config.pages.donate(defaultNonprofitId)}`, // prettier-ignore
+    refresh_url: `http://localhost:3000${config.pages.donate(defaultNonprofitId)}`, // prettier-ignore
+    return_url: `http://localhost:3000${config.pages.donate(defaultNonprofitId)}`, // prettier-ignore
     type: "account_onboarding"
   });
   return accountLink.url;
 }
+
+createStripeAccount()
+  .then(accountId => linkStripeAccount(accountId).then(url => console.log(url)))
+  .catch(err => console.log(err));
