@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const customAlphabet = require("nanoid").customAlphabet;
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
 
 const ALPHABET = "0123456789";
 const ID_LENGTH = 8;
@@ -43,11 +42,16 @@ const nonprofitSchema = new Schema({
     required: true
   },
   donations: {
-    type: [ObjectId],
-    ref: "Donation"
+    type: [
+      {
+        type: Schema.ObjectId,
+        ref: "Donation"
+      }
+    ],
+    default: []
   },
   events: {
-    type: [ObjectId],
+    type: [Schema.ObjectId],
     ref: "Events"
   }
 });
