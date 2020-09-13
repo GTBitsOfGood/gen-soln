@@ -4,7 +4,11 @@ import { MigrationFunction } from "migrate-mongo";
 export const up: MigrationFunction = async (db: Db) => {
   await db
     .collection("nonprofits")
-    .update({}, { $set: { donations: [] } }, { multi: true });
+    .update(
+      { donations: { $exists: false } },
+      { $set: { donations: [] } },
+      { multi: true }
+    );
 };
 
 export const down: MigrationFunction = async (db: Db) => {
