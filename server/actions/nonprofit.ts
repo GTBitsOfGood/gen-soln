@@ -4,7 +4,7 @@ import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import { Nonprofit as NonprofitType } from "utils/types";
 import { Query } from "mongoose";
-import config from "../../config";
+import config from "config";
 
 type NonprofitNameWithId = Pick<NonprofitType, "name"> &
   Pick<NonprofitType, "_id">;
@@ -94,6 +94,7 @@ export async function linkStripeAccount(
   const defaultNonprofitId = await getDefaultNonprofitId();
   const accountLink = await stripe.accountLinks.create({
     account: accountId,
+    // TODO: placeholder URLs
     refresh_url: config.baseUrl + config.pages.donate(defaultNonprofitId),
     return_url: config.baseUrl + config.pages.donate(defaultNonprofitId),
     type: "account_onboarding"
