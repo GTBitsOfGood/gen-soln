@@ -17,10 +17,10 @@ export async function getUpcomingEvents(): Promise<EventType[]> {
   return result;
 }
 
-export async function getNearestEvents(
-  lat: number,
-  long: number
-): Promise<EventType[]> {
+export async function getNearestEvents(coordinate: {
+  lat: number;
+  long: number;
+}): Promise<EventType[]> {
   await Mongo();
 
   const result = (await Event.find(
@@ -29,7 +29,7 @@ export async function getNearestEvents(
         $nearSphere: {
           $geometry: {
             type: "Point",
-            coordinates: [lat, long]
+            coordinates: [coordinate.lat, coordinate.long]
           }
         }
       }
