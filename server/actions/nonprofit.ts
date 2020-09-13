@@ -1,11 +1,18 @@
 import Mongo from "server/index";
+import Stripe from "stripe";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import { Nonprofit as NonprofitType } from "utils/types";
 import { Query } from "mongoose";
+import config from "../../config";
 
 type NonprofitNameWithId = Pick<NonprofitType, "name"> &
   Pick<NonprofitType, "_id">;
+
+/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+const stripe = new Stripe(config.stripe.secret_key!, {
+  apiVersion: "2020-03-02"
+});
 
 export async function createNonprofit({
   name,
@@ -72,4 +79,25 @@ export async function getDefaultNonprofitId(): Promise<string> {
   }
 
   return result[0]._id;
+}
+
+export async function createStripeAccount(): Promise<Stripe.Account["id"]> {
+  const account = await stripe.accounts.create({
+    type: "standard"
+  });
+  return account.id;
+}
+
+export async function linkStripeAccount(
+  accountId: Stripe.Account["id"]
+): Promise<Stripe.AccountLink["url"]> {
+  const defaultNonprofitId = await getDefaultNonprofitId();
+  const accountLink = await stripe.accountLinks.create({
+    account: accountId,
+    // Placeholder URLs
+    refresh_url: `http://localhost:3000/${config.pages.donate(defaultNonprofitId)}`, // prettier-ignore
+    return_url: `http://localhost:3000/${config.pages.donate(defaultNonprofitId)}`, // prettier-ignore
+    type: "account_onboarding"
+  });
+  return accountLink.url;
 }
