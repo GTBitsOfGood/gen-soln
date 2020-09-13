@@ -14,13 +14,14 @@ const pointSchema = new Schema({
   }
 });
 
+// Keep in sync with utils/types Event
 const eventSchema = new Schema({
   name: {
     type: String,
     required: true
   },
   nonprofitId: {
-    type: Schema.ObjectId,
+    type: String,
     ref: "Nonprofit",
     required: true
   },
@@ -35,6 +36,17 @@ const eventSchema = new Schema({
   about: {
     type: String,
     default: ""
+  },
+  address: {
+    text: {
+      type: String,
+      required: true
+    },
+    location: {
+      type: pointSchema,
+      index: "2dshere",
+      required: true
+    }
   },
   maxVolunteers: {
     type: Number,

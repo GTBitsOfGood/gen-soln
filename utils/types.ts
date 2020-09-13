@@ -3,6 +3,7 @@ import {
   PaletteOptions
 } from "@material-ui/core/styles/createPalette";
 import { ThemeOptions, Theme } from "@material-ui/core/styles";
+import mongoose from "mongoose";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
@@ -26,6 +27,18 @@ export interface Donation {
   amount: number;
   nonprofitId: string;
   timestamp: Date;
+}
+
+// Keep in sync with the backend schema
+export interface Event {
+  name: string;
+  nonprofitId: string;
+  startDate: Date;
+  endDate: Date;
+  about: string;
+  maxVolunteers: number;
+  volunteers: Array<string>;
+  image: string;
 }
 
 export interface Dropdown {
