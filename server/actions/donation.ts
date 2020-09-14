@@ -1,16 +1,13 @@
 import { NextApiRequest } from "next";
 import Stripe from "stripe";
-import Mongo from "server/index";
+import Mongo, { stripeConstructor } from "server/index";
 import Donation from "server/models/donation";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import config from "config";
 import { Donation as DonationType } from "utils/types";
 
-/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-const stripe = new Stripe(config.stripe.secret_key!, {
-  apiVersion: "2020-03-02"
-});
+const stripe = stripeConstructor();
 
 export async function logDonation({
   name,
