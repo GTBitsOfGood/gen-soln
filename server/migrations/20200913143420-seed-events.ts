@@ -64,7 +64,7 @@ export const up: MigrationFunction = async (db: Db) => {
   for (const event of events) {
     await db
       .collection("nonprofits")
-      .updateOne({ _id: event.nonprofitId }, { $set: { events: event._id } });
+      .updateOne({ _id: event.nonprofitId }, { $push: { events: event._id } });
   }
 };
 
@@ -73,5 +73,9 @@ export const down: MigrationFunction = async (db: Db) => {
     .collection("events")
     .deleteMany({ _id: { $in: events.map(_ => _._id) } });
 
-  await db.collection("nonprofits").updateMany({}, { $set: { events: [] } });
+  for (const event of events) {
+    await db
+      .collection("nonprofits")
+      .updateOne({ _id: event.nonprofitId }, { $pull: { events: event._id } });
+  }
 };
