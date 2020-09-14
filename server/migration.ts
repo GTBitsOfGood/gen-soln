@@ -1,15 +1,9 @@
 #!/usr/bin/env ts-node-script
 // A ts-node script to manage our MongoDB migrations.
-// Ensure that the code here can be executed by running "ts-node -O '{\"module\": \"commonjs\"}' -r module-alias/register".
 // For module aliases to work correctly in this script, we had to define "_moduleAliases" in our package.json
 
-import dotenv from "dotenv";
-
-// Add paths to all ".env.*" files here, relative to the root folder since that's where
-// yarn will execute this script from. Order matters, ".env.*" file with higher precedence should appear first.
-const envFilePaths = [".env.local", ".env.development.local", ".env"];
-envFilePaths.forEach(path => void dotenv.config({ path }));
-
+import loadEnvForScript from "./env";
+loadEnvForScript();
 // Code based on https://github.com/seppevs/migrate-mongo/blob/master/bin/migrate-mongo.js
 import { create, up, down, status, config, database } from "migrate-mongo";
 import program from "commander";
