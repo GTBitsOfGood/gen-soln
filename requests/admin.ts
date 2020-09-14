@@ -19,3 +19,12 @@ export const checkTokenRequest = async (token: string) =>
     },
     body: JSON.stringify({ token })
   });
+
+export const recoverPassword = async (email: string): Promise<string> =>
+  fetchRequestWithPayloadResponse<string>(urls.apis.recoverPassword, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email })
+  });

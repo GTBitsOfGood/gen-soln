@@ -43,6 +43,17 @@ export async function login({ email, password }) {
   return jwtSignAdmin(admin);
 }
 
+export async function recoverPassword({ email }) {
+  await Mongo();
+  const admin = await Admin.exists({ email });
+  if (admin) {
+    //TODO password recovery email sent to provided email
+    return true;
+  } else {
+    throw new Error(errors.admin.INVALID_EMAIL_FOR_PASSWORD_RECOVERY);
+  }
+}
+
 export async function signup({
   firstName,
   lastName,
