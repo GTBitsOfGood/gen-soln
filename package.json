@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "dev:db:migrate": "cross-env NODE_ENV=development yarn ts-node -O {\\\"module\\\":\\\"commonjs\\\"} -r module-alias/register server/migration.ts",
+    "run:ts-node:script": "cross-env NODE_ENV=development ts-node -O {\\\"module\\\":\\\"commonjs\\\"} -r module-alias/register",
+    "dev:db:migrate": "yarn run:ts-node:script server/migration.ts",
+    "run:server:action": "yarn run:ts-node:script server/run-action.ts",
     "start": "next start",
     "lint": "yarn lint:tsc ; yarn lint:eslint",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",

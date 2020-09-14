@@ -7,7 +7,8 @@ import mongoose from "mongoose";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
-// Keep in sync with the backend schema
+// Fields from the back-end Nonprofit schema that should be exposed to the front-end.
+// DON'T add confidential fields since those shouldn't be queried by server actions.
 export interface Nonprofit {
   _id: string;
   name: string;

@@ -3,7 +3,7 @@ import { fetchRequestWithPayloadResponse } from "utils/util";
 import { Donation } from "utils/types";
 
 export const createPaymentIntent = async (amount: number): Promise<string> =>
-  fetchRequestWithPayloadResponse<string>(urls.apis.paymentIntents, {
+  fetchRequestWithPayloadResponse<string>(urls.apis.createPaymentIntent, {
     method: "post",
     headers: {
       "Content-Type": "application/json"

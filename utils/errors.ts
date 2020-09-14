@@ -10,6 +10,7 @@ export default {
   nonprofit: {
     INVALID_ID:
       "A nonprofit with the provided ID does not exist in our database.",
-    DONATION_LOG_FAILURE: "Unable to log donation for the nonprofit."
+    DONATION_LOG_FAILURE: "Unable to log donation for the nonprofit.",
+    NO_DATA: "The database does not contain any nonprofits."
   }
 };
