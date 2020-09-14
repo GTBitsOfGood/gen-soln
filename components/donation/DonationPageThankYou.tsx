@@ -66,7 +66,7 @@ const DonationPageThankYou: React.FC = () => {
       <div className={footerContainer}>
         <div className={textContainer}>
           <Typography variant="h6">
-            Support more nonprofits at bits of good{" "}
+            Support more nonprofits at Bits of Good{" "}
           </Typography>
           <Typography variant="body2">
             The GT Bits of Good team connects our students with local nonprofits
