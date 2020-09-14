@@ -32,6 +32,7 @@ export default {
     checkToken: "/api/checkToken",
     logDonation: "/api/logDonation",
     createPaymentIntent: "/api/createPaymentIntent",
+    recoverPassword: "/api/recoverPassword",
     // Remove this endpoint when we no longer need to redirect from index.ts
     getDefaultNonprofitId: "/api/getDefaultNonprofitId"
   }
