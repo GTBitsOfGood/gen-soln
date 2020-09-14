@@ -9,8 +9,6 @@ import config from "config";
 type NonprofitNameWithId = Pick<NonprofitType, "name"> &
   Pick<NonprofitType, "_id">;
 
-const stripe = stripeConstructor();
-
 export async function createNonprofit({
   name,
   headline,
@@ -79,6 +77,8 @@ export async function getDefaultNonprofitId(): Promise<string> {
 }
 
 export async function createStripeAccount(): Promise<Stripe.Account["id"]> {
+  const stripe = stripeConstructor();
+
   const account = await stripe.accounts.create({
     type: "standard"
   });
@@ -88,6 +88,8 @@ export async function createStripeAccount(): Promise<Stripe.Account["id"]> {
 export async function linkStripeAccount(
   accountId: Stripe.Account["id"]
 ): Promise<Stripe.AccountLink["url"]> {
+  const stripe = stripeConstructor();
+
   const accountLink = await stripe.accountLinks.create({
     account: accountId,
     /* TODO: These are placeholder URLs. They should be replaced with the URL of
