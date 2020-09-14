@@ -3,7 +3,6 @@ import Mongo, { stripeConstructor } from "server/index";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import { Nonprofit as NonprofitType } from "utils/types";
-import { Query } from "mongoose";
 import config from "config";
 
 type NonprofitNameWithId = Pick<NonprofitType, "name"> &
@@ -33,16 +32,22 @@ export async function createNonprofit({
   });
 }
 
-export async function getNonprofitNamesWithIds(): Query<NonprofitNameWithId[]> {
+export async function getNonprofitNamesWithIds(): Promise<
+  NonprofitNameWithId[]
+> {
   await Mongo();
 
-  return Nonprofit.find({}, { name: 1 }).lean().sort({ name: 1 });
+  // Using exec to get a fully-fledged Promise instead of Mongoose Query.
+  // This allows run-action.ts to run this function.
+  return Nonprofit.find({}, { name: 1 }).lean().sort({ name: 1 }).exec();
 }
 
-export async function getNonprofitIds(): Query<string[]> {
+export async function getNonprofitIds(): Promise<string[]> {
   await Mongo();
 
-  return Nonprofit.distinct("_id");
+  // Using exec to get a fully-fledged Promise instead of Mongoose Query.
+  // This allows run-action.ts to run this function.
+  return Nonprofit.distinct("_id").exec();
 }
 
 export async function getNonprofitById(_id: string): Promise<NonprofitType> {
