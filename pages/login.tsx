@@ -19,7 +19,7 @@ const LoginPage: NextPage<InferGetServerSidePropsType<
   const router = useRouter();
 
   useEffect(() => {
-    isUserLoggedIn && void router.push(urls.pages.donate(urls.pages.index));
+    isUserLoggedIn && void router.push(urls.pages.index);
   }, [router, isUserLoggedIn]);
 
   return <AuthPage />;
@@ -29,17 +29,20 @@ const LoginPage: NextPage<InferGetServerSidePropsType<
 export const getServerSideProps = (context: GetServerSidePropsContext) => {
   const { token } = nextCookie(context);
 
-  try {
-    checkToken(token);
-    return {
-      props: { isUserLoggedIn: true }
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      props: { isUserLoggedIn: false }
-    };
+  if (token != null) {
+    try {
+      checkToken(token);
+      return {
+        props: { isUserLoggedIn: true }
+      };
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  return {
+    props: { isUserLoggedIn: false }
+  };
 };
 
 export default LoginPage;
