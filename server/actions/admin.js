@@ -72,7 +72,7 @@ export async function signup({
   throw new Error(errors.nonprofit.INVALID_ID);
 }
 
-export function checkToken({ token }) {
+export function checkToken(token) {
   try {
     return jwt.verify(token, config.jwtSecret);
   } catch {

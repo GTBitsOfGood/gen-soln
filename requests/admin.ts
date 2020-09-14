@@ -9,13 +9,3 @@ export const login = async (email: string, password: string): Promise<string> =>
     },
     body: JSON.stringify({ email, password })
   });
-
-/* eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types */
-export const checkTokenRequest = async (token: string) =>
-  fetchRequestWithPayloadResponse(urls.apis.checkToken, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ token })
-  });

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { NextPage, GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { NextPage, InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
 import urls from "config";
 
