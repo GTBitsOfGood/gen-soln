@@ -32,7 +32,7 @@ export async function getNearestEvents({
     .where("address.location")
     .near({
       center: [long, lat],
-      sptherical: true
+      spherical: true
     })
     .lean()
     .limit(5)) as EventType[];
