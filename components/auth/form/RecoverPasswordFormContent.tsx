@@ -24,8 +24,6 @@ const states = {
 const RecoverPasswordFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
 }) => {
-  // TODO: Use this to show an error message below the email input field
-  //const [hasError] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState("");
   const [currentState, setCurrentState] = useState<keyof typeof states>(
