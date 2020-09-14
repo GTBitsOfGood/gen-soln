@@ -3,7 +3,9 @@ export default {
   admin: {
     INVALID_LOGIN: "Incorrect email or password.",
     INVALID_TOKEN: "The current token is expired or invalid.",
-    USER_EXISTS: "A user with this email already exists."
+    USER_EXISTS: "A user with this email already exists.",
+    INVALID_EMAIL_FOR_PASSWORD_RECOVERY:
+      "This email is not associated with a user account."
   },
   nonprofit: {
     INVALID_ID:

@@ -30,6 +30,7 @@ export default {
   apis: {
     login: "/api/login",
     logDonation: "/api/logDonation",
-    createPaymentIntent: "/api/createPaymentIntent"
+    createPaymentIntent: "/api/createPaymentIntent",
+    recoverPassword: "/api/recoverPassword"
   }
 };
