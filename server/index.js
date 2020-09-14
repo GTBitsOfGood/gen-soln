@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import config from "config";
+import Stripe from "stripe";
 
 const MongoConnect = async () => {
   if (mongoose.connections[0].readyState) return;
@@ -18,3 +19,9 @@ const MongoConnect = async () => {
 };
 
 export default MongoConnect;
+
+export function stripeConstructor() {
+  return new Stripe(config.stripe.secret_key, {
+    apiVersion: "2020-03-02"
+  });
+}

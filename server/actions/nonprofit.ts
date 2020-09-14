@@ -1,5 +1,5 @@
-import Mongo from "server/index";
 import Stripe from "stripe";
+import Mongo, { stripeConstructor } from "server/index";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import { Nonprofit as NonprofitType } from "utils/types";
@@ -9,10 +9,7 @@ import config from "config";
 type NonprofitNameWithId = Pick<NonprofitType, "name"> &
   Pick<NonprofitType, "_id">;
 
-/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-const stripe = new Stripe(config.stripe.secret_key!, {
-  apiVersion: "2020-03-02"
-});
+const stripe = stripeConstructor();
 
 export async function createNonprofit({
   name,
@@ -91,12 +88,12 @@ export async function createStripeAccount(): Promise<Stripe.Account["id"]> {
 export async function linkStripeAccount(
   accountId: Stripe.Account["id"]
 ): Promise<Stripe.AccountLink["url"]> {
-  const defaultNonprofitId = await getDefaultNonprofitId();
   const accountLink = await stripe.accountLinks.create({
     account: accountId,
-    // TODO: placeholder URLs
-    refresh_url: config.baseUrl + config.pages.donate(defaultNonprofitId),
-    return_url: config.baseUrl + config.pages.donate(defaultNonprofitId),
+    /* TODO: These are placeholder URLs. They should be replaced with the URL of
+         our nonprofit on-boarding form once we create that. */
+    refresh_url: config.baseUrl,
+    return_url: config.baseUrl,
     type: "account_onboarding"
   });
   return accountLink.url;
