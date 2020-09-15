@@ -6,9 +6,9 @@ const MongoConnect = async () => {
   if (mongoose.connections[0].readyState) return;
 
   await mongoose
-    .connect(config.dbUrl, {
-      ...config.dbOptions,
-      dbName: config.dbName
+    .connect(config.db.url, {
+      ...config.db.options,
+      dbName: config.db.name
     })
     .catch(error => {
       console.error("Database connection failed. 👇🏼");
