@@ -1,16 +1,10 @@
 import { NextApiRequest } from "next";
 import Stripe from "stripe";
-import Mongo from "server/index";
+import Mongo, { stripeConstructor } from "server/index";
 import Donation from "server/models/donation";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
-import config from "config";
 import { Donation as DonationType } from "utils/types";
-
-/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-const stripe = new Stripe(config.stripeSecret!, {
-  apiVersion: "2020-03-02"
-});
 
 export async function logDonation({
   name,
@@ -45,6 +39,8 @@ export async function logDonation({
 export async function createPaymentIntent({
   amount
 }: NextApiRequest["body"]): Promise<Stripe.PaymentIntent["client_secret"]> {
+  const stripe = stripeConstructor();
+
   const paymentIntent = await stripe.paymentIntents.create({
     amount,
     currency: "usd"
