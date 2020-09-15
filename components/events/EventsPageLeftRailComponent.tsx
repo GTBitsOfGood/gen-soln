@@ -6,7 +6,8 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles({
   root: {
     padding: "32px 24px",
-    width: "100%"
+    width: "100%",
+    backgroundColor: "#FFFFFF"
   },
   header: {
     // TODO: replace this with a Typography component
