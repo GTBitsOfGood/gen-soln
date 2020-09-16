@@ -41,6 +41,10 @@ const nonprofitSchema = new Schema({
     type: String,
     required: true
   },
+  stripeAccount: {
+    type: String,
+    required: true
+  },
   donations: {
     type: [
       {
