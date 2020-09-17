@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 
 import HorizonLink from "@horizon/HorizonLink";
 
-import config from "../../../config";
+import config from "config";
 
 const useStyles = makeStyles({
   container: {
