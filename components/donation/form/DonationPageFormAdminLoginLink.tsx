@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 
 import HorizonLink from "@horizon/HorizonLink";
 
-import Config from "../../../config";
+import config from "../../../config";
 
 const useStyles = makeStyles({
   container: {
@@ -29,7 +29,7 @@ const DonationPageFormAdminLoginLink: React.FC = () => {
       </Typography>
       <HorizonLink
         className={text}
-        href={Config.pages.login}
+        href={config.pages.login}
         variant="subtitle2"
         underline="always"
         color="secondary"
