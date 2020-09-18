@@ -2,19 +2,20 @@ import Mongo from "server/index";
 import Event from "server/models/event";
 import { Event as EventType } from "utils/types";
 
-export async function getUpcomingEvents(): Promise<EventType[]> {
+export async function getUpcomingEvents() {
   await Mongo();
 
-  const result = (await Event.find({
+  const result = Event.find({
     startDate: {
       $gte: new Date()
     }
   })
     .lean()
     .sort({ startDate: 1 })
-    .limit(5)) as EventType[];
+    .limit(5)
+    .exec();
 
-  return result;
+  return result as Promise<EventType[]>;
 }
 
 interface Coordinates {
@@ -22,20 +23,18 @@ interface Coordinates {
   long: number;
 }
 
-export async function getNearestEvents({
-  lat,
-  long
-}: Coordinates): Promise<EventType[]> {
+export async function getNearestEvents({ lat, long }: Coordinates) {
   await Mongo();
 
-  const result = (await Event.find({})
+  const result = Event.find({})
     .where("address.location")
     .near({
       center: [long, lat],
       spherical: true
     })
     .lean()
-    .limit(5)) as EventType[];
+    .limit(5)
+    .exec();
 
-  return result;
+  return result as Promise<EventType[]>;
 }
