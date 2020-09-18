@@ -4,11 +4,10 @@ import { MigrationFunction } from "migrate-mongo";
 export const up: MigrationFunction = async (db: Db) => {
   await db
     .collection("nonprofits")
-    .update({}, { $set: { events: [] } }, { multi: true });
+    .updateMany({}, { $set: { stripeAccount: "" } });
 };
-
 export const down: MigrationFunction = async (db: Db) => {
   await db
     .collection("nonprofits")
-    .update({}, { $unset: { events: null } }, { multi: true });
+    .updateMany({}, { $unset: { stripeAccount: "" } });
 };

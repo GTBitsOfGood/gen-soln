@@ -3,7 +3,6 @@ import {
   PaletteOptions
 } from "@material-ui/core/styles/createPalette";
 import { ThemeOptions, Theme } from "@material-ui/core/styles";
-import mongoose from "mongoose";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
@@ -18,6 +17,7 @@ export interface Nonprofit {
   logo: string;
   primaryColor: string;
   secondaryColor: string;
+  stripeAccount?: string;
   // TODO: consider adding the donations field?
 }
 

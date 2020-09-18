@@ -3,13 +3,10 @@ import Mongo, { stripeConstructor } from "server/index";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import { Nonprofit as NonprofitType } from "utils/types";
-import { Query } from "mongoose";
 import config from "config";
 
 type NonprofitNameWithId = Pick<NonprofitType, "name"> &
   Pick<NonprofitType, "_id">;
-
-const stripe = stripeConstructor();
 
 export async function createNonprofit({
   name,
@@ -18,7 +15,8 @@ export async function createNonprofit({
   background,
   logo,
   primaryColor,
-  secondaryColor
+  secondaryColor,
+  stripeAccount
 }: NonprofitType) {
   await Mongo();
 
@@ -29,28 +27,37 @@ export async function createNonprofit({
     background,
     logo,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    stripeAccount
   });
 }
 
-export async function getNonprofitNamesWithIds(): Query<NonprofitNameWithId[]> {
+export async function getNonprofitNamesWithIds(): Promise<
+  NonprofitNameWithId[]
+> {
   await Mongo();
 
-  return Nonprofit.find({}, { name: 1 }).lean().sort({ name: 1 });
+  // Using exec to get a fully-fledged Promise instead of Mongoose Query.
+  // This allows run-action.ts to run this function.
+  return Nonprofit.find({}, { name: 1 }).lean().sort({ name: 1 }).exec();
 }
 
-export async function getNonprofitIds(): Query<string[]> {
+export async function getNonprofitIds(): Promise<string[]> {
   await Mongo();
 
-  return Nonprofit.distinct("_id");
+  // Using exec to get a fully-fledged Promise instead of Mongoose Query.
+  // This allows run-action.ts to run this function.
+  return Nonprofit.distinct("_id").exec();
 }
 
 export async function getNonprofitById(_id: string): Promise<NonprofitType> {
   await Mongo();
 
   // Exclude donation information for now:
-  const nonprofit = await Nonprofit.findOne({ _id }, { donations: 0 }).lean();
-
+  const nonprofit = await Nonprofit.findOne(
+    { _id },
+    { donations: 0, stripeAccount: 0 }
+  ).lean();
   if (nonprofit == null) {
     throw new Error(errors.nonprofit.INVALID_ID);
   }
@@ -79,6 +86,8 @@ export async function getDefaultNonprofitId(): Promise<string> {
 }
 
 export async function createStripeAccount(): Promise<Stripe.Account["id"]> {
+  const stripe = stripeConstructor();
+
   const account = await stripe.accounts.create({
     type: "standard"
   });
@@ -88,6 +97,8 @@ export async function createStripeAccount(): Promise<Stripe.Account["id"]> {
 export async function linkStripeAccount(
   accountId: Stripe.Account["id"]
 ): Promise<Stripe.AccountLink["url"]> {
+  const stripe = stripeConstructor();
+
   const accountLink = await stripe.accountLinks.create({
     account: accountId,
     /* TODO: These are placeholder URLs. They should be replaced with the URL of

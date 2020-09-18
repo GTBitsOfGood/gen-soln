@@ -1,13 +1,15 @@
 const isDevEnv = process.env.NODE_ENV === "development";
 
 export default {
-  dbName: isDevEnv ? process.env.DEV_DB_NAME : process.env.PROD_DB_NAME,
-  dbUrl: isDevEnv ? process.env.DEV_DB_URL : process.env.PROD_DB_URL,
-  dbOptions: {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
+  db: {
+    name: isDevEnv ? process.env.DEV_DB_NAME : process.env.PROD_DB_NAME,
+    url: isDevEnv ? process.env.DEV_DB_URL : process.env.PROD_DB_URL,
+    options: {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true
+    }
   },
   stripe: {
     publishable_key: isDevEnv
@@ -29,10 +31,8 @@ export default {
   },
   apis: {
     login: "/api/login",
-    checkToken: "/api/checkToken",
     logDonation: "/api/logDonation",
     createPaymentIntent: "/api/createPaymentIntent",
-    // Remove this endpoint when we no longer need to redirect from index.ts
-    getDefaultNonprofitId: "/api/getDefaultNonprofitId"
+    recoverPassword: "/api/recoverPassword"
   }
 };
