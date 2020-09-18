@@ -44,7 +44,7 @@ const eventSchema = new Schema({
     },
     location: {
       type: pointSchema,
-      index: "2dshere",
+      index: "2dsphere",
       required: true
     }
   },
