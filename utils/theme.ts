@@ -1,6 +1,7 @@
 import { createMuiTheme, Theme } from "@material-ui/core/styles";
 
 import { Spacing, Nonprofit } from "./types";
+//import "./fonts.css";
 
 const margins: Record<Spacing, string> = {
   VERTICAL: "4.5vh",
@@ -44,6 +45,36 @@ const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined): Theme =>
           marginLeft: 0,
           marginRight: 0
         }
+      }
+    },
+    typography: {
+      h1: {
+        fontFamily: "Visby CF",
+        fontSize: "36px",
+        fontWeight: 800
+      },
+      h2: {
+        fontFamily: "Visby CF",
+        fontSize: "24px",
+        fontWeight: 800
+      },
+      h3: {
+        fontFamily: "Visby CF",
+        fontSize: "20px",
+        fontWeight: 800
+      },
+      overline: {
+        fontFamily: "Visby CF",
+        fontSize: "14px",
+        fontWeight: 800
+      },
+      body2: {
+        fontFamily: "Open Sans",
+        fontSize: "18px"
+      },
+      caption: {
+        fontFamily: "Open Sans",
+        fontSize: "16px"
       }
     },
     nonprofitBackgroundImage: nonprofit?.background,

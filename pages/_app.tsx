@@ -8,6 +8,7 @@ import { Nonprofit } from "utils/types";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import config from "config";
+import "./../utils/fonts.css";
 
 /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
 const stripePromise = loadStripe(config.stripe.publishable_key!);
