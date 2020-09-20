@@ -16,6 +16,10 @@ const pointSchema = new Schema({
 
 // Keep in sync with utils/types Event
 const eventSchema = new Schema({
+  _id: {
+    type: String,
+    default: () => new mongoose.Types.ObjectId().toHexString()
+  },
   name: {
     type: String,
     required: true
