@@ -55,7 +55,5 @@ export async function getEventById(_id: string): Promise<EventType> {
 export async function getAllEventIds(): Promise<string[]> {
   await Mongo();
 
-  const result = (await Event.find({}, { _id: 1 })).map(event => event._id);
-
-  return result;
+  return Event.distinct("_id").exec();
 }
