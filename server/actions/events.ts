@@ -1,5 +1,6 @@
 import Mongo from "server/index";
 import Event from "server/models/event";
+import errors from "utils/errors";
 import { Event as EventType } from "utils/types";
 
 export async function getUpcomingEvents() {
@@ -37,4 +38,16 @@ export async function getNearestEvents({ lat, long }: Coordinates) {
     .exec();
 
   return result as Promise<EventType[]>;
+}
+
+export async function getEventById(_id: string): Promise<EventType> {
+  await Mongo();
+
+  const event = (await Event.findById(_id).lean()) as EventType;
+
+  if (event == null) {
+    throw new Error(errors.event.INVALID_ID);
+  }
+
+  return event;
 }
