@@ -57,7 +57,7 @@ const nonprofitSchema = new Schema({
   events: {
     type: [
       {
-        type: Schema.ObjectId,
+        type: String,
         ref: "Event"
       }
     ],
