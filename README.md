@@ -42,11 +42,11 @@ While you are encouraged to use TypeScript, you **don't** have to. Our codebase 
 
 ## Migrations
 
-TODO @p98: Add a note about migrations, why we are using them and how to create and run them.
+TODO: Add a note about migrations, why we are using them and how to create and run them.
 
 ## Storybook
 
-TODO Add a note about Storybook and how to use it.
+TODO: Add a note about Storybook and how to use it.
 
 # Project Structure
 
@@ -62,7 +62,7 @@ A quick overview of the various folders in this repository:
 - [`public/`](public): Stores static files like images, see Next.js' [docs](https://nextjs.org/docs/basic-features/static-file-serving).
 - [`requests/`](requests): Contains several files, one for each entity/model in our application. We define code for fetching data on the client-side here.
 - [`server/`](server): Contains _almost all_ of our back-end code. This is where we put our Mongoose models, business logic code, and database migration scripts. It has three sub-folders:
-  - [`actions/`](server/actions): This folder also contains one file for each entity/model. Each file contains methods that describe various "actions" associated with that entity, often described through Mongoose queries. Actions can be exposed to the client by creating a corresponding API endpoint. **Pro tip:** If you want to run an action from the terminal, see this: https://github.com/GTBitsOfGood/gen-soln/pull/142#issue-486765182.
+  - [`actions/`](server/actions): This folder also contains one file for each entity/model. Each file contains methods that describe various "actions" associated with that entity, often described through Mongoose queries. Actions can be exposed to the client by creating a corresponding API endpoint. **Pro-tip:** If you want to run an action from the terminal, see this: https://github.com/GTBitsOfGood/gen-soln/pull/142#issue-486765182.
   - [`migrations/`](server/migrations): Contains database migration scripts. Read more about migrations [here](https://dev.to/pesse/one-does-not-simply-update-a-database--migration-based-database-development-527d).
   - [`models/`](server/models): Each file in this folder defines an entity (through Mongoose schemas) in our application and creates the corresponding Mongoose model.
 - [`utils/`](utils): A folder that contains miscellaneous code used throughout our application. If you find yourself writing code that is used across the various root folders, put it in a file in `utils/`.
