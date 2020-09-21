@@ -2,7 +2,10 @@ import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
-import { Event as EventType } from "utils/types";
+import {
+  Event as EventType,
+  EventCardData as EventCardDataType
+} from "utils/types";
 
 const cardFields = "nonprofitId name startDate endDate name image address";
 
@@ -23,7 +26,7 @@ export async function getUpcomingEventsCardData() {
     .limit(5)
     .exec();
 
-  return result as Promise<EventType[]>;
+  return result as Promise<EventCardDataType[]>;
 }
 
 interface Coordinates {
@@ -45,7 +48,7 @@ export async function getNearestEventsCardData({ lat, long }: Coordinates) {
     .limit(5)
     .exec();
 
-  return result as Promise<EventType[]>;
+  return result as Promise<EventCardDataType[]>;
 }
 
 export async function getEventById(_id: string): Promise<EventType> {

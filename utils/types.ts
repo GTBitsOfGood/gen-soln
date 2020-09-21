@@ -31,14 +31,17 @@ export interface Donation {
 }
 
 // Keep in sync with the backend schema
-export interface Event {
+export interface Event extends EventCardData {
+  about: string;
+  maxVolunteers: number;
+  volunteers: Array<string>;
+}
+
+export interface EventCardData {
   name: string;
   nonprofitId: string;
   startDate: Date;
   endDate: Date;
-  about: string;
-  maxVolunteers: number;
-  volunteers: Array<string>;
   image: string;
 }
 
