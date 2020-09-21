@@ -15,7 +15,8 @@ export async function createNonprofit({
   background,
   logo,
   primaryColor,
-  secondaryColor
+  secondaryColor,
+  stripeAccount
 }: NonprofitType) {
   await Mongo();
 
@@ -26,7 +27,8 @@ export async function createNonprofit({
     background,
     logo,
     primaryColor,
-    secondaryColor
+    secondaryColor,
+    stripeAccount
   });
 }
 
@@ -52,8 +54,10 @@ export async function getNonprofitById(_id: string): Promise<NonprofitType> {
   await Mongo();
 
   // Exclude donation information for now:
-  const nonprofit = await Nonprofit.findOne({ _id }, { donations: 0 }).lean();
-
+  const nonprofit = await Nonprofit.findOne(
+    { _id },
+    { donations: 0, stripeAccount: 0 }
+  ).lean();
   if (nonprofit == null) {
     throw new Error(errors.nonprofit.INVALID_ID);
   }

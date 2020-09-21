@@ -16,7 +16,7 @@ const states = {
     ctaText: "Get Password"
   },
   FINAL: {
-    caption: "A new password has been sent to this email.",
+    caption: "We have emailed a password recovery link to your email.",
     ctaText: "Back to Sign In"
   }
 };

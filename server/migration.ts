@@ -22,9 +22,9 @@ function handleError(err: Error) {
 const migrationConfig = {
   // We ensure that our Mongoose connection and migration config use the same DB:
   mongodb: {
-    url: appConfig.dbUrl,
-    databaseName: appConfig.dbName,
-    options: appConfig.dbOptions
+    url: appConfig.db.url,
+    databaseName: appConfig.db.name,
+    options: appConfig.db.options
   },
   migrationsDir: "server/migrations",
   changelogCollectionName: "changelog",
