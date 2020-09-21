@@ -1,16 +1,23 @@
 import Mongo from "server/index";
 import Event from "server/models/event";
+import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import { Event as EventType } from "utils/types";
 
-export async function getUpcomingEvents() {
+const cardFields = "nonprofitId name startDate endDate name image address";
+
+export async function getUpcomingEventsCardData() {
   await Mongo();
 
-  const result = Event.find({
-    startDate: {
-      $gte: new Date()
-    }
-  })
+  const result = Event.find(
+    {
+      startDate: {
+        $gte: new Date()
+      }
+    },
+    cardFields
+  )
+    .populate("nonprofitId", "name", Nonprofit)
     .lean()
     .sort({ startDate: 1 })
     .limit(5)
@@ -24,10 +31,11 @@ interface Coordinates {
   long: number;
 }
 
-export async function getNearestEvents({ lat, long }: Coordinates) {
+export async function getNearestEventsCardData({ lat, long }: Coordinates) {
   await Mongo();
 
-  const result = Event.find({})
+  const result = Event.find({}, cardFields)
+    .populate("nonprofitId", "name", Nonprofit)
     .where("address.location")
     .near({
       center: [long, lat],
