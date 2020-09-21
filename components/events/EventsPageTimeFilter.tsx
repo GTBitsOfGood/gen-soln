@@ -67,9 +67,18 @@ const EventsPageTimeFilter: React.FC = () => {
     optionLabelSelected
   } = useStyles();
 
+  const times: string[] =
+    router.query.time == null
+      ? []
+      : !Array.isArray(router.query.time)
+      ? [router.query.time]
+      : router.query.time;
+
   const select = async (selected: string) => {
     await router.push({
-      query: router.query.time === selected ? {} : { time: selected }
+      query: times.includes(selected)
+        ? { time: times.filter((s: string) => s !== selected) }
+        : { time: [...times, selected] }
     });
   };
 
@@ -83,7 +92,7 @@ const EventsPageTimeFilter: React.FC = () => {
               <Typography
                 className={clsx(
                   optionLabel,
-                  router.query.time === timeOption.value && optionLabelSelected
+                  times.includes(timeOption.value) && optionLabelSelected
                 )}
               >
                 {timeOption.text}
@@ -93,7 +102,7 @@ const EventsPageTimeFilter: React.FC = () => {
             control={
               <Checkbox
                 className={optionLabel}
-                checked={router.query.time === timeOption.value}
+                checked={times.includes(timeOption.value)}
                 onChange={() => select(timeOption.value)}
                 icon={<UncheckedIcon color="#999999" />}
                 checkedIcon={<CheckedIcon color={"#FD8033"} />}
