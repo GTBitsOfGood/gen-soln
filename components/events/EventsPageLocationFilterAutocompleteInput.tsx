@@ -12,13 +12,14 @@ import Grid from "@material-ui/core/Grid";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 import Typography from "@material-ui/core/Typography";
+import config from "config";
 
 const useStyles = makeStyles(theme => ({
   icon: {
     color: theme.palette.text.secondary,
     marginRight: theme.spacing(2)
   },
-  input: {
+  inputRoot: {
     borderRadius: 100
   }
 }));
@@ -52,7 +53,7 @@ interface PlaceType {
 }
 
 const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
-  const { icon, input } = useStyles();
+  const classes = useStyles();
   const [value, setValue] = React.useState<PlaceType | null>(null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState<PlaceType[]>([]);
@@ -61,7 +62,8 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
   if (typeof window !== "undefined" && !loaded.current) {
     if (!document.querySelector("#google-maps")) {
       loadScript(
-        "https://maps.googleapis.com/maps/api/js?key=${config.googleMapsKey}&libraries=places",
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsKey}&libraries=places`,
         document.querySelector("head"),
         "google-maps"
       );
@@ -138,6 +140,7 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
       getOptionLabel={option =>
         typeof option === "string" ? option : option.description
       }
+      classes={{ inputRoot: classes.inputRoot }}
       filterOptions={x => x}
       options={options}
       autoComplete
@@ -155,7 +158,6 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
         <div>
           <TextField
             {...params}
-            className={input}
             label="Search city"
             variant="outlined"
             fullWidth
@@ -177,7 +179,7 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
         return (
           <Grid container alignItems="center">
             <Grid item>
-              <LocationOnIcon className={icon} />
+              <LocationOnIcon className={classes.icon} />
             </Grid>
             <Grid item xs>
               {parts.map((part, index) => (
