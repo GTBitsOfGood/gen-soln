@@ -31,6 +31,9 @@ const useStyles = makeStyles({
     "&:focusVisible": {
       outline: "none"
     }
+  },
+  contentContainer: {
+    marginTop: 8
   }
 });
 
@@ -39,7 +42,7 @@ const EventsPageLeftRailFilter: React.FC<Props> = ({
   collapsible = false,
   content
 }: Props) => {
-  const { root, subtitle, collapseBar } = useStyles();
+  const { root, subtitle, collapseBar, contentContainer } = useStyles();
   const [collapsed, setCollapsed] = useState(false);
 
   const topBar = collapsible ? (
@@ -56,7 +59,7 @@ const EventsPageLeftRailFilter: React.FC<Props> = ({
   return (
     <div className={root}>
       {topBar}
-      {!collapsed && content}
+      <div className={contentContainer}>{!collapsed && content}</div>
     </div>
   );
 };

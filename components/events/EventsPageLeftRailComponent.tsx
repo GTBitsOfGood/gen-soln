@@ -28,7 +28,10 @@ const EventsPageLeftRailComponent: React.FC<Record<string, unknown>> = () => {
   return (
     <div className={root}>
       <Typography className={header}>Filters</Typography>
-      <EventsPageLeftRailFilter header="Location" content={null} />
+      <EventsPageLeftRailFilter
+        header="Location"
+        content={<EventsPageLocationFilterAutocompleteInput />}
+      />
       <EventsPageLeftRailFilter
         header="Time"
         content={<EventsPageTimeFilter />}

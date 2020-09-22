@@ -15,9 +15,6 @@ import UncheckedIcon from "@horizon/icons/UncheckedIcon";
 import CheckedIcon from "@horizon/icons/CheckedIcon";
 
 const useStyles = makeStyles({
-  root: {
-    marginTop: 8
-  },
   subtitle: {
     // TODO: replace this with a Typography component
     fontFamily: "Visby CF, sans-serif",
@@ -59,59 +56,56 @@ const timeOptions: Dropdown[] = [
 
 const EventsPageTimeFilter: React.FC = () => {
   const router = useRouter();
-  const {
-    root,
-    option,
-    optionRoot,
-    optionLabel,
-    optionLabelSelected
-  } = useStyles();
+  const { option, optionRoot, optionLabel, optionLabelSelected } = useStyles();
 
-  const times: string[] =
+  const times =
     router.query.time == null
       ? []
       : !Array.isArray(router.query.time)
       ? [router.query.time]
       : router.query.time;
 
-  const select = async (selected: string) => {
+  const toggle = async (selected: string) => {
     await router.push({
       query: times.includes(selected)
-        ? { time: times.filter((s: string) => s !== selected) }
+        ? { time: times.filter(s => s !== selected) }
         : { time: [...times, selected] }
     });
   };
 
   return (
-    <div className={root}>
-      <FormGroup className={optionRoot}>
-        {timeOptions.map(timeOption => (
+    <FormGroup className={optionRoot}>
+      {timeOptions.map(({ text, value }) => {
+        const isOptionChecked = times.includes(value);
+
+        return (
           <FormControlLabel
-            key={timeOption.text}
+            key={text}
             label={
               <Typography
                 className={clsx(
                   optionLabel,
-                  times.includes(timeOption.value) && optionLabelSelected
+                  isOptionChecked && optionLabelSelected
                 )}
               >
-                {timeOption.text}
+                {text}
               </Typography>
             }
             className={option}
             control={
               <Checkbox
                 className={optionLabel}
-                checked={times.includes(timeOption.value)}
-                onChange={() => select(timeOption.value)}
+                checked={isOptionChecked}
+                onChange={() => toggle(value)}
+                // TODO: replace with Horizon colors
                 icon={<UncheckedIcon color="#999999" />}
                 checkedIcon={<CheckedIcon color={"#FD8033"} />}
               />
             }
           />
-        ))}
-      </FormGroup>
-    </div>
+        );
+      })}
+    </FormGroup>
   );
 };
 
