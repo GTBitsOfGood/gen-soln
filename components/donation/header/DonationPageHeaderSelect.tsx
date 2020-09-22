@@ -14,7 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import { DropdownProps } from "utils/types";
 
-import urls from "config";
+import config from "config";
 
 const useStyles = makeStyles(({ palette, typography }: Theme) =>
   createStyles({
@@ -68,8 +68,8 @@ const DonationPageHeaderSelect: React.FC<DropdownProps> = ({
       Router.events.on("routeChangeComplete", routeChangeComplete);
 
       void router.push(
-        urls.pages.donate(),
-        urls.pages.donate(event.target.value as string)
+        config.pages.donate(),
+        config.pages.donate(event.target.value as string)
       );
     },
     [router, routeChangeStart, routeChangeComplete]
