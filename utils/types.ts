@@ -3,6 +3,7 @@ import {
   PaletteOptions
 } from "@material-ui/core/styles/createPalette";
 import { ThemeOptions, Theme } from "@material-ui/core/styles";
+import { type } from "os";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
@@ -31,19 +32,24 @@ export interface Donation {
 }
 
 // Keep in sync with the backend schema
-export interface Event extends EventCardData {
-  about: string;
-  maxVolunteers: number;
-  volunteers: Array<string>;
-}
-
-export interface EventCardData {
+interface EventBase {
   name: string;
-  nonprofitId: string;
   startDate: Date;
   endDate: Date;
   image: string;
+  address: { text: string; location: { type: "Point"; coordinates: number[] } };
 }
+
+export type Event = EventBase & {
+  about: string;
+  maxVolunteers: number;
+  volunteers: Array<string>;
+  nonprofitId: string;
+};
+
+export type EventCardData = EventBase & {
+  nonprofitID: Pick<Nonprofit, "_id" | "name">;
+};
 
 export interface Dropdown {
   text: string;

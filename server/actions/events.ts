@@ -7,7 +7,14 @@ import {
   EventCardData as EventCardDataType
 } from "utils/types";
 
-const cardFields = "nonprofitId name startDate endDate name image address";
+const cardFields: Record<keyof EventCardDataType, 1> = {
+  name: 1,
+  startDate: 1,
+  endDate: 1,
+  image: 1,
+  address: 1,
+  nonprofitID: 1
+};
 
 export async function getUpcomingEventsCardData() {
   await Mongo();
