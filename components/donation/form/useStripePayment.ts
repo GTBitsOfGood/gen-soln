@@ -42,7 +42,7 @@ const useStripePayment = () => {
           card,
           billing_details: billingDetails
         }),
-        createPaymentIntent(amount * CENTS_IN_DOLLAR)
+        createPaymentIntent(amount * CENTS_IN_DOLLAR, email)
       ]);
 
       if (paymentMethodReq.error) {
