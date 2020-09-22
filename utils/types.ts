@@ -34,8 +34,8 @@ export interface Donation {
 export interface Event {
   name: string;
   nonprofitId: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   about: string;
   maxVolunteers: number;
   volunteers: Array<string>;

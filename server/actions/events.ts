@@ -11,7 +11,6 @@ export async function getUpcomingEvents() {
       $gte: new Date()
     }
   })
-    .lean()
     .sort({ startDate: 1 })
     .limit(5)
     .exec();
@@ -33,7 +32,6 @@ export async function getNearestEvents({ lat, long }: Coordinates) {
       center: [long, lat],
       spherical: true
     })
-    .lean()
     .limit(5)
     .exec();
 
@@ -43,13 +41,13 @@ export async function getNearestEvents({ lat, long }: Coordinates) {
 export async function getEventById(_id: string): Promise<EventType> {
   await Mongo();
 
-  const event = (await Event.findById(_id).lean()) as EventType;
+  const event = await Event.findById(_id);
 
   if (event == null) {
     throw new Error(errors.event.INVALID_ID);
   }
 
-  return event;
+  return event.toJSON() as EventType;
 }
 
 export async function getAllEventIds(): Promise<string[]> {
