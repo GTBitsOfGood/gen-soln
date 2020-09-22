@@ -13,9 +13,22 @@ import DonationPage from "components/donation/DonationPage";
 
 import config from "config";
 
-const NonprofitDonationPage: NextPage<React.ComponentProps<
-  typeof DonationPage
->> = props => <DonationPage {...props} />;
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+interface Props {
+  stripeAccount: string;
+}
+
+const NonprofitDonationPage: NextPage<
+  Props & React.ComponentProps<typeof DonationPage>
+> = ({ stripeAccount, ...props }) => (
+  <Elements
+    stripe={loadStripe(config.stripe.publishable_key!, { stripeAccount })}
+  >
+    <DonationPage {...props} />
+  </Elements>
+);
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const ids = await getNonprofitIds();
@@ -33,6 +46,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     getNonprofitById(id)
   ]);
 
+  const stripeAccount = nonprofit.stripeAccount;
+  delete nonprofit.stripeAccount;
+
   const items = namesWithIds.map(
     ({ _id, name }): Dropdown => ({
       value: _id,
@@ -44,7 +60,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       nonprofit,
       items,
-      selectedValue: id
+      selectedValue: id,
+      stripeAccount
     }
   };
 };
