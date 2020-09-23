@@ -14,11 +14,15 @@ import {
 } from "server/actions/nonprofit";
 import DonationPage from "components/donation/DonationPage";
 import config from "config";
+import { useRouter } from "next/router";
 
 const NonprofitDonationPage: NextPage<InferGetStaticPropsType<
   typeof getStaticProps
 >> = props => {
-  if (props.nonprofit) {
+  const router = useRouter();
+  if (router.isFallback) {
+    return null;
+  } else if (props.nonprofit) {
     return <DonationPage {...props} />;
   } else {
     return <ErrorPage statusCode={404} />;
@@ -31,6 +35,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths: ids.map(config.pages.donate), fallback: true };
 };
 
+// eslint-disable-next-line
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params?.id as string;
 
