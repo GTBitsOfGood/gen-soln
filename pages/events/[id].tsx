@@ -1,6 +1,5 @@
 import {
   NextPage,
-  GetStaticProps,
   GetStaticPaths,
   GetStaticPropsContext,
   InferGetStaticPropsType
@@ -8,7 +7,7 @@ import {
 
 import { useRouter } from "next/router";
 import ErrorPage from "next/error";
-import urls from "config";
+import config from "config";
 import { getAllEventIds, getEventById } from "server/actions/events";
 
 const NonprofitEventPage: NextPage<InferGetStaticPropsType<
@@ -17,7 +16,7 @@ const NonprofitEventPage: NextPage<InferGetStaticPropsType<
   const router = useRouter();
 
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   if (props.hasError) {
@@ -31,12 +30,10 @@ const NonprofitEventPage: NextPage<InferGetStaticPropsType<
 export const getStaticPaths: GetStaticPaths = async () => {
   const ids = await getAllEventIds();
 
-  return { paths: ids.map(urls.pages.event), fallback: true };
+  return { paths: ids.map(config.pages.event), fallback: true };
 };
 
-export const getStaticProps: GetStaticProps = async (
-  context: GetStaticPropsContext
-) => {
+export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params?.id as string;
 
   try {
@@ -52,7 +49,8 @@ export const getStaticProps: GetStaticProps = async (
     return {
       props: {
         hasError: true
-      }
+      },
+      revalidate: 1
     };
   }
 };
