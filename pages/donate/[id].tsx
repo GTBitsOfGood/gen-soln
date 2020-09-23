@@ -1,25 +1,19 @@
 import React from "react";
 import {
   NextPage,
-  GetStaticProps,
   GetStaticPaths,
   InferGetStaticPropsType,
   GetStaticPropsContext
 } from "next";
-
+import ErrorPage from "next/error";
 import { Dropdown } from "utils/types";
-
 import {
   getNonprofitIds,
   getNonprofitNamesWithIds,
   getNonprofitById
 } from "server/actions/nonprofit";
-
 import DonationPage from "components/donation/DonationPage";
-
 import config from "config";
-import Head from "next/head";
-import ErrorPage from "next/error";
 
 const NonprofitDonationPage: NextPage<InferGetStaticPropsType<
   typeof getStaticProps
@@ -65,7 +59,8 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     };
   } catch (err) {
     return {
-      props: {}
+      props: {},
+      revalidate: 10
     };
   }
 };
