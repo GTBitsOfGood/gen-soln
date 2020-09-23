@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   }
 });
 
-const OrangeButton: React.FC<React.ComponentProps<typeof Button>> = ({
+const HorizonButton: React.FC<React.ComponentProps<typeof Button>> = ({
   children,
   ...rest
 }) => {
@@ -24,4 +24,4 @@ const OrangeButton: React.FC<React.ComponentProps<typeof Button>> = ({
   );
 };
 
-export default OrangeButton;
+export default HorizonButton;

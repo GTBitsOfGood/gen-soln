@@ -3,9 +3,8 @@ import React, { useContext } from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
-import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
-
 import { DonationPageStateDispatch, setStep } from "./reducer";
+import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
 
 const white = "white";
 const useStyles = makeStyles({
