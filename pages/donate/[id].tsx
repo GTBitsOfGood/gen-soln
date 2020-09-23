@@ -16,17 +16,13 @@ import config from "config";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
-interface Props {
-  stripeAccount: string;
-}
-
-const NonprofitDonationPage: NextPage<
-  Props & React.ComponentProps<typeof DonationPage>
-> = props => (
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const NonprofitDonationPage: NextPage<React.ComponentProps<
+  typeof DonationPage
+>> = props => (
   <Elements
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     stripe={loadStripe(config.stripe.publishable_key!, {
-      stripeAccount: props.stripeAccount
+      stripeAccount: props.nonprofit.stripeAccount
     })}
   >
     <DonationPage {...props} />

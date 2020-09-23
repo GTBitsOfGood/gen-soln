@@ -5,7 +5,6 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import createNonprofitMuiTheme from "utils/theme";
 import { Nonprofit } from "utils/types";
-import config from "config";
 
 export default class MyApp extends App {
   componentDidMount(): void {
