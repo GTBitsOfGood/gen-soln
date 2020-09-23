@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "debug": "NODE_OPTIONS='--inspect' next",
     "run:ts-node:script": "cross-env NODE_ENV=development ts-node -O {\\\"module\\\":\\\"commonjs\\\"} -r module-alias/register",
     "dev:db:migrate": "yarn run:ts-node:script server/migration.ts",
     "run:server:action": "yarn run:ts-node:script server/run-action.ts",

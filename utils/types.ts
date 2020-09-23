@@ -34,8 +34,8 @@ export interface Donation {
 // Keep in sync with the backend schema
 interface EventBase {
   name: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   image: string;
   address: { text: string; location: { type: "Point"; coordinates: number[] } };
 }
