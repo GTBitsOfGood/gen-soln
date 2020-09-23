@@ -34,7 +34,6 @@ export interface Donation {
 // Keep in sync with the backend schema
 interface EventBase {
   name: string;
-  nonprofitId: string;
   startDate: string;
   endDate: string;
   image: string;
