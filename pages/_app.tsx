@@ -5,12 +5,6 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import createNonprofitMuiTheme from "utils/theme";
 import { Nonprofit } from "utils/types";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import config from "config";
-
-/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-const stripePromise = loadStripe(config.stripe.publishable_key!);
 
 export default class MyApp extends App {
   componentDidMount(): void {
@@ -24,7 +18,7 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
 
     return (
-      <Elements stripe={stripePromise}>
+      <>
         <Head>
           <title>Donation Marketplace Solution</title>
           <meta
@@ -44,7 +38,7 @@ export default class MyApp extends App {
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
-      </Elements>
+      </>
     );
   }
 }

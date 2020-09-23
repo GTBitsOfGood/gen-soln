@@ -16,6 +16,9 @@ import DonationPage from "components/donation/DonationPage";
 import config from "config";
 import { useRouter } from "next/router";
 
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
 const NonprofitDonationPage: NextPage<InferGetStaticPropsType<
   typeof getStaticProps
 >> = props => {
@@ -23,7 +26,16 @@ const NonprofitDonationPage: NextPage<InferGetStaticPropsType<
   if (router.isFallback) {
     return null;
   } else if (props.nonprofit) {
-    return <DonationPage {...props} />;
+    return (
+      <Elements
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        stripe={loadStripe(config.stripe.publishable_key!, {
+          stripeAccount: props.nonprofit.stripeAccount
+        })}
+      >
+        <DonationPage {...props} />
+      </Elements>
+    );
   } else {
     return <ErrorPage statusCode={404} />;
   }

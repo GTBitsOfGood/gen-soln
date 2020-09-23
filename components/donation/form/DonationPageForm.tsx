@@ -71,11 +71,13 @@ const STEPS = [
 interface Props {
   donationCompletedCallback: () => void;
   selectedNonprofitId: string;
+  stripeAccount: string;
 }
 
 const DonationPageForm: React.FC<Props> = ({
   donationCompletedCallback,
-  selectedNonprofitId
+  selectedNonprofitId,
+  stripeAccount
 }) => {
   const { container, contentContainer } = useStyles();
   const [

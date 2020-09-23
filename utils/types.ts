@@ -18,7 +18,7 @@ export interface Nonprofit {
   logo: string;
   primaryColor: string;
   secondaryColor: string;
-  stripeAccount?: string;
+  stripeAccount: string;
   // TODO: consider adding the donations field?
 }
 
