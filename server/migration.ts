@@ -5,12 +5,19 @@
 import loadEnvForScript from "./env";
 loadEnvForScript();
 // Code based on https://github.com/seppevs/migrate-mongo/blob/master/bin/migrate-mongo.js
-import { create, up, down, status, config, database } from "migrate-mongo";
+import {
+  create,
+  up,
+  down,
+  status,
+  config as mongoConfig,
+  database
+} from "migrate-mongo";
 import program from "commander";
 import Table from "cli-table3";
 import lodash from "lodash";
 
-import appConfig from "config";
+import config from "config";
 
 type MIGRATION_DIRECTION = "UP" | "DOWN";
 
@@ -22,9 +29,9 @@ function handleError(err: Error) {
 const migrationConfig = {
   // We ensure that our Mongoose connection and migration config use the same DB:
   mongodb: {
-    url: appConfig.db.url,
-    databaseName: appConfig.db.name,
-    options: appConfig.db.options
+    url: config.db.url,
+    databaseName: config.db.name,
+    options: config.db.options
   },
   migrationsDir: "server/migrations",
   changelogCollectionName: "changelog",
@@ -32,7 +39,7 @@ const migrationConfig = {
 };
 
 // @ts-ignore: We are using migrate-mongo v8 but types have been written for v7
-config.set(migrationConfig);
+mongoConfig.set(migrationConfig);
 
 async function createMigrationFile(description: string) {
   try {
