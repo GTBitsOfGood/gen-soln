@@ -34,6 +34,7 @@ const DonationPage: React.FC<Props & DropdownProps> = ({
         <DonationPageMainContent
           description={nonprofit.about}
           selectedNonprofitId={dropdownProps.selectedValue}
+          stripeAccount={nonprofit.stripeAccount}
           key={dropdownProps.selectedValue}
         />
       </ContainerWithShadow>

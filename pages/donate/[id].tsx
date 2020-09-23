@@ -22,9 +22,12 @@ interface Props {
 
 const NonprofitDonationPage: NextPage<
   Props & React.ComponentProps<typeof DonationPage>
-> = ({ stripeAccount, ...props }) => (
+> = props => (
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   <Elements
-    stripe={loadStripe(config.stripe.publishable_key!, { stripeAccount })}
+    stripe={loadStripe(config.stripe.publishable_key!, {
+      stripeAccount: props.stripeAccount
+    })}
   >
     <DonationPage {...props} />
   </Elements>
@@ -46,9 +49,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     getNonprofitById(id)
   ]);
 
-  const stripeAccount = nonprofit.stripeAccount;
-  delete nonprofit.stripeAccount;
-
   const items = namesWithIds.map(
     ({ _id, name }): Dropdown => ({
       value: _id,
@@ -60,8 +60,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       nonprofit,
       items,
-      selectedValue: id,
-      stripeAccount
+      selectedValue: id
     }
   };
 };
