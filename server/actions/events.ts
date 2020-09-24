@@ -29,7 +29,7 @@ export async function getUpcomingEventsCardData() {
   )
     .populate("nonprofitId", "name", Nonprofit)
     .sort({ startDate: 1 })
-    .limit(5)
+    .limit(5);
 
   return result.map(r => r.toJSON()) as EventCardDataType[];
 }
@@ -49,7 +49,7 @@ export async function getNearestEventsCardData({ lat, long }: Coordinates) {
       center: [long, lat],
       spherical: true
     })
-    .limit(5)
+    .limit(5);
 
   return result.map(r => r.toJSON()) as EventCardDataType[];
 }
