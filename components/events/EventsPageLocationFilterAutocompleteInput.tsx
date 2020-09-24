@@ -1,8 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import React from "react";
+import React, { useRef, useState, useMemo, useEffect } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
@@ -36,34 +32,23 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
   position.appendChild(script);
 }
 
-const autocompleteService = { current: null };
-
-interface PlaceType {
-  description: string;
-  structured_formatting: {
-    main_text: string;
-    secondary_text: string;
-    main_text_matched_substrings: [
-      {
-        offset: number;
-        length: number;
-      }
-    ];
-  };
-}
+type PlaceType = google.maps.places.AutocompletePrediction;
 
 const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState<PlaceType | null>(null);
-  const [inputValue, setInputValue] = React.useState("");
-  const [options, setOptions] = React.useState<PlaceType[]>([]);
-  const loaded = React.useRef(false);
+  const [value, setValue] = useState<PlaceType | null>(null);
+  const [inputValue, setInputValue] = useState("");
+  const [options, setOptions] = useState<PlaceType[]>([]);
+  const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(
+    null
+  );
+  const loaded = useRef(false);
 
   if (typeof window !== "undefined" && !loaded.current) {
     if (!document.querySelector("#google-maps")) {
       loadScript(
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsKey}&libraries=places`,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsKey!}&libraries=places`,
         document.querySelector("head"),
         "google-maps"
       );
@@ -72,14 +57,14 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
     loaded.current = true;
   }
 
-  const fetch = React.useMemo(
+  const fetch = useMemo(
     () =>
       throttle(
         (
           request: { input: string },
           callback: (results?: PlaceType[]) => void
         ) => {
-          (autocompleteService.current as any).getPlacePredictions(
+          autocompleteService.current?.getPlacePredictions(
             {
               ...request,
               types: ["(cities)"],
@@ -93,11 +78,11 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
     []
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     let active = true;
 
-    if (!autocompleteService.current && (window as any).google) {
-      autocompleteService.current = new (window as any).google.maps.places.AutocompleteService();
+    if (!autocompleteService.current && window.google) {
+      autocompleteService.current = new window.google.maps.places.AutocompleteService();
     }
     if (!autocompleteService.current) {
       return undefined;
@@ -147,7 +132,10 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
       includeInputInList
       filterSelectedOptions
       value={value}
-      onChange={(event: any, newValue: PlaceType | null) => {
+      onChange={(
+        event: React.ChangeEvent<unknown>,
+        newValue: PlaceType | null
+      ) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
       }}
@@ -169,11 +157,7 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
           option.structured_formatting.main_text_matched_substrings;
         const parts = parse(
           option.structured_formatting.main_text,
-          matches.map((match: any) => [
-            match.offset,
-            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-            match.offset + match.length
-          ])
+          matches.map(match => [match.offset, match.offset + match.length])
         );
 
         return (
