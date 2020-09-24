@@ -19,7 +19,7 @@ const cardFields: Record<keyof EventCardDataType, 1> = {
 export async function getUpcomingEventsCardData() {
   await Mongo();
 
-  const result = Event.find(
+  const result = await Event.find(
     {
       startDate: {
         $gte: new Date()
@@ -32,7 +32,7 @@ export async function getUpcomingEventsCardData() {
     .limit(5)
     .exec();
 
-  return result as Promise<EventCardDataType[]>;
+  return JSON.parse(JSON.stringify(result)) as Promise<EventCardDataType[]>;
 }
 
 interface Coordinates {
@@ -43,7 +43,7 @@ interface Coordinates {
 export async function getNearestEventsCardData({ lat, long }: Coordinates) {
   await Mongo();
 
-  const result = Event.find({}, cardFields)
+  const result = await Event.find({}, cardFields)
     .populate("nonprofitId", "name", Nonprofit)
     .where("address.location")
     .near({
@@ -53,7 +53,7 @@ export async function getNearestEventsCardData({ lat, long }: Coordinates) {
     .limit(5)
     .exec();
 
-  return result as Promise<EventCardDataType[]>;
+  return JSON.parse(JSON.stringify(result)) as Promise<EventCardDataType[]>;
 }
 
 export async function getEventById(_id: string): Promise<EventType> {

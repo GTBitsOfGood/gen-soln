@@ -83,7 +83,7 @@ const eventSchema = new Schema(
  * @return the duration of the event in ms
  */
 eventSchema.virtual("duration").get(function () {
-  return this.endDate - this.startDate;
+  return new Date(this.endDate) - new Date(this.startDate);
 });
 
 module.exports = mongoose.models?.Event || mongoose.model("Event", eventSchema);
