@@ -13,7 +13,8 @@ const cardFields: Record<keyof EventCardDataType, 1> = {
   endDate: 1,
   image: 1,
   address: 1,
-  nonprofitID: 1
+  nonprofitID: 1,
+  duration: 1
 };
 
 export async function getUpcomingEventsCardData() {
