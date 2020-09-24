@@ -30,9 +30,8 @@ export async function getUpcomingEventsCardData() {
     .populate("nonprofitId", "name", Nonprofit)
     .sort({ startDate: 1 })
     .limit(5)
-    .exec();
 
-  return JSON.parse(JSON.stringify(result)) as Promise<EventCardDataType[]>;
+  return result.map(r => r.toJSON()) as EventCardDataType[];
 }
 
 interface Coordinates {
@@ -51,9 +50,8 @@ export async function getNearestEventsCardData({ lat, long }: Coordinates) {
       spherical: true
     })
     .limit(5)
-    .exec();
 
-  return JSON.parse(JSON.stringify(result)) as Promise<EventCardDataType[]>;
+  return result.map(r => r.toJSON()) as EventCardDataType[];
 }
 
 export async function getEventById(_id: string): Promise<EventType> {
