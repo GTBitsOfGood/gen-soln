@@ -36,6 +36,7 @@ interface EventBase {
   name: string;
   startDate: string;
   endDate: string;
+  duration: number;
   image: string;
   address: { text: string; location: { type: "Point"; coordinates: number[] } };
 }
