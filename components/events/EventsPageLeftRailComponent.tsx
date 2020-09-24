@@ -30,6 +30,7 @@ const useStyles = makeStyles({
     alignItems: "center"
   },
   clearFilterLabel: {
+    // TODO: replace this with a Typography component
     fontFamily: "Visby CF, sans-serif",
     fontSize: 14,
     lineHeight: "130%",
