@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/router";
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const useRouterQueryParamsState = (key: string) => {
   const router = useRouter();
 
