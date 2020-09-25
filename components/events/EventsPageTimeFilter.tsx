@@ -57,7 +57,6 @@ const timeOptions: Dropdown[] = [
 ];
 
 const EventsPageTimeFilter: React.FC = () => {
-  const router = useRouter();
   const { option, optionRoot, optionLabel, optionLabelSelected } = useStyles();
   const { currentState, put, remove } = useRouterQueryParamsState("time");
 
