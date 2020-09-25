@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 
-import { useRouter } from "next/router";
 import { Dropdown } from "utils/types";
 import {
   Checkbox,
@@ -13,6 +12,8 @@ import {
 
 import UncheckedIcon from "@horizon/icons/UncheckedIcon";
 import CheckedIcon from "@horizon/icons/CheckedIcon";
+
+import useRouterQueryParamsState from "./useRouterQueryParamsState";
 
 const useStyles = makeStyles({
   subtitle: {
@@ -55,28 +56,13 @@ const timeOptions: Dropdown[] = [
 ];
 
 const EventsPageTimeFilter: React.FC = () => {
-  const router = useRouter();
   const { option, optionRoot, optionLabel, optionLabelSelected } = useStyles();
-
-  const times =
-    router.query.time == null
-      ? []
-      : !Array.isArray(router.query.time)
-      ? [router.query.time]
-      : router.query.time;
-
-  const toggle = async (selected: string) => {
-    await router.push({
-      query: times.includes(selected)
-        ? { time: times.filter(s => s !== selected) }
-        : { time: [...times, selected] }
-    });
-  };
+  const { currentState, put, remove } = useRouterQueryParamsState("time");
 
   return (
     <FormGroup className={optionRoot}>
       {timeOptions.map(({ text, value }) => {
-        const isOptionChecked = times.includes(value);
+        const isOptionChecked = currentState.includes(value);
 
         return (
           <FormControlLabel
@@ -96,7 +82,9 @@ const EventsPageTimeFilter: React.FC = () => {
               <Checkbox
                 className={optionLabel}
                 checked={isOptionChecked}
-                onChange={() => toggle(value)}
+                onChange={() => {
+                  isOptionChecked ? remove(value) : put(value);
+                }}
                 // TODO: replace with Horizon colors
                 icon={<UncheckedIcon color="#999999" />}
                 checkedIcon={<CheckedIcon color={"#FD8033"} />}
