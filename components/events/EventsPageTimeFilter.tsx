@@ -14,6 +14,8 @@ import {
 import UncheckedIcon from "@horizon/icons/UncheckedIcon";
 import CheckedIcon from "@horizon/icons/CheckedIcon";
 
+import useRouterQueryParamsState from "./useRouterQueryParamsState";
+
 const useStyles = makeStyles({
   subtitle: {
     // TODO: replace this with a Typography component
@@ -57,6 +59,7 @@ const timeOptions: Dropdown[] = [
 const EventsPageTimeFilter: React.FC = () => {
   const router = useRouter();
   const { option, optionRoot, optionLabel, optionLabelSelected } = useStyles();
+  const { currentState, put, remove } = useRouterQueryParamsState("time");
 
   const times =
     router.query.time == null
@@ -96,7 +99,9 @@ const EventsPageTimeFilter: React.FC = () => {
               <Checkbox
                 className={optionLabel}
                 checked={isOptionChecked}
-                onChange={() => toggle(value)}
+                onChange={() => {
+                  isOptionChecked ? remove(value) : put(value);
+                }}
                 // TODO: replace with Horizon colors
                 icon={<UncheckedIcon color="#999999" />}
                 checkedIcon={<CheckedIcon color={"#FD8033"} />}
