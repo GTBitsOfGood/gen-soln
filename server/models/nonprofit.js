@@ -6,14 +6,14 @@ const ALPHABET = "0123456789";
 const ID_LENGTH = 8;
 const nanoid = customAlphabet(ALPHABET, ID_LENGTH);
 const CAUSES = [
-  { text: "arts", value: "ARTS" },
-  { text: "Culture and Humanities", value: "CULTURE AND HUMANITIES" },
-  { text: "Education and Research", value: "EDUCATION AND RESEARCH" },
-  { text: "Environment and Animals", value: "ENVIRMONMENT AND ANIMALS" },
+  { text: "Arts", value: "ARTS" },
+  { text: "Culture and Humanities", value: "CULTURE_AND_HUMANITIES" },
+  { text: "Education and Research", value: "EDUCATION_AND_RESEARCH" },
+  { text: "Environment and Animals", value: "ENVIRONMENT_AND_ANIMALS" },
   { text: "Health", value: "HEALTH" },
-  { text: "Human Services", value: "HUMAN SERVICES" },
+  { text: "Human Services", value: "HUMAN_SERVICES" },
   { text: "International", value: "INTERNATIONAL" },
-  { text: "Public, Societal", value: "PUBLIC, SOCIETAL" },
+  { text: "Public, Societal", value: "PUBLIC_SOCIETAL" },
   { text: "Religion", value: "RELIGION" },
   { text: "Other", value: "OTHER" }
 ];
@@ -77,18 +77,8 @@ const nonprofitSchema = new Schema({
   },
   cause: {
     type: String,
-    enum: [
-      "ARTS, CULTURE, AND HUMANITIES",
-      "EDUCATION AND RESEARCH",
-      "ENVIRONMENT AND ANIMALS",
-      "HEALTH",
-      "HUMAN SERVICES",
-      "INTERNATIONAL",
-      "PUBLIC, SOCIETAL",
-      "RELIGION",
-      "OTHER"
-    ],
-    default: "OTHER",
+    enum: CAUSES.map(cause => cause.value),
+    default: CAUSES[CAUSES.length - 1].value,
     required: true
   }
 });
