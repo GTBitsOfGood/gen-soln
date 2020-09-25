@@ -61,25 +61,10 @@ const EventsPageTimeFilter: React.FC = () => {
   const { option, optionRoot, optionLabel, optionLabelSelected } = useStyles();
   const { currentState, put, remove } = useRouterQueryParamsState("time");
 
-  const times =
-    router.query.time == null
-      ? []
-      : !Array.isArray(router.query.time)
-      ? [router.query.time]
-      : router.query.time;
-
-  const toggle = async (selected: string) => {
-    await router.push({
-      query: times.includes(selected)
-        ? { time: times.filter(s => s !== selected) }
-        : { time: [...times, selected] }
-    });
-  };
-
   return (
     <FormGroup className={optionRoot}>
       {timeOptions.map(({ text, value }) => {
-        const isOptionChecked = times.includes(value);
+        const isOptionChecked = currentState.includes(value);
 
         return (
           <FormControlLabel
