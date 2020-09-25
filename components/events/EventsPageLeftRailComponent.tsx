@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import EventsPageLeftRailFilter from "./EventsPageLeftRailFilter";
 import EventsPageTimeFilter from "./EventsPageTimeFilter";
 
 import EventsPageLocationFilterAutocompleteInput from "./EventsPageLocationFilterAutocompleteInput";
-import FocusVisibleOnly from "components/FocusVisibleOnly";
 
 const useStyles = makeStyles({
   root: {
@@ -27,7 +27,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+    flexWrap: "wrap"
   },
   clearFilterLabel: {
     // TODO: replace this with a Typography component
@@ -46,6 +47,7 @@ const EventsPageLeftRailComponent: React.FC<Record<string, unknown>> = () => {
   const router = useRouter();
 
   // Sum up all the applied filters
+  // TODO: only sum up filters that we support (time, location, cause)
   const filterCount = Object.values(router.query).reduce((acc, x) => {
     // x is string | string[] | undefined, so we need to account for each case
     if (x == null) {
@@ -67,11 +69,9 @@ const EventsPageLeftRailComponent: React.FC<Record<string, unknown>> = () => {
       <div className={topBar}>
         <Typography className={header}>Filters</Typography>
         {filterCount > 0 && (
-          <FocusVisibleOnly onClick={() => clearFilters()}>
-            <Typography className={clearFilterLabel}>
-              Clear ({filterCount})
-            </Typography>
-          </FocusVisibleOnly>
+          <Button classes={{ root: clearFilterLabel }} onClick={clearFilters}>
+            Clear ({filterCount})
+          </Button>
         )}
       </div>
       <EventsPageLeftRailFilter
