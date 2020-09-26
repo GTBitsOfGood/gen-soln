@@ -17,6 +17,7 @@ const pointSchema = new Schema(
   { _id: false }
 );
 
+const DEFAULT_IMAGE = 'url("/defaultImages/defaultEvent.png")';
 // Keep in sync with utils/types Event
 const eventSchema = new Schema(
   {
@@ -73,7 +74,7 @@ const eventSchema = new Schema(
     },
     image: {
       type: String,
-      default: 'url("/defaultImages/defaultEvent.png")'
+      default: DEFAULT_IMAGE
     }
   },
   { toObject: { getters: true }, toJSON: { getters: true } }
@@ -87,3 +88,4 @@ eventSchema.virtual("duration").get(function () {
 });
 
 module.exports = mongoose.models?.Event || mongoose.model("Event", eventSchema);
+module.exports.DEFAULT_IMAGE = DEFAULT_IMAGE;
