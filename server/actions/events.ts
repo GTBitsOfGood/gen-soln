@@ -6,7 +6,7 @@ import errors from "utils/errors";
 import {
   Event as EventType,
   EventCardData as EventCardDataType,
-  PaginatedEventCards as PaginatedEventCardsDataType
+  PaginatedEventCards as PaginatedEventCardsInterface
 } from "utils/types";
 
 const cardFields: Record<keyof EventCardDataType, 1> = {
@@ -53,7 +53,7 @@ export async function getUpcomingEventsCardData({
     totCount: totCount,
     date: date,
     isLastPage: totCount - page * cardsPerPage < 0
-  } as PaginatedEventCardsDataType;
+  } as PaginatedEventCardsInterface;
 }
 
 export async function getUpcomingEventsCardDataCount(date: Date) {
