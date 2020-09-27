@@ -1,4 +1,3 @@
-import { DatePickerProps } from "material-ui";
 import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
