@@ -1,32 +1,36 @@
-# mac
-.DS_Store
-.LSOverride
-.AppleDB
-.AppleDesktop
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# environment
-.env
-.env.test.local
-.env.local
-.env.development.local
-.env.production.local
-
-# package manager
-node_modules/
-npm-debug.log*
+# dependencies
+/node_modules
 /.pnp
 .pnp.js
-build/
-coverage/
-*.log
-.npm
 
-# other
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
 .idea
-.next
-dist
+.vscode
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# vercel
+.vercel

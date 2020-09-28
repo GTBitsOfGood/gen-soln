@@ -30,6 +30,9 @@ const useStyles = makeStyles({
   verticalNegativeMargin: {
     marginTop: -7,
     marginBottom: -7
+  },
+  width: {
+    width: "100%"
   }
 });
 
@@ -48,7 +51,8 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
     name,
     rightMargin,
     verticalNegativeMargin,
-    verticalPositiveMargin
+    verticalPositiveMargin,
+    width
   } = useStyles();
   const dispatch = useContext(DonationPageStateDispatch);
 
@@ -116,7 +120,6 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
         autoComplete="address-line1"
       />
       <TextField
-        required
         fullWidth
         label="Address Line 2"
         className={verticalPositiveMargin}
@@ -151,8 +154,7 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
       </div>
       <div className={clsx(name, verticalPositiveMargin)}>
         <TextField
-          // style={{ width: "50%" }}
-          // className={rightMargin}
+          className={rightMargin}
           fullWidth
           required
           label="Zip Code"
@@ -162,6 +164,7 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
           }}
           autoComplete="postal-code"
         />
+        <div className={width}></div>
       </div>
     </div>
   );
