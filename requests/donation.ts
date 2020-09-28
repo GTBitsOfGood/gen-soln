@@ -12,14 +12,15 @@ import { Donation } from "utils/types";
  */
 export const createPaymentIntent = async (
   amount: number,
-  email: string
+  email: string,
+  stripeAccount: string
 ): Promise<string> =>
   fetchRequestWithPayloadResponse<string>(config.apis.createPaymentIntent, {
     method: "post",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ amount, email })
+    body: JSON.stringify({ amount, email, stripeAccount })
   });
 
 export const logDonation = async ({

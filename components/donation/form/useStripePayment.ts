@@ -17,7 +17,13 @@ const useStripePayment = () => {
     elements
   ]);
   const processPayment = useCallback(
-    async (name: string, email: string, zipcode: string, amount: number) => {
+    async (
+      name: string,
+      email: string,
+      zipcode: string,
+      amount: number,
+      stripeAccount: string
+    ) => {
       if (!elements || !stripe) {
         throw new Error("Not ready to process payments just yet!");
       }
@@ -42,7 +48,7 @@ const useStripePayment = () => {
           card,
           billing_details: billingDetails
         }),
-        createPaymentIntent(amount * CENTS_IN_DOLLAR, email)
+        createPaymentIntent(amount * CENTS_IN_DOLLAR, email, stripeAccount)
       ]);
 
       if (paymentMethodReq.error) {
