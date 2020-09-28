@@ -46,13 +46,11 @@ interface LinkPropsBase {
   naked?: boolean;
 }
 
-export type LinkProps = LinkPropsBase &
-  NextComposedProps &
-  Omit<MuiLinkProps, "href">;
+type LinkProps = LinkPropsBase & NextComposedProps & Omit<MuiLinkProps, "href">;
 
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
-function HorizonLink(props: LinkProps) {
+function CoreLink(props: LinkProps) {
   const {
     href,
     activeClassName = "active",
@@ -91,5 +89,5 @@ function HorizonLink(props: LinkProps) {
 }
 
 export default React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
-  <HorizonLink {...props} innerRef={ref} />
+  <CoreLink {...props} innerRef={ref} />
 ));

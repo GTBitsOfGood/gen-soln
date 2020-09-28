@@ -13,7 +13,7 @@ import PasswordTextField, {
   PASSWORD_INPUT_FIELD_NAME
 } from "./PasswordTextField";
 
-import { ContentComponentProps } from "../types";
+import { ContentComponentProps } from "components/auth";
 
 const LoginFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent

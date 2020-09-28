@@ -1,5 +1,9 @@
 import { createMuiTheme, Theme } from "@material-ui/core/styles";
 
+import { orange } from "@core/colors/primary";
+import grays from "@core/colors/grays";
+import { typographyStyles } from "@core/typography";
+
 import { Spacing, Nonprofit } from "./types";
 
 const margins: Record<Spacing, string> = {
@@ -8,24 +12,24 @@ const margins: Record<Spacing, string> = {
   LARGE_VERTICAL: "7vh"
 };
 
-// Created a special variable for primary color since it is imported by _document.tsx
-export const MAIN = "#403C70";
-
 const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined): Theme =>
   createMuiTheme({
     palette: {
-      primary: {
-        main: MAIN
-      },
+      primary: { ...orange, contrastText: grays.white },
       secondary: {
         main: "rgba(64, 59, 112, 0.38)"
       },
-      background: {
-        default: "#F5F5F7"
+      text: {
+        primary: grays["80"],
+        secondary: grays["60"],
+        disabled: grays["40"],
+        hint: grays["40"]
       },
+      background: { default: grays.bg },
       nonprofitPrimary: nonprofit?.primaryColor,
       nonprofitSecondary: nonprofit?.secondaryColor
     },
+    typography: typographyStyles,
     props: {
       MuiTextField: {
         variant: "filled",

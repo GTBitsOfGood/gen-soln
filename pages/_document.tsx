@@ -1,7 +1,7 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/core/styles";
-import { MAIN } from "utils/theme";
+import { orange } from "@core/colors/primary";
 
 export default class MyDocument extends Document {
   render(): JSX.Element {
@@ -9,7 +9,8 @@ export default class MyDocument extends Document {
       <Html>
         <Head>
           {/* PWA primary color */}
-          <meta name="theme-color" content={MAIN} />
+          <meta name="theme-color" content={orange["500"]} />
+          <link rel="stylesheet" href="/fonts/style.css" />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"

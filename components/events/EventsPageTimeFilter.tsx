@@ -10,8 +10,7 @@ import {
   Typography
 } from "@material-ui/core";
 
-import UncheckedIcon from "@horizon/icons/UncheckedIcon";
-import CheckedIcon from "@horizon/icons/CheckedIcon";
+import { UncheckedBoxIcon, CheckedBoxIcon } from "@core/icons";
 
 import useRouterQueryParamsState from "./useRouterQueryParamsState";
 
@@ -86,8 +85,8 @@ const EventsPageTimeFilter: React.FC = () => {
                   isOptionChecked ? remove(value) : put(value);
                 }}
                 // TODO: replace with Horizon colors
-                icon={<UncheckedIcon color="#999999" />}
-                checkedIcon={<CheckedIcon color={"#FD8033"} />}
+                icon={<UncheckedBoxIcon fill="#999999" />}
+                checkedIcon={<CheckedBoxIcon fill={"#FD8033"} />}
               />
             }
           />

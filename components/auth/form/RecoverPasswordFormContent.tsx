@@ -5,7 +5,7 @@ import EmailTextField, { EMAIL_INPUT_FIELD_NAME } from "./EmailTextField";
 
 import AuthPageForm from "./AuthPageForm";
 
-import { ContentComponentProps } from "../types";
+import { ContentComponentProps } from "components/auth";
 
 import { recoverPassword } from "requests/admin";
 import errors from "utils/errors";
