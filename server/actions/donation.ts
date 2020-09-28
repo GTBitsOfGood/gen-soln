@@ -42,6 +42,7 @@ export async function logDonation({
  *
  * @param {number} amount - Amount (in US cents) to be collected by the PaymentIntent
  * @param {string} email - Email address to send the transaction receipt to
+ * @param {string} stripeAccount - stripe account we are sending payment to
  * @returns {Promise<string>} - client_secret of the PaymentIntent created
  */
 export async function createPaymentIntent({
