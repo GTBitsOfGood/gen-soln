@@ -9,6 +9,8 @@ import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 import Typography from "@material-ui/core/Typography";
 import config from "config";
+import useRouterQueryParamsState from "./useRouterQueryParamsState";
+import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -43,6 +45,7 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
     null
   );
   const loaded = useRef(false);
+  const { currentState, put, remove } = useRouterQueryParamsState("location");
 
   if (typeof window !== "undefined" && !loaded.current) {
     if (!document.querySelector("#google-maps")) {
@@ -121,6 +124,7 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
 
   return (
     <Autocomplete
+      multiple
       id="google-map-demo"
       getOptionLabel={option =>
         typeof option === "string" ? option : option.description
@@ -142,6 +146,12 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
+      freeSolo
+      renderTags={(value: PlaceType[], getTagProps) =>
+        value.map((option: string, index: number) => (
+          <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+        ))
+      }
       renderInput={params => (
         <div>
           <TextField
