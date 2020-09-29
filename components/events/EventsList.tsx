@@ -1,11 +1,4 @@
-import React, {
-  createRef,
-  RefObject,
-  useEffect,
-  useState,
-  useRef,
-  useCallback
-} from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { IconButton } from "@material-ui/core";
@@ -84,9 +77,7 @@ const EventsList: React.FC = () => {
   const [events, setEvents] = useState<EventDisplay[]>([]);
   const [numEvents, setNumEvents] = useState(0);
   const [first, setFirst] = useState(0);
-  const [resized, setResized] = useState(true);
   const [rowSize, setRowSize] = useState(4);
-  const [elRefs, setElRefs] = useState<RefObject<HTMLDivElement>[]>([]);
   const [maxElem, setMaxElem] = useState(-1);
   const [loading, setLoading] = useState(false);
   const [transitionDir, setTransitionDir] = useState<-1 | 0 | 1>(0);
@@ -119,44 +110,24 @@ const EventsList: React.FC = () => {
     }
   }, [numEvents, first, rowSize]);
 
-  // useEffect(() => {
-  //   console.log("changing elRefs");
-  //   // add or remove refs
-  //   setElRefs(elRefs =>
-  //     Array(rowSize)
-  //       .fill(0)
-  //       .map((_, i) => elRefs[i] || createRef())
-  //   );
-  //   setResized(false);
-  // }, [resized]);
-
   const handleResize = useCallback(() => {
     clearTimeout(resizeTimeoutRef.current);
     const w = containerRef.current?.offsetWidth;
     resizeTimeoutRef.current = window.setTimeout(() => {
-      setResized(true);
       if (w != null) {
-        setRowSize(Math.floor(w / 301));
+        setRowSize(Math.max(1, Math.floor(w / 301)));
       }
     }, 250);
   }, []);
 
+  // add an event listener and call the initial row size calibration
   useEffect(() => {
     window.addEventListener("resize", handleResize);
+    handleResize();
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [handleResize]);
-
-  // useEffect(() => {
-  //   console.log("changing rowSize");
-  //   const firstWrap = elRefs.findIndex(
-  //     (ref, i) => ref.current?.offsetLeft === 0 && i !== 0
-  //   );
-  //   if (firstWrap !== -1) {
-  //     setRowSize(firstWrap);
-  //   }
-  // }, [elRefs]);
 
   const nextPage = () => {
     setFirst(first + rowSize);
@@ -189,7 +160,7 @@ const EventsList: React.FC = () => {
         </div>
       )}
       {display.map((event, i) => (
-        <div className={classes.item} key={i} ref={elRefs[i]}>
+        <div className={classes.item} key={i}>
           {event != null ? (
             <EventCardLarge
               headerText={event.name}
