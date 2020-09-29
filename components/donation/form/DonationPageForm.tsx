@@ -152,7 +152,8 @@ const DonationPageForm: React.FC<Props> = ({
       processPayment,
       isLastStep,
       selectedNonprofitId,
-      donationCompletedCallback
+      donationCompletedCallback,
+      stripeAccount
     ]
   );
 

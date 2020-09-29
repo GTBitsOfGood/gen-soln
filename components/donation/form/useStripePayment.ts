@@ -7,7 +7,6 @@ import { createPaymentIntent } from "requests/donation";
 
 const CENTS_IN_DOLLAR = 100;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const useStripePayment = () => {
   const stripe = useStripe();
   const elements = useElements();
