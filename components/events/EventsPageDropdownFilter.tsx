@@ -1,7 +1,6 @@
-import React from "react";
 import clsx from "clsx";
-
 import { Dropdown } from "utils/types";
+
 import {
   Checkbox,
   FormControlLabel,
@@ -12,7 +11,6 @@ import {
 
 import UncheckedIcon from "@horizon/icons/UncheckedIcon";
 import CheckedIcon from "@horizon/icons/CheckedIcon";
-
 import useRouterQueryParamsState from "./useRouterQueryParamsState";
 
 const useStyles = makeStyles({
@@ -39,6 +37,10 @@ const useStyles = makeStyles({
     fontFamily: "Open Sans, sans-serif",
     fontSize: 14,
     lineHeight: "130%",
+    maxWidth: "143px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
     color: "#999999"
   },
   optionLabelSelected: {
@@ -46,22 +48,22 @@ const useStyles = makeStyles({
   }
 });
 
-const timeOptions: Dropdown[] = [
-  { text: "Today", value: "TODAY" },
-  { text: "Tomorrow", value: "TOMORROW" },
-  { text: "This Week", value: "WEEK" },
-  { text: "This Weekend", value: "WEEKEND" },
-  { text: "Next Week", value: "NWEEK" },
-  { text: "Next Weekend", value: "NWEEKEND" }
-];
+interface Props {
+  filter: string;
+  filterOptions: Dropdown[];
+}
 
-const EventsPageTimeFilter: React.FC = () => {
+const EventsPageDropdownFilter: React.FC<Props> = ({
+  filter,
+  filterOptions
+}) => {
   const { option, optionRoot, optionLabel, optionLabelSelected } = useStyles();
-  const { currentState, put, remove } = useRouterQueryParamsState("time");
+
+  const { currentState, put, remove } = useRouterQueryParamsState(filter);
 
   return (
     <FormGroup className={optionRoot}>
-      {timeOptions.map(({ text, value }) => {
+      {filterOptions.map(({ text, value }) => {
         const isOptionChecked = currentState.includes(value);
 
         return (
@@ -97,4 +99,4 @@ const EventsPageTimeFilter: React.FC = () => {
   );
 };
 
-export default EventsPageTimeFilter;
+export default EventsPageDropdownFilter;

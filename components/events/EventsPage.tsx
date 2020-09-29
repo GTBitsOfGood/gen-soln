@@ -5,6 +5,7 @@ import EventsPageLeftRailComponent from "./EventsPageLeftRailComponent";
 import { Dropdown } from "utils/types";
 
 interface Props {
+  timeFilterOptions: Dropdown[];
   causesFilterOptions: Dropdown[];
 }
 
@@ -13,6 +14,7 @@ const EventsPage: React.FC<Props> = props => {
     <EventsPageLayout
       sidebarComponent={
         <EventsPageLeftRailComponent
+          timeFilterOptions={props.timeFilterOptions}
           causesFilterOptions={props.causesFilterOptions}
         />
       }
