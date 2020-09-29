@@ -6,8 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import EventsPageLeftRailFilter from "./EventsPageLeftRailFilter";
 import EventsPageTimeFilter from "./EventsPageTimeFilter";
-
-import EventsPageLocationFilterAutocompleteInput from "./EventsPageLocationFilterAutocompleteInput";
+import EventPageLocationFilter from "./EventPageLocationFilter";
 
 const useStyles = makeStyles({
   root: {
@@ -76,7 +75,7 @@ const EventsPageLeftRailComponent: React.FC<Record<string, unknown>> = () => {
       </div>
       <EventsPageLeftRailFilter
         header="Location"
-        content={<EventsPageLocationFilterAutocompleteInput />}
+        content={<EventPageLocationFilter />}
       />
       <EventsPageLeftRailFilter
         header="Time"
