@@ -51,6 +51,14 @@ export type EventCardData = EventBase & {
   nonprofitID: Pick<Nonprofit, "_id" | "name">;
 };
 
+export interface PaginatedEventCards {
+  eventCards: EventCardData[];
+  page: number;
+  totalCount: number;
+  date: string;
+  isLastPage: boolean;
+}
+
 export interface Dropdown {
   text: string;
   value: string;

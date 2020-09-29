@@ -4,10 +4,11 @@ import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import {
   Event as EventType,
-  EventCardData as EventCardDataType
+  EventCardData as EventCardDataType,
+  PaginatedEventCards as PaginatedEventCardsInterface
 } from "utils/types";
 
-const cardFields: Record<keyof EventCardDataType, 1> = {
+const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   name: 1,
   startDate: 1,
   endDate: 1,
@@ -16,23 +17,54 @@ const cardFields: Record<keyof EventCardDataType, 1> = {
   nonprofitID: 1,
   duration: 1
 };
+const CARDS_PER_PAGE = 4;
+const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 
-export async function getUpcomingEventsCardData() {
+interface PageInformation {
+  date: string;
+  page: number;
+  totalCount: number;
+}
+
+export async function getUpcomingEventsCardData({
+  date,
+  page,
+  totalCount
+}: PageInformation): Promise<PaginatedEventCardsInterface> {
   await Mongo();
 
   const result = await Event.find(
     {
       startDate: {
-        $gte: new Date()
+        $gte: new Date(date),
+        $leq: new Date(new Date(date).getTime() + MILLISECONDS_IN_WEEK)
       }
     },
-    cardFields
+    CARD_FIELDS
   )
     .populate("nonprofitId", "name", Nonprofit)
     .sort({ startDate: 1 })
-    .limit(5);
+    .skip(page > 0 ? (page - 1) * CARDS_PER_PAGE : 0)
+    .limit(CARDS_PER_PAGE);
 
-  return result.map(r => r.toJSON()) as EventCardDataType[];
+  return {
+    eventCards: result.map(r => r.toJSON()) as EventCardDataType[],
+    page,
+    totalCount,
+    date,
+    isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
+  };
+}
+
+export async function getUpcomingEventsCardDataCount(date: Date) {
+  await Mongo();
+
+  return Event.countDocuments({
+    startDate: {
+      $gte: date,
+      $lte: new Date(date.getTime() + MILLISECONDS_IN_WEEK)
+    }
+  });
 }
 
 interface Coordinates {
@@ -43,7 +75,7 @@ interface Coordinates {
 export async function getNearestEventsCardData({ lat, long }: Coordinates) {
   await Mongo();
 
-  const result = await Event.find({}, cardFields)
+  const result = await Event.find({}, CARD_FIELDS)
     .populate("nonprofitId", "name", Nonprofit)
     .where("address.location")
     .near({
