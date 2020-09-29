@@ -107,12 +107,6 @@ export async function linkStripeAccount(
   return accountLink.url;
 }
 
-export async function getCauses(): Promise<Dropdown[]> {
-  const Causes = CAUSES.map(
-    ({ text, value }): Dropdown => ({
-      value: value,
-      text: text
-    })
-  );
-  return Causes;
+export function getCauses(): Dropdown[] {
+  return CAUSES;
 }

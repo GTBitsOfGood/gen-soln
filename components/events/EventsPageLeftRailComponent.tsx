@@ -50,7 +50,7 @@ interface Props {
 
 const EventsPageLeftRailComponent: React.FC<Record<
   string,
-  unknown
+  React.FC<Props>
 >> = props => {
   const { root, header, topBar, clearFilterLabel } = useStyles();
   const router = useRouter();
