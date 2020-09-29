@@ -16,13 +16,13 @@ const useStyles = makeStyles({
     }
   },
   nextButtonContainer: {
-    marginLeft: -24,
+    marginLeft: -56,
     // boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.05)",
     borderRadius: "50%"
   },
   prevButtonContainer: {
-    marginLeft: 8,
-    marginRight: -56,
+    marginLeft: -24,
+    marginRight: -24,
     borderRadius: "50%",
     position: "relative",
     zIndex: 1
@@ -31,11 +31,10 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    position: "relative",
-    marginLeft: -32
+    position: "relative"
   },
   item: {
-    marginLeft: 32
+    marginRight: 32
   }
 });
 
