@@ -2,10 +2,15 @@ import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
+
 import {
+  Coordinates,
   Event as EventType,
   EventCardData as EventCardDataType,
-  PaginatedEventCards as PaginatedEventCardsInterface
+  DatePaginatedEventCards,
+  DatePageInformation,
+  LocationPaginatedEventCards,
+  LocationPageInformation
 } from "utils/types";
 
 const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
@@ -19,18 +24,13 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
 };
 const CARDS_PER_PAGE = 4;
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
-
-interface PageInformation {
-  date: string;
-  page: number;
-  totalCount: number;
-}
+const RADIUS_OF_EARTH = 32186.9;
 
 export async function getUpcomingEventsCardData({
   date,
   page,
   totalCount
-}: PageInformation): Promise<PaginatedEventCardsInterface> {
+}: DatePageInformation): Promise<DatePaginatedEventCards> {
   await Mongo();
 
   const result = await Event.find(
@@ -67,24 +67,47 @@ export async function getUpcomingEventsCardDataCount(date: Date) {
   });
 }
 
-interface Coordinates {
-  lat: number;
-  long: number;
-}
-
-export async function getNearestEventsCardData({ lat, long }: Coordinates) {
+export async function getNearestEventsCardData({
+  location,
+  page,
+  totalCount
+}: LocationPageInformation): Promise<LocationPaginatedEventCards> {
   await Mongo();
 
-  const result = await Event.find({}, CARD_FIELDS)
+  const result = await Event.find(
+    {
+      "address.location": {
+        $geoWithin: {
+          $centerSphere: [[location.long, location.lat], 20 / RADIUS_OF_EARTH]
+        }
+      }
+    },
+    CARD_FIELDS
+  )
     .populate("nonprofitId", "name", Nonprofit)
-    .where("address.location")
-    .near({
-      center: [long, lat],
-      spherical: true
-    })
-    .limit(5);
+    .skip(page > 0 ? (page - 1) * CARDS_PER_PAGE : 0)
+    .limit(CARDS_PER_PAGE);
 
-  return result.map(r => r.toJSON()) as EventCardDataType[];
+  return {
+    eventCards: result.map(r => r.toJSON()) as EventCardDataType[],
+    page,
+    totalCount,
+    location,
+    isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
+  };
+}
+
+export async function getNearestEventsCardDataCount({
+  lat,
+  long
+}: Coordinates) {
+  await Mongo();
+
+  return Event.countDocuments({
+    "address.location": {
+      $geoWithin: { $centerSphere: [[long, lat], 20 / RADIUS_OF_EARTH] }
+    }
+  });
 }
 
 export async function getEventById(_id: string): Promise<EventType> {

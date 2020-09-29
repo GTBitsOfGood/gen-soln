@@ -51,12 +51,37 @@ export type EventCardData = EventBase & {
   nonprofitID: Pick<Nonprofit, "_id" | "name">;
 };
 
-export interface PaginatedEventCards {
+export interface Coordinates {
+  lat: number;
+  long: number;
+}
+
+interface PaginatedEventCards {
   eventCards: EventCardData[];
   page: number;
   totalCount: number;
-  date: string;
   isLastPage: boolean;
+}
+
+export interface DatePaginatedEventCards extends PaginatedEventCards {
+  date: Date;
+}
+
+export interface LocationPaginatedEventCards extends PaginatedEventCards {
+  location: Coordinates;
+}
+
+interface PageInformation {
+  page: number;
+  totalCount: number;
+}
+
+export interface DatePageInformation extends PageInformation {
+  date: Date;
+}
+
+export interface LocationPageInformation extends PageInformation {
+  location: Coordinates;
 }
 
 export interface Dropdown {
