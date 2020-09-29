@@ -56,33 +56,32 @@ export interface Coordinates {
   long: number;
 }
 
-interface PaginatedEventCards {
-  eventCards: EventCardData[];
+interface PageInformation {
   page: number;
   totalCount: number;
   isLastPage: boolean;
 }
 
-export interface DatePaginatedEventCards extends PaginatedEventCards {
-  date: Date;
-}
+type PaginatedEventCards = PageInformation & {
+  eventCards: EventCardData[];
+};
 
-export interface LocationPaginatedEventCards extends PaginatedEventCards {
+interface PaginateWithLocation {
   location: Coordinates;
 }
 
-interface PageInformation {
-  page: number;
-  totalCount: number;
+interface PaginateWithDate {
+  date: string;
 }
 
-export interface DatePageInformation extends PageInformation {
-  date: Date;
-}
+export type LocationPaginatedEventCards = PaginatedEventCards &
+  PaginateWithLocation;
 
-export interface LocationPageInformation extends PageInformation {
-  location: Coordinates;
-}
+export type LocationPageInformation = PageInformation & PaginateWithLocation;
+
+export type DatePaginatedEventCards = PaginatedEventCards & PaginateWithDate;
+
+export type DatePageInformation = PageInformation & PaginateWithDate;
 
 export interface Dropdown {
   text: string;
