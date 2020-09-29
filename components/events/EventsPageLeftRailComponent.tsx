@@ -6,10 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import EventsPageLeftRailFilter from "./EventsPageLeftRailFilter";
 import EventsPageTimeFilter from "./EventsPageTimeFilter";
-import EventsPageLocationFilterAutocompleteInput from "./EventsPageLocationFilterAutocompleteInput";
 import EventPageLocationFilter from "./EventPageLocationFilter";
-
-import useRouterQueryParamsState from "./useRouterQueryParamsState";
 
 const useStyles = makeStyles({
   root: {
@@ -47,14 +44,6 @@ const useStyles = makeStyles({
 const EventsPageLeftRailComponent: React.FC<Record<string, unknown>> = () => {
   const { root, header, topBar, clearFilterLabel } = useStyles();
   const router = useRouter();
-  const { currentState, put, remove } = useRouterQueryParamsState("location");
-  const addLocationChip = (value: string) => {
-    put(value);
-  };
-
-  const removeLocationChip = (value: string) => {
-    remove(value);
-  };
 
   // Sum up all the applied filters
   // TODO: only sum up filters that we support (time, location, cause)
@@ -86,15 +75,7 @@ const EventsPageLeftRailComponent: React.FC<Record<string, unknown>> = () => {
       </div>
       <EventsPageLeftRailFilter
         header="Location"
-        content={
-          <EventsPageLocationFilterAutocompleteInput
-            addLocationChip={addLocationChip}
-          />
-        }
-      />
-      <EventPageLocationFilter
-        content={currentState}
-        deleteLocation={removeLocationChip}
+        content={<EventPageLocationFilter />}
       />
       <EventsPageLeftRailFilter
         header="Time"

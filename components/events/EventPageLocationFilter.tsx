@@ -2,6 +2,9 @@ import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 
+import EventsPageLocationFilterAutocompleteInput from "./EventsPageLocationFilterAutocompleteInput";
+import useRouterQueryParamsState from "./useRouterQueryParamsState";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -17,28 +20,33 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface Props {
-  content: string[];
-  deleteLocation: (value: string) => void;
-}
-
-const EventsPageLocationFilter: React.FC<Props> = props => {
+const EventsPageLocationFilter: React.FC = () => {
   const classes = useStyles();
-  const selectedLocations = props.content;
+  const {
+    currentState: selectedLocations,
+    put,
+    remove
+  } = useRouterQueryParamsState("location");
+
   return (
-    <ul className={classes.root}>
-      {selectedLocations.map(location => {
-        return (
-          <li key={location}>
-            <Chip
-              label={location}
-              onDelete={() => props.deleteLocation(location)}
-              className={classes.chip}
-            />
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <ul className={classes.root}>
+        {selectedLocations.map(location => {
+          return (
+            <li key={location}>
+              <Chip
+                label={location}
+                onDelete={() => remove(location)}
+                className={classes.chip}
+              />
+            </li>
+          );
+        })}
+      </ul>
+      <EventsPageLocationFilterAutocompleteInput
+        addLocationChip={value => void put(value)}
+      />
+    </>
   );
 };
 
