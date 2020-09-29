@@ -52,9 +52,9 @@ export type EventCardData = EventBase & {
 };
 
 export interface PaginatedEventCards {
-  eventCards: [EventCardData];
+  eventCards: EventCardData[];
   page: number;
-  totCount: number;
+  totalCount: number;
   date: string;
   isLastPage: boolean;
 }
