@@ -34,7 +34,11 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
 
 type PlaceType = google.maps.places.AutocompletePrediction;
 
-const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
+interface Props {
+  addLocationChip: (value: string) => void;
+}
+
+const EventsPageLocationFilterAutocompleteInput: React.FC<Props> = props => {
   const classes = useStyles();
   const [value, setValue] = useState<PlaceType | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -121,7 +125,6 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
 
   return (
     <Autocomplete
-      multiple
       id="google-map-demo"
       getOptionLabel={option =>
         typeof option === "string" ? option : option.description
@@ -138,6 +141,8 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
         newValue: PlaceType | null
       ) => {
         setOptions(newValue ? [newValue, ...options] : options);
+        newValue &&
+          props.addLocationChip(newValue.structured_formatting.main_text);
         setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
