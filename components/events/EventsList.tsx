@@ -83,30 +83,28 @@ const EventsList: React.FC = () => {
   const [transitionDir, setTransitionDir] = useState<-1 | 0 | 1>(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const fetchTimeoutRef = useRef<number>();
+  const fetchingRef = useRef<boolean>(false);
   const resizeTimeoutRef = useRef<number>();
 
   useEffect(() => {
-    if (first + rowSize > numEvents) {
-      clearTimeout(fetchTimeoutRef.current);
-
-      fetchTimeoutRef.current = window.setTimeout(() => {
-        void (async () => {
-          console.log(
-            `first: ${first}\nrowSize: ${rowSize}\nnumEvents: ${numEvents}`
-          );
-          setLoading(true);
-          const fetchNum = first + rowSize - numEvents;
-          const [newEvents, hasMore] = await getEvents(fetchNum);
-          if (!hasMore) {
-            setMaxElem(numEvents + newEvents.length);
-          }
-          setEvents(prevEvents => [...prevEvents, ...newEvents]);
-          setNumEvents(n => n + fetchNum);
-          setLoading(false);
-          setTransitionDir(0);
-        })();
-      }, 100);
+    if (first + rowSize > numEvents && !fetchingRef.current) {
+      void (async () => {
+        fetchingRef.current = true;
+        console.log(
+          `first: ${first}\nrowSize: ${rowSize}\nnumEvents: ${numEvents}`
+        );
+        setLoading(true);
+        const fetchNum = first + rowSize - numEvents;
+        const [newEvents, hasMore] = await getEvents(fetchNum);
+        if (!hasMore) {
+          setMaxElem(numEvents + newEvents.length);
+        }
+        setEvents(prevEvents => [...prevEvents, ...newEvents]);
+        setNumEvents(n => n + fetchNum);
+        setLoading(false);
+        setTransitionDir(0);
+        fetchingRef.current = false;
+      })();
     }
   }, [numEvents, first, rowSize]);
 
