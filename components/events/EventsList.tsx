@@ -1,4 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  createRef,
+  RefObject,
+  useEffect,
+  useState,
+  useRef,
+  useCallback
+} from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { IconButton } from "@material-ui/core";
@@ -29,9 +36,12 @@ const useStyles = makeStyles({
   },
   container: {
     display: "flex",
+    flexWrap: "wrap",
     flexDirection: "row",
     alignItems: "center",
-    position: "relative"
+    position: "relative",
+    height: 270,
+    overflowX: "visible"
   },
   item: {
     marginRight: 32
@@ -49,18 +59,19 @@ const maxData = 14;
 let dataIndex = 0;
 const mockData = (i: number) => {
   return {
-    name: `Feeding ${i + 1} Pigeon${i !== 0 ? "s" : ""} in the Park`,
+    name: `Feeding ${i} Pigeon${i !== 1 ? "s" : ""} in the Park`,
     nonprofitName: "Pigeon Feeders International",
     time: "Sunday Morning",
     imagePath: "defaultImages/defaultEvent.png"
   };
 };
 
-const getEvents = async (): Promise<[EventDisplay[], boolean]> => {
+const getEvents = async (n: number): Promise<[EventDisplay[], boolean]> => {
   // mock a server response lol
   await new Promise(r => setTimeout(r, 1000));
   const out = [];
-  for (let i = 0; i < 4 && dataIndex < maxData; i++) {
+  for (let i = 0; i < n && dataIndex < maxData; i++) {
+    console.log(dataIndex);
     out.push(mockData(dataIndex));
     dataIndex++;
   }
@@ -72,43 +83,101 @@ const EventsList: React.FC = () => {
 
   const [events, setEvents] = useState<EventDisplay[]>([]);
   const [numEvents, setNumEvents] = useState(0);
-  const [page, setPage] = useState(0);
-  const [maxPage, setMaxPage] = useState<number | undefined>();
+  const [first, setFirst] = useState(0);
+  const [resized, setResized] = useState(true);
+  const [rowSize, setRowSize] = useState(4);
+  const [elRefs, setElRefs] = useState<RefObject<HTMLDivElement>[]>([]);
+  const [maxElem, setMaxElem] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [transitionDir, setTransitionDir] = useState<-1 | 0 | 1>(0);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const fetchTimeoutRef = useRef<number>();
+  const resizeTimeoutRef = useRef<number>();
 
   useEffect(() => {
-    if ((page + 1) * 4 > numEvents) {
-      void (async () => {
-        setLoading(true);
-        const [newEvents, hasMore] = await getEvents();
-        if (!hasMore) {
-          setMaxPage(page);
-        }
-        setEvents(prevEvents => [...prevEvents, ...newEvents]);
-        setNumEvents(n => n + 4);
-        setLoading(false);
-      })();
+    if (first + rowSize > numEvents) {
+      clearTimeout(fetchTimeoutRef.current);
+
+      fetchTimeoutRef.current = window.setTimeout(() => {
+        void (async () => {
+          console.log(
+            `first: ${first}\nrowSize: ${rowSize}\nnumEvents: ${numEvents}`
+          );
+          setLoading(true);
+          const fetchNum = first + rowSize - numEvents;
+          const [newEvents, hasMore] = await getEvents(fetchNum);
+          if (!hasMore) {
+            setMaxElem(numEvents + newEvents.length);
+          }
+          setEvents(prevEvents => [...prevEvents, ...newEvents]);
+          setNumEvents(n => n + fetchNum);
+          setLoading(false);
+          setTransitionDir(0);
+        })();
+      }, 100);
     }
-  }, [numEvents, page]);
+  }, [numEvents, first, rowSize]);
+
+  // useEffect(() => {
+  //   console.log("changing elRefs");
+  //   // add or remove refs
+  //   setElRefs(elRefs =>
+  //     Array(rowSize)
+  //       .fill(0)
+  //       .map((_, i) => elRefs[i] || createRef())
+  //   );
+  //   setResized(false);
+  // }, [resized]);
+
+  const handleResize = useCallback(() => {
+    clearTimeout(resizeTimeoutRef.current);
+    const w = containerRef.current?.offsetWidth;
+    resizeTimeoutRef.current = window.setTimeout(() => {
+      setResized(true);
+      if (w != null) {
+        setRowSize(Math.floor(w / 301));
+      }
+    }, 250);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [handleResize]);
+
+  // useEffect(() => {
+  //   console.log("changing rowSize");
+  //   const firstWrap = elRefs.findIndex(
+  //     (ref, i) => ref.current?.offsetLeft === 0 && i !== 0
+  //   );
+  //   if (firstWrap !== -1) {
+  //     setRowSize(firstWrap);
+  //   }
+  // }, [elRefs]);
 
   const nextPage = () => {
-    setPage(page + 1);
+    setFirst(first + rowSize);
+    setTransitionDir(1);
   };
 
   const prevPage = () => {
-    setPage(page - 1);
+    setFirst(Math.max(first - rowSize, 0));
+    setTransitionDir(-1);
   };
 
-  const display: (EventDisplay | null)[] = events.slice(page * 4, page * 4 + 4);
-  if (maxPage == null) {
-    while (display.length < 4) {
+  const display: (EventDisplay | null)[] = events.slice(first, first + rowSize);
+  if (maxElem == -1 || first + rowSize < maxElem) {
+    while (display.length < rowSize) {
       display.push(null);
     }
   }
 
   return (
-    <div className={classes.container}>
-      {page > 0 && (
+    <div className={classes.container} ref={containerRef}>
+      {first > 0 && (
         <div className={classes.prevButtonContainer}>
           <IconButton
             aria-label="previous events"
@@ -120,7 +189,7 @@ const EventsList: React.FC = () => {
         </div>
       )}
       {display.map((event, i) => (
-        <div className={classes.item} key={i}>
+        <div className={classes.item} key={i} ref={elRefs[i]}>
           {event != null ? (
             <EventCardLarge
               headerText={event.name}
@@ -133,7 +202,7 @@ const EventsList: React.FC = () => {
           )}
         </div>
       ))}
-      {(maxPage == null || page < maxPage) && !loading && (
+      {(maxElem == -1 || first + rowSize < maxElem) && !loading && (
         <div className={classes.nextButtonContainer}>
           <IconButton
             aria-label="next events"

@@ -18,7 +18,7 @@ const EventsPage: React.FC<Props> = props => {
         />
       }
     >
-        <div style={{ padding: 64 }}>
+        <div style={{ padding: 64, width: "100%" }}>
           <EventsList />
         </div>
     </EventsPageLayout>
