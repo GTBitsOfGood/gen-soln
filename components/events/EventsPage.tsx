@@ -1,6 +1,7 @@
 import React from "react";
 import EventsPageLayout from "components/events/EventsPageLayout";
 import EventsPageLeftRailComponent from "./EventsPageLeftRailComponent";
+import EventsList from "./EventsList";
 
 import { Dropdown } from "utils/types";
 
@@ -17,7 +18,9 @@ const EventsPage: React.FC<Props> = props => {
         />
       }
     >
-      {null}
+        <div style={{ padding: 64 }}>
+          <EventsList />
+        </div>
     </EventsPageLayout>
   );
 };
