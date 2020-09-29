@@ -53,7 +53,6 @@ const LocationAutocompleteInput: React.FC<Props> = ({
   const loaded = useRef(false);
 
   if (typeof window !== "undefined" && !loaded.current) {
-    console.log(config.googleMapsKey);
     if (!document.querySelector("#google-maps")) {
       loadScript(
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
