@@ -44,13 +44,14 @@ const useStyles = makeStyles({
   }
 });
 
-interface EventDisplay {
+interface EventDisplayInfo {
   name: string;
   nonprofitName: string;
   time: string;
   imagePath: string;
 }
 
+/** BEGIN MOCK SETUP */
 const maxData = 14;
 let dataIndex = 0;
 const mockData = (i: number) => {
@@ -62,39 +63,45 @@ const mockData = (i: number) => {
   };
 };
 
-const getEvents = async (n: number): Promise<[EventDisplay[], boolean]> => {
-  // mock a server response lol
+/**
+ * Mocks a server request
+ * @param n the number of events to return
+ * @return a promise that contains [an array of EventDisplayInfo, true if there are remaining events]
+ */
+const getEvents = async (n: number): Promise<[EventDisplayInfo[], boolean]> => {
   await new Promise(r => setTimeout(r, 1000));
   const out = [];
   for (let i = 0; i < n && dataIndex < maxData; i++) {
-    console.log(dataIndex);
     out.push(mockData(dataIndex));
     dataIndex++;
   }
   return [out, dataIndex < maxData];
 };
+/** END MOCK SETUP */
 
 const EventsList: React.FC = () => {
   const classes = useStyles();
 
-  const [events, setEvents] = useState<EventDisplay[]>([]);
+  const [events, setEvents] = useState<EventDisplayInfo[]>([]);
   const [numEvents, setNumEvents] = useState(0);
+  // Index of the first element displayed in the list
   const [first, setFirst] = useState(0);
+  // Number of elements displayed
   const [rowSize, setRowSize] = useState(4);
   const [maxElem, setMaxElem] = useState(-1);
   const [loading, setLoading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Lock calls to getEvents if one is currently in progress
   const fetchingRef = useRef<boolean>(false);
+
   const resizeTimeoutRef = useRef<number>();
 
   useEffect(() => {
     if (first + rowSize > numEvents && !fetchingRef.current) {
       void (async () => {
         fetchingRef.current = true;
-        console.log(
-          `first: ${first}\nrowSize: ${rowSize}\nnumEvents: ${numEvents}`
-        );
         setLoading(true);
         const fetchNum = first + rowSize - numEvents;
         const [newEvents, hasMore] = await getEvents(fetchNum);
@@ -110,17 +117,17 @@ const EventsList: React.FC = () => {
   }, [numEvents, first, rowSize]);
 
   const handleResize = useCallback(() => {
+    // wrap the resize in a 100ms debounce to prevent excess polling
     clearTimeout(resizeTimeoutRef.current);
     const w = containerRef.current?.offsetWidth;
     resizeTimeoutRef.current = window.setTimeout(() => {
       if (w != null) {
-        console.log(w);
         setRowSize(Math.max(1, Math.floor((w - 24) / 283)));
       }
     }, 100);
   }, []);
 
-  // add an event listener and call the initial row size calibration
+  // add an event listener and call the initial row size update
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     handleResize();
@@ -129,6 +136,7 @@ const EventsList: React.FC = () => {
     };
   }, [handleResize]);
 
+  // click handlers for buttons
   const nextPage = () => {
     setFirst(first + rowSize);
   };
@@ -137,8 +145,14 @@ const EventsList: React.FC = () => {
     setFirst(Math.max(first - rowSize, 0));
   };
 
-  const display: (EventDisplay | null)[] = events.slice(first, first + rowSize);
+  // holds all the elements currently displayed - EventDisplayInfo gets rendered as
+  // EventCardLarge, while null gets rendered as EventCardGlimmerLarge
+  const display: (EventDisplayInfo | null)[] = events.slice(
+    first,
+    first + rowSize
+  );
   if (maxElem == -1 || first + rowSize < maxElem) {
+    // pad the display items with null if necessary
     while (display.length < rowSize) {
       display.push(null);
     }
