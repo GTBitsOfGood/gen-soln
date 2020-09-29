@@ -4,8 +4,6 @@
         url('fonts/VisbyCF-ExtraBold.woff2') format('woff2'),
         url('fonts/VisbyCF-ExtraBold.woff') format('woff'),
         url('fonts/VisbyCF-ExtraBold.ttf') format('truetype');
-    font-weight: 800;
-    font-style: normal;
 }
 
 @font-face {
@@ -16,6 +14,4 @@
         url('fonts/OpenSans-Regular.woff2') format('woff2'),
         url('fonts/OpenSans-Regular.woff') format('woff'),
         url('fonts/OpenSans-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
 }
