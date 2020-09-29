@@ -36,9 +36,13 @@ type PlaceType = google.maps.places.AutocompletePrediction;
 
 interface Props {
   addLocationChip: (value: string) => void;
+  locationType: string;
 }
 
-const EventsPageLocationFilterAutocompleteInput: React.FC<Props> = props => {
+const LocationAutocompleteInput: React.FC<Props> = ({
+  addLocationChip,
+  locationType
+}) => {
   const classes = useStyles();
   const [value, setValue] = useState<PlaceType | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -71,7 +75,7 @@ const EventsPageLocationFilterAutocompleteInput: React.FC<Props> = props => {
           autocompleteService.current?.getPlacePredictions(
             {
               ...request,
-              types: ["(cities)"],
+              types: [locationType],
               componentRestrictions: { country: "us" }
             },
             callback
@@ -141,8 +145,7 @@ const EventsPageLocationFilterAutocompleteInput: React.FC<Props> = props => {
         newValue: PlaceType | null
       ) => {
         setOptions(newValue ? [newValue, ...options] : options);
-        newValue &&
-          props.addLocationChip(newValue.structured_formatting.main_text);
+        newValue && addLocationChip(newValue.structured_formatting.main_text);
         setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
@@ -191,4 +194,4 @@ const EventsPageLocationFilterAutocompleteInput: React.FC<Props> = props => {
   );
 };
 
-export default EventsPageLocationFilterAutocompleteInput;
+export default LocationAutocompleteInput;

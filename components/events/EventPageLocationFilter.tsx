@@ -2,7 +2,7 @@ import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 
-import EventsPageLocationFilterAutocompleteInput from "./EventsPageLocationFilterAutocompleteInput";
+import LocationAutocompleteInput from "../LocationAutocompleteInput";
 import useRouterQueryParamsState from "./useRouterQueryParamsState";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,8 +43,9 @@ const EventsPageLocationFilter: React.FC = () => {
           );
         })}
       </ul>
-      <EventsPageLocationFilterAutocompleteInput
+      <LocationAutocompleteInput
         addLocationChip={value => void put(value)}
+        locationType="(cities)"
       />
     </>
   );
