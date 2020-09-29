@@ -17,7 +17,7 @@ const useStyles = makeStyles(() =>
       }
     },
     content: {
-      flex: 5,
+      flex: 7,
       display: "flex",
       height: "100vh",
       overflowY: "scroll",

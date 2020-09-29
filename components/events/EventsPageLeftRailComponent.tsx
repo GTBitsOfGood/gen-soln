@@ -5,7 +5,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import EventsPageLeftRailFilter from "./EventsPageLeftRailFilter";
-import EventsPageTimeFilter from "./EventsPageTimeFilter";
+import EventsPageDropdownFilter from "./EventsPageDropdownFilter";
 import EventPageLocationFilter from "./EventPageLocationFilter";
 
 import { Dropdown } from "utils/types";
@@ -44,6 +44,7 @@ const useStyles = makeStyles({
 });
 
 interface Props {
+  timeFilterOptions: Dropdown[];
   causesFilterOptions: Dropdown[];
 }
 
@@ -85,7 +86,22 @@ const EventsPageLeftRailComponent: React.FC<Props> = props => {
       />
       <EventsPageLeftRailFilter
         header="Time"
-        content={<EventsPageTimeFilter />}
+        content={
+          <EventsPageDropdownFilter
+            filter={"time"}
+            filterOptions={props.timeFilterOptions}
+          />
+        }
+        collapsible
+      />
+      <EventsPageLeftRailFilter
+        header="Causes"
+        content={
+          <EventsPageDropdownFilter
+            filter={"cause"}
+            filterOptions={props.causesFilterOptions}
+          />
+        }
         collapsible
       />
     </div>
