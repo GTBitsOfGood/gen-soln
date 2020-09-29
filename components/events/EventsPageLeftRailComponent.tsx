@@ -9,6 +9,8 @@ import EventsPageTimeFilter from "./EventsPageTimeFilter";
 
 import EventsPageLocationFilterAutocompleteInput from "./EventsPageLocationFilterAutocompleteInput";
 
+import { Dropdown } from "utils/types";
+
 const useStyles = makeStyles({
   root: {
     padding: "32px 24px",
@@ -42,7 +44,14 @@ const useStyles = makeStyles({
   }
 });
 
-const EventsPageLeftRailComponent: React.FC<Record<string, unknown>> = () => {
+interface Props {
+  causesFilterOptions: Dropdown[];
+}
+
+const EventsPageLeftRailComponent: React.FC<Record<
+  string,
+  unknown
+>> = props => {
   const { root, header, topBar, clearFilterLabel } = useStyles();
   const router = useRouter();
 
