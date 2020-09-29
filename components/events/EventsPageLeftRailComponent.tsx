@@ -6,8 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import EventsPageLeftRailFilter from "./EventsPageLeftRailFilter";
 import EventsPageTimeFilter from "./EventsPageTimeFilter";
-
-import EventsPageLocationFilterAutocompleteInput from "./EventsPageLocationFilterAutocompleteInput";
+import EventPageLocationFilter from "./EventPageLocationFilter";
 
 import { Dropdown } from "utils/types";
 
@@ -85,7 +84,7 @@ const EventsPageLeftRailComponent: React.FC<Record<
       </div>
       <EventsPageLeftRailFilter
         header="Location"
-        content={<EventsPageLocationFilterAutocompleteInput />}
+        content={<EventPageLocationFilter />}
       />
       <EventsPageLeftRailFilter
         header="Time"

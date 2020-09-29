@@ -121,7 +121,8 @@ const DonationPageForm: React.FC<Props> = ({
             name,
             contactStep.email,
             paymentStep.zipcode,
-            amount
+            amount,
+            stripeAccount
           );
         } catch (err) {
           // TODO: Not sure how else to handle and display the error
