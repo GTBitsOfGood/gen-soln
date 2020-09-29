@@ -34,7 +34,10 @@ const useStyles = makeStyles({
     alignItems: "center",
     position: "relative",
     height: 270,
-    overflowX: "visible"
+    overflowX: "visible",
+    overflowY: "hidden",
+    marginLeft: -24,
+    paddingLeft: 24
   },
   item: {
     marginRight: 32
@@ -80,7 +83,6 @@ const EventsList: React.FC = () => {
   const [rowSize, setRowSize] = useState(4);
   const [maxElem, setMaxElem] = useState(-1);
   const [loading, setLoading] = useState(false);
-  const [transitionDir, setTransitionDir] = useState<-1 | 0 | 1>(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const fetchingRef = useRef<boolean>(false);
@@ -102,7 +104,6 @@ const EventsList: React.FC = () => {
         setEvents(prevEvents => [...prevEvents, ...newEvents]);
         setNumEvents(n => n + fetchNum);
         setLoading(false);
-        setTransitionDir(0);
         fetchingRef.current = false;
       })();
     }
@@ -113,9 +114,10 @@ const EventsList: React.FC = () => {
     const w = containerRef.current?.offsetWidth;
     resizeTimeoutRef.current = window.setTimeout(() => {
       if (w != null) {
-        setRowSize(Math.max(1, Math.floor(w / 301)));
+        console.log(w);
+        setRowSize(Math.max(1, Math.floor((w - 24) / 283)));
       }
-    }, 250);
+    }, 100);
   }, []);
 
   // add an event listener and call the initial row size calibration
@@ -129,12 +131,10 @@ const EventsList: React.FC = () => {
 
   const nextPage = () => {
     setFirst(first + rowSize);
-    setTransitionDir(1);
   };
 
   const prevPage = () => {
     setFirst(Math.max(first - rowSize, 0));
-    setTransitionDir(-1);
   };
 
   const display: (EventDisplay | null)[] = events.slice(first, first + rowSize);
