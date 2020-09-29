@@ -67,7 +67,7 @@ const eventSchema = new Schema(
       type: [
         {
           type: Schema.ObjectId,
-          ref: "Admin" //TODO replace with "User" once that schema is created
+          ref: "User"
         }
       ],
       default: []
