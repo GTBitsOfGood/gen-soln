@@ -29,11 +29,11 @@ const EventsPageLocationFilter: React.FC<Props> = props => {
     <ul className={classes.root}>
       {selectedLocations.map(location => {
         return (
-          <li>
+          <li key={location}>
             <Chip
               label={location}
               onDelete={() => props.deleteLocation(location)}
-							className={classes.chip}
+              className={classes.chip}
             />
           </li>
         );
