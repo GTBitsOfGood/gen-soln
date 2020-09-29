@@ -47,10 +47,7 @@ interface Props {
   causesFilterOptions: Dropdown[];
 }
 
-const EventsPageLeftRailComponent: React.FC<Record<
-  string,
-  React.FC<Props>
->> = props => {
+const EventsPageLeftRailComponent: React.FC<Props> = props => {
   const { root, header, topBar, clearFilterLabel } = useStyles();
   const router = useRouter();
 

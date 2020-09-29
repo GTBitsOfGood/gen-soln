@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  NextPage,
-  GetServerSideProps,
-  GetStaticPropsContext,
-  InferGetStaticPropsType
-} from "next";
+import { NextPage, GetServerSideProps, InferGetStaticPropsType } from "next";
 import EventsPage from "components/events/EventsPage";
 
 import { getCauses } from "server/actions/nonprofit";
@@ -22,9 +17,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getStaticProps = async () => {
+  // Don't remove the async otherwise InferGetStaticPropsType won't work as expected
   return {
-    props: { causesFilterOptions: await getCauses() }
+    props: { causesFilterOptions: getCauses() }
   };
 };
 

@@ -7,6 +7,7 @@ import { Dropdown } from "utils/types";
 interface Props {
   causesFilterOptions: Dropdown[];
 }
+
 const EventsPage: React.FC<Props> = props => {
   return (
     <EventsPageLayout
