@@ -4,12 +4,21 @@ import EventsPageLeftRailComponent from "./EventsPageLeftRailComponent";
 import EventsList from "./EventsList";
 
 import { Dropdown } from "utils/types";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles({
+  container: {
+    padding: 64,
+    width: "100%"
+  }
+});
 
 interface Props {
   causesFilterOptions: Dropdown[];
 }
 
 const EventsPage: React.FC<Props> = props => {
+  const classes = useStyles();
   return (
     <EventsPageLayout
       sidebarComponent={
@@ -18,7 +27,7 @@ const EventsPage: React.FC<Props> = props => {
         />
       }
     >
-      <div style={{ padding: 64, width: "100%" }}>
+      <div className={classes.container}>
         <EventsList />
       </div>
     </EventsPageLayout>

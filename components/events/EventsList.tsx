@@ -79,50 +79,54 @@ const getEvents = async (n: number): Promise<[EventDisplayInfo[], boolean]> => {
 };
 /** END MOCK SETUP */
 
+const DEFAULT_ROW_SIZE = 4;
+
 const EventsList: React.FC = () => {
   const classes = useStyles();
 
   const [events, setEvents] = useState<EventDisplayInfo[]>([]);
-  const [numEvents, setNumEvents] = useState(0);
   // Index of the first element displayed in the list
   const [first, setFirst] = useState(0);
   // Number of elements displayed
-  const [rowSize, setRowSize] = useState(4);
+  const [rowSize, setRowSize] = useState(DEFAULT_ROW_SIZE);
   const [maxElem, setMaxElem] = useState(-1);
   const [loading, setLoading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Lock calls to getEvents if one is currently in progress
-  const fetchingRef = useRef<boolean>(false);
+  const fetchingRef = useRef(false);
 
   const resizeTimeoutRef = useRef<number>();
 
   useEffect(() => {
-    if (first + rowSize > numEvents && !fetchingRef.current) {
+    if (first + rowSize > events.length && !fetchingRef.current) {
       void (async () => {
         fetchingRef.current = true;
         setLoading(true);
-        const fetchNum = first + rowSize - numEvents;
+        const fetchNum = first + rowSize - events.length;
         const [newEvents, hasMore] = await getEvents(fetchNum);
         if (!hasMore) {
-          setMaxElem(numEvents + newEvents.length);
+          setMaxElem(events.length + newEvents.length);
         }
         setEvents(prevEvents => [...prevEvents, ...newEvents]);
-        setNumEvents(n => n + fetchNum);
         setLoading(false);
         fetchingRef.current = false;
       })();
     }
-  }, [numEvents, first, rowSize]);
+  }, [events.length, first, rowSize]);
 
   const handleResize = useCallback(() => {
     // wrap the resize in a 100ms debounce to prevent excess polling
     clearTimeout(resizeTimeoutRef.current);
     const w = containerRef.current?.offsetWidth;
+    const MARGIN_ADJUSTMENT = 24;
+    const CARD_WIDTH = 283;
     resizeTimeoutRef.current = window.setTimeout(() => {
       if (w != null) {
-        setRowSize(Math.max(1, Math.floor((w - 24) / 283)));
+        setRowSize(
+          Math.max(1, Math.floor((w - MARGIN_ADJUSTMENT) / CARD_WIDTH))
+        );
       }
     }, 100);
   }, []);
@@ -151,7 +155,7 @@ const EventsList: React.FC = () => {
     first,
     first + rowSize
   );
-  if (maxElem == -1 || first + rowSize < maxElem) {
+  if (maxElem === -1 || first + rowSize < maxElem) {
     // pad the display items with null if necessary
     while (display.length < rowSize) {
       display.push(null);

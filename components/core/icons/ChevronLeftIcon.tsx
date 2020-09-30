@@ -5,15 +5,9 @@ interface Props {
   color: string;
 }
 
-const ChevronLeftIcon: React.FC<Props> = ({ color }: Props) => {
+const ChevronLeftIcon: React.FC<Props> = ({ color }) => {
   return (
-    <SvgIcon
-      htmlColor={color}
-      width="17"
-      height="17"
-      viewBox="0 0 17 17"
-      fill="none"
-    >
+    <SvgIcon htmlColor={color} width="17" height="17" viewBox="0 0 17 17">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
