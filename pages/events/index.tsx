@@ -1,15 +1,38 @@
 import React from "react";
-import { NextPage, GetServerSideProps } from "next";
+import { NextPage, InferGetServerSidePropsType } from "next";
 import EventsPage from "components/events/EventsPage";
+import { Dropdown } from "../../utils/types";
 
-const EventsNextPage: NextPage = () => {
-  return <EventsPage />;
+import { getCauses } from "server/actions/nonprofit";
+
+const EventsNextPage: NextPage<InferGetServerSidePropsType<
+  typeof getServerSideProps
+>> = props => {
+  return (
+    <EventsPage
+      timeFilterOptions={props.timeFilterOptions}
+      causesFilterOptions={props.causesFilterOptions}
+    />
+  );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  // make request here!
+// eslint-disable-next-line @typescript-eslint/require-await
+export const getServerSideProps = async () => {
+  // Don't remove the async otherwise InferGetStaticPropsType won't work as expected
+  const timeOptions: Dropdown[] = [
+    { text: "Today", value: "TODAY" },
+    { text: "Tomorrow", value: "TOMORROW" },
+    { text: "This Week", value: "WEEK" },
+    { text: "This Weekend", value: "WEEKEND" },
+    { text: "Next Week", value: "NWEEK" },
+    { text: "Next Weekend", value: "NWEEKEND" }
+  ];
+
   return {
-    props: {}
+    props: {
+      timeFilterOptions: timeOptions,
+      causesFilterOptions: getCauses()
+    }
   };
 };
 

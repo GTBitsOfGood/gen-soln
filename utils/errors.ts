@@ -12,5 +12,8 @@ export default {
       "A nonprofit with the provided ID does not exist in our database.",
     DONATION_LOG_FAILURE: "Unable to log donation for the nonprofit.",
     NO_DATA: "The database does not contain any nonprofits."
+  },
+  event: {
+    INVALID_ID: "An event with the provided ID does not exist in our database."
   }
 };

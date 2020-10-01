@@ -7,7 +7,7 @@ import {
 import nextCookie from "next-cookies";
 import { useRouter } from "next/router";
 
-import urls from "config";
+import config from "config";
 
 import AuthPage from "components/auth/AuthPage";
 
@@ -19,13 +19,12 @@ const LoginPage: NextPage<InferGetServerSidePropsType<
   const router = useRouter();
 
   useEffect(() => {
-    isUserLoggedIn && void router.push(urls.pages.index);
+    isUserLoggedIn && void router.push(config.pages.index);
   }, [router, isUserLoggedIn]);
 
   return <AuthPage />;
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getServerSideProps = (context: GetServerSidePropsContext) => {
   const { token } = nextCookie(context);
 

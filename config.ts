@@ -27,12 +27,14 @@ export default {
     index: "/",
     login: "/login",
     donate: (path = "[id]"): string => `/donate/${path}`,
-    events: "/events"
+    events: "/events",
+    event: (path = "[id]"): string => `/events/${path}`
   },
   apis: {
     login: "/api/login",
     logDonation: "/api/logDonation",
     createPaymentIntent: "/api/createPaymentIntent",
     recoverPassword: "/api/recoverPassword"
-  }
+  },
+  googleMapsKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
 };

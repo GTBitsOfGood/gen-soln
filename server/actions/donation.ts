@@ -36,15 +36,30 @@ export async function logDonation({
   }
 }
 
+/**
+ * Server action to create a Stripe PaymentIntent, and send an email notification
+ * of the transaction receipt.
+ *
+ * @param {number} amount - Amount (in US cents) to be collected by the PaymentIntent
+ * @param {string} email - Email address to send the transaction receipt to
+ * @param {string} stripeAccount - stripe account we are sending payment to
+ * @returns {Promise<string>} - client_secret of the PaymentIntent created
+ */
 export async function createPaymentIntent({
-  amount
+  amount,
+  email,
+  stripeAccount
 }: NextApiRequest["body"]): Promise<Stripe.PaymentIntent["client_secret"]> {
   const stripe = stripeConstructor();
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount,
-    currency: "usd"
-  });
+  const paymentIntent = await stripe.paymentIntents.create(
+    {
+      amount,
+      receipt_email: email,
+      currency: "usd"
+    },
+    { stripeAccount: stripeAccount }
+  );
 
   return paymentIntent.client_secret;
 }

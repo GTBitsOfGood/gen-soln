@@ -1,8 +1,8 @@
 import Stripe from "stripe";
 import Mongo, { stripeConstructor } from "server/index";
-import Nonprofit from "server/models/nonprofit";
+import Nonprofit, { CAUSES } from "server/models/nonprofit";
 import errors from "utils/errors";
-import { Nonprofit as NonprofitType } from "utils/types";
+import { Nonprofit as NonprofitType, Dropdown } from "utils/types";
 import config from "config";
 
 type NonprofitNameWithId = Pick<NonprofitType, "name"> &
@@ -54,10 +54,7 @@ export async function getNonprofitById(_id: string): Promise<NonprofitType> {
   await Mongo();
 
   // Exclude donation information for now:
-  const nonprofit = await Nonprofit.findOne(
-    { _id },
-    { donations: 0, stripeAccount: 0 }
-  ).lean();
+  const nonprofit = await Nonprofit.findOne({ _id }, { donations: 0 }).lean();
   if (nonprofit == null) {
     throw new Error(errors.nonprofit.INVALID_ID);
   }
@@ -108,4 +105,8 @@ export async function linkStripeAccount(
     type: "account_onboarding"
   });
   return accountLink.url;
+}
+
+export function getCauses(): Dropdown[] {
+  return CAUSES;
 }

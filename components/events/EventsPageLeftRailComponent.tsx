@@ -1,7 +1,14 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import EventsPageLeftRailFilter from "./EventsPageLeftRailFilter";
+import EventsPageDropdownFilter from "./EventsPageDropdownFilter";
+import EventPageLocationFilter from "./EventPageLocationFilter";
+
+import { Dropdown } from "utils/types";
 
 const useStyles = makeStyles({
   root: {
@@ -17,27 +24,86 @@ const useStyles = makeStyles({
     lineHeight: "140%",
     color: "#333333"
   },
-  subtitle: {
+  topBar: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap"
+  },
+  clearFilterLabel: {
     // TODO: replace this with a Typography component
     fontFamily: "Visby CF, sans-serif",
-    fontWeight: 800,
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: "130%",
-    color: "#333333"
-  },
-  subComponent: {
-    marginTop: 16
+    fontWeight: 800,
+    color: "#FD8033",
+    cursor: "pointer",
+    textTransform: "uppercase"
   }
 });
 
-const EventsPageLeftRailComponent: React.FC<Record<string, unknown>> = () => {
-  const { root, header, subtitle, subComponent } = useStyles();
+interface Props {
+  timeFilterOptions: Dropdown[];
+  causesFilterOptions: Dropdown[];
+}
+
+const EventsPageLeftRailComponent: React.FC<Props> = props => {
+  const { root, header, topBar, clearFilterLabel } = useStyles();
+  const router = useRouter();
+
+  // Sum up all the applied filters
+  // TODO: only sum up filters that we support (time, location, cause)
+  const filterCount = Object.values(router.query).reduce((acc, x) => {
+    // x is string | string[] | undefined, so we need to account for each case
+    if (x == null) {
+      return acc;
+    } else if (Array.isArray(x)) {
+      return acc + x.length;
+    }
+    return acc + 1;
+  }, 0);
+
+  const clearFilters = async () => {
+    await router.push({
+      query: {}
+    });
+  };
+
   return (
     <div className={root}>
-      <Typography className={header}>Filters</Typography>
-      <div className={subComponent}>
-        <Typography className={subtitle}>Location</Typography>
+      <div className={topBar}>
+        <Typography className={header}>Filters</Typography>
+        {filterCount > 0 && (
+          <Button classes={{ root: clearFilterLabel }} onClick={clearFilters}>
+            Clear ({filterCount})
+          </Button>
+        )}
       </div>
+      <EventsPageLeftRailFilter
+        header="Location"
+        content={<EventPageLocationFilter />}
+      />
+      <EventsPageLeftRailFilter
+        header="Time"
+        content={
+          <EventsPageDropdownFilter
+            filter={"time"}
+            filterOptions={props.timeFilterOptions}
+          />
+        }
+        collapsible
+      />
+      <EventsPageLeftRailFilter
+        header="Causes"
+        content={
+          <EventsPageDropdownFilter
+            filter={"cause"}
+            filterOptions={props.causesFilterOptions}
+          />
+        }
+        collapsible
+      />
     </div>
   );
 };

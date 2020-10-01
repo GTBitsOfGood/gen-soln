@@ -7,7 +7,6 @@ import { createPaymentIntent } from "requests/donation";
 
 const CENTS_IN_DOLLAR = 100;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const useStripePayment = () => {
   const stripe = useStripe();
   const elements = useElements();
@@ -17,7 +16,13 @@ const useStripePayment = () => {
     elements
   ]);
   const processPayment = useCallback(
-    async (name: string, email: string, zipcode: string, amount: number) => {
+    async (
+      name: string,
+      email: string,
+      zipcode: string,
+      amount: number,
+      stripeAccount: string
+    ) => {
       if (!elements || !stripe) {
         throw new Error("Not ready to process payments just yet!");
       }
@@ -42,7 +47,7 @@ const useStripePayment = () => {
           card,
           billing_details: billingDetails
         }),
-        createPaymentIntent(amount * CENTS_IN_DOLLAR)
+        createPaymentIntent(amount * CENTS_IN_DOLLAR, email, stripeAccount)
       ]);
 
       if (paymentMethodReq.error) {

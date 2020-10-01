@@ -71,11 +71,13 @@ const STEPS = [
 interface Props {
   donationCompletedCallback: () => void;
   selectedNonprofitId: string;
+  stripeAccount: string;
 }
 
 const DonationPageForm: React.FC<Props> = ({
   donationCompletedCallback,
-  selectedNonprofitId
+  selectedNonprofitId,
+  stripeAccount
 }) => {
   const { container, contentContainer } = useStyles();
   const [
@@ -119,7 +121,8 @@ const DonationPageForm: React.FC<Props> = ({
             name,
             contactStep.email,
             paymentStep.zipcode,
-            amount
+            amount,
+            stripeAccount
           );
         } catch (err) {
           // TODO: Not sure how else to handle and display the error
@@ -149,7 +152,8 @@ const DonationPageForm: React.FC<Props> = ({
       processPayment,
       isLastStep,
       selectedNonprofitId,
-      donationCompletedCallback
+      donationCompletedCallback,
+      stripeAccount
     ]
   );
 
