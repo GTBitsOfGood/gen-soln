@@ -20,7 +20,7 @@ export default class MyApp extends App {
     return (
       <>
         <Head>
-          <title>Donation Marketplace Solution</title>
+          <title>Bits of Good General Solution</title>
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width"
