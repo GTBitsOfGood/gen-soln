@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   }
 });
 
-const CauseCardGlimmer: React.FC = () => {
+const EventsCauseCardGlimmer: React.FC = () => {
   const { card, cardContainer, textContainer } = useStyles();
 
   return (
@@ -44,4 +44,4 @@ const CauseCardGlimmer: React.FC = () => {
   );
 };
 
-export default CauseCardGlimmer;
+export default EventsCauseCardGlimmer;

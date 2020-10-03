@@ -2,6 +2,7 @@ import React from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
+import FocusVisibleOnly from "../FocusVisibleOnly";
 
 const useStyles = makeStyles({
   card: {
@@ -49,25 +50,21 @@ interface Props {
   onClick: () => void;
 }
 
-const CauseCardLarge: React.FC<Props> = ({ cause, imagePath, onClick }) => {
+const EventsCauseCard: React.FC<Props> = ({ cause, imagePath, onClick }) => {
   const { card, cardContainer, textContainer, image, causeText } = useStyles();
 
   return (
     <div className={cardContainer}>
-      <div
-        className={card}
-        onClick={onClick}
-        onKeyPress={onClick}
-        role="button"
-        tabIndex={0}
-      >
-        <img src={imagePath} className={image} alt={`${cause}`} />
-        <div className={textContainer}>
-          <Typography className={causeText}>{cause}</Typography>
+      <FocusVisibleOnly onClick={onClick}>
+        <div className={card}>
+          <img src={imagePath} className={image} alt={`${cause}`} />
+          <div className={textContainer}>
+            <Typography className={causeText}>{cause}</Typography>
+          </div>
         </div>
-      </div>
+      </FocusVisibleOnly>
     </div>
   );
 };
 
-export default CauseCardLarge;
+export default EventsCauseCard;
