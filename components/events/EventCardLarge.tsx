@@ -3,6 +3,7 @@ import clsx from "clsx";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
+import FocusVisibleOnly from "components/FocusVisibleOnly";
 
 const useStyles = makeStyles({
   card: {
@@ -18,7 +19,10 @@ const useStyles = makeStyles({
   cardContainer: {
     width: 250,
     height: 269,
-    padding: 1
+    padding: 1,
+    "&:focusVisible": {
+      outline: "none"
+    }
   },
   image: {
     display: "block",
@@ -73,13 +77,15 @@ interface Props {
   /* Used for time */
   metaText: string;
   imagePath: string;
+  onClick: undefined;
 }
 
 const EventCardLarge: React.FC<Props> = ({
   headerText,
   bodyText,
   metaText,
-  imagePath
+  imagePath,
+  onClick
 }) => {
   const {
     card,
@@ -93,16 +99,18 @@ const EventCardLarge: React.FC<Props> = ({
   } = useStyles();
 
   return (
-    <div className={cardContainer}>
-      <div className={card}>
-        <img src={imagePath} className={image} alt={`${headerText}`} />
-        <div className={content}>
-          <Typography className={clsx(meta, truncate)}>{metaText}</Typography>
-          <Typography className={header}>{headerText}</Typography>
-          <Typography className={clsx(body, truncate)}>{bodyText}</Typography>
+    <FocusVisibleOnly onClick={onClick}>
+      <div className={cardContainer}>
+        <div className={card}>
+          <img src={imagePath} className={image} alt={`${headerText}`} />
+          <div className={content}>
+            <Typography className={clsx(meta, truncate)}>{metaText}</Typography>
+            <Typography className={header}>{headerText}</Typography>
+            <Typography className={clsx(body, truncate)}>{bodyText}</Typography>
+          </div>
         </div>
       </div>
-    </div>
+    </FocusVisibleOnly>
   );
 };
 
