@@ -25,7 +25,7 @@ const HomePage = () => {
           <button
             onClick={e => {
               e.preventDefault();
-              signIn().catch(err => console.log(err));
+              signOut().catch(err => console.log(err));
             }}
           >
             Sign out
