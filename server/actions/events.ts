@@ -115,12 +115,16 @@ export async function getNearestEventsCardDataCount({
 export async function getByCausesEventsCardData(causes: string[]) {
   await Mongo();
 
-  const result = await Event.find()
-    .populate("nonprofitId", "cause", Nonprofit)
-    .find({
-      "nonprofitID.cause": { $elemMatch: { $in: causes } }
-    })
-    .limit(5);
+  const idsWithCause = await Nonprofit.find(
+    {
+      causes: { $in: causes }
+    },
+    "nonprofitId"
+  );
+
+  const result = await Event.find({
+    nonprofitId: { $in: idsWithCause.map(r => r["_id"]) }
+  }).limit(5);
 
   return result.map(r => r.toJSON()) as EventCardDataType[];
 }

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/router";
-import { returnQueryAsArray } from "../../utils/util";
+import { returnQueryAsArray } from "utils/util";
 
 const useRouterQueryParamsState = (key: string) => {
   const router = useRouter();
