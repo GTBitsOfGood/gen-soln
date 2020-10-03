@@ -1,9 +1,16 @@
 import React from "react";
-import { NextPage, InferGetServerSidePropsType } from "next";
+import {
+  NextPage,
+  InferGetServerSidePropsType,
+  GetServerSidePropsContext
+} from "next";
 import EventsPage from "components/events/EventsPage";
 import { Dropdown } from "../../utils/types";
-
 import { getCauses } from "server/actions/nonprofit";
+import {
+  getUpcomingEventsCardData,
+  getUpcomingEventsCardDataCount
+} from "server/actions/events";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -12,12 +19,15 @@ const EventsNextPage: NextPage<InferGetServerSidePropsType<
     <EventsPage
       timeFilterOptions={props.timeFilterOptions}
       causesFilterOptions={props.causesFilterOptions}
+      upcomingEventsFirstPageData={props.upcomingEventsFirstPageData}
     />
   );
 };
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   // Don't remove the async otherwise InferGetStaticPropsType won't work as expected
   const timeOptions: Dropdown[] = [
     { text: "Today", value: "TODAY" },
@@ -28,10 +38,24 @@ export const getServerSideProps = async () => {
     { text: "Next Weekend", value: "NWEEKEND" }
   ];
 
+  let upcomingEventsFirstPageData;
+
+  if (Object.keys(context.query).length === 0) {
+    const date = new Date();
+    const upcomingEventsTotalCount = await getUpcomingEventsCardDataCount(date);
+    upcomingEventsFirstPageData = await getUpcomingEventsCardData({
+      date: date.toJSON(),
+      page: 0,
+      totalCount: upcomingEventsTotalCount,
+      isLastPage: false
+    });
+  }
+
   return {
     props: {
       timeFilterOptions: timeOptions,
-      causesFilterOptions: getCauses()
+      causesFilterOptions: getCauses(),
+      upcomingEventsFirstPageData: upcomingEventsFirstPageData
     }
   };
 };
