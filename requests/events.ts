@@ -3,10 +3,8 @@ import { fetchRequestWithPayloadResponse } from "utils/util";
 import { DatePageInformation, DatePaginatedEventCards } from "utils/types";
 
 export const getUpcomingEvents = async (
-  date: string,
-  page: number,
-  totalCount: number
-): Promise<DatePageInformation> =>
+  datePageInformation: DatePageInformation
+) =>
   fetchRequestWithPayloadResponse<DatePaginatedEventCards>(
     config.apis.getUpcomingEvents,
     {
@@ -14,6 +12,6 @@ export const getUpcomingEvents = async (
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ date, page, totalCount })
+      body: JSON.stringify({ datePageInformation })
     }
   );
