@@ -1,7 +1,7 @@
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
 
-export default function Page() {
+const HomePage = () => {
   const [session, loading] = useSession();
 
   return (
@@ -9,15 +9,31 @@ export default function Page() {
       {!session && (
         <>
           Not signed in <br />
-          <button onClick={() => signIn}>Sign in</button>
+          <button
+            onClick={e => {
+              e.preventDefault();
+              signIn().catch(err => console.log(err));
+            }}
+          >
+            Sign in
+          </button>
         </>
       )}
       {session && (
         <>
           Signed in as {session.user.email} <br />
-          <button onClick={() => signOut}>Sign out</button>
+          <button
+            onClick={e => {
+              e.preventDefault();
+              signIn().catch(err => console.log(err));
+            }}
+          >
+            Sign out
+          </button>
         </>
       )}
     </>
   );
-}
+};
+
+export default HomePage;
