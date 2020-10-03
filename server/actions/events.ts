@@ -37,7 +37,7 @@ export async function getUpcomingEventsCardData({
     {
       startDate: {
         $gte: new Date(date),
-        $leq: new Date(new Date(date).getTime() + MILLISECONDS_IN_WEEK)
+        $lte: new Date(new Date(date).getTime() + MILLISECONDS_IN_WEEK)
       }
     },
     CARD_FIELDS

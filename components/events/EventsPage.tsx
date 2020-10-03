@@ -3,7 +3,7 @@ import EventsPageLayout from "components/events/EventsPageLayout";
 import EventsPageLeftRailComponent from "./EventsPageLeftRailComponent";
 import EventsList from "./EventsList";
 
-import { Dropdown } from "utils/types";
+import { DatePaginatedEventCards, Dropdown } from "utils/types";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -16,6 +16,7 @@ const useStyles = makeStyles({
 interface Props {
   timeFilterOptions: Dropdown[];
   causesFilterOptions: Dropdown[];
+  upcomingEventsFirstPageData: DatePaginatedEventCards | undefined;
 }
 
 const EventsPage: React.FC<Props> = props => {
