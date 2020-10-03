@@ -183,6 +183,7 @@ const EventsList: React.FC = () => {
               bodyText={event.nonprofitName}
               metaText={event.time}
               imagePath={event.imagePath}
+              onClick={undefined}
             />
           ) : (
             <EventCardGlimmerLarge />
