@@ -77,7 +77,7 @@ interface Props {
   /* Used for time */
   metaText: string;
   imagePath: string;
-  onClick: undefined;
+  onClick: () => void;
 }
 
 const EventCardLarge: React.FC<Props> = ({
