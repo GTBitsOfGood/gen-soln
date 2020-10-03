@@ -1,19 +1,12 @@
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/router";
+import { returnQueryAsArray } from "../../utils/util";
 
 const useRouterQueryParamsState = (key: string) => {
   const router = useRouter();
 
   const query = router.query[key];
-  const currentState = useMemo(() => {
-    if (query == null) {
-      return [];
-    }
-    if (Array.isArray(query)) {
-      return query;
-    }
-    return [query];
-  }, [query]);
+  const currentState = useMemo(() => returnQueryAsArray(query), [query]);
 
   const routerPushWithUpdatedState = useCallback(
     (updatedState: string[]) => {
