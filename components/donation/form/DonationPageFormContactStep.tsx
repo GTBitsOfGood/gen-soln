@@ -124,6 +124,7 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
           locationType="address"
           fullWidth={true}
           defaultValue={address}
+          label="Address"
         />
       </div>
     </div>

@@ -36,6 +36,7 @@ export type PlaceType = google.maps.places.AutocompletePrediction;
 
 interface Props {
   locationType: string;
+  label: string;
   addLocationChip?: (value: string) => void;
   addPlaceChip?: (value: PlaceType | null) => void;
   fullWidth?: boolean;
@@ -44,6 +45,7 @@ interface Props {
 
 const LocationAutocompleteInput: React.FC<Props> = ({
   locationType,
+  label,
   addLocationChip,
   addPlaceChip,
   fullWidth = false,
@@ -164,12 +166,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       }}
       renderInput={params => (
         <div>
-          <TextField
-            {...params}
-            label="Search city"
-            variant="outlined"
-            fullWidth
-          />
+          <TextField {...params} label={label} variant="outlined" fullWidth />
         </div>
       )}
       renderOption={option => {
