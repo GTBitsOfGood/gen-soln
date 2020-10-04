@@ -22,11 +22,13 @@ const useStyles = makeStyles({
 interface Props {
   description: string;
   selectedNonprofitId: string;
+  stripeAccount: string;
 }
 
 const DonationPageMainContent: React.FC<Props> = ({
   description,
-  selectedNonprofitId
+  selectedNonprofitId,
+  stripeAccount
 }) => {
   const { container } = useStyles();
   const [hasDonationCompleted, setHasDonationCompleted] = useState(false);
@@ -44,6 +46,7 @@ const DonationPageMainContent: React.FC<Props> = ({
         <DonationPageForm
           donationCompletedCallback={donationCompletedCallback}
           selectedNonprofitId={selectedNonprofitId}
+          stripeAccount={stripeAccount}
         />
       )}
     </div>

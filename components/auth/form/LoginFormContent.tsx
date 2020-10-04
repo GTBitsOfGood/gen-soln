@@ -3,7 +3,7 @@ import React, { useState, useCallback, useRef } from "react";
 import { login } from "requests/admin";
 import { useRouter } from "next/router";
 import errors from "utils/errors";
-import urls from "config";
+import config from "config";
 import cookie from "js-cookie";
 
 import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
@@ -34,7 +34,7 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
          * If a user logs in again, the expired token will be re-written with a freshly generated one. */
         cookie.set("token", await login(email, password));
         // Currently, it takes a long time to navigate and load the index page, so don't stop loading:
-        void router.push(urls.pages.index);
+        void router.push(config.pages.index);
       } catch (err) {
         let message;
         if (

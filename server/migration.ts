@@ -1,26 +1,23 @@
 #!/usr/bin/env ts-node-script
 // A ts-node script to manage our MongoDB migrations.
-// Ensure that the code here can be executed by running "ts-node -O '{\"module\": \"commonjs\"}' -r module-alias/register".
 // For module aliases to work correctly in this script, we had to define "_moduleAliases" in our package.json
 
-import dotenv from "dotenv";
-
-// Add paths to all ".env.*" files here, relative to the root folder since that's where
-// yarn will execute this script from. Order matters, ".env.*" file with higher precedence should appear first.
-const envFilePaths = [
-  ".env.local",
-  ".env.development.local",
-  ".env.development"
-];
-envFilePaths.forEach(path => void dotenv.config({ path }));
-
+import loadEnvForScript from "./env";
+loadEnvForScript();
 // Code based on https://github.com/seppevs/migrate-mongo/blob/master/bin/migrate-mongo.js
-import { create, up, down, status, config, database } from "migrate-mongo";
+import {
+  create,
+  up,
+  down,
+  status,
+  config as mongoConfig,
+  database
+} from "migrate-mongo";
 import program from "commander";
 import Table from "cli-table3";
 import lodash from "lodash";
 
-import appConfig from "config";
+import config from "config";
 
 type MIGRATION_DIRECTION = "UP" | "DOWN";
 
@@ -32,9 +29,9 @@ function handleError(err: Error) {
 const migrationConfig = {
   // We ensure that our Mongoose connection and migration config use the same DB:
   mongodb: {
-    url: appConfig.dbUrl,
-    databaseName: appConfig.dbName,
-    options: appConfig.dbOptions
+    url: config.db.url,
+    databaseName: config.db.name,
+    options: config.db.options
   },
   migrationsDir: "server/migrations",
   changelogCollectionName: "changelog",
@@ -42,7 +39,7 @@ const migrationConfig = {
 };
 
 // @ts-ignore: We are using migrate-mongo v8 but types have been written for v7
-config.set(migrationConfig);
+mongoConfig.set(migrationConfig);
 
 async function createMigrationFile(description: string) {
   try {

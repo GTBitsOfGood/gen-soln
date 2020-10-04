@@ -43,6 +43,15 @@ export async function login({ email, password }) {
   return jwtSignAdmin(admin);
 }
 
+export async function recoverPassword({ email }) {
+  await Mongo();
+  if (await Admin.exists({ email })) {
+    //TODO password recovery email sent to provided email
+    return true;
+  }
+  throw new Error(errors.admin.INVALID_EMAIL_FOR_PASSWORD_RECOVERY);
+}
+
 export async function signup({
   firstName,
   lastName,
@@ -72,7 +81,7 @@ export async function signup({
   throw new Error(errors.nonprofit.INVALID_ID);
 }
 
-export function checkToken({ token }) {
+export function checkToken(token) {
   try {
     return jwt.verify(token, config.jwtSecret);
   } catch {

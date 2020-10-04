@@ -6,4 +6,8 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> =>
-  handleRequestWithPayloadResponse(req, res, createPaymentIntent, ["amount"]);
+  handleRequestWithPayloadResponse(req, res, createPaymentIntent, [
+    "amount",
+    "email",
+    "stripeAccount"
+  ]);

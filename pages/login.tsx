@@ -1,37 +1,47 @@
-import React from "react";
-import { NextPage } from "next";
+import React, { useEffect } from "react";
+import {
+  NextPage,
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType
+} from "next";
 import nextCookie from "next-cookies";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
-import urls from "config";
+import config from "config";
 
 import AuthPage from "components/auth/AuthPage";
 
 import { checkToken } from "server/actions/admin";
 
-import { checkTokenRequest } from "requests/admin";
+const LoginPage: NextPage<InferGetServerSidePropsType<
+  typeof getServerSideProps
+>> = ({ isUserLoggedIn }) => {
+  const router = useRouter();
 
-const LoginPage: NextPage = () => <AuthPage />;
+  useEffect(() => {
+    isUserLoggedIn && void router.push(config.pages.index);
+  }, [router, isUserLoggedIn]);
 
-LoginPage.getInitialProps = async ctx => {
-  try {
-    const { token } = nextCookie(ctx);
-    if (token != null) {
-      if (ctx.res) {
-        // server-side code:
-        checkToken({ token });
-        ctx.res.writeHead(302, { Location: urls.pages.index }).end();
-      } else {
-        // client-side code:
-        await checkTokenRequest(token);
-        void Router.push(urls.pages.index);
-      }
+  return <AuthPage />;
+};
+
+export const getServerSideProps = (context: GetServerSidePropsContext) => {
+  const { token } = nextCookie(context);
+
+  if (token != null) {
+    try {
+      checkToken(token);
+      return {
+        props: { isUserLoggedIn: true }
+      };
+    } catch (error) {
+      console.error(error);
     }
-  } catch (e) {
-    console.log(e);
   }
-  // Literally return any object instead of an empty one to allow Next.js optimization
-  return { foo: "bar" };
+
+  return {
+    props: { isUserLoggedIn: false }
+  };
 };
 
 export default LoginPage;

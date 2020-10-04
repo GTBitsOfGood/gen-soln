@@ -6,7 +6,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import Typography from "@material-ui/core/Typography";
 
-import urls from "config";
+import config from "config";
 
 import ButtonWithNonprofitColor from "components/ButtonWithNonprofitColor";
 
@@ -66,7 +66,7 @@ const DonationPageThankYou: React.FC = () => {
       <div className={footerContainer}>
         <div className={textContainer}>
           <Typography variant="h6">
-            Support more nonprofits at bits of good{" "}
+            Support more nonprofits at Bits of Good{" "}
           </Typography>
           <Typography variant="body2">
             The GT Bits of Good team connects our students with local nonprofits
@@ -76,7 +76,7 @@ const DonationPageThankYou: React.FC = () => {
         <div className={buttonContainer}>
           <ButtonWithNonprofitColor
             onClick={() => {
-              void router.push(urls.pages.index);
+              void router.push(config.pages.index);
             }}
           >
             Visit Site

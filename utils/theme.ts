@@ -1,6 +1,7 @@
 import { createMuiTheme, Theme } from "@material-ui/core/styles";
 
 import { Spacing, Nonprofit } from "./types";
+import typographyStyles from "components/core/HorizonTypography";
 
 const margins: Record<Spacing, string> = {
   VERTICAL: "4.5vh",
@@ -46,6 +47,7 @@ const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined): Theme =>
         }
       }
     },
+    typography: typographyStyles,
     nonprofitBackgroundImage: nonprofit?.background,
     nonprofitLogoImage: nonprofit?.logo,
     margins

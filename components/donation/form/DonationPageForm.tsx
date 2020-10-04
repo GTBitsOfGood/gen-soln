@@ -15,7 +15,7 @@ import useStripePayment from "./useStripePayment";
 import DonationPageFormNavigation from "./DonationPageFormNavigation";
 import DonationPageFormButton from "./DonationPageFormButton";
 
-import { createDonation } from "requests/donation";
+import { logDonation } from "requests/donation";
 
 import reducer, {
   AmountStepProps,
@@ -71,11 +71,13 @@ const STEPS = [
 interface Props {
   donationCompletedCallback: () => void;
   selectedNonprofitId: string;
+  stripeAccount: string;
 }
 
 const DonationPageForm: React.FC<Props> = ({
   donationCompletedCallback,
-  selectedNonprofitId
+  selectedNonprofitId,
+  stripeAccount
 }) => {
   const { container, contentContainer } = useStyles();
   const [
@@ -119,7 +121,8 @@ const DonationPageForm: React.FC<Props> = ({
             name,
             contactStep.email,
             paymentStep.zipcode,
-            amount
+            amount,
+            stripeAccount
           );
         } catch (err) {
           // TODO: Not sure how else to handle and display the error
@@ -128,8 +131,8 @@ const DonationPageForm: React.FC<Props> = ({
           return;
         }
         donationCompletedCallback(); // Don't call setIsSubmitting(false) after this -- donationCompletedCallback() will unmount this component
-        // TODO: What should we do if Stripe has processed the payment correctly, but our createDonation API call errored?
-        void createDonation({
+        // TODO: What should we do if Stripe has processed the payment correctly, but our logDonation API call errored?
+        void logDonation({
           name,
           email,
           amount,
@@ -149,7 +152,8 @@ const DonationPageForm: React.FC<Props> = ({
       processPayment,
       isLastStep,
       selectedNonprofitId,
-      donationCompletedCallback
+      donationCompletedCallback,
+      stripeAccount
     ]
   );
 
