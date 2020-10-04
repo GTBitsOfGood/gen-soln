@@ -62,7 +62,7 @@ interface PageInformation {
   isLastPage: boolean;
 }
 
-type PaginatedEventCards = PageInformation & {
+export type PaginatedEventCards = PageInformation & {
   eventCards: EventCardData[];
 };
 
