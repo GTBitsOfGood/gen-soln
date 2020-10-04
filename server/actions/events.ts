@@ -117,7 +117,7 @@ export async function getByCausesEventsCardData(causes: string[]) {
 
   const idsWithCause = await Nonprofit.find(
     {
-      causes: { $in: causes }
+      cause: { $in: causes }
     },
     "nonprofitId"
   );
