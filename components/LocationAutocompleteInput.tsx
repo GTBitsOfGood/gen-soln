@@ -41,6 +41,7 @@ interface Props {
   addPlaceChip?: (value: PlaceType | null) => void;
   fullWidth?: boolean;
   defaultValue?: PlaceType | null;
+  required?: boolean;
 }
 
 const LocationAutocompleteInput: React.FC<Props> = ({
@@ -49,7 +50,8 @@ const LocationAutocompleteInput: React.FC<Props> = ({
   addLocationChip,
   addPlaceChip,
   fullWidth = false,
-  defaultValue = null
+  defaultValue = null,
+  required = false
 }) => {
   const classes = useStyles();
   const [value, setValue] = useState<PlaceType | null>(defaultValue);
@@ -166,7 +168,13 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       }}
       renderInput={params => (
         <div>
-          <TextField {...params} label={label} variant="outlined" fullWidth />
+          <TextField
+            {...params}
+            label={label}
+            variant="outlined"
+            fullWidth
+            required={required}
+          />
         </div>
       )}
       renderOption={option => {
