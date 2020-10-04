@@ -52,7 +52,10 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
   } = useStyles();
   const dispatch = useContext(DonationPageStateDispatch);
 
-  const isCurStepCompleted = useMemo(() => address !== null, [address]);
+  const isCurStepCompleted = useMemo(
+    () => (firstName && lastName && email && address ? true : false),
+    [firstName, lastName, email, address]
+  );
 
   useEffect(() => {
     // For this step, we will defter to the browser's API to indicate when the required TextFields have been filled
