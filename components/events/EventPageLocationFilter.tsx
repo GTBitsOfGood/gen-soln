@@ -46,6 +46,7 @@ const EventsPageLocationFilter: React.FC = () => {
       <LocationAutocompleteInput
         addLocationChip={value => void put(value)}
         locationType="(cities)"
+        label="Search city"
       />
     </>
   );

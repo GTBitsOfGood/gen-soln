@@ -148,6 +148,7 @@ const DonationPageForm: React.FC<Props> = ({
       contactStep.email,
       contactStep.firstName,
       contactStep.lastName,
+      contactStep.address,
       paymentStep.zipcode,
       processPayment,
       isLastStep,

@@ -2,6 +2,8 @@ import { createContext, Dispatch } from "react";
 
 import { PayloadAction, createSlice, AnyAction } from "@reduxjs/toolkit";
 
+import { PlaceType } from "components/LocationAutocompleteInput";
+
 export interface AmountStepProps {
   radioButtonAmount: number | null;
   otherAmount: number;
@@ -11,6 +13,7 @@ export interface ContactStepProps {
   firstName: string;
   lastName: string;
   email: string;
+  address: PlaceType | null;
 }
 
 export interface PaymentStepProps {
@@ -38,7 +41,8 @@ export const initialState: State = {
   contactStep: {
     firstName: "",
     lastName: "",
-    email: ""
+    email: "",
+    address: null
   },
   amountStep: {
     radioButtonAmount: AMOUNTS[0],
@@ -77,9 +81,17 @@ const { actions, reducer } = createSlice({
     },
     setContactStepField(
       { contactStep },
-      { payload }: PayloadAction<{ key: keyof ContactStepProps; value: string }>
+      {
+        payload
+      }: PayloadAction<{
+        key: keyof Omit<ContactStepProps, "address">;
+        value: string;
+      }>
     ) {
       contactStep[payload.key] = payload.value;
+    },
+    setAddress({ contactStep }, { payload }: PayloadAction<PlaceType | null>) {
+      contactStep.address = payload;
     },
     setNameOnCard({ paymentStep }, { payload }: PayloadAction<string>) {
       paymentStep.nameOnCard = payload;
@@ -102,6 +114,7 @@ export const {
   setRadioButtonAmount,
   setOtherAmount,
   setContactStepField,
+  setAddress,
   setNameOnCard,
   setZipcode
 } = actions;

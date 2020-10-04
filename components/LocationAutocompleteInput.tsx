@@ -32,19 +32,29 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
   position.appendChild(script);
 }
 
-type PlaceType = google.maps.places.AutocompletePrediction;
+export type PlaceType = google.maps.places.AutocompletePrediction;
 
 interface Props {
-  addLocationChip: (value: string) => void;
   locationType: string;
+  label: string;
+  addLocationChip?: (value: string) => void;
+  addPlaceChip?: (value: PlaceType | null) => void;
+  fullWidth?: boolean;
+  defaultValue?: PlaceType | null;
+  required?: boolean;
 }
 
 const LocationAutocompleteInput: React.FC<Props> = ({
+  locationType,
+  label,
   addLocationChip,
-  locationType
+  addPlaceChip,
+  fullWidth = false,
+  defaultValue = null,
+  required = false
 }) => {
   const classes = useStyles();
-  const [value, setValue] = useState<PlaceType | null>(null);
+  const [value, setValue] = useState<PlaceType | null>(defaultValue);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<PlaceType[]>([]);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(
@@ -139,13 +149,18 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       autoComplete
       includeInputInList
       filterSelectedOptions
+      fullWidth={fullWidth}
       value={value}
       onChange={(
         event: React.ChangeEvent<unknown>,
         newValue: PlaceType | null
       ) => {
         setOptions(newValue ? [newValue, ...options] : options);
-        newValue && addLocationChip(newValue.structured_formatting.main_text);
+        if (locationType === "address") addPlaceChip && addPlaceChip(newValue);
+        else
+          newValue &&
+            addLocationChip &&
+            addLocationChip(newValue.structured_formatting.main_text);
         setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
@@ -155,9 +170,10 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         <div>
           <TextField
             {...params}
-            label="Search city"
+            label={label}
             variant="outlined"
             fullWidth
+            required={required}
           />
         </div>
       )}
