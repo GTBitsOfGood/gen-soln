@@ -81,7 +81,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const navTabs = ["Discover", "Events", "Non-profits", "Sign In", "Sign Up"];
+
 export default function PrimarySearchAppBar() {
+  const navTabs = ["Discover", "Events", "Non-profits", "Sign In", "Sign Up"];
   const classes = useStyles();
   const [
     mobileMoreAnchorEl,
@@ -110,21 +113,9 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <p>Discover</p>
-      </MenuItem>
-      <MenuItem>
-        <p>Events</p>
-      </MenuItem>
-      <MenuItem>
-        <p>Non-profits</p>
-      </MenuItem>
-      <MenuItem>
-        <p>Sign In</p>
-      </MenuItem>
-      <MenuItem>
-        <p>Sign Up</p>
-      </MenuItem>
+      {navTabs.map(navTab => (
+        <MenuItem key={navTab.toString()} value={navTab} />
+      ))}
     </Menu>
   );
 
@@ -132,6 +123,9 @@ export default function PrimarySearchAppBar() {
     <div className={classes.grow}>
       <AppBar position="static" style={{ background: "#FFFFFF" }}>
         <Toolbar>
+          <a href="https://www.bitsofgood.org/">
+            <img alt="Bits of Good Logo" src="/site/bog-logo.svg" />
+          </a>
           {/* <img src={Logo} alt="logo" className={classes.Logo} /> */}
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -149,19 +143,19 @@ export default function PrimarySearchAppBar() {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <div className={classes.containButton}>
-              <ButtonWithLowercaseText>Discover</ButtonWithLowercaseText>
+              {navTabs.map(navTab => {
+                if (navTab !== "Sign Up" && navTab !== "Sign In") {
+                  return (
+                    <ButtonWithLowercaseText>{navTab}</ButtonWithLowercaseText>
+                  );
+                }
+              })}
             </div>
             <div className={classes.containButton}>
-              <ButtonWithLowercaseText>Events</ButtonWithLowercaseText>
+              <HorizonButtonOutline> Sign In </HorizonButtonOutline>
             </div>
             <div className={classes.containButton}>
-              <ButtonWithLowercaseText>Non-profits</ButtonWithLowercaseText>
-            </div>
-            <div className={classes.containButton}>
-              <HorizonButtonOutline>Sign In</HorizonButtonOutline>
-            </div>
-            <div className={classes.containButton}>
-              <HorizonButton>Sign Up</HorizonButton>
+              <HorizonButton> Sign Up </HorizonButton>
             </div>
           </div>
           <div className={classes.sectionMobile}>
