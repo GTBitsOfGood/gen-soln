@@ -23,7 +23,8 @@ import reducer, {
   PaymentStepProps,
   initialState,
   DonationPageStateDispatch,
-  incrementStep
+  incrementStep,
+  ReviewStepProps
 } from "./reducer";
 
 const useStyles = makeStyles({
@@ -63,6 +64,13 @@ const STEPS = [
     title: "Payment" as const,
     component: dynamic<PaymentStepProps>(
       () => import("./DonationPageFormPaymentStep"),
+      options
+    )
+  },
+  {
+    title: "Review" as const,
+    component: dynamic<ReviewStepProps>(
+      () => import("./DonationPageFormReviewStep"),
       options
     )
   }
@@ -173,6 +181,10 @@ const DonationPageForm: React.FC<Props> = ({
       case "Payment":
         Component = step.component;
         return <Component {...paymentStep} />;
+
+      case "Review":
+        Component = step.component;
+        return <Component />;
 
       default: {
         const _exhaustiveCheck: never = step;
