@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { IconButton } from "@material-ui/core";
-import EventCardLarge from "./EventCardLarge";
-import EventCardGlimmerLarge from "./EventCardGlimmerLarge";
 import ChevronRightIcon from "@horizon/icons/ChevronRightIcon";
 import ChevronLeftIcon from "@horizon/icons/ChevronLeftIcon";
+
+import EventCardLarge from "./EventCardLarge";
+import EventCardGlimmerLarge from "./EventCardGlimmerLarge";
+import { PaginatedEventCards, EventCardData } from "utils/types";
 
 const useStyles = makeStyles({
   button: {
@@ -44,55 +45,33 @@ const useStyles = makeStyles({
   }
 });
 
-interface EventDisplayInfo {
-  name: string;
-  nonprofitName: string;
-  time: string;
-  imagePath: string;
+interface Props {
+  paginatedEventCardsData: PaginatedEventCards;
+  getMoreEvents: (newPage: number) => Promise<PaginatedEventCards>;
 }
-
-/** BEGIN MOCK SETUP */
-const maxData = 14;
-let dataIndex = 0;
-const mockData = (i: number) => {
-  return {
-    name: `Feeding ${i} Pigeon${i !== 1 ? "s" : ""} in the Park`,
-    nonprofitName: "Pigeon Feeders International",
-    time: "Sunday Morning",
-    imagePath: "defaultImages/defaultEvent.png"
-  };
-};
-
-/**
- * Mocks a server request
- * @param n the number of events to return
- * @return a promise that contains [an array of EventDisplayInfo, true if there are remaining events]
- */
-const getEvents = async (n: number): Promise<[EventDisplayInfo[], boolean]> => {
-  await new Promise(r => setTimeout(r, 1000));
-  const out = [];
-  for (let i = 0; i < n && dataIndex < maxData; i++) {
-    out.push(mockData(dataIndex));
-    dataIndex++;
-  }
-  return [out, dataIndex < maxData];
-};
-/** END MOCK SETUP */
 
 const DEFAULT_ROW_SIZE = 4;
 
-const EventsList: React.FC = () => {
+const EventsList: React.FC<Props> = ({
+  paginatedEventCardsData,
+  getMoreEvents
+}) => {
   const classes = useStyles();
 
-  const [events, setEvents] = useState<EventDisplayInfo[]>([]);
+  const [events, setEvents] = useState<EventCardData[]>(
+    paginatedEventCardsData.eventCards
+  );
+
   // Index of the first element displayed in the list
   const [first, setFirst] = useState(0);
+
   // Number of elements displayed
   const [rowSize, setRowSize] = useState(DEFAULT_ROW_SIZE);
   const [maxElem, setMaxElem] = useState(-1);
   const [loading, setLoading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const pageRef = useRef<number>(paginatedEventCardsData.page);
 
   // Lock calls to getEvents if one is currently in progress
   const fetchingRef = useRef(false);
@@ -104,11 +83,19 @@ const EventsList: React.FC = () => {
       void (async () => {
         fetchingRef.current = true;
         setLoading(true);
-        const fetchNum = first + rowSize - events.length;
-        const [newEvents, hasMore] = await getEvents(fetchNum);
-        if (!hasMore) {
+
+        const {
+          eventCards: newEvents,
+          page: newPage,
+          isLastPage
+        } = await getMoreEvents(pageRef.current + 1);
+
+        pageRef.current = newPage;
+
+        if (isLastPage) {
           setMaxElem(events.length + newEvents.length);
         }
+
         setEvents(prevEvents => [...prevEvents, ...newEvents]);
         setLoading(false);
         fetchingRef.current = false;
@@ -151,7 +138,7 @@ const EventsList: React.FC = () => {
 
   // holds all the elements currently displayed - EventDisplayInfo gets rendered as
   // EventCardLarge, while null gets rendered as EventCardGlimmerLarge
-  const display: (EventDisplayInfo | null)[] = events.slice(
+  const display: (EventCardData | null)[] = events.slice(
     first,
     first + rowSize
   );
@@ -180,9 +167,9 @@ const EventsList: React.FC = () => {
           {event != null ? (
             <EventCardLarge
               headerText={event.name}
-              bodyText={event.nonprofitName}
-              metaText={event.time}
-              imagePath={event.imagePath}
+              bodyText={event.nonprofitId.name}
+              metaText={event.duration.toString()} //TODO: replace with formatting from figma
+              imagePath={event.image}
               onClick={() => {
                 return;
               }}

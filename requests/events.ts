@@ -8,10 +8,10 @@ export const getUpcomingEvents = async (
   fetchRequestWithPayloadResponse<DatePaginatedEventCards>(
     config.apis.getUpcomingEvents,
     {
-      method: "get",
+      method: "post",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ datePageInformation })
+      body: JSON.stringify(datePageInformation)
     }
   );
