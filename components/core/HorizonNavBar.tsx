@@ -81,8 +81,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const navTabs = ["Discover", "Events", "Non-profits", "Sign In", "Sign Up"];
-
 export default function PrimarySearchAppBar() {
   const navTabs = ["Discover", "Events", "Non-profits", "Sign In", "Sign Up"];
   const classes = useStyles();
