@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, makeStyles } from "@material-ui/core";
 
 import EventsList from "./EventsList";
-import { getUpcomingEvents } from "../../requests/events";
+import { getUpcomingEvents } from "requests/events";
 import { DatePaginatedEventCards } from "utils/types";
 
 const useStyles = makeStyles({
@@ -39,14 +39,14 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
       <div className={listContainer}>
         <EventsList
           paginatedEventCardsData={upcomingEvents}
-          getMoreEvents={(page: number) => {
-            return getUpcomingEvents({
+          getMoreEvents={(page: number) =>
+            getUpcomingEvents({
               page,
               date: upcomingEvents.date,
               totalCount: upcomingEvents.totalCount,
               isLastPage: upcomingEvents.isLastPage
-            });
-          }}
+            })
+          }
         />
       </div>
     </div>

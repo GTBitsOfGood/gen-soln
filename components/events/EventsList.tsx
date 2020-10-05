@@ -6,7 +6,7 @@ import ChevronLeftIcon from "@horizon/icons/ChevronLeftIcon";
 
 import EventCardLarge from "./EventCardLarge";
 import EventCardGlimmerLarge from "./EventCardGlimmerLarge";
-import { PaginatedEventCards, EventCardData } from "../../utils/types";
+import { PaginatedEventCards, EventCardData } from "utils/types";
 
 const useStyles = makeStyles({
   button: {

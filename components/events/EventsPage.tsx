@@ -21,9 +21,11 @@ const EventsPage: React.FC<Props> = props => {
         />
       }
     >
-      <EventsPageMainContent
-        upcomingEvents={props.upcomingEventsFirstPageData!}
-      />
+      {props.upcomingEventsFirstPageData && (
+        <EventsPageMainContent
+          upcomingEvents={props.upcomingEventsFirstPageData}
+        />
+      )}
     </EventsPageLayout>
   );
 };
