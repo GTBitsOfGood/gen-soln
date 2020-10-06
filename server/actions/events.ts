@@ -112,6 +112,23 @@ export async function getNearestEventsCardDataCount({
   });
 }
 
+export async function getByCausesEventsCardData(causes: string[]) {
+  await Mongo();
+
+  const idsWithCause = await Nonprofit.find(
+    {
+      cause: { $in: causes }
+    },
+    "nonprofitId"
+  );
+
+  const result = await Event.find({
+    nonprofitId: { $in: idsWithCause.map(r => r["_id"]) }
+  }).limit(5);
+
+  return result.map(r => r.toJSON()) as EventCardDataType[];
+}
+
 export async function getEventById(_id: string): Promise<EventType> {
   await Mongo();
 
