@@ -33,7 +33,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths: ids.map(config.pages.event), fallback: true };
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params?.id as string;
 

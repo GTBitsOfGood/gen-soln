@@ -4,17 +4,8 @@ import { useRouter } from "next/router";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import EventsPageLeftRailFilter from "./EventsPageLeftRailFilter";
-import EventsPageTimeFilter from "./EventsPageTimeFilter";
-
-import EventsPageLocationFilterAutocompleteInput from "./EventsPageLocationFilterAutocompleteInput";
 
 const useStyles = makeStyles({
-  root: {
-    padding: "32px 24px",
-    width: "100%",
-    backgroundColor: "#FFFFFF"
-  },
   header: {
     // TODO: replace this with a Typography component
     fontFamily: "Visby CF, sans-serif",
@@ -42,8 +33,8 @@ const useStyles = makeStyles({
   }
 });
 
-const EventsPageLeftRailComponent: React.FC<Record<string, unknown>> = () => {
-  const { root, header, topBar, clearFilterLabel } = useStyles();
+const EventsPageSidebarComponentHeader: React.FC = () => {
+  const { header, topBar, clearFilterLabel } = useStyles();
   const router = useRouter();
 
   // Sum up all the applied filters
@@ -65,26 +56,15 @@ const EventsPageLeftRailComponent: React.FC<Record<string, unknown>> = () => {
   };
 
   return (
-    <div className={root}>
-      <div className={topBar}>
-        <Typography className={header}>Filters</Typography>
-        {filterCount > 0 && (
-          <Button classes={{ root: clearFilterLabel }} onClick={clearFilters}>
-            Clear ({filterCount})
-          </Button>
-        )}
-      </div>
-      <EventsPageLeftRailFilter
-        header="Location"
-        content={<EventsPageLocationFilterAutocompleteInput />}
-      />
-      <EventsPageLeftRailFilter
-        header="Time"
-        content={<EventsPageTimeFilter />}
-        collapsible
-      />
+    <div className={topBar}>
+      <Typography className={header}>Filters</Typography>
+      {filterCount > 0 && (
+        <Button classes={{ root: clearFilterLabel }} onClick={clearFilters}>
+          Clear ({filterCount})
+        </Button>
+      )}
     </div>
   );
 };
 
-export default EventsPageLeftRailComponent;
+export default EventsPageSidebarComponentHeader;

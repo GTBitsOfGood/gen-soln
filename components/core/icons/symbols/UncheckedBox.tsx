@@ -3,13 +3,7 @@ import SvgIcon, { SvgIconProps } from "@material-ui/core/SvgIcon";
 
 const UncheckedBox: React.FC<SvgIconProps> = props => {
   return (
-    <SvgIcon
-      width="14"
-      height="15"
-      viewBox="0 0 14 15"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <SvgIcon width="14" height="15" viewBox="0 0 14 15" {...props}>
       <path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -1,14 +1,18 @@
 import React, { useContext, useCallback, useEffect } from "react";
 import clsx from "clsx";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-
 import TextField from "@material-ui/core/TextField";
+
+import LocationAutocompleteInput, {
+  PlaceType
+} from "components/LocationAutocompleteInput";
 
 import {
   ContactStepProps,
   DonationPageStateDispatch,
   setContactStepField,
-  setIsCurStepCompleted
+  setIsCurStepCompleted,
+  setAddress
 } from "./reducer";
 
 const useStyles = makeStyles({
@@ -36,7 +40,8 @@ const useStyles = makeStyles({
 const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
   firstName,
   lastName,
-  email
+  email,
+  address
 }) => {
   const {
     container,
@@ -54,10 +59,17 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
 
   const onChange = useCallback(
     (
-      key: keyof ContactStepProps,
+      key: keyof Omit<ContactStepProps, "address">,
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
       dispatch && dispatch(setContactStepField({ key, value: e.target.value }));
+    },
+    [dispatch]
+  );
+
+  const onAddressChange = useCallback(
+    (address: PlaceType | null) => {
+      dispatch && dispatch(setAddress(address));
     },
     [dispatch]
   );
@@ -99,6 +111,16 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
         }}
         autoComplete="email"
       />
+      <div className={clsx(name, verticalPositiveMargin)}>
+        <LocationAutocompleteInput
+          addPlaceChip={onAddressChange}
+          locationType="address"
+          fullWidth
+          required
+          defaultValue={address}
+          label="Address"
+        />
+      </div>
     </div>
   );
 };

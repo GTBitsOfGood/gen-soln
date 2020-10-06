@@ -16,18 +16,13 @@ const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined): Theme =>
   createMuiTheme({
     palette: {
       primary: { ...orange, contrastText: grays.white },
-      secondary: {
-        main: "rgba(64, 59, 112, 0.38)"
-      },
       text: {
         primary: grays["80"],
         secondary: grays["60"],
         disabled: grays["40"],
         hint: grays["40"]
       },
-      background: { default: grays.bg },
-      nonprofitPrimary: nonprofit?.primaryColor,
-      nonprofitSecondary: nonprofit?.secondaryColor
+      background: { default: grays.bg }
     },
     typography: typographyStyles,
     props: {

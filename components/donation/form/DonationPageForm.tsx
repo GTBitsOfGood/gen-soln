@@ -121,7 +121,8 @@ const DonationPageForm: React.FC<Props> = ({
             name,
             contactStep.email,
             paymentStep.zipcode,
-            amount
+            amount,
+            stripeAccount
           );
         } catch (err) {
           // TODO: Not sure how else to handle and display the error
@@ -147,11 +148,13 @@ const DonationPageForm: React.FC<Props> = ({
       contactStep.email,
       contactStep.firstName,
       contactStep.lastName,
+      contactStep.address,
       paymentStep.zipcode,
       processPayment,
       isLastStep,
       selectedNonprofitId,
-      donationCompletedCallback
+      donationCompletedCallback,
+      stripeAccount
     ]
   );
 

@@ -8,5 +8,6 @@ export default async (
 ): Promise<void> =>
   handleRequestWithPayloadResponse(req, res, createPaymentIntent, [
     "amount",
-    "email"
+    "email",
+    "stripeAccount"
   ]);

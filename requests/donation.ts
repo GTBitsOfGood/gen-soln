@@ -8,30 +8,29 @@ import { Donation } from "utils/types";
  *
  * @param {number} amount - Amount (in US cents) to be collected by the PaymentIntent
  * @param {string} email - Email address to send the transaction receipt to
+ * @param {string} stripeAccount - stripe account we are sending payment to
  * @returns {Promise<string>} - client_secret of the PaymentIntent created
  */
 export const createPaymentIntent = async (
   amount: number,
-  email: string
+  email: string,
+  stripeAccount: string
 ): Promise<string> =>
   fetchRequestWithPayloadResponse<string>(config.apis.createPaymentIntent, {
     method: "post",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ amount, email })
+    body: JSON.stringify({ amount, email, stripeAccount })
   });
 
-export const logDonation = async ({
-  name,
-  email,
-  amount,
-  nonprofitId
-}: Omit<Donation, "timestamp">): Promise<boolean> =>
+export const logDonation = async (
+  dontaion: Omit<Donation, "timestamp">
+): Promise<boolean> =>
   fetchRequestWithPayloadResponse<boolean>(config.apis.logDonation, {
     method: "post",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ name, email, amount, nonprofitId })
+    body: JSON.stringify(dontaion)
   });

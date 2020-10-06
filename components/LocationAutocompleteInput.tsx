@@ -32,11 +32,29 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
   position.appendChild(script);
 }
 
-type PlaceType = google.maps.places.AutocompletePrediction;
+export type PlaceType = google.maps.places.AutocompletePrediction;
 
-const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
+interface Props {
+  locationType: string;
+  label: string;
+  addLocationChip?: (value: string) => void;
+  addPlaceChip?: (value: PlaceType | null) => void;
+  fullWidth?: boolean;
+  defaultValue?: PlaceType | null;
+  required?: boolean;
+}
+
+const LocationAutocompleteInput: React.FC<Props> = ({
+  locationType,
+  label,
+  addLocationChip,
+  addPlaceChip,
+  fullWidth = false,
+  defaultValue = null,
+  required = false
+}) => {
   const classes = useStyles();
-  const [value, setValue] = useState<PlaceType | null>(null);
+  const [value, setValue] = useState<PlaceType | null>(defaultValue);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<PlaceType[]>([]);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(
@@ -67,7 +85,7 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
           autocompleteService.current?.getPlacePredictions(
             {
               ...request,
-              types: ["(cities)"],
+              types: [locationType],
               componentRestrictions: { country: "us" }
             },
             callback
@@ -75,7 +93,7 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
         },
         200
       ),
-    []
+    [locationType]
   );
 
   useEffect(() => {
@@ -131,12 +149,18 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
       autoComplete
       includeInputInList
       filterSelectedOptions
+      fullWidth={fullWidth}
       value={value}
       onChange={(
         event: React.ChangeEvent<unknown>,
         newValue: PlaceType | null
       ) => {
         setOptions(newValue ? [newValue, ...options] : options);
+        if (locationType === "address") addPlaceChip && addPlaceChip(newValue);
+        else
+          newValue &&
+            addLocationChip &&
+            addLocationChip(newValue.structured_formatting.main_text);
         setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
@@ -146,9 +170,10 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
         <div>
           <TextField
             {...params}
-            label="Search city"
+            label={label}
             variant="outlined"
             fullWidth
+            required={required}
           />
         </div>
       )}
@@ -185,4 +210,4 @@ const EventsPageLocationFilterAutocompleteInput: React.FC = () => {
   );
 };
 
-export default EventsPageLocationFilterAutocompleteInput;
+export default LocationAutocompleteInput;

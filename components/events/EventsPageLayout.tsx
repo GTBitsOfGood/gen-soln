@@ -1,32 +1,31 @@
 import React from "react";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+
 import FullPageLayout from "components/FullPageLayout";
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    container: {
-      display: "flex"
-    },
-    sidebar: {
-      flex: 1,
-      display: "flex",
-      height: "100vh",
-      overflowY: "scroll",
-      "&::-webkit-scrollbar": {
-        display: "none"
-      }
-    },
-    content: {
-      flex: 5,
-      display: "flex",
-      height: "100vh",
-      overflowY: "scroll",
-      "&::-webkit-scrollbar": {
-        display: "none"
-      }
+const useStyles = makeStyles({
+  container: {
+    display: "flex"
+  },
+  sidebar: {
+    flex: 1,
+    display: "flex",
+    height: "100vh",
+    overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      display: "none"
     }
-  })
-);
+  },
+  content: {
+    flex: 7,
+    display: "flex",
+    height: "100vh",
+    overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      display: "none"
+    }
+  }
+});
 
 interface Props {
   sidebarComponent: React.ReactNode;

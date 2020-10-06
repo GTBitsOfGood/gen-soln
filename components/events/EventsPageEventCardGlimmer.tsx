@@ -3,6 +3,7 @@ import clsx from "clsx";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles({
   card: {
@@ -65,22 +66,7 @@ const useStyles = makeStyles({
   }
 });
 
-interface Props {
-  /* Used for event title */
-  headerText: string;
-  /* Used for nonprofit name */
-  bodyText: string;
-  /* Used for time */
-  metaText: string;
-  imagePath: string;
-}
-
-const EventCardLarge: React.FC<Props> = ({
-  headerText,
-  bodyText,
-  metaText,
-  imagePath
-}) => {
+const EventsPageEventCardGlimmer: React.FC = () => {
   const {
     card,
     cardContainer,
@@ -95,15 +81,21 @@ const EventCardLarge: React.FC<Props> = ({
   return (
     <div className={cardContainer}>
       <div className={card}>
-        <img src={imagePath} className={image} alt={`${headerText}`} />
+        <Skeleton animation="wave" className={image} variant="rect" />
         <div className={content}>
-          <Typography className={clsx(meta, truncate)}>{metaText}</Typography>
-          <Typography className={header}>{headerText}</Typography>
-          <Typography className={clsx(body, truncate)}>{bodyText}</Typography>
+          <Typography className={clsx(meta, truncate)}>
+            <Skeleton />
+          </Typography>
+          <Typography className={header}>
+            <Skeleton />
+          </Typography>
+          <Typography className={clsx(body, truncate)}>
+            <Skeleton />
+          </Typography>
         </div>
       </div>
     </div>
   );
 };
 
-export default EventCardLarge;
+export default EventsPageEventCardGlimmer;

@@ -1,8 +1,8 @@
 import Stripe from "stripe";
 import Mongo, { stripeConstructor } from "server/index";
-import Nonprofit from "server/models/nonprofit";
+import Nonprofit, { CAUSES } from "server/models/nonprofit";
 import errors from "utils/errors";
-import { Nonprofit as NonprofitType } from "utils/types";
+import { Nonprofit as NonprofitType, Dropdown } from "utils/types";
 import config from "config";
 
 type NonprofitNameWithId = Pick<NonprofitType, "name"> &
@@ -14,8 +14,6 @@ export async function createNonprofit({
   about,
   background,
   logo,
-  primaryColor,
-  secondaryColor,
   stripeAccount
 }: NonprofitType) {
   await Mongo();
@@ -26,8 +24,6 @@ export async function createNonprofit({
     about,
     background,
     logo,
-    primaryColor,
-    secondaryColor,
     stripeAccount
   });
 }
@@ -105,4 +101,8 @@ export async function linkStripeAccount(
     type: "account_onboarding"
   });
   return accountLink.url;
+}
+
+export function getCauses(): Dropdown[] {
+  return CAUSES;
 }

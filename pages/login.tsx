@@ -25,7 +25,6 @@ const LoginPage: NextPage<InferGetServerSidePropsType<
   return <AuthPage />;
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getServerSideProps = (context: GetServerSidePropsContext) => {
   const { token } = nextCookie(context);
 

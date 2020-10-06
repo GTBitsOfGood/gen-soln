@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useContext } from "react";
 import clsx from "clsx";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -20,26 +20,24 @@ import {
   MAX_OTHER_AMOUNT
 } from "./reducer";
 
-const useStyles = makeStyles(({ palette }: Theme) =>
-  createStyles({
-    container: {
-      display: "flex",
-      flexDirection: "column"
-    },
-    checkedRadioButton: {
-      color: palette.nonprofitSecondary
-    },
-    width: {
-      width: "33%"
-    },
-    root: {
-      marginRight: 24
-    },
-    textField: {
-      paddingTop: 16
-    }
-  })
-);
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  checkedRadioButton: {
+    color: "#FD8033" // TODO: use color from core/
+  },
+  width: {
+    width: "33%"
+  },
+  root: {
+    marginRight: 24
+  },
+  textField: {
+    paddingTop: 16
+  }
+});
 
 const DonationPageFormAmountStep: React.FC<AmountStepProps> = ({
   radioButtonAmount,

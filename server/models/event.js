@@ -17,7 +17,7 @@ const pointSchema = new Schema(
   { _id: false }
 );
 
-const DEFAULT_IMAGE = 'url("/defaultImages/defaultEvent.png")';
+const DEFAULT_IMAGE = "/defaultImages/defaultEvent.png";
 // Keep in sync with utils/types Event
 const eventSchema = new Schema(
   {
@@ -67,7 +67,7 @@ const eventSchema = new Schema(
       type: [
         {
           type: Schema.ObjectId,
-          ref: "Admin" //TODO replace with "User" once that schema is created
+          ref: "User"
         }
       ],
       default: []

@@ -2,55 +2,129 @@ import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
+
 import {
+  Coordinates,
   Event as EventType,
-  EventCardData as EventCardDataType
+  EventCardData as EventCardDataType,
+  DatePaginatedEventCards,
+  DatePageInformation,
+  LocationPaginatedEventCards,
+  LocationPageInformation
 } from "utils/types";
 
-const cardFields: Record<keyof EventCardDataType, 1> = {
+const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   name: 1,
   startDate: 1,
   endDate: 1,
   image: 1,
   address: 1,
-  nonprofitID: 1,
+  nonprofitId: 1,
   duration: 1
 };
+const CARDS_PER_PAGE = 4;
+const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
+const NEAREST_EVENTS_RADIUS = 20 / 3959; // radius for nearest events in radians (20 miles / earth's radius)
 
-export async function getUpcomingEventsCardData() {
+export async function getUpcomingEventsCardData({
+  date,
+  page,
+  totalCount
+}: DatePageInformation): Promise<DatePaginatedEventCards> {
   await Mongo();
 
   const result = await Event.find(
     {
       startDate: {
-        $gte: new Date()
+        $gte: new Date(date),
+        $lte: new Date(new Date(date).getTime() + MILLISECONDS_IN_WEEK)
       }
     },
-    cardFields
+    CARD_FIELDS
   )
     .populate("nonprofitId", "name", Nonprofit)
     .sort({ startDate: 1 })
-    .limit(5);
+    .skip(page > 0 ? (page - 1) * CARDS_PER_PAGE : 0)
+    .limit(CARDS_PER_PAGE);
 
-  return result.map(r => r.toJSON()) as EventCardDataType[];
+  return {
+    eventCards: result.map(r => r.toJSON()) as EventCardDataType[],
+    page,
+    totalCount,
+    date,
+    isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
+  };
 }
 
-interface Coordinates {
-  lat: number;
-  long: number;
-}
-
-export async function getNearestEventsCardData({ lat, long }: Coordinates) {
+export async function getUpcomingEventsCardDataCount(date: Date) {
   await Mongo();
 
-  const result = await Event.find({}, cardFields)
+  return Event.countDocuments({
+    startDate: {
+      $gte: date,
+      $lte: new Date(date.getTime() + MILLISECONDS_IN_WEEK)
+    }
+  });
+}
+
+export async function getNearestEventsCardData({
+  location,
+  page,
+  totalCount
+}: LocationPageInformation): Promise<LocationPaginatedEventCards> {
+  await Mongo();
+
+  const result = await Event.find(
+    {
+      "address.location": {
+        $geoWithin: {
+          $centerSphere: [[location.long, location.lat], NEAREST_EVENTS_RADIUS]
+        }
+      }
+    },
+    CARD_FIELDS
+  )
     .populate("nonprofitId", "name", Nonprofit)
-    .where("address.location")
-    .near({
-      center: [long, lat],
-      spherical: true
-    })
-    .limit(5);
+    .skip(page > 0 ? (page - 1) * CARDS_PER_PAGE : 0)
+    .limit(CARDS_PER_PAGE);
+
+  return {
+    eventCards: result.map(r => r.toJSON()) as EventCardDataType[],
+    page,
+    totalCount,
+    location,
+    isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
+  };
+}
+
+export async function getNearestEventsCardDataCount({
+  lat,
+  long
+}: Coordinates) {
+  await Mongo();
+
+  return Event.countDocuments({
+    "address.location": {
+      $geoWithin: {
+        $centerSphere: [[long, lat], NEAREST_EVENTS_RADIUS]
+      }
+    }
+  });
+}
+
+export async function getByCausesEventsCardData(causes: string[]) {
+  await Mongo();
+
+  const idsWithCause = await Nonprofit.find(
+    {
+      cause: { $in: causes }
+    },
+    "nonprofitId"
+  );
+
+  const result = await Event.find({
+    nonprofitId: { $in: idsWithCause.map(r => r["_id"]) }
+  }).limit(5);
 
   return result.map(r => r.toJSON()) as EventCardDataType[];
 }
