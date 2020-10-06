@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     flexDirection: "row",
     "align-self": "center"
   },
-  title: {
+  text: {
     "text-align": "center",
     color: "#333333",
     margin: "5px 0px"
@@ -49,24 +49,35 @@ const useStyles = makeStyles({
     width: "160px",
     "align-self": "center",
     margin: "20px 0px"
+  },
+  bottom_message: {
+    "align-self": "center",
+    "text-align": "center",
+    margin: "30px 0px"
+  },
+  link: {
+    color: "#FD8033",
+    margin: "1px 0px 0px 20px"
   }
 });
 
 const SignUp = () => {
   const {
     container,
-    title,
+    text,
     subtitle,
     input_long,
     input_first_name,
     input_last_name,
     name_container,
-    button
+    button,
+    bottom_message,
+    link
   } = useStyles();
 
   return (
     <div className={container}>
-      <Typography className={title} variant="h1">
+      <Typography className={text} variant="h1">
         Sign up for Bits of Good
       </Typography>
       <Typography className={subtitle} variant="h3">
@@ -107,6 +118,20 @@ const SignUp = () => {
         name="user_password"
       />
       <HorizonButton className={button}> Sign Up</HorizonButton>
+      <div className={bottom_message}>
+        <Typography variant="body1" className={text}>
+          Looking to sign up a non-profit?
+          <HorizonLink className={link} href={config.pages.signup}>
+            Sign up here.
+          </HorizonLink>
+        </Typography>
+        <Typography variant="body1" className={text}>
+          Already have an account?{" "}
+          <HorizonLink className={link} href={config.pages.signin}>
+            Sign in.
+          </HorizonLink>
+        </Typography>
+      </div>
     </div>
   );
 };

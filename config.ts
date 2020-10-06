@@ -26,6 +26,8 @@ export default {
   pages: {
     index: "/",
     login: "/login",
+    signup: "/signup",
+    signin: "/signin",
     donate: (path = "[id]"): string => `/donate/${path}`,
     events: "/events",
     event: (path = "[id]"): string => `/events/${path}`
