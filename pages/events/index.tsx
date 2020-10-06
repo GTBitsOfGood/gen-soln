@@ -5,11 +5,13 @@ import {
   GetServerSidePropsContext
 } from "next";
 import EventsPage from "components/events/EventsPage";
-import { Dropdown } from "../../utils/types";
+import { Dropdown } from "utils/types";
+import { returnQueryAsArray } from "utils/util";
 import { getCauses } from "server/actions/nonprofit";
 import {
   getUpcomingEventsCardData,
-  getUpcomingEventsCardDataCount
+  getUpcomingEventsCardDataCount,
+  getByCausesEventsCardData
 } from "server/actions/events";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
@@ -49,6 +51,9 @@ export const getServerSideProps = async (
       totalCount: upcomingEventsTotalCount,
       isLastPage: false
     });
+  } else {
+    const query = returnQueryAsArray(context.query["cause"]);
+    /*upcomingEventsFirstPageData = */ await getByCausesEventsCardData(query);
   }
 
   return {
