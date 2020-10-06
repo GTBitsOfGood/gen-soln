@@ -50,7 +50,11 @@ interface Props {
   onClick: () => void;
 }
 
-const EventsCauseCard: React.FC<Props> = ({ cause, imagePath, onClick }) => {
+const EventsPageCauseCard: React.FC<Props> = ({
+  cause,
+  imagePath,
+  onClick
+}) => {
   const { card, cardContainer, textContainer, image, causeText } = useStyles();
 
   return (
@@ -67,4 +71,4 @@ const EventsCauseCard: React.FC<Props> = ({ cause, imagePath, onClick }) => {
   );
 };
 
-export default EventsCauseCard;
+export default EventsPageCauseCard;

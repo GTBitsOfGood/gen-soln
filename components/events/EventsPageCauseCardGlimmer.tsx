@@ -18,11 +18,6 @@ const useStyles = makeStyles({
     height: 202,
     padding: 1
   },
-  image: {
-    display: "block",
-    width: "inherit",
-    objectFit: "cover"
-  },
   textContainer: {
     position: "absolute",
     width: 280,
@@ -32,7 +27,7 @@ const useStyles = makeStyles({
   }
 });
 
-const EventsCauseCardGlimmer: React.FC = () => {
+const EventsPageCauseCardGlimmer: React.FC = () => {
   const { card, cardContainer, textContainer } = useStyles();
 
   return (
@@ -44,4 +39,4 @@ const EventsCauseCardGlimmer: React.FC = () => {
   );
 };
 
-export default EventsCauseCardGlimmer;
+export default EventsPageCauseCardGlimmer;

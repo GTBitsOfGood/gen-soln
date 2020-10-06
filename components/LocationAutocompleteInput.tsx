@@ -93,7 +93,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         },
         200
       ),
-    []
+    [locationType]
   );
 
   useEffect(() => {

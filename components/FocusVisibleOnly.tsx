@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import React from "react";
 
 interface Props {
-  onClick?: () => void;
+  onClick: () => void;
 }
 
 const useStyles = makeStyles({
@@ -28,12 +28,7 @@ const useStyles = makeStyles({
 const FocusVisibleOnly: React.FC<Props> = ({ onClick, children }) => {
   const { nofocus } = useStyles();
   return (
-    <div
-      onClick={() => onClick && onClick()}
-      onKeyPress={() => onClick && onClick()}
-      role="button"
-      tabIndex={0}
-    >
+    <div onClick={onClick} onKeyPress={onClick} role="button" tabIndex={0}>
       <div tabIndex={-1} className={nofocus}>
         {children}
       </div>

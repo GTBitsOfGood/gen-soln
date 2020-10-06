@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, makeStyles } from "@material-ui/core";
 
-import EventsList from "./EventsList";
+import EventsPageEventList from "./EventsPageEventList";
 import { getUpcomingEvents } from "requests/events";
 import { DatePaginatedEventCards } from "utils/types";
 
@@ -37,7 +37,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
     <div className={mainContainer}>
       <Typography className={title}>Upcoming Volunteer Events</Typography>
       <div className={listContainer}>
-        <EventsList
+        <EventsPageEventList
           paginatedEventCardsData={upcomingEvents}
           getMoreEvents={(page: number) =>
             getUpcomingEvents({

@@ -24,16 +24,13 @@ export const createPaymentIntent = async (
     body: JSON.stringify({ amount, email, stripeAccount })
   });
 
-export const logDonation = async ({
-  name,
-  email,
-  amount,
-  nonprofitId
-}: Omit<Donation, "timestamp">): Promise<boolean> =>
+export const logDonation = async (
+  dontaion: Omit<Donation, "timestamp">
+): Promise<boolean> =>
   fetchRequestWithPayloadResponse<boolean>(config.apis.logDonation, {
     method: "post",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ name, email, amount, nonprofitId })
+    body: JSON.stringify(dontaion)
   });
