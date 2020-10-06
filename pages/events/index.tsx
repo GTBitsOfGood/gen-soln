@@ -5,7 +5,7 @@ import {
   GetServerSidePropsContext
 } from "next";
 import EventsPage from "components/events/EventsPage";
-import { Dropdown } from "../../utils/types";
+import { Dropdown } from "utils/types";
 import { getCauses } from "server/actions/nonprofit";
 import {
   getUpcomingEventsCardData,
@@ -29,7 +29,7 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   // Don't remove the async otherwise InferGetStaticPropsType won't work as expected
-  const timeOptions: Dropdown[] = [
+  const timeFilterOptions: Dropdown[] = [
     { text: "Today", value: "TODAY" },
     { text: "Tomorrow", value: "TOMORROW" },
     { text: "This Week", value: "WEEK" },
@@ -38,7 +38,7 @@ export const getServerSideProps = async (
     { text: "Next Weekend", value: "NWEEKEND" }
   ];
 
-  let upcomingEventsFirstPageData;
+  let upcomingEventsFirstPageData = null;
 
   if (Object.keys(context.query).length === 0) {
     const date = new Date();
@@ -53,9 +53,9 @@ export const getServerSideProps = async (
 
   return {
     props: {
-      timeFilterOptions: timeOptions,
+      timeFilterOptions,
       causesFilterOptions: getCauses(),
-      upcomingEventsFirstPageData: upcomingEventsFirstPageData
+      upcomingEventsFirstPageData
     }
   };
 };
