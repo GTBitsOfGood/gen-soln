@@ -4,9 +4,7 @@ import HorizonButton from "components/core/HorizonButton";
 import HorizonLink from "@horizon/HorizonLink";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
-import { EMAIL_INPUT_FIELD_NAME } from "../auth/form/EmailTextField";
+import config from "../../config";
 
 const useStyles = makeStyles({
   container: {
@@ -46,6 +44,11 @@ const useStyles = makeStyles({
     width: "420px",
     "align-self": "center",
     margin: "20px 14px"
+  },
+  button: {
+    width: "160px",
+    "align-self": "center",
+    margin: "20px 0px"
   }
 });
 
@@ -57,7 +60,8 @@ const SignUp = () => {
     input_long,
     input_first_name,
     input_last_name,
-    name_container
+    name_container,
+    button
   } = useStyles();
 
   return (
@@ -102,6 +106,7 @@ const SignUp = () => {
         placeholder="Password"
         name="user_password"
       />
+      <HorizonButton className={button}> Sign Up</HorizonButton>
     </div>
   );
 };
