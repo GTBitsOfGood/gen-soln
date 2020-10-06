@@ -5,10 +5,9 @@ import { useRouter } from "next/router";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import config from "config";
-
-import ButtonWithNonprofitColor from "components/ButtonWithNonprofitColor";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -40,7 +39,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       flex: 1
     },
     icon: {
-      color: palette.nonprofitPrimary,
+      color: "#FD8033", // TODO: use color from core/
       marginBottom: 16
     }
   })
@@ -74,13 +73,13 @@ const DonationPageThankYou: React.FC = () => {
           </Typography>
         </div>
         <div className={buttonContainer}>
-          <ButtonWithNonprofitColor
+          <Button
             onClick={() => {
               void router.push(config.pages.index);
             }}
           >
             Visit Site
-          </ButtonWithNonprofitColor>
+          </Button>
         </div>
       </div>
     </div>

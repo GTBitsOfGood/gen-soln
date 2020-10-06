@@ -1,7 +1,3 @@
-import {
-  Palette,
-  PaletteOptions
-} from "@material-ui/core/styles/createPalette";
 import { ThemeOptions, Theme } from "@material-ui/core/styles";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
@@ -15,9 +11,9 @@ export interface Nonprofit {
   about: string;
   background: string;
   logo: string;
-  primaryColor: string;
-  secondaryColor: string;
   stripeAccount: string;
+  events: string[];
+  cause: string;
   // TODO: consider adding the donations field?
 }
 
@@ -91,18 +87,6 @@ export interface Dropdown {
 export interface DropdownProps {
   items: Dropdown[];
   selectedValue: Dropdown["value"];
-}
-
-declare module "@material-ui/core/styles/createPalette" {
-  interface Palette {
-    nonprofitPrimary: Nonprofit["primaryColor"];
-    nonprofitSecondary: Nonprofit["secondaryColor"];
-  }
-
-  interface PaletteOptions {
-    nonprofitPrimary?: Nonprofit["primaryColor"];
-    nonprofitSecondary?: Nonprofit["secondaryColor"];
-  }
 }
 
 declare module "@material-ui/core/styles" {
