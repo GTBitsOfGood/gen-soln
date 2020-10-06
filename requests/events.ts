@@ -1,6 +1,10 @@
 import config from "config";
 import { fetchRequestWithPayloadResponse } from "utils/util";
-import { DatePageInformation, DatePaginatedEventCards } from "utils/types";
+import {
+  DatePageInformation,
+  DatePaginatedEventCards,
+  LocationPageInformation
+} from "utils/types";
 
 export const getUpcomingEvents = async (
   datePageInformation: DatePageInformation
@@ -8,10 +12,24 @@ export const getUpcomingEvents = async (
   fetchRequestWithPayloadResponse<DatePaginatedEventCards>(
     config.apis.getUpcomingEvents,
     {
-      method: "post",
+      method: "get",
       headers: {
         "Content-Type": "application/json"
-      },
-      body: JSON.stringify(datePageInformation)
-    }
+      }
+    },
+    datePageInformation
+  );
+
+export const getNearestEvents = async (
+  locationPageInformation: LocationPageInformation
+) =>
+  fetchRequestWithPayloadResponse<DatePaginatedEventCards>(
+    config.apis.getUpcomingEvents,
+    {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    },
+    locationPageInformation
   );
