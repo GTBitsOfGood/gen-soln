@@ -5,12 +5,12 @@ import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
 const white = "white";
-const useStyles = makeStyles(({ palette, nonprofitLogoImage }: Theme) =>
+const useStyles = makeStyles(({ nonprofitLogoImage }: Theme) =>
   createStyles({
     container: {
       display: "flex",
       alignItems: "center",
-      backgroundColor: palette.nonprofitPrimary,
+      backgroundColor: "#333333", // TODO: change this based on designs
       padding: "3vh"
     },
     logo: {

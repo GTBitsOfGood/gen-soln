@@ -14,8 +14,6 @@ export async function createNonprofit({
   about,
   background,
   logo,
-  primaryColor,
-  secondaryColor,
   stripeAccount
 }: NonprofitType) {
   await Mongo();
@@ -26,8 +24,6 @@ export async function createNonprofit({
     about,
     background,
     logo,
-    primaryColor,
-    secondaryColor,
     stripeAccount
   });
 }
