@@ -1,10 +1,11 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import HorizonButton from "components/core/HorizonButton";
-import HorizonLink from "@horizon/HorizonLink";
+import HorizonLink from "components/core/HorizonLink";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
 import config from "../../config";
+import { signIn } from "next-auth/client";
 
 const useStyles = makeStyles({
   container: {
@@ -57,7 +58,7 @@ const useStyles = makeStyles({
   },
   link: {
     color: "#FD8033",
-    margin: "1px 0px 0px 20px"
+    margin: "0px 0px 0px 20px"
   }
 });
 
@@ -127,7 +128,14 @@ const SignUp = () => {
         </Typography>
         <Typography variant="body1" className={text}>
           Already have an account?{" "}
-          <HorizonLink className={link} href={config.pages.signin}>
+          <HorizonLink
+            className={link}
+            onClick={(e: { preventDefault: () => void }) => {
+              e.preventDefault();
+              signIn().catch(err => console.log(err));
+            }}
+            href="#"
+          >
             Sign in.
           </HorizonLink>
         </Typography>
