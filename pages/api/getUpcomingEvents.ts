@@ -7,7 +7,7 @@ import { handleRequestWithPayloadResponse } from "utils/util";
 // @access  Public
 // even though isLastPage is not used by getUpcomingEventsCardData(),
 // the request body should include it since getUpcomingEventsCardData() 's
-// arguments have been typed to be of type DatePageWhatever
+// arguments are of type DatePageInformation
 export default async (
   req: NextApiRequest,
   res: NextApiResponse

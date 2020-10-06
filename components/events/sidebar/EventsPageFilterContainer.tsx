@@ -9,7 +9,6 @@ import FocusVisibleOnly from "components/FocusVisibleOnly";
 interface Props {
   header: string;
   collapsible?: boolean;
-  content: React.ReactNode;
 }
 
 const useStyles = makeStyles({
@@ -37,16 +36,16 @@ const useStyles = makeStyles({
   }
 });
 
-const EventsPageLeftRailFilter: React.FC<Props> = ({
+const EventsPageFilterContainer: React.FC<Props> = ({
   header,
-  collapsible = false,
-  content
-}: Props) => {
+  children,
+  collapsible = false
+}) => {
   const { root, subtitle, collapseBar, contentContainer } = useStyles();
   const [collapsed, setCollapsed] = useState(false);
 
   const topBar = collapsible ? (
-    <FocusVisibleOnly onClick={() => setCollapsed(!collapsed)}>
+    <FocusVisibleOnly onClick={() => setCollapsed(s => !s)}>
       <div className={collapseBar}>
         <Typography className={subtitle}>{header}</Typography>
         {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
@@ -59,9 +58,9 @@ const EventsPageLeftRailFilter: React.FC<Props> = ({
   return (
     <div className={root}>
       {topBar}
-      <div className={contentContainer}>{!collapsed && content}</div>
+      <div className={contentContainer}>{!collapsed && children}</div>
     </div>
   );
 };
 
-export default EventsPageLeftRailFilter;
+export default EventsPageFilterContainer;

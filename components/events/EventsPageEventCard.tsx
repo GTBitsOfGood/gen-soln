@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Typography from "@material-ui/core/Typography";
-import { Skeleton } from "@material-ui/lab";
+import FocusVisibleOnly from "components/FocusVisibleOnly";
 
 const useStyles = makeStyles({
   card: {
@@ -19,7 +19,10 @@ const useStyles = makeStyles({
   cardContainer: {
     width: 250,
     height: 269,
-    padding: 1
+    padding: 1,
+    "&:focusVisible": {
+      outline: "none"
+    }
   },
   image: {
     display: "block",
@@ -66,7 +69,24 @@ const useStyles = makeStyles({
   }
 });
 
-const EventCardGlimmerLarge: React.FC = () => {
+interface Props {
+  /* Used for event title */
+  headerText: string;
+  /* Used for nonprofit name */
+  bodyText: string;
+  /* Used for time */
+  metaText: string;
+  imagePath: string;
+  onClick: () => void;
+}
+
+const EventsPageEventCard: React.FC<Props> = ({
+  headerText,
+  bodyText,
+  metaText,
+  imagePath,
+  onClick
+}) => {
   const {
     card,
     cardContainer,
@@ -79,23 +99,19 @@ const EventCardGlimmerLarge: React.FC = () => {
   } = useStyles();
 
   return (
-    <div className={cardContainer}>
-      <div className={card}>
-        <Skeleton animation="wave" className={image} variant="rect" />
-        <div className={content}>
-          <Typography className={clsx(meta, truncate)}>
-            <Skeleton />
-          </Typography>
-          <Typography className={header}>
-            <Skeleton />
-          </Typography>
-          <Typography className={clsx(body, truncate)}>
-            <Skeleton />
-          </Typography>
+    <FocusVisibleOnly onClick={onClick}>
+      <div className={cardContainer}>
+        <div className={card}>
+          <img src={imagePath} className={image} alt={`${headerText}`} />
+          <div className={content}>
+            <Typography className={clsx(meta, truncate)}>{metaText}</Typography>
+            <Typography className={header}>{headerText}</Typography>
+            <Typography className={clsx(body, truncate)}>{bodyText}</Typography>
+          </div>
         </div>
       </div>
-    </div>
+    </FocusVisibleOnly>
   );
 };
 
-export default EventCardGlimmerLarge;
+export default EventsPageEventCard;

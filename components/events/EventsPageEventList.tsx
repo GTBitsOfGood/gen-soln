@@ -4,8 +4,8 @@ import { IconButton } from "@material-ui/core";
 import ChevronRightIcon from "@horizon/icons/ChevronRightIcon";
 import ChevronLeftIcon from "@horizon/icons/ChevronLeftIcon";
 
-import EventCardLarge from "./EventCardLarge";
-import EventCardGlimmerLarge from "./EventCardGlimmerLarge";
+import EventsPageEventCard from "./EventsPageEventCard";
+import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
 import { PaginatedEventCards, EventCardData } from "utils/types";
 
 const useStyles = makeStyles({
@@ -18,7 +18,6 @@ const useStyles = makeStyles({
   },
   nextButtonContainer: {
     marginLeft: -56,
-    // boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.05)",
     borderRadius: "50%"
   },
   prevButtonContainer: {
@@ -51,16 +50,16 @@ interface Props {
 }
 
 const DEFAULT_ROW_SIZE = 4;
+const MARGIN_ADJUSTMENT = 24;
+const CARD_WIDTH = 283;
 
-const EventsList: React.FC<Props> = ({
+const EventsPageLayout: React.FC<Props> = ({
   paginatedEventCardsData,
   getMoreEvents
 }) => {
   const classes = useStyles();
 
-  const [events, setEvents] = useState<EventCardData[]>(
-    paginatedEventCardsData.eventCards
-  );
+  const [events, setEvents] = useState(paginatedEventCardsData.eventCards);
 
   // Index of the first element displayed in the list
   const [first, setFirst] = useState(0);
@@ -71,7 +70,7 @@ const EventsList: React.FC<Props> = ({
   const [loading, setLoading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const pageRef = useRef<number>(paginatedEventCardsData.page);
+  const pageRef = useRef(paginatedEventCardsData.page);
 
   // Lock calls to getEvents if one is currently in progress
   const fetchingRef = useRef(false);
@@ -101,14 +100,12 @@ const EventsList: React.FC<Props> = ({
         fetchingRef.current = false;
       })();
     }
-  }, [events.length, first, rowSize]);
+  }, [events.length, first, rowSize, getMoreEvents]);
 
   const handleResize = useCallback(() => {
     // wrap the resize in a 100ms debounce to prevent excess polling
     clearTimeout(resizeTimeoutRef.current);
     const w = containerRef.current?.offsetWidth;
-    const MARGIN_ADJUSTMENT = 24;
-    const CARD_WIDTH = 283;
     resizeTimeoutRef.current = window.setTimeout(() => {
       if (w != null) {
         setRowSize(
@@ -136,8 +133,8 @@ const EventsList: React.FC<Props> = ({
     setFirst(Math.max(first - rowSize, 0));
   };
 
-  // holds all the elements currently displayed - EventDisplayInfo gets rendered as
-  // EventCardLarge, while null gets rendered as EventCardGlimmerLarge
+  // holds all the elements currently displayed - gets rendered as
+  // EventsPageEventCard, while null gets rendered as EventsPageEventCardGlimmer
   const display: (EventCardData | null)[] = events.slice(
     first,
     first + rowSize
@@ -165,7 +162,7 @@ const EventsList: React.FC<Props> = ({
       {display.map((event, i) => (
         <div className={classes.item} key={i}>
           {event != null ? (
-            <EventCardLarge
+            <EventsPageEventCard
               headerText={event.name}
               bodyText={event.nonprofitId.name}
               metaText={event.duration.toString()} //TODO: replace with formatting from figma
@@ -175,7 +172,7 @@ const EventsList: React.FC<Props> = ({
               }}
             />
           ) : (
-            <EventCardGlimmerLarge />
+            <EventsPageEventCardGlimmer />
           )}
         </div>
       ))}
@@ -194,4 +191,4 @@ const EventsList: React.FC<Props> = ({
   );
 };
 
-export default EventsList;
+export default EventsPageLayout;
