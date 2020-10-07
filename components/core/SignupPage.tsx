@@ -1,10 +1,10 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
-import HorizonButton from "components/core/HorizonButton";
-import HorizonLink from "components/core/HorizonLink";
+import { CoreButton } from "@core/buttons";
+import CoreLink from "@core/link";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
-import config from "../../config";
+import config from "config";
 import { signIn } from "next-auth/client";
 
 const useStyles = makeStyles({
@@ -118,17 +118,19 @@ const SignUp = () => {
         placeholder="Password"
         name="user_password"
       />
-      <HorizonButton className={button}> Sign Up</HorizonButton>
+      <CoreButton variant="contained" className={button}>
+        Sign Up
+      </CoreButton>
       <div className={bottom_message}>
         <Typography variant="body1" className={text}>
           Looking to sign up a non-profit?
-          <HorizonLink className={link} href={config.pages.signup}>
+          <CoreLink className={link} href={config.pages.signup}>
             Sign up here.
-          </HorizonLink>
+          </CoreLink>
         </Typography>
         <Typography variant="body1" className={text}>
           Already have an account?{" "}
-          <HorizonLink
+          <CoreLink
             className={link}
             onClick={(e: { preventDefault: () => void }) => {
               e.preventDefault();
@@ -137,7 +139,7 @@ const SignUp = () => {
             href="#"
           >
             Sign in.
-          </HorizonLink>
+          </CoreLink>
         </Typography>
       </div>
     </div>

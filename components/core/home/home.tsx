@@ -1,8 +1,8 @@
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
-import HorizonButton from "components/core/HorizonButton";
+import { CoreButton } from "@core/buttons";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import config from "../../../config";
+import config from "config";
 
 const useStyles = makeStyles({
   container: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 });
 
 const HomePage = () => {
-  const [session, loading] = useSession();
+  const [session] = useSession();
 
   const { container, text, button } = useStyles();
 
@@ -34,7 +34,8 @@ const HomePage = () => {
       {!session && (
         <div className={text}>
           Not signed in <br />
-          <HorizonButton
+          <CoreButton
+            variant="contained"
             onClick={e => {
               e.preventDefault();
               signIn().catch(err => console.log(err));
@@ -42,13 +43,14 @@ const HomePage = () => {
             className={button}
           >
             Sign in
-          </HorizonButton>
+          </CoreButton>
         </div>
       )}
       {session && (
         <>
           Signed in as {session.user.email} <br />
-          <HorizonButton
+          <CoreButton
+            variant="contained"
             onClick={e => {
               e.preventDefault();
               signOut().catch(err => console.log(err));
@@ -56,13 +58,16 @@ const HomePage = () => {
             className={button}
           >
             Sign out
-          </HorizonButton>
+          </CoreButton>
         </>
       )}
-      <HorizonButton href={config.pages.signup} className={button}>
-        {" "}
+      <CoreButton
+        variant="contained"
+        href={config.pages.signup}
+        className={button}
+      >
         Sign up
-      </HorizonButton>
+      </CoreButton>
     </div>
   );
 };

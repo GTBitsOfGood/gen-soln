@@ -148,7 +148,6 @@ const EventsPageEventList: React.FC<Props> = ({
       display.push(null);
     }
   }
-  // const display = [null, null, null, null]
 
   return (
     <div className={classes.container} ref={containerRef}>
