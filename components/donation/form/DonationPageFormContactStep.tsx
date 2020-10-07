@@ -68,7 +68,7 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
   );
 
   const onAddressChange = useCallback(
-    (address: PlaceType | null) => {
+    (address: PlaceType) => {
       dispatch && dispatch(setAddress(address));
     },
     [dispatch]
@@ -113,7 +113,8 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
       />
       <div className={clsx(name, verticalPositiveMargin)}>
         <LocationAutocompleteInput
-          addPlaceChip={onAddressChange}
+          parentCallback={onAddressChange}
+          type="PASS_PLACE_TYPE_TO_PARENT"
           locationType="address"
           fullWidth
           required

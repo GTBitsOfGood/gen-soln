@@ -1,31 +1,28 @@
 import React from "react";
 import clsx from "clsx";
 
-import {
-  Checkbox,
-  FormControlLabel,
-  makeStyles,
-  Typography
-} from "@material-ui/core";
+import { Checkbox, FormControlLabel, makeStyles } from "@material-ui/core";
+import { typographyStyles } from "@core/typography";
 
-import { UncheckedBoxIcon, CheckedBoxIcon } from "@core/icons";
+import { TasklistUncheckedIcon, TasklistCheckedIcon } from "@core/icons";
+import grays from "@core/colors/grays";
 
 const useStyles = makeStyles({
-  option: {
+  optionRoot: {
     height: 18
   },
   optionLabel: {
-    fontFamily: "Open Sans, sans-serif",
-    fontSize: 14,
-    lineHeight: "130%",
-    maxWidth: "143px",
+    ...typographyStyles.caption,
+    maxWidth: 144,
     whiteSpace: "nowrap",
     overflow: "hidden",
-    textOverflow: "ellipsis",
-    color: "#999999"
+    textOverflow: "ellipsis"
   },
-  optionLabelSelected: {
-    color: "#333333"
+  unselected: {
+    color: grays[40]
+  },
+  checkboxRoot: {
+    fontSize: "inherit"
   }
 });
 
@@ -40,26 +37,24 @@ const EventsPageDropdownFilterCheckbox: React.FC<Props> = ({
   checked,
   onChange
 }) => {
-  const { option, optionLabel, optionLabelSelected } = useStyles();
+  const { optionRoot, optionLabel, unselected, checkboxRoot } = useStyles();
 
   return (
     <FormControlLabel
-      label={
-        <Typography
-          className={clsx(optionLabel, checked && optionLabelSelected)}
-        >
-          {label}
-        </Typography>
-      }
-      className={option}
+      label={label}
+      classes={{
+        root: optionRoot,
+        label: clsx(optionLabel, !checked && unselected)
+      }}
       control={
         <Checkbox
-          className={optionLabel}
+          classes={{
+            root: clsx(checkboxRoot, !checked && unselected)
+          }}
           checked={checked}
           onChange={onChange}
-          // TODO: replace with Horizon colors
-          icon={<UncheckedBoxIcon />}
-          checkedIcon={<CheckedBoxIcon />}
+          icon={<TasklistUncheckedIcon fontSize="inherit" />}
+          checkedIcon={<TasklistCheckedIcon fontSize="inherit" />}
         />
       }
     />

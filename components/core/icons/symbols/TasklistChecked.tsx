@@ -1,7 +1,7 @@
 import React from "react";
 import SvgIcon, { SvgIconProps } from "@material-ui/core/SvgIcon";
 
-const CheckedBox: React.FC<SvgIconProps> = props => {
+const TasklistChecked: React.FC<SvgIconProps> = props => {
   return (
     <SvgIcon width="15" height="15" viewBox="0 0 15 15" {...props}>
       <path
@@ -13,4 +13,4 @@ const CheckedBox: React.FC<SvgIconProps> = props => {
   );
 };
 
-export default CheckedBox;
+export default TasklistChecked;

@@ -1,24 +1,23 @@
 import React, { useRef, useState, useMemo, useEffect } from "react";
-
+import clsx from "clsx";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
+import SearchIcon from "@material-ui/icons/Search";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid from "@material-ui/core/Grid";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
-import Typography from "@material-ui/core/Typography";
+
+import CoreTypography, { typographyStyles } from "@core/typography";
 import config from "config";
 
-const useStyles = makeStyles(theme => ({
-  icon: {
-    color: theme.palette.text.secondary,
-    marginRight: theme.spacing(2)
-  },
-  inputRoot: {
-    borderRadius: 100
+const useStyles = makeStyles({
+  textStyle: typographyStyles.caption,
+  highlightedText: {
+    fontWeight: 800
   }
-}));
+});
 
 function loadScript(src: string, position: HTMLElement | null, id: string) {
   if (!position) {
@@ -34,26 +33,37 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
 
 export type PlaceType = google.maps.places.AutocompletePrediction;
 
-interface Props {
+interface BaseProps {
   locationType: string;
-  label: string;
-  addLocationChip?: (value: string) => void;
-  addPlaceChip?: (value: PlaceType | null) => void;
+  label?: string;
   fullWidth?: boolean;
   defaultValue?: PlaceType | null;
   required?: boolean;
+  placeholder?: string;
 }
 
-const LocationAutocompleteInput: React.FC<Props> = ({
-  locationType,
-  label,
-  addLocationChip,
-  addPlaceChip,
-  fullWidth = false,
-  defaultValue = null,
-  required = false
-}) => {
-  const classes = useStyles();
+type Props = BaseProps &
+  (
+    | {
+        type: "PASS_FORMATTED_TEXT_TO_PARENT";
+        parentCallback: (value: string) => void;
+      }
+    | {
+        type: "PASS_PLACE_TYPE_TO_PARENT";
+        parentCallback: (value: PlaceType) => void;
+      }
+  );
+
+const LocationAutocompleteInput: React.FC<Props> = props => {
+  const {
+    locationType,
+    label = "",
+    fullWidth = false,
+    defaultValue = null,
+    required = false,
+    placeholder = ""
+  } = props;
+  const { textStyle, highlightedText } = useStyles();
   const [value, setValue] = useState<PlaceType | null>(defaultValue);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<PlaceType[]>([]);
@@ -139,11 +149,10 @@ const LocationAutocompleteInput: React.FC<Props> = ({
 
   return (
     <Autocomplete
-      id="google-map-demo"
       getOptionLabel={option =>
         typeof option === "string" ? option : option.description
       }
-      classes={{ inputRoot: classes.inputRoot }}
+      classes={{ noOptions: textStyle }}
       filterOptions={x => x}
       options={options}
       autoComplete
@@ -155,27 +164,45 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         event: React.ChangeEvent<unknown>,
         newValue: PlaceType | null
       ) => {
-        setOptions(newValue ? [newValue, ...options] : options);
-        if (locationType === "address") addPlaceChip && addPlaceChip(newValue);
-        else
-          newValue &&
-            addLocationChip &&
-            addLocationChip(newValue.structured_formatting.main_text);
+        if (newValue) {
+          setOptions(s => [newValue, ...s]);
+          switch (props.type) {
+            case "PASS_FORMATTED_TEXT_TO_PARENT":
+              props.parentCallback(newValue.structured_formatting.main_text);
+              break;
+            case "PASS_PLACE_TYPE_TO_PARENT":
+              props.parentCallback(newValue);
+              break;
+            default: {
+              const _exhaustiveCheck: never = props;
+              return _exhaustiveCheck;
+            }
+          }
+        }
+
         setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
-      renderInput={params => (
-        <div>
-          <TextField
-            {...params}
-            label={label}
-            variant="outlined"
-            fullWidth
-            required={required}
-          />
-        </div>
+      renderInput={({ InputProps, ...rest }) => (
+        <TextField
+          {...rest}
+          label={label}
+          variant="outlined"
+          fullWidth
+          required={required}
+          placeholder={placeholder}
+          InputProps={{
+            ...InputProps,
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon fontSize="small" />
+              </InputAdornment>
+            ),
+            classes: { root: textStyle }
+          }}
+        />
       )}
       renderOption={option => {
         const matches =
@@ -187,22 +214,18 @@ const LocationAutocompleteInput: React.FC<Props> = ({
 
         return (
           <Grid container alignItems="center">
-            <Grid item>
-              <LocationOnIcon className={classes.icon} />
-            </Grid>
-            <Grid item xs>
-              {parts.map((part, index) => (
-                <span
-                  key={index}
-                  style={{ fontWeight: part.highlight ? 700 : 400 }}
-                >
-                  {part.text}
-                </span>
-              ))}
-              <Typography variant="body2" color="textSecondary">
-                {option.structured_formatting.secondary_text}
-              </Typography>
-            </Grid>
+            {parts.map(({ text, highlight }, index) => (
+              <CoreTypography
+                variant="caption"
+                key={index}
+                className={clsx(highlight && highlightedText)}
+              >
+                {text.replace(/ /g, "\u00a0")}
+              </CoreTypography>
+            ))}
+            <CoreTypography variant="caption">
+              , {option.structured_formatting.secondary_text}
+            </CoreTypography>
           </Grid>
         );
       }}

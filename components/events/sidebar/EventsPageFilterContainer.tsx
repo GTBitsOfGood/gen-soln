@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
+
+import CoreTypography from "@core/typography";
 
 interface Props {
   header: string;
@@ -14,14 +15,6 @@ interface Props {
 const useStyles = makeStyles({
   root: {
     marginTop: 16
-  },
-  subtitle: {
-    // TODO: replace this with a Typography component
-    fontFamily: "Visby CF, sans-serif",
-    fontWeight: 800,
-    fontSize: 16,
-    lineHeight: "130%",
-    color: "#333333"
   },
   collapseBar: {
     display: "flex",
@@ -41,18 +34,20 @@ const EventsPageFilterContainer: React.FC<Props> = ({
   children,
   collapsible = false
 }) => {
-  const { root, subtitle, collapseBar, contentContainer } = useStyles();
+  const { root, collapseBar, contentContainer } = useStyles();
   const [collapsed, setCollapsed] = useState(false);
+
+  const headerJSX = <CoreTypography variant="h4">{header}</CoreTypography>;
 
   const topBar = collapsible ? (
     <FocusVisibleOnly onClick={() => setCollapsed(s => !s)}>
       <div className={collapseBar}>
-        <Typography className={subtitle}>{header}</Typography>
+        {headerJSX}
         {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
       </div>
     </FocusVisibleOnly>
   ) : (
-    <Typography className={subtitle}>{header}</Typography>
+    headerJSX
   );
 
   return (

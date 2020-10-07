@@ -1,6 +1,6 @@
 import React from "react";
 
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import EventsPageSidebarComponentHeader from "./EventsPageSidebarComponentHeader";
 import EventsPageFilterContainer from "./EventsPageFilterContainer";
 import EventsPageDropdownFilter from "./EventsPageDropdownFilter";
@@ -8,13 +8,15 @@ import EventsPageLocationFilter from "./EventsPageLocationFilter";
 
 import { Dropdown } from "utils/types";
 
-const useStyles = makeStyles({
-  root: {
-    padding: "32px 24px",
-    width: "100%",
-    backgroundColor: "#FFFFFF"
-  }
-});
+const useStyles = makeStyles(({ palette }: Theme) =>
+  createStyles({
+    root: {
+      padding: "calc(8% + 8px) 8%",
+      width: "100%",
+      backgroundColor: palette.background.paper
+    }
+  })
+);
 
 interface Props {
   timeFilterOptions: Dropdown[];

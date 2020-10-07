@@ -16,32 +16,39 @@ const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined): Theme =>
   createMuiTheme({
     palette: {
       primary: { ...orange, contrastText: grays.white },
+      secondary: {
+        main: "rgba(64, 59, 112, 0.38)" // TODO: remove this when DMS no longer relies on a secondary color
+      },
       text: {
         primary: grays["80"],
         secondary: grays["60"],
         disabled: grays["40"],
         hint: grays["40"]
       },
-      background: { default: grays.bg }
+      background: { default: grays.bg, paper: grays.white }
     },
     typography: typographyStyles,
     props: {
+      MuiButton: {
+        color: "primary"
+      },
+      MuiCheckbox: {
+        color: "primary"
+      },
       MuiTextField: {
-        variant: "filled",
         size: "small",
-        color: "secondary"
+        color: "primary"
       }
     },
     overrides: {
-      MuiFilledInput: {
-        root: {
-          backgroundColor: "#F5F5F5"
+      MuiInputAdornment: {
+        positionStart: {
+          marginRight: 0
         }
       },
-      MuiFormHelperText: {
-        contained: {
-          marginLeft: 0,
-          marginRight: 0
+      MuiOutlinedInput: {
+        root: {
+          borderRadius: 100
         }
       }
     },

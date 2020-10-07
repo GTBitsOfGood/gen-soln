@@ -59,11 +59,7 @@ const CoreButton: React.FC<Props> = props => {
   const { children, ...rest } = props;
 
   return (
-    <Button
-      classes={{ root, label, outlined, contained, text }}
-      color="primary"
-      {...rest}
-    >
+    <Button classes={{ root, label, outlined, contained, text }} {...rest}>
       {children}
     </Button>
   );

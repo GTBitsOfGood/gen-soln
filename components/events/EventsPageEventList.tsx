@@ -1,47 +1,50 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { IconButton } from "@material-ui/core";
 import { ChevronRightIcon, ChevronLeftIcon } from "@core/icons";
 
 import EventsPageEventCard from "./EventsPageEventCard";
 import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
 import { PaginatedEventCards, EventCardData } from "utils/types";
+import grays from "@core/colors/grays";
 
-const useStyles = makeStyles({
-  button: {
-    backgroundColor: "white",
-    boxShadow: "inset 0 0 0 1px #F0F0F0",
-    "&:hover": {
-      backgroundColor: "#f5f5f5"
+const useStyles = makeStyles(({ palette }: Theme) =>
+  createStyles({
+    button: {
+      backgroundColor: palette.background.paper,
+      boxShadow: `inset 0 0 0 1px ${grays["5"]}`,
+      "&:hover": {
+        backgroundColor: grays["20"]
+      }
+    },
+    nextButtonContainer: {
+      marginLeft: -56,
+      borderRadius: "50%"
+    },
+    prevButtonContainer: {
+      marginLeft: -24,
+      marginRight: -24,
+      borderRadius: "50%",
+      position: "relative",
+      zIndex: 1
+    },
+    container: {
+      display: "flex",
+      flexWrap: "wrap",
+      flexDirection: "row",
+      alignItems: "center",
+      position: "relative",
+      height: 270,
+      overflowX: "visible",
+      overflowY: "hidden",
+      marginLeft: -24,
+      paddingLeft: 24
+    },
+    item: {
+      marginRight: 32
     }
-  },
-  nextButtonContainer: {
-    marginLeft: -56,
-    borderRadius: "50%"
-  },
-  prevButtonContainer: {
-    marginLeft: -24,
-    marginRight: -24,
-    borderRadius: "50%",
-    position: "relative",
-    zIndex: 1
-  },
-  container: {
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "row",
-    alignItems: "center",
-    position: "relative",
-    height: 270,
-    overflowX: "visible",
-    overflowY: "hidden",
-    marginLeft: -24,
-    paddingLeft: 24
-  },
-  item: {
-    marginRight: 32
-  }
-});
+  })
+);
 
 interface Props {
   paginatedEventCardsData: PaginatedEventCards;
@@ -145,6 +148,7 @@ const EventsPageEventList: React.FC<Props> = ({
       display.push(null);
     }
   }
+  // const display = [null, null, null, null]
 
   return (
     <div className={classes.container} ref={containerRef}>
