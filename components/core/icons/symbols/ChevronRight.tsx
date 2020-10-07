@@ -1,13 +1,9 @@
-import { SvgIcon } from "@material-ui/core";
 import React from "react";
+import SvgIcon, { SvgIconProps } from "@material-ui/core/SvgIcon";
 
-interface Props {
-  color: string;
-}
-
-const ChevronRightIcon: React.FC<Props> = ({ color }) => {
+const ChevronRight: React.FC<SvgIconProps> = props => {
   return (
-    <SvgIcon htmlColor={color} width="17" height="17" viewBox="0 0 17 17">
+    <SvgIcon width="17" height="17" viewBox="0 0 17 17" {...props}>
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -17,4 +13,4 @@ const ChevronRightIcon: React.FC<Props> = ({ color }) => {
   );
 };
 
-export default ChevronRightIcon;
+export default ChevronRight;

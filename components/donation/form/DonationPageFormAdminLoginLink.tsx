@@ -4,7 +4,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import Typography from "@material-ui/core/Typography";
 
-import HorizonLink from "@horizon/HorizonLink";
+import CoreLink from "@core/link";
 
 import config from "config";
 
@@ -27,7 +27,7 @@ const DonationPageFormAdminLoginLink: React.FC = () => {
       <Typography className={text} variant="subtitle2" color="secondary">
         Are you an admin?
       </Typography>
-      <HorizonLink
+      <CoreLink
         className={text}
         href={config.pages.login}
         variant="subtitle2"
@@ -35,7 +35,7 @@ const DonationPageFormAdminLoginLink: React.FC = () => {
         color="secondary"
       >
         Login here
-      </HorizonLink>
+      </CoreLink>
     </div>
   );
 };

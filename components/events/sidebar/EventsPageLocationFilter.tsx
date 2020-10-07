@@ -44,9 +44,10 @@ const EventsPageLocationFilter: React.FC = () => {
         })}
       </ul>
       <LocationAutocompleteInput
-        addLocationChip={value => void put(value)}
+        parentCallback={value => void put(value)}
+        type="PASS_FORMATTED_TEXT_TO_PARENT"
         locationType="(cities)"
-        label="Search city"
+        placeholder="E.g. Atlanta, Boston"
       />
     </>
   );

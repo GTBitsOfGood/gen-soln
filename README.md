@@ -54,7 +54,7 @@ A quick overview of the various folders in this repository:
 
 - [`components/`](components): Contains _almost all_ of our front-end code. This is where we put our React components, custom hooks, reducers, etc. It has four sub-folders:
   - [`auth/`](components/auth): Code that is specific to authentication (login page, sign-up, etc.)
-  - [`core/`](components/core): Will contain components that make up the Horizon Design System.
+  - [`core/`](components/core): Will contain components that make up the Horizon Design System, implemented using [Material-UI](https://material-ui.com).
   - [`donation/`](components/donation): Code that is specific to the donation management solution.
   - [`events/`](components/events): Will contain code that is specific to the volunteer management solution.
   - Any components or hooks that are **not** part of the Horizon Design System but are still **shared** across different parts of the application can be put as root files in this folder.

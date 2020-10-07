@@ -8,10 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import HorizonButton from "./HorizonButton";
-//import Logo from "./logo.png";
-import HorizonButtonOutline from "./HorizonButtonOutline";
-import ButtonWithLowercaseText from "../ButtonWithLowercaseText";
+import { CoreButton } from "@core/buttons";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -81,7 +78,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function PrimarySearchAppBar() {
+export default function CoreNavBar() {
   const navTabs = ["Discover", "Events", "Non-profits", "Sign In", "Sign Up"];
   const classes = useStyles();
   const [
@@ -143,17 +140,15 @@ export default function PrimarySearchAppBar() {
             <div className={classes.containButton}>
               {navTabs.map(navTab => {
                 if (navTab !== "Sign Up" && navTab !== "Sign In") {
-                  return (
-                    <ButtonWithLowercaseText>{navTab}</ButtonWithLowercaseText>
-                  );
+                  return <CoreButton>{navTab}</CoreButton>;
                 }
               })}
             </div>
             <div className={classes.containButton}>
-              <HorizonButtonOutline> Sign In </HorizonButtonOutline>
+              <CoreButton variant="outlined"> Sign In </CoreButton>
             </div>
             <div className={classes.containButton}>
-              <HorizonButton> Sign Up </HorizonButton>
+              <CoreButton variant="contained"> Sign Up </CoreButton>
             </div>
           </div>
           <div className={classes.sectionMobile}>

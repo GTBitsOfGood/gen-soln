@@ -9,6 +9,7 @@ const useStyles = makeStyles({
   },
   sidebar: {
     flex: 1,
+    minWidth: 230,
     display: "flex",
     height: "100vh",
     overflowY: "scroll",
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
     }
   },
   content: {
-    flex: 7,
+    flex: 5.25,
     display: "flex",
     height: "100vh",
     overflowY: "scroll",

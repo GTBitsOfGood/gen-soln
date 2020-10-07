@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from "react";
 import dynamic, { DynamicOptions } from "next/dynamic";
 
 import AuthPageFormContainer from "./form/AuthPageFormContainer";
-import { Content, ContentComponentProps } from "./types";
+import { Content, ContentComponentProps } from "components/auth";
 
 const options: DynamicOptions<ContentComponentProps> = {
   loading: () => <AuthPageFormContainer />,

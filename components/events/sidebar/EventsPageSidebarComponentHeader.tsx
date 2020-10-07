@@ -2,39 +2,21 @@ import React from "react";
 import { useRouter } from "next/router";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import CoreTypography from "@core/typography";
+import { CoreButton } from "@core/buttons";
 
 const useStyles = makeStyles({
-  header: {
-    // TODO: replace this with a Typography component
-    fontFamily: "Visby CF, sans-serif",
-    fontWeight: 800,
-    fontSize: 24,
-    lineHeight: "140%",
-    color: "#333333"
-  },
   topBar: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    flexWrap: "wrap"
-  },
-  clearFilterLabel: {
-    // TODO: replace this with a Typography component
-    fontFamily: "Visby CF, sans-serif",
-    fontSize: 14,
-    lineHeight: "130%",
-    fontWeight: 800,
-    color: "#FD8033",
-    cursor: "pointer",
-    textTransform: "uppercase"
+    flexWrap: "wrap",
+    minHeight: "2.4rem" // a large enough minHeight to avoid jerky changes to the UI when the clear button suddenly appears
   }
 });
 
 const EventsPageSidebarComponentHeader: React.FC = () => {
-  const { header, topBar, clearFilterLabel } = useStyles();
+  const { topBar } = useStyles();
   const router = useRouter();
 
   // Sum up all the applied filters
@@ -57,11 +39,9 @@ const EventsPageSidebarComponentHeader: React.FC = () => {
 
   return (
     <div className={topBar}>
-      <Typography className={header}>Filters</Typography>
+      <CoreTypography variant="h2">Filters</CoreTypography>
       {filterCount > 0 && (
-        <Button classes={{ root: clearFilterLabel }} onClick={clearFilters}>
-          Clear ({filterCount})
-        </Button>
+        <CoreButton onClick={clearFilters}>Clear ({filterCount})</CoreButton>
       )}
     </div>
   );

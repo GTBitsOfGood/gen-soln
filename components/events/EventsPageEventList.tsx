@@ -1,48 +1,50 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { IconButton } from "@material-ui/core";
-import ChevronRightIcon from "@horizon/icons/ChevronRightIcon";
-import ChevronLeftIcon from "@horizon/icons/ChevronLeftIcon";
+import { ChevronRightIcon, ChevronLeftIcon } from "@core/icons";
 
 import EventsPageEventCard from "./EventsPageEventCard";
 import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
 import { PaginatedEventCards, EventCardData } from "utils/types";
+import grays from "@core/colors/grays";
 
-const useStyles = makeStyles({
-  button: {
-    backgroundColor: "white",
-    boxShadow: "inset 0 0 0 1px #F0F0F0",
-    "&:hover": {
-      backgroundColor: "#f5f5f5"
+const useStyles = makeStyles(({ palette }: Theme) =>
+  createStyles({
+    button: {
+      backgroundColor: palette.background.paper,
+      boxShadow: `inset 0 0 0 1px ${grays["5"]}`,
+      "&:hover": {
+        backgroundColor: grays["20"]
+      }
+    },
+    nextButtonContainer: {
+      marginLeft: -56,
+      borderRadius: "50%"
+    },
+    prevButtonContainer: {
+      marginLeft: -24,
+      marginRight: -24,
+      borderRadius: "50%",
+      position: "relative",
+      zIndex: 1
+    },
+    container: {
+      display: "flex",
+      flexWrap: "wrap",
+      flexDirection: "row",
+      alignItems: "center",
+      position: "relative",
+      height: 270,
+      overflowX: "visible",
+      overflowY: "hidden",
+      marginLeft: -24,
+      paddingLeft: 24
+    },
+    item: {
+      marginRight: 32
     }
-  },
-  nextButtonContainer: {
-    marginLeft: -56,
-    borderRadius: "50%"
-  },
-  prevButtonContainer: {
-    marginLeft: -24,
-    marginRight: -24,
-    borderRadius: "50%",
-    position: "relative",
-    zIndex: 1
-  },
-  container: {
-    display: "flex",
-    flexWrap: "wrap",
-    flexDirection: "row",
-    alignItems: "center",
-    position: "relative",
-    height: 270,
-    overflowX: "visible",
-    overflowY: "hidden",
-    marginLeft: -24,
-    paddingLeft: 24
-  },
-  item: {
-    marginRight: 32
-  }
-});
+  })
+);
 
 interface Props {
   paginatedEventCardsData: PaginatedEventCards;
@@ -53,7 +55,7 @@ const DEFAULT_ROW_SIZE = 4;
 const MARGIN_ADJUSTMENT = 24;
 const CARD_WIDTH = 283;
 
-const EventsPageLayout: React.FC<Props> = ({
+const EventsPageEventList: React.FC<Props> = ({
   paginatedEventCardsData,
   getMoreEvents
 }) => {
@@ -139,7 +141,8 @@ const EventsPageLayout: React.FC<Props> = ({
     first,
     first + rowSize
   );
-  if (maxElem === -1 || first + rowSize < maxElem) {
+  const hasNext = maxElem == -1 || first + rowSize < maxElem;
+  if (hasNext) {
     // pad the display items with null if necessary
     while (display.length < rowSize) {
       display.push(null);
@@ -155,7 +158,7 @@ const EventsPageLayout: React.FC<Props> = ({
             className={classes.button}
             onClick={prevPage}
           >
-            <ChevronLeftIcon color="#1A1A1A" />
+            <ChevronLeftIcon />
           </IconButton>
         </div>
       )}
@@ -176,14 +179,14 @@ const EventsPageLayout: React.FC<Props> = ({
           )}
         </div>
       ))}
-      {(maxElem == -1 || first + rowSize < maxElem) && !loading && (
+      {hasNext && !loading && (
         <div className={classes.nextButtonContainer}>
           <IconButton
             aria-label="next events"
             className={classes.button}
             onClick={nextPage}
           >
-            <ChevronRightIcon color="#1A1A1A" />
+            <ChevronRightIcon />
           </IconButton>
         </div>
       )}
@@ -191,4 +194,4 @@ const EventsPageLayout: React.FC<Props> = ({
   );
 };
 
-export default EventsPageLayout;
+export default EventsPageEventList;
