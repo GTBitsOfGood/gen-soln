@@ -10,7 +10,7 @@ export default async (
   res: NextApiResponse
 ): Promise<void> =>
   handleRequestWithPayloadResponse(req, res, getNearestEventsCardData, [
-    "date",
+    "location",
     "page",
     "totalCount",
     "isLastPage"

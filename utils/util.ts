@@ -1,4 +1,4 @@
-import qs from "querystringify";
+import { stringify as querystringify } from "querystringify";
 import { NextApiRequest, NextApiResponse } from "next";
 import fetch from "isomorphic-unfetch";
 import errors from "utils/errors";
@@ -58,15 +58,13 @@ export const fetchRequestWithPayloadResponse = async <T>(
 ): Promise<T> => {
   const isGetRequest = options.method === "GET";
 
-  const fullUrl = isGetRequest ? `${url}&${qs.stringify(body)}` : url;
+  const fullUrl = isGetRequest ? `${url}&${querystringify(body)}` : url;
 
-  const fullOptions: RequestInit = {
+  const res = await fetch(fullUrl, {
     mode: "same-origin",
     ...options,
     body: isGetRequest ? undefined : JSON.stringify(body)
-  };
-
-  const res = await fetch(fullUrl, fullOptions);
+  });
 
   const json = (await res.json()) as APISuccessResponse<T> | APIFailureResponse;
 
