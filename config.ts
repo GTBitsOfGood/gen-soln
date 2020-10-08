@@ -36,7 +36,8 @@ export default {
     logDonation: "/api/logDonation",
     createPaymentIntent: "/api/createPaymentIntent",
     recoverPassword: "/api/recoverPassword",
-    getUpcomingEvents: "/api/getUpcomingEvents"
+    getUpcomingEvents: "/api/getUpcomingEvents",
+    getNearestEvents: "/api/getNearestEvents"
   },
   googleMapsKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
 };

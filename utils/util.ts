@@ -1,3 +1,4 @@
+import { stringify as querystringify } from "querystringify";
 import { NextApiRequest, NextApiResponse } from "next";
 import fetch from "isomorphic-unfetch";
 import errors from "utils/errors";
@@ -19,11 +20,16 @@ export const handleRequestWithPayloadResponse = async <T>(
   callback: (body: NextApiRequest["body"]) => Promise<T>,
   bodyHasProperties: string[] = []
 ): Promise<void> => {
+  const isGetRequest = req.method === "GET";
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const data = isGetRequest ? req.query : req.body;
   try {
-    if (bodyHasProperties.some(property => !(property in req.body))) {
+    if (bodyHasProperties.some(property => !(property in data))) {
       res.status(400).json({
         success: false,
-        message: `One or more of the following properties was missing in req.body: [${bodyHasProperties.toString()}]`
+        message: `One or more of the following properties was missing in ${
+          isGetRequest ? "query params" : "req.body"
+        }: [${bodyHasProperties.toString()}]`
       });
 
       return;
@@ -31,7 +37,7 @@ export const handleRequestWithPayloadResponse = async <T>(
 
     const response: APISuccessResponse<T> = {
       success: true,
-      payload: await callback(req.body)
+      payload: await callback(data)
     };
     res.status(200).json(response);
   } catch (error) {
@@ -45,12 +51,19 @@ export const handleRequestWithPayloadResponse = async <T>(
 
 // Use this function on client side to make API requests
 export const fetchRequestWithPayloadResponse = async <T>(
-  url: RequestInfo,
-  options: RequestInit = {}
+  url: string,
+  options: RequestInit = {},
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  body: object = {}
 ): Promise<T> => {
-  const res = await fetch(url, {
+  const isGetRequest = options.method === "GET";
+
+  const fullUrl = isGetRequest ? `${url}&${querystringify(body)}` : url;
+
+  const res = await fetch(fullUrl, {
     mode: "same-origin",
-    ...options
+    ...options,
+    body: isGetRequest ? undefined : JSON.stringify(body)
   });
 
   const json = (await res.json()) as APISuccessResponse<T> | APIFailureResponse;
