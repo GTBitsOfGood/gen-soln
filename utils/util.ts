@@ -56,7 +56,7 @@ export const fetchRequestWithPayloadResponse = async <T>(
   // eslint-disable-next-line @typescript-eslint/ban-types
   body: object = {}
 ): Promise<T> => {
-  const isGetRequest = String(options.method).toUpperCase() === "GET";
+  const isGetRequest = options.method?.toUpperCase() === "GET";
 
   const fullUrl = isGetRequest ? `${url}&${querystringify(body)}` : url;
 
