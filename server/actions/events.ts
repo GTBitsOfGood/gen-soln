@@ -4,7 +4,6 @@ import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 
 import {
-  Coordinates,
   Event as EventType,
   EventCardData as EventCardDataType,
   DatePaginatedEventCards,
@@ -74,6 +73,10 @@ export async function getNearestEventsCardData({
 }: LocationPageInformation): Promise<LocationPaginatedEventCards> {
   await Mongo();
 
+  if (totalCount == -1) {
+    totalCount = await getNearestEventsCardDataCount(location);
+  }
+
   const result = await Event.find(
     {
       "address.location": {
@@ -100,7 +103,7 @@ export async function getNearestEventsCardData({
 export async function getNearestEventsCardDataCount({
   lat,
   long
-}: Coordinates) {
+}: LocationPageInformation["location"]) {
   await Mongo();
 
   return Event.countDocuments({
