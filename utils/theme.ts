@@ -1,7 +1,10 @@
 import { createMuiTheme, Theme } from "@material-ui/core/styles";
 
+import { orange } from "@core/colors/primary";
+import grays from "@core/colors/grays";
+import { typographyStyles } from "@core/typography";
+
 import { Spacing, Nonprofit } from "./types";
-import typographyStyles from "components/core/HorizonTypography";
 
 const margins: Record<Spacing, string> = {
   VERTICAL: "4.5vh",
@@ -9,45 +12,46 @@ const margins: Record<Spacing, string> = {
   LARGE_VERTICAL: "7vh"
 };
 
-// Created a special variable for primary color since it is imported by _document.tsx
-export const MAIN = "#403C70";
-
 const createNonprofitMuiTheme = (nonprofit: Nonprofit | undefined): Theme =>
   createMuiTheme({
     palette: {
-      primary: {
-        main: MAIN
-      },
+      primary: { ...orange, contrastText: grays.white },
       secondary: {
-        main: "rgba(64, 59, 112, 0.38)"
+        main: "rgba(64, 59, 112, 0.38)" // TODO: remove this when DMS no longer relies on a secondary color
       },
-      background: {
-        default: "#F5F5F7"
+      text: {
+        primary: grays["80"],
+        secondary: grays["60"],
+        disabled: grays["40"],
+        hint: grays["40"]
       },
-      nonprofitPrimary: nonprofit?.primaryColor,
-      nonprofitSecondary: nonprofit?.secondaryColor
+      background: { default: grays.bg, paper: grays.white }
     },
+    typography: typographyStyles,
     props: {
+      MuiButton: {
+        color: "primary"
+      },
+      MuiCheckbox: {
+        color: "primary"
+      },
       MuiTextField: {
-        variant: "filled",
         size: "small",
-        color: "secondary"
+        color: "primary"
       }
     },
     overrides: {
-      MuiFilledInput: {
-        root: {
-          backgroundColor: "#F5F5F5"
+      MuiInputAdornment: {
+        positionStart: {
+          marginRight: 0
         }
       },
-      MuiFormHelperText: {
-        contained: {
-          marginLeft: 0,
-          marginRight: 0
+      MuiOutlinedInput: {
+        root: {
+          borderRadius: 100
         }
       }
     },
-    typography: typographyStyles,
     nonprofitBackgroundImage: nonprofit?.background,
     nonprofitLogoImage: nonprofit?.logo,
     margins

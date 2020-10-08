@@ -6,14 +6,15 @@ import errors from "utils/errors";
 import config from "config";
 import cookie from "js-cookie";
 
-import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
+import { CoreButton } from "@core/buttons";
+
 import AuthPageForm from "./AuthPageForm";
 import EmailTextField, { EMAIL_INPUT_FIELD_NAME } from "./EmailTextField";
 import PasswordTextField, {
   PASSWORD_INPUT_FIELD_NAME
 } from "./PasswordTextField";
 
-import { ContentComponentProps } from "../types";
+import { ContentComponentProps } from "components/auth";
 
 const LoginFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent
@@ -61,13 +62,9 @@ const LoginFormContent: React.FC<ContentComponentProps> = ({
       ctaText="SIGN IN"
       onPressCTA={onPressCTA}
       footer={
-        <ButtonWithLowercaseText
-          disableRipple
-          color="secondary"
-          onClick={onClickForgotPassword}
-        >
+        <CoreButton variant="contained" onClick={onClickForgotPassword}>
           Forgot password?
-        </ButtonWithLowercaseText>
+        </CoreButton>
       }
     >
       <EmailTextField hasError={Boolean(error)} />

@@ -4,7 +4,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 import { DonationPageStateDispatch, setStep } from "./reducer";
-import ButtonWithLowercaseText from "components/ButtonWithLowercaseText";
+import { CoreButton } from "@core/buttons";
 
 const white = "white";
 const useStyles = makeStyles({
@@ -45,17 +45,16 @@ const DonationPageFormNavigation: React.FC<Props> = ({
   const arr: React.ReactNode[] = [];
   stepTitles.forEach((title, index) => {
     arr.push(
-      <ButtonWithLowercaseText
+      <CoreButton
         key={`button_${title}`}
-        disableRipple
-        color={index === curStepIndex ? "inherit" : "secondary"}
+        variant="text"
         onClick={() => {
           dispatch && dispatch(setStep(index));
         }}
         disabled={index > curStepIndex}
       >
         {title}
-      </ButtonWithLowercaseText>,
+      </CoreButton>,
       <ArrowForwardIosIcon
         key={`arrow_${title}`}
         fontSize="small"

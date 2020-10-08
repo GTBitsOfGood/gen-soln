@@ -1,22 +1,16 @@
 import React, { useState, useCallback, useEffect } from "react";
-
-import clsx from "clsx";
-
 import { useRouter, Router } from "next/router";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-
 import Typography from "@material-ui/core/Typography";
-
 import Select from "@material-ui/core/Select";
-
 import MenuItem from "@material-ui/core/MenuItem";
 
 import { DropdownProps } from "utils/types";
 
 import config from "config";
 
-const useStyles = makeStyles(({ palette, typography }: Theme) =>
+const useStyles = makeStyles(({ typography }: Theme) =>
   createStyles({
     container: {
       display: "flex",
@@ -31,9 +25,6 @@ const useStyles = makeStyles(({ palette, typography }: Theme) =>
     input: {
       ...typography.h6,
       paddingLeft: 6
-    },
-    color: {
-      color: palette.nonprofitSecondary
     }
   })
 );
@@ -42,7 +33,7 @@ const DonationPageHeaderSelect: React.FC<DropdownProps> = ({
   items,
   selectedValue
 }) => {
-  const { container, select, selectMargin, color, input } = useStyles();
+  const { container, select, selectMargin, input } = useStyles();
   const router = useRouter();
   const [value, setValue] = useState(selectedValue);
   const [disabled, setDisabled] = useState(false);
@@ -86,7 +77,7 @@ const DonationPageHeaderSelect: React.FC<DropdownProps> = ({
     <div className={container}>
       <Typography variant="h6">Donating to</Typography>
       <Select
-        classes={{ select, icon: color }}
+        classes={{ select }}
         value={value}
         disabled={disabled}
         onChange={onChange}
@@ -94,7 +85,7 @@ const DonationPageHeaderSelect: React.FC<DropdownProps> = ({
         disableUnderline={true}
         inputProps={{
           classes: {
-            root: clsx(input, !disabled && color)
+            root: input
           }
         }}
       >

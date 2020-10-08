@@ -2,8 +2,8 @@ import React from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
 
-import ButtonWithNonprofitColor from "components/ButtonWithNonprofitColor";
 import DonationPageFormAdminLoginLink from "./DonationPageFormAdminLoginLink";
 
 const useStyles = makeStyles({
@@ -34,12 +34,17 @@ const DonationPageFormButton: React.FC<Props> = ({
 
   return (
     <div className={container}>
-      <ButtonWithNonprofitColor disabled={disabled} type="submit">
+      <Button
+        disabled={disabled}
+        type="submit"
+        color="primary"
+        variant="contained"
+      >
         {showLoadingIndicator && (
           <CircularProgress className={rightMargin} color="inherit" size={16} />
         )}
         {ctaText}
-      </ButtonWithNonprofitColor>
+      </Button>
       <DonationPageFormAdminLoginLink />
     </div>
   );

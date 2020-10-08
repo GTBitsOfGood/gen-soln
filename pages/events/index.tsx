@@ -4,24 +4,43 @@ import {
   InferGetServerSidePropsType,
   GetServerSidePropsContext
 } from "next";
-import EventsPage from "components/events/EventsPage";
-import { Dropdown } from "../../utils/types";
+import EventsPageFiltered from "components/events/EventsPageFiltered";
+import EventsPageUnfiltered from "components/events/EventsPageUnfiltered";
+
+import { Dropdown } from "utils/types";
+import { returnQueryAsArray } from "utils/util";
 import { getCauses } from "server/actions/nonprofit";
 import {
   getUpcomingEventsCardData,
-  getUpcomingEventsCardDataCount
+  getUpcomingEventsCardDataCount,
+  getByCausesEventsCardData
 } from "server/actions/events";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps
 >> = props => {
-  return (
-    <EventsPage
-      timeFilterOptions={props.timeFilterOptions}
-      causesFilterOptions={props.causesFilterOptions}
-      upcomingEventsFirstPageData={props.upcomingEventsFirstPageData}
-    />
-  );
+  const { timeFilterOptions, causesFilterOptions } = props;
+  switch (props.type) {
+    case "WITHOUT_QUERY":
+      return (
+        <EventsPageUnfiltered
+          timeFilterOptions={timeFilterOptions}
+          causesFilterOptions={causesFilterOptions}
+          upcomingEventsFirstPageData={props.upcomingEventsFirstPageData}
+        />
+      );
+    case "WITH_QUERY":
+      return (
+        <EventsPageFiltered
+          timeFilterOptions={timeFilterOptions}
+          causesFilterOptions={causesFilterOptions}
+        />
+      );
+    default: {
+      const _exhaustiveCheck: never = props;
+      return _exhaustiveCheck;
+    }
+  }
 };
 
 // eslint-disable-next-line @typescript-eslint/require-await
@@ -29,7 +48,7 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   // Don't remove the async otherwise InferGetStaticPropsType won't work as expected
-  const timeOptions: Dropdown[] = [
+  const timeFilterOptions: Dropdown[] = [
     { text: "Today", value: "TODAY" },
     { text: "Tomorrow", value: "TOMORROW" },
     { text: "This Week", value: "WEEK" },
@@ -38,24 +57,37 @@ export const getServerSideProps = async (
     { text: "Next Weekend", value: "NWEEKEND" }
   ];
 
-  let upcomingEventsFirstPageData;
+  const commonProps = {
+    timeFilterOptions,
+    causesFilterOptions: getCauses()
+  };
 
   if (Object.keys(context.query).length === 0) {
     const date = new Date();
     const upcomingEventsTotalCount = await getUpcomingEventsCardDataCount(date);
-    upcomingEventsFirstPageData = await getUpcomingEventsCardData({
+    const upcomingEventsFirstPageData = await getUpcomingEventsCardData({
       date: date.toJSON(),
       page: 0,
       totalCount: upcomingEventsTotalCount,
       isLastPage: false
     });
+
+    return {
+      props: {
+        ...commonProps,
+        upcomingEventsFirstPageData,
+        type: "WITHOUT_QUERY" as const
+      }
+    };
+  } else {
+    const query = returnQueryAsArray(context.query["cause"]);
+    /*upcomingEventsFirstPageData = */ await getByCausesEventsCardData(query);
   }
 
   return {
     props: {
-      timeFilterOptions: timeOptions,
-      causesFilterOptions: getCauses(),
-      upcomingEventsFirstPageData: upcomingEventsFirstPageData
+      ...commonProps,
+      type: "WITH_QUERY" as const
     }
   };
 };
