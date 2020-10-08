@@ -20,7 +20,7 @@ export const handleRequestWithPayloadResponse = async <T>(
   callback: (body: NextApiRequest["body"]) => Promise<T>,
   bodyHasProperties: string[] = []
 ): Promise<void> => {
-  const isGetRequest = req.method === "GET";
+  const isGetRequest = req.method?.toUpperCase() === "GET";
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const data = isGetRequest ? req.query : req.body;
   try {
