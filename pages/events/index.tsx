@@ -4,7 +4,9 @@ import {
   InferGetServerSidePropsType,
   GetServerSidePropsContext
 } from "next";
-import EventsPage from "components/events/EventsPage";
+import EventsPageFiltered from "components/events/EventsPageFiltered";
+import EventsPageUnfiltered from "components/events/EventsPageUnfiltered";
+
 import { Dropdown } from "utils/types";
 import { returnQueryAsArray } from "utils/util";
 import { getCauses } from "server/actions/nonprofit";
@@ -17,13 +19,28 @@ import {
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps
 >> = props => {
-  return (
-    <EventsPage
-      timeFilterOptions={props.timeFilterOptions}
-      causesFilterOptions={props.causesFilterOptions}
-      upcomingEventsFirstPageData={props.upcomingEventsFirstPageData}
-    />
-  );
+  const { timeFilterOptions, causesFilterOptions } = props;
+  switch (props.type) {
+    case "WITHOUT_QUERY":
+      return (
+        <EventsPageUnfiltered
+          timeFilterOptions={timeFilterOptions}
+          causesFilterOptions={causesFilterOptions}
+          upcomingEventsFirstPageData={props.upcomingEventsFirstPageData}
+        />
+      );
+    case "WITH_QUERY":
+      return (
+        <EventsPageFiltered
+          timeFilterOptions={timeFilterOptions}
+          causesFilterOptions={causesFilterOptions}
+        />
+      );
+    default: {
+      const _exhaustiveCheck: never = props;
+      return _exhaustiveCheck;
+    }
+  }
 };
 
 // eslint-disable-next-line @typescript-eslint/require-await
@@ -40,17 +57,28 @@ export const getServerSideProps = async (
     { text: "Next Weekend", value: "NWEEKEND" }
   ];
 
-  let upcomingEventsFirstPageData = null;
+  const commonProps = {
+    timeFilterOptions,
+    causesFilterOptions: getCauses()
+  };
 
   if (Object.keys(context.query).length === 0) {
     const date = new Date();
     const upcomingEventsTotalCount = await getUpcomingEventsCardDataCount(date);
-    upcomingEventsFirstPageData = await getUpcomingEventsCardData({
+    const upcomingEventsFirstPageData = await getUpcomingEventsCardData({
       date: date.toJSON(),
       page: 0,
       totalCount: upcomingEventsTotalCount,
       isLastPage: false
     });
+
+    return {
+      props: {
+        ...commonProps,
+        upcomingEventsFirstPageData,
+        type: "WITHOUT_QUERY" as const
+      }
+    };
   } else {
     const query = returnQueryAsArray(context.query["cause"]);
     /*upcomingEventsFirstPageData = */ await getByCausesEventsCardData(query);
@@ -58,9 +86,8 @@ export const getServerSideProps = async (
 
   return {
     props: {
-      timeFilterOptions,
-      causesFilterOptions: getCauses(),
-      upcomingEventsFirstPageData
+      ...commonProps,
+      type: "WITH_QUERY" as const
     }
   };
 };
