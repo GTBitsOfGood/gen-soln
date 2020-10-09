@@ -31,7 +31,6 @@ export async function getUpcomingEventsCardData({
   totalCount
 }: DatePageInformation): Promise<DatePaginatedEventCards> {
   await Mongo();
-  console.log(date, page, totalCount);
 
   const result = await Event.find(
     {
