@@ -53,7 +53,7 @@ const useStripePayment = () => {
       });
       setPaymentMethod(paymentReq);
     },
-    [elements, stripe, paymentMethodReq]
+    [elements, stripe]
   );
 
   const processPayment = useCallback(
@@ -92,7 +92,7 @@ const useStripePayment = () => {
         throw error;
       }
     },
-    [elements, stripe, paymentMethodReq]
+    [stripe, paymentMethodReq]
   );
 
   return { isReady, processPayment, createPaymentMethod };

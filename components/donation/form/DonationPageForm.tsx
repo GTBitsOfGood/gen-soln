@@ -162,6 +162,8 @@ const DonationPageForm: React.FC<Props> = ({
       contactStep.address,
       paymentStep.zipcode,
       processPayment,
+      createPaymentMethod,
+      isPaymentStep,
       isLastStep,
       selectedNonprofitId,
       donationCompletedCallback,
