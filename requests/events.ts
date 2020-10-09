@@ -13,7 +13,7 @@ export const getUpcomingEvents = async (
   fetchRequestWithPayloadResponse<DatePaginatedEventCards>(
     config.apis.getUpcomingEvents,
     {
-      method: "get"
+      method: "GET"
     },
     datePageInformation
   );
@@ -24,7 +24,7 @@ export const getNearestEvents = async (
   fetchRequestWithPayloadResponse<LocationPaginatedEventCards>(
     config.apis.getUpcomingEvents,
     {
-      method: "get"
+      method: "GET"
     },
     locationPageInformation
   );
