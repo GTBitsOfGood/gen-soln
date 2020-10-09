@@ -3,7 +3,6 @@ import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
 import {
-  Coordinates,
   Event as EventType,
   EventCardData as EventCardDataType,
   DatePaginatedEventCards,
