@@ -54,16 +54,17 @@ export const fetchRequestWithPayloadResponse = async <T>(
   url: string,
   options: RequestInit = {},
   // eslint-disable-next-line @typescript-eslint/ban-types
-  body: object = {}
+  queryParameters: object = {}
 ): Promise<T> => {
   const isGetRequest = options.method?.toUpperCase() === "GET";
 
-  const fullUrl = isGetRequest ? `${url}&${querystringify(body)}` : url;
+  const fullUrl = isGetRequest
+    ? `${url}?${querystringify(queryParameters)}`
+    : url;
 
   const res = await fetch(fullUrl, {
     mode: "same-origin",
-    ...options,
-    body: isGetRequest ? undefined : JSON.stringify(body)
+    ...options
   });
 
   const json = (await res.json()) as APISuccessResponse<T> | APIFailureResponse;
