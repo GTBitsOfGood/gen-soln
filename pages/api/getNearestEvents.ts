@@ -30,6 +30,7 @@ export default async (
         isNaN(lat) ||
         isNaN(long) ||
         isNaN(page) ||
+        isNaN(totalCount) ||
         typeof isLastPage !== "boolean"
       ) {
         throw new Error(
