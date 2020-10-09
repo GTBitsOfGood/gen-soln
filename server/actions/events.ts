@@ -19,8 +19,7 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   image: 1,
   address: 1,
   nonprofitId: 1,
-  duration: 1,
-  about: 1
+  duration: 1
 };
 const CARDS_PER_PAGE = 4;
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;

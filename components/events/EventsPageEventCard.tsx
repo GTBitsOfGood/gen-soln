@@ -97,7 +97,7 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
               {eventCardData.name}
             </CoreTypography>
             <CoreTypography className={clsx(body, truncate)}>
-              {eventCardData.about}
+              {eventCardData.name /*TODO: find body for event card */}
             </CoreTypography>
           </div>
         </div>

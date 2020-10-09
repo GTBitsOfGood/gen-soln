@@ -34,13 +34,13 @@ interface EventBase {
   duration: number;
   image: string;
   address: { text: string; location: { type: "Point"; coordinates: number[] } };
-  about: string;
 }
 
 export type Event = EventBase & {
   maxVolunteers: number;
   volunteers: Array<string>;
   nonprofitId: string;
+  about: string;
 };
 
 export type EventCardData = EventBase & {
