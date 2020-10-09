@@ -3,7 +3,7 @@ import { fetchRequestWithPayloadResponse } from "utils/util";
 
 export const login = async (email: string, password: string): Promise<string> =>
   fetchRequestWithPayloadResponse<string>(config.apis.login, {
-    method: "post",
+    method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
@@ -12,7 +12,7 @@ export const login = async (email: string, password: string): Promise<string> =>
 
 export const recoverPassword = async (email: string): Promise<boolean> =>
   fetchRequestWithPayloadResponse<boolean>(config.apis.recoverPassword, {
-    method: "post",
+    method: "POST",
     headers: {
       "Content-Type": "application/json"
     },

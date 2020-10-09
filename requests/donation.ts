@@ -17,7 +17,7 @@ export const createPaymentIntent = async (
   stripeAccount: string
 ): Promise<string> =>
   fetchRequestWithPayloadResponse<string>(config.apis.createPaymentIntent, {
-    method: "post",
+    method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
@@ -28,7 +28,7 @@ export const logDonation = async (
   dontaion: Omit<Donation, "timestamp">
 ): Promise<boolean> =>
   fetchRequestWithPayloadResponse<boolean>(config.apis.logDonation, {
-    method: "post",
+    method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
