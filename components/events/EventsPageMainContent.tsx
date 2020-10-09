@@ -28,7 +28,11 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
 
   return (
     <div className={mainContainer}>
-      <CoreTypography variant="h2">Upcoming Volunteer Events</CoreTypography>
+      <CoreTypography variant="h2">
+        {upcomingEvents.eventCards.length > 0
+          ? "Upcoming Volunteer Events"
+          : ""}
+      </CoreTypography>
       <div className={listContainer}>
         <EventsPageEventList
           paginatedEventCardsData={upcomingEvents}
