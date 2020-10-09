@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { login } from "server/actions/admin";
-import { handleRequestWithPayloadResponse } from "utils/util";
+import { handlePostRequestWithPayloadResponse } from "utils/util";
 
 // @route   POST api/login
 // @desc    Requests Admin Login
@@ -9,4 +9,4 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> =>
-  handleRequestWithPayloadResponse(req, res, login, ["email", "password"]);
+  handlePostRequestWithPayloadResponse(req, res, login, ["email", "password"]);
