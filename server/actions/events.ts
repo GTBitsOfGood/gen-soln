@@ -2,8 +2,8 @@ import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
-
 import {
+  Coordinates,
   Event as EventType,
   EventCardData as EventCardDataType,
   DatePaginatedEventCards,
@@ -11,6 +11,8 @@ import {
   LocationPaginatedEventCards,
   LocationPageInformation
 } from "utils/types";
+import { Client } from "@googlemaps/google-maps-services-js";
+import config from "config";
 
 const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   name: 1,
@@ -148,4 +150,27 @@ export async function getAllEventIds(): Promise<string[]> {
   await Mongo();
 
   return Event.distinct("_id").exec();
+}
+
+export function getCityPolygonCoordinates(cities: string[]) {
+  const client = new Client({});
+
+  return Promise.all(
+    cities.map(async city => {
+      const geocode = await client.geocode({
+        params: {
+          address: city, // space delineated street address of location
+          key: config.googleMapsKey === undefined ? "" : config.googleMapsKey
+        },
+        timeout: 1000 // milliseconds
+      });
+
+      const location = geocode.data.results[0].geometry.location;
+
+      return {
+        lat: location.lat,
+        long: location.lng
+      };
+    })
+  );
 }

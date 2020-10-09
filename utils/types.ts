@@ -47,7 +47,7 @@ export type EventCardData = EventBase & {
   nonprofitId: Pick<Nonprofit, "_id" | "name">;
 };
 
-interface Coordinates {
+export interface Coordinates {
   lat: number;
   long: number;
 }
