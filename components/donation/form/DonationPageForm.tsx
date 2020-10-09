@@ -23,7 +23,8 @@ import reducer, {
   PaymentStepProps,
   initialState,
   DonationPageStateDispatch,
-  incrementStep
+  incrementStep,
+  ReviewStepProps
 } from "./reducer";
 
 const useStyles = makeStyles({
@@ -65,6 +66,13 @@ const STEPS = [
       () => import("./DonationPageFormPaymentStep"),
       options
     )
+  },
+  {
+    title: "Review" as const,
+    component: dynamic<ReviewStepProps>(
+      () => import("./DonationPageFormReviewStep"),
+      options
+    )
   }
 ];
 
@@ -88,11 +96,15 @@ const DonationPageForm: React.FC<Props> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRouteChanging, setIsRouteChanging] = useState(false);
 
-  const { isReady, processPayment } = useStripePayment();
+  const { isReady, processPayment, createPaymentMethod } = useStripePayment();
+
+  const step = STEPS[curStepIndex];
 
   const isLastStep = useMemo(() => curStepIndex === STEPS.length - 1, [
     curStepIndex
   ]);
+
+  const isPaymentStep = useMemo(() => step.title === "Payment", [step]);
 
   const amount = useMemo(
     () => amountStep.radioButtonAmount ?? amountStep.otherAmount,
@@ -108,22 +120,15 @@ const DonationPageForm: React.FC<Props> = ({
       e.preventDefault();
       if (!e.currentTarget.reportValidity()) return;
 
+      const name = `${contactStep.firstName} ${contactStep.lastName}`;
+
       if (isLastStep) {
         setIsSubmitting(true);
-        // TODO: Check if we should use paymentStep.name instead
-        const name = `${contactStep.firstName} ${contactStep.lastName}`;
-        const email = contactStep.email;
 
         try {
           // Deliberately limit this try-catch only to Stripe's payment processing.
           // Catching errors from other miscellaneous code might make it seem like the payment failed, even when it succeeded.
-          await processPayment(
-            name,
-            contactStep.email,
-            paymentStep.zipcode,
-            amount,
-            stripeAccount
-          );
+          await processPayment(contactStep.email, amount, stripeAccount);
         } catch (err) {
           // TODO: Not sure how else to handle and display the error
           setIsSubmitting(false);
@@ -134,11 +139,17 @@ const DonationPageForm: React.FC<Props> = ({
         // TODO: What should we do if Stripe has processed the payment correctly, but our logDonation API call errored?
         void logDonation({
           name,
-          email,
+          email: contactStep.email,
           amount,
           nonprofitId: selectedNonprofitId
         });
       } else {
+        isPaymentStep &&
+          (await createPaymentMethod(
+            name,
+            contactStep.email,
+            paymentStep.zipcode
+          ));
         dispatch(incrementStep());
       }
     },
@@ -151,6 +162,8 @@ const DonationPageForm: React.FC<Props> = ({
       contactStep.address,
       paymentStep.zipcode,
       processPayment,
+      createPaymentMethod,
+      isPaymentStep,
       isLastStep,
       selectedNonprofitId,
       donationCompletedCallback,
@@ -158,7 +171,6 @@ const DonationPageForm: React.FC<Props> = ({
     ]
   );
 
-  const step = STEPS[curStepIndex];
   const componentJSX = useMemo(() => {
     let Component;
     switch (step.title) {
@@ -173,6 +185,10 @@ const DonationPageForm: React.FC<Props> = ({
       case "Payment":
         Component = step.component;
         return <Component {...paymentStep} />;
+
+      case "Review":
+        Component = step.component;
+        return <Component />;
 
       default: {
         const _exhaustiveCheck: never = step;

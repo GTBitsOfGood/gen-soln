@@ -21,6 +21,9 @@ export interface PaymentStepProps {
   zipcode: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ReviewStepProps {}
+
 type State = {
   curStepIndex: number;
   isCurStepCompleted: boolean;
