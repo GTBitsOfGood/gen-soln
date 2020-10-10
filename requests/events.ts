@@ -22,7 +22,7 @@ export const getNearestEvents = async (
   locationPageInformation: LocationPageInformation
 ) =>
   fetchRequestWithPayloadResponse<LocationPaginatedEventCards>(
-    config.apis.getUpcomingEvents,
+    config.apis.getNearestEvents,
     {
       method: "GET"
     },
