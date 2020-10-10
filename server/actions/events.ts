@@ -159,17 +159,27 @@ export function getCityPolygonCoordinates(cities: string[]) {
       const geocode = await client.geocode({
         params: {
           address: city, // space delineated street address of location
-          key: config.googleMapsKey === undefined ? "" : config.googleMapsKey
-        },
-        timeout: 1000 // milliseconds
+          components: "country:US",
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          key: config.googleMapsKey!
+        }
       });
 
-      const location = geocode.data.results[0].geometry.location;
+      const viewport = geocode.data.results[0].geometry.viewport;
 
-      return {
-        lat: location.lat,
-        long: location.lng
-      };
+      const north = viewport.northeast.lng;
+      const east = viewport.northeast.lat;
+      const south = viewport.southwest.lng;
+      const west = viewport.southwest.lat;
+
+      return [
+        [
+          [north, east],
+          [south, east],
+          [south, west],
+          [north, west]
+        ]
+      ];
     })
   );
 }
