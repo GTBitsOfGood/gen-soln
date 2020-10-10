@@ -203,7 +203,7 @@ const LocationAutocompleteInput: React.FC<Props> = props => {
                 classes={{ root: inputAdornmentRoot }}
                 position="start"
               >
-                <SearchIcon />
+                <SearchIcon fontSize="inherit" />
               </InputAdornment>
             ),
             classes: { root: textStyle }
