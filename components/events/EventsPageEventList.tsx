@@ -166,10 +166,7 @@ const EventsPageEventList: React.FC<Props> = ({
         <div className={classes.item} key={i}>
           {event != null ? (
             <EventsPageEventCard
-              headerText={event.name}
-              bodyText={event.nonprofitId.name}
-              metaText={event.duration.toString()} //TODO: replace with formatting from figma
-              imagePath={event.image}
+              eventCardData={event}
               onClick={() => {
                 return;
               }}

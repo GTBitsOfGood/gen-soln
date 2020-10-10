@@ -13,23 +13,74 @@ interface APIFailureResponse {
   message: string;
 }
 
-// Use this function on server side to handle incoming API requests:
-export const handleRequestWithPayloadResponse = async <T>(
-  req: NextApiRequest,
+const hasOwnProperties = <S, T extends PropertyKey>(
+  obj: S,
+  properties: T[]
+): obj is S & Record<T, unknown> => {
+  return (
+    typeof obj === "object" &&
+    obj != null &&
+    properties.every(prop => prop in obj)
+  );
+};
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const handleGetRequestWithPayloadResponse = async <S extends object, T>(
+  { method, query }: NextApiRequest,
   res: NextApiResponse,
-  callback: (body: NextApiRequest["body"]) => Promise<T>,
-  bodyHasProperties: string[] = []
+  serverAction: (input: S) => Promise<T>,
+  parameters: (keyof S)[] = [],
+  convertQueryToServerActionInput: (
+    queryRecord: Record<keyof S, string | string[]>
+  ) => S
 ): Promise<void> => {
-  const isGetRequest = req.method?.toUpperCase() === "GET";
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const data = isGetRequest ? req.query : req.body;
+  if (method?.toUpperCase() !== "GET")
+    throw new Error(
+      "Tried using the GET request handler for a non-GET request!"
+    );
+
   try {
-    if (bodyHasProperties.some(property => !(property in data))) {
+    if (!hasOwnProperties(query, parameters)) {
       res.status(400).json({
         success: false,
-        message: `One or more of the following properties was missing in ${
-          isGetRequest ? "query params" : "req.body"
-        }: [${bodyHasProperties.toString()}]`
+        message: `One or more of the following properties was missing in req.query: [${parameters.toString()}]`
+      });
+
+      return;
+    }
+
+    const input = convertQueryToServerActionInput(query);
+    const response: APISuccessResponse<T> = {
+      success: true,
+      payload: await serverAction(input)
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const response: APIFailureResponse = {
+      success: false,
+      message: (error instanceof Error && error.message) || errors.GENERIC_TEXT
+    };
+    res.status(400).json(response);
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const handlePostRequestWithPayloadResponse = async <S extends object, T>(
+  { method, body }: NextApiRequest,
+  res: NextApiResponse,
+  serverAction: (input: S) => Promise<T>,
+  parameters: (keyof S)[] = []
+): Promise<void> => {
+  if (method?.toUpperCase() !== "POST")
+    throw new Error(
+      "Tried using the POST request handler for a non-POST request!"
+    );
+
+  try {
+    if (!hasOwnProperties(body, parameters)) {
+      res.status(400).json({
+        success: false,
+        message: `One or more of the following properties was missing in req.body: [${parameters.toString()}]`
       });
 
       return;
@@ -37,7 +88,7 @@ export const handleRequestWithPayloadResponse = async <T>(
 
     const response: APISuccessResponse<T> = {
       success: true,
-      payload: await callback(data)
+      payload: await serverAction(body)
     };
     res.status(200).json(response);
   } catch (error) {
@@ -54,16 +105,17 @@ export const fetchRequestWithPayloadResponse = async <T>(
   url: string,
   options: RequestInit = {},
   // eslint-disable-next-line @typescript-eslint/ban-types
-  body: object = {}
+  queryParameters: object = {}
 ): Promise<T> => {
   const isGetRequest = options.method?.toUpperCase() === "GET";
 
-  const fullUrl = isGetRequest ? `${url}&${querystringify(body)}` : url;
+  const fullUrl = isGetRequest
+    ? `${url}?${querystringify(queryParameters)}`
+    : url;
 
   const res = await fetch(fullUrl, {
     mode: "same-origin",
-    ...options,
-    body: isGetRequest ? undefined : JSON.stringify(body)
+    ...options
   });
 
   const json = (await res.json()) as APISuccessResponse<T> | APIFailureResponse;

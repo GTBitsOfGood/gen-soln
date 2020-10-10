@@ -28,20 +28,26 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
 
   return (
     <div className={mainContainer}>
-      <CoreTypography variant="h2">Upcoming Volunteer Events</CoreTypography>
-      <div className={listContainer}>
-        <EventsPageEventList
-          paginatedEventCardsData={upcomingEvents}
-          getMoreEvents={(page: number) =>
-            getUpcomingEvents({
-              page,
-              date: upcomingEvents.date,
-              totalCount: upcomingEvents.totalCount,
-              isLastPage: upcomingEvents.isLastPage
-            })
-          }
-        />
-      </div>
+      {upcomingEvents.eventCards.length > 0 && (
+        <>
+          <CoreTypography variant="h2">
+            Upcoming Volunteer Events
+          </CoreTypography>
+          <div className={listContainer}>
+            <EventsPageEventList
+              paginatedEventCardsData={upcomingEvents}
+              getMoreEvents={(page: number) =>
+                getUpcomingEvents({
+                  page,
+                  date: upcomingEvents.date,
+                  totalCount: upcomingEvents.totalCount,
+                  isLastPage: upcomingEvents.isLastPage
+                })
+              }
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

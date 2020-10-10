@@ -37,20 +37,15 @@ interface EventBase {
 }
 
 export type Event = EventBase & {
-  about: string;
   maxVolunteers: number;
   volunteers: Array<string>;
   nonprofitId: string;
+  about: string;
 };
 
 export type EventCardData = EventBase & {
   nonprofitId: Pick<Nonprofit, "_id" | "name">;
 };
-
-interface Coordinates {
-  lat: number;
-  long: number;
-}
 
 interface PageInformation {
   page: number;
@@ -63,7 +58,8 @@ export type PaginatedEventCards = PageInformation & {
 };
 
 interface PaginateWithLocation {
-  location: Coordinates;
+  lat: number;
+  long: number;
 }
 
 interface PaginateWithDate {

@@ -68,21 +68,22 @@ export async function getUpcomingEventsCardDataCount(date: Date) {
 }
 
 export async function getNearestEventsCardData({
-  location,
+  lat,
+  long,
   page,
   totalCount
 }: LocationPageInformation): Promise<LocationPaginatedEventCards> {
   await Mongo();
 
   if (totalCount == -1) {
-    totalCount = await getNearestEventsCardDataCount(location);
+    totalCount = await getNearestEventsCardDataCount({ lat, long });
   }
 
   const result = await Event.find(
     {
       "address.location": {
         $geoWithin: {
-          $centerSphere: [[location.long, location.lat], NEAREST_EVENTS_RADIUS]
+          $centerSphere: [[long, lat], NEAREST_EVENTS_RADIUS]
         }
       }
     },
@@ -96,7 +97,8 @@ export async function getNearestEventsCardData({
     eventCards: result.map(r => r.toJSON()) as EventCardDataType[],
     page,
     totalCount,
-    location,
+    lat,
+    long,
     isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
   };
 }
@@ -104,7 +106,7 @@ export async function getNearestEventsCardData({
 export async function getNearestEventsCardDataCount({
   lat,
   long
-}: LocationPageInformation["location"]) {
+}: Pick<LocationPageInformation, "lat" | "long">) {
   await Mongo();
 
   return Event.countDocuments({
