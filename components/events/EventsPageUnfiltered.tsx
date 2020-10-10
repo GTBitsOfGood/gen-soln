@@ -4,9 +4,9 @@ import EventsPageMainContent from "./EventsPageMainContent";
 
 import { DatePaginatedEventCards } from "utils/types";
 
-type Props = React.ComponentProps<typeof EventsPageWithSidebar> & {
+interface Props extends React.ComponentProps<typeof EventsPageWithSidebar> {
   upcomingEventsFirstPageData: DatePaginatedEventCards;
-};
+}
 
 const EventsPageUnfiltered: React.FC<Props> = ({
   upcomingEventsFirstPageData,

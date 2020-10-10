@@ -2,8 +2,6 @@ import React from "react";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-import { DropdownProps } from "utils/types";
-
 import DonationPageHeaderSelect from "./DonationPageHeaderSelect";
 import DonationPageHeaderBranding from "./DonationPageHeaderBranding";
 
@@ -20,7 +18,9 @@ const useStyles = makeStyles(({ margins }: Theme) =>
   })
 );
 
-const DonationPageHeader: React.FC<DropdownProps> = props => {
+const DonationPageHeader: React.FC<React.ComponentProps<
+  typeof DonationPageHeaderSelect
+>> = props => {
   const { header } = useStyles();
 
   return (

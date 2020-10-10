@@ -88,13 +88,9 @@ export interface DropdownProps {
 declare module "@material-ui/core/styles" {
   interface Theme {
     margins: Record<Spacing, string>;
-    nonprofitBackgroundImage: Nonprofit["background"];
-    nonprofitLogoImage: Nonprofit["logo"];
   }
 
   interface ThemeOptions {
     margins: Record<Spacing, string>;
-    nonprofitBackgroundImage?: Nonprofit["background"];
-    nonprofitLogoImage?: Nonprofit["logo"];
   }
 }
