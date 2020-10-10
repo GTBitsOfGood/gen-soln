@@ -97,7 +97,7 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
               {eventCardData.name}
             </CoreTypography>
             <CoreTypography className={clsx(body, truncate)}>
-              {eventCardData.name}
+              {eventCardData.nonprofitId.name}
             </CoreTypography>
           </div>
         </div>
