@@ -8,9 +8,9 @@ import LocationAutocompleteInput, {
 } from "components/LocationAutocompleteInput";
 
 import {
-  ContactStepProps,
+  BillingStepProps,
   DonationPageStateDispatch,
-  setContactStepField,
+  setBillingStepField,
   setIsCurStepCompleted,
   setAddress
 } from "./reducer";
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   }
 });
 
-const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
+const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
   firstName,
   lastName,
   email,
@@ -59,10 +59,10 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
 
   const onChange = useCallback(
     (
-      key: keyof Omit<ContactStepProps, "address">,
+      key: keyof Omit<BillingStepProps, "address">,
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-      dispatch && dispatch(setContactStepField({ key, value: e.target.value }));
+      dispatch && dispatch(setBillingStepField({ key, value: e.target.value }));
     },
     [dispatch]
   );
@@ -126,4 +126,4 @@ const DonationPageFormContactStep: React.FC<ContactStepProps> = ({
   );
 };
 
-export default DonationPageFormContactStep;
+export default DonationPageFormBillingStep;
