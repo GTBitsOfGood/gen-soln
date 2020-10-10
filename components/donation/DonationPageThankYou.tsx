@@ -3,9 +3,10 @@ import React from "react";
 import { useRouter } from "next/router";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+
+import { CheckCircleIcon } from "@core/icons";
 
 import config from "config";
 
@@ -59,7 +60,7 @@ const DonationPageThankYou: React.FC = () => {
   return (
     <div className={container}>
       <div className={thankYouContainer}>
-        <CheckCircleOutlineIcon fontSize="large" className={icon} />
+        <CheckCircleIcon fontSize="large" className={icon} />
         <Typography variant="h5">Thank you for your donation</Typography>
       </div>
       <div className={footerContainer}>

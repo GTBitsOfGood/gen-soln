@@ -15,10 +15,6 @@ const useStyles = makeStyles({
     flexDirection: "column",
     flex: 1
   },
-  rowFlex: {
-    display: "flex",
-    justifyContent: "space-between"
-  },
   rightMargin: {
     marginRight: 24
   },
@@ -29,9 +25,6 @@ const useStyles = makeStyles({
   verticalNegativeMargin: {
     marginTop: -7,
     marginBottom: -7
-  },
-  width: {
-    width: "55%"
   }
 });
 

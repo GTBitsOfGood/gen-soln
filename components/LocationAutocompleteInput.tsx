@@ -3,19 +3,22 @@ import clsx from "clsx";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import SearchIcon from "@material-ui/icons/Search";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid from "@material-ui/core/Grid";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 
 import CoreTypography, { typographyStyles } from "@core/typography";
+import { SearchIcon } from "@core/icons";
 import config from "config";
 
 const useStyles = makeStyles({
   textStyle: typographyStyles.caption,
   highlightedText: {
     fontWeight: 800
+  },
+  inputAdornmentRoot: {
+    marginLeft: 6
   }
 });
 
@@ -63,7 +66,7 @@ const LocationAutocompleteInput: React.FC<Props> = props => {
     required = false,
     placeholder = ""
   } = props;
-  const { textStyle, highlightedText } = useStyles();
+  const { textStyle, highlightedText, inputAdornmentRoot } = useStyles();
   const [value, setValue] = useState<PlaceType | null>(defaultValue);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<PlaceType[]>([]);
@@ -196,8 +199,11 @@ const LocationAutocompleteInput: React.FC<Props> = props => {
           InputProps={{
             ...InputProps,
             startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon fontSize="small" />
+              <InputAdornment
+                classes={{ root: inputAdornmentRoot }}
+                position="start"
+              >
+                <SearchIcon />
               </InputAdornment>
             ),
             classes: { root: textStyle }
