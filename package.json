@@ -19,6 +19,7 @@
     "secrets:sync": "bw sync && bw get item gen-soln/.env.local | fx .notes > \".env.local\" && bw get item gen-soln/.env.development.local | fx .notes > \".env.development.local\""
   },
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.1.13",
     "@material-ui/core": "^4.9.2",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
