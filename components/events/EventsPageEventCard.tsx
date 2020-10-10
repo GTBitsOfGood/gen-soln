@@ -5,6 +5,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import CoreTypography from "@core/typography";
 import grays from "@core/colors/grays";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
+import { EventCardData } from "utils/types";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -60,23 +61,12 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 );
 
 interface Props {
-  /* Used for event title */
-  headerText: string;
-  /* Used for nonprofit name */
-  bodyText: string;
-  /* Used for time */
-  metaText: string;
-  imagePath: string;
+  // see EventCardData under util/types
+  eventCardData: EventCardData;
   onClick: () => void;
 }
 
-const EventsPageEventCard: React.FC<Props> = ({
-  headerText,
-  bodyText,
-  metaText,
-  imagePath,
-  onClick
-}) => {
+const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
   const {
     card,
     cardContainer,
@@ -92,16 +82,22 @@ const EventsPageEventCard: React.FC<Props> = ({
     <FocusVisibleOnly onClick={onClick}>
       <div className={cardContainer}>
         <div className={card}>
-          <img src={imagePath} className={image} alt={`${headerText}`} />
+          <img
+            src={eventCardData.image}
+            className={image}
+            alt={`${eventCardData.name}`}
+          />
           <div className={content}>
             <CoreTypography variant="h4" className={clsx(meta, truncate)}>
-              {metaText}
+              {
+                eventCardData.duration /*TODO: replace with formatting from figma*/
+              }
             </CoreTypography>
             <CoreTypography variant="h4" className={header}>
-              {headerText}
+              {eventCardData.name}
             </CoreTypography>
             <CoreTypography className={clsx(body, truncate)}>
-              {bodyText}
+              {eventCardData.nonprofitId.name}
             </CoreTypography>
           </div>
         </div>

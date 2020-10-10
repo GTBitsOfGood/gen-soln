@@ -37,10 +37,10 @@ interface EventBase {
 }
 
 export type Event = EventBase & {
-  about: string;
   maxVolunteers: number;
   volunteers: Array<string>;
   nonprofitId: string;
+  about: string;
 };
 
 export type EventCardData = EventBase & {
