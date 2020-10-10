@@ -5,9 +5,12 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import DonationPageHeader from "./header/DonationPageHeader";
 
 import FullPageLayout from "components/FullPageLayout";
-import { DropdownProps } from "utils/types";
 
-const useStyles = makeStyles(({ margins, nonprofitBackgroundImage }: Theme) =>
+interface StyleProps {
+  backgroundImage: string;
+}
+
+const useStyles = makeStyles(({ margins }: Theme) =>
   createStyles({
     container: {
       flexDirection: "column"
@@ -15,7 +18,7 @@ const useStyles = makeStyles(({ margins, nonprofitBackgroundImage }: Theme) =>
     content: {
       flex: 1,
       display: "flex",
-      backgroundImage: nonprofitBackgroundImage,
+      backgroundImage: (props: StyleProps) => props.backgroundImage,
       backgroundSize: "cover",
       backgroundRepeat: "repeat-y",
       backgroundPosition: "center",
@@ -24,15 +27,18 @@ const useStyles = makeStyles(({ margins, nonprofitBackgroundImage }: Theme) =>
   })
 );
 
-const DonationPageLayout: React.FC<DropdownProps> = ({
+type Props = React.ComponentProps<typeof DonationPageHeader> & StyleProps;
+
+const DonationPageLayout: React.FC<Props> = ({
   children,
-  ...dropdownProps
+  backgroundImage,
+  ...rest
 }) => {
-  const { container, content } = useStyles();
+  const { container, content } = useStyles({ backgroundImage });
 
   return (
     <FullPageLayout className={container}>
-      <DonationPageHeader {...dropdownProps} />
+      <DonationPageHeader {...rest} />
       <div className={content}>{children}</div>
     </FullPageLayout>
   );

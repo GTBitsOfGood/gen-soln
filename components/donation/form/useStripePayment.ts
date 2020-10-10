@@ -7,10 +7,10 @@ import { createPaymentIntent } from "requests/donation";
 
 const CENTS_IN_DOLLAR = 100;
 
-type StripePaymentMethod = {
+interface StripePaymentMethod {
   paymentMethod?: stripeJs.PaymentMethod | undefined;
   error?: stripeJs.StripeError | undefined;
-};
+}
 
 const useStripePayment = () => {
   const stripe = useStripe();

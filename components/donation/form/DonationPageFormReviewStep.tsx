@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import clsx from "clsx";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import {
   DonationPageStateDispatch,

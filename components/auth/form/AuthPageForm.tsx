@@ -30,12 +30,12 @@ const useStyles = makeStyles({
   }
 });
 
-type Props = {
+interface Props extends React.ComponentProps<typeof AuthPageFormContainer> {
   title: string;
   ctaText: string;
   onPressCTA: (stopLoading: () => void) => Promise<void>;
   footer?: React.ReactNode;
-} & React.ComponentProps<typeof AuthPageFormContainer>;
+}
 
 const AuthPageForm = forwardRef<HTMLFormElement, Props>(
   ({ children, title, onPressCTA, ctaText, footer, ...rest }, ref) => {

@@ -5,8 +5,7 @@ import errors from "utils/errors";
 import { Nonprofit as NonprofitType, Dropdown } from "utils/types";
 import config from "config";
 
-type NonprofitNameWithId = Pick<NonprofitType, "name"> &
-  Pick<NonprofitType, "_id">;
+type NonprofitNameWithId = Pick<NonprofitType, "name" | "_id">;
 
 export async function createNonprofit({
   name,
