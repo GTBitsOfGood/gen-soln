@@ -9,7 +9,7 @@ export interface AmountStepProps {
   otherAmount: number;
 }
 
-export interface ContactStepProps {
+export interface BillingStepProps {
   firstName: string;
   lastName: string;
   email: string;
@@ -27,7 +27,7 @@ export interface ReviewStepProps {}
 type State = {
   curStepIndex: number;
   isCurStepCompleted: boolean;
-  contactStep: ContactStepProps;
+  billingStep: BillingStepProps;
   amountStep: AmountStepProps;
   paymentStep: PaymentStepProps;
 };
@@ -41,7 +41,7 @@ export const initialState: State = {
   curStepIndex: 0,
   // The first step, DonationPageFormAmountStep, is complete by default since the first radio button is selected
   isCurStepCompleted: true,
-  contactStep: {
+  billingStep: {
     firstName: "",
     lastName: "",
     email: "",
@@ -82,19 +82,19 @@ const { actions, reducer } = createSlice({
     setOtherAmount({ amountStep }, { payload }: PayloadAction<number>) {
       amountStep.otherAmount = payload;
     },
-    setContactStepField(
-      { contactStep },
+    setBillingStepField(
+      { billingStep },
       {
         payload
       }: PayloadAction<{
-        key: keyof Omit<ContactStepProps, "address">;
+        key: keyof Omit<BillingStepProps, "address">;
         value: string;
       }>
     ) {
-      contactStep[payload.key] = payload.value;
+      billingStep[payload.key] = payload.value;
     },
-    setAddress({ contactStep }, { payload }: PayloadAction<PlaceType | null>) {
-      contactStep.address = payload;
+    setAddress({ billingStep }, { payload }: PayloadAction<PlaceType | null>) {
+      billingStep.address = payload;
     },
     setNameOnCard({ paymentStep }, { payload }: PayloadAction<string>) {
       paymentStep.nameOnCard = payload;
@@ -116,7 +116,7 @@ export const {
   setIsCurStepCompleted,
   setRadioButtonAmount,
   setOtherAmount,
-  setContactStepField,
+  setBillingStepField,
   setAddress,
   setNameOnCard,
   setZipcode
