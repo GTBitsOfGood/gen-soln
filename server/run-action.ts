@@ -3,8 +3,9 @@
 // For module aliases to work correctly in this script, we had to define "_moduleAliases" in our package.json
 
 import loadEnvForScript from "./env";
-loadEnvForScript();
 
+loadEnvForScript();
+// eslint-disable-next-line import/order
 import program from "commander";
 
 const runAction = async (fileName: string, functionCallWithArgs: string) => {

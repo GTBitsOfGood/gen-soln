@@ -1,14 +1,13 @@
 import React, { useState, useCallback, useRef } from "react";
 
-import EmailTextField, { EMAIL_INPUT_FIELD_NAME } from "./EmailTextField";
-import AuthPageForm from "./AuthPageForm";
+import { Typography } from "@material-ui/core";
 
 import { ContentComponentProps } from "components/auth";
-
 import { recoverPassword } from "requests/admin";
-
 import errors from "utils/errors";
-import { Typography } from "@material-ui/core";
+
+import AuthPageForm from "./AuthPageForm";
+import EmailTextField, { EMAIL_INPUT_FIELD_NAME } from "./EmailTextField";
 
 const states = {
   INITIAL: {

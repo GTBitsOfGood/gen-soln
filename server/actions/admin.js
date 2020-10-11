@@ -1,10 +1,11 @@
 import bcrypt from "bcryptjs";
+import config from "config";
 import jwt from "jsonwebtoken";
+
 import Mongo from "server/index";
 import Admin from "server/models/admin";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
-import config from "config";
 
 const SALT_ROUNDS = 10;
 const JWT_EXPIRES_IN = "1d";

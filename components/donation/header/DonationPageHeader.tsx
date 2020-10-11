@@ -2,8 +2,8 @@ import React from "react";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-import DonationPageHeaderSelect from "./DonationPageHeaderSelect";
 import DonationPageHeaderBranding from "./DonationPageHeaderBranding";
+import DonationPageHeaderSelect from "./DonationPageHeaderSelect";
 
 const white = "white";
 const useStyles = makeStyles(({ margins }: Theme) =>

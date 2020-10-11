@@ -1,8 +1,8 @@
 import React from "react";
-import clsx from "clsx";
 
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import { Typography } from "@material-ui/core";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import clsx from "clsx";
 
 interface StyleProps {
   logoImage: string;

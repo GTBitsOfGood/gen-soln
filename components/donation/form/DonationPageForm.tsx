@@ -5,18 +5,15 @@ import React, {
   useReducer,
   useEffect
 } from "react";
-import { Router } from "next/router";
-import dynamic from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
-
-import useStripePayment from "./useStripePayment";
-
-import DonationPageFormNavigation from "./DonationPageFormNavigation";
-import DonationPageFormButton from "./DonationPageFormButton";
+import dynamic from "next/dynamic";
+import { Router } from "next/router";
 
 import { logDonation } from "requests/donation";
 
+import DonationPageFormButton from "./DonationPageFormButton";
+import DonationPageFormNavigation from "./DonationPageFormNavigation";
 import reducer, {
   AmountStepProps,
   BillingStepProps,
@@ -26,6 +23,7 @@ import reducer, {
   incrementStep,
   ReviewStepProps
 } from "./reducer";
+import useStripePayment from "./useStripePayment";
 
 const useStyles = makeStyles({
   container: {

@@ -1,10 +1,9 @@
 import React from "react";
 
+import { Typography } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import Branding from "components/Branding";
-
-import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles({
   header: {

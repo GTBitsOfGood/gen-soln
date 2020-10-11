@@ -1,9 +1,11 @@
 import React from "react";
+
+import { CssBaseline } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core/styles";
 import App from "next/app";
 import Head from "next/head";
-import { ThemeProvider } from "@material-ui/core/styles";
+
 import theme from "utils/theme";
-import { CssBaseline } from "@material-ui/core";
 
 export default class MyApp extends App {
   componentDidMount(): void {

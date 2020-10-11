@@ -2,6 +2,7 @@ import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { Skeleton } from "@material-ui/lab";
+
 import grays from "@core/colors/grays";
 
 const useStyles = makeStyles(({ palette }: Theme) =>

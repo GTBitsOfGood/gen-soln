@@ -1,9 +1,10 @@
 import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+
+import grays from "@core/colors/grays";
 import CoreTypography from "@core/typography";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
-import grays from "@core/colors/grays";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({

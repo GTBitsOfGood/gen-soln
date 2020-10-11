@@ -1,7 +1,8 @@
 import { useEffect } from "react";
+
+import config from "config";
 import { NextPage, InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
-import config from "config";
 
 import { getDefaultNonprofitId } from "server/actions/nonprofit";
 

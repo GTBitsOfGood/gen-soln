@@ -1,7 +1,7 @@
 import React from "react";
-import { SvgIconProps } from "@material-ui/core/SvgIcon";
 
 import { SvgIcon } from "@material-ui/core";
+import { SvgIconProps } from "@material-ui/core/SvgIcon";
 
 const ThreeBars: React.FC<SvgIconProps> = props => {
   return (

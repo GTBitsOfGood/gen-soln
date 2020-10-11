@@ -2,9 +2,9 @@ import React from "react";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-import DonationPageHeader from "./header/DonationPageHeader";
-
 import FullPageLayout from "components/FullPageLayout";
+
+import DonationPageHeader from "./header/DonationPageHeader";
 
 interface StyleProps {
   backgroundImage: string;

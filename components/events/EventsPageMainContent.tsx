@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+
+import { makeStyles } from "@material-ui/core/styles";
+
 import CoreTypography from "@core/typography";
-
-import EventsPageEventList from "./EventsPageEventList";
 import { getUpcomingEvents, getNearestEvents } from "requests/events";
-import { usePosition } from "./usePosition";
-
 import {
   DatePaginatedEventCards,
   LocationPaginatedEventCards
 } from "utils/types";
+
+import EventsPageEventList from "./EventsPageEventList";
+import { usePosition } from "./usePosition";
 
 const useStyles = makeStyles({
   mainContainer: {

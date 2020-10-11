@@ -1,13 +1,13 @@
+import config from "config";
 import {
   NextPage,
   GetStaticPaths,
   GetStaticPropsContext,
   InferGetStaticPropsType
 } from "next";
-
-import { useRouter } from "next/router";
 import ErrorPage from "next/error";
-import config from "config";
+import { useRouter } from "next/router";
+
 import { getAllEventIds, getEventById } from "server/actions/events";
 
 const NonprofitEventPage: NextPage<InferGetStaticPropsType<

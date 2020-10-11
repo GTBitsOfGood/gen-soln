@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 import React from "react";
-import clsx from "clsx";
-import { useRouter } from "next/router";
-import NextLink, { LinkProps as NextLinkProps } from "next/link";
-import { LinkProps as MuiLinkProps } from "@material-ui/core/Link";
 
 import { Link as MuiLink } from "@material-ui/core";
+import { LinkProps as MuiLinkProps } from "@material-ui/core/Link";
+import clsx from "clsx";
+import NextLink, { LinkProps as NextLinkProps } from "next/link";
+import { useRouter } from "next/router";
 
 type NextComposedProps = Omit<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,

@@ -1,6 +1,9 @@
 import React, { useContext, useCallback, useEffect } from "react";
-import clsx from "clsx";
+
+import { TextField } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import clsx from "clsx";
+
 import LocationAutocompleteInput, {
   PlaceType
 } from "components/LocationAutocompleteInput";
@@ -12,8 +15,6 @@ import {
   setIsCurStepCompleted,
   setAddress
 } from "./reducer";
-
-import { TextField } from "@material-ui/core";
 
 const useStyles = makeStyles({
   container: {

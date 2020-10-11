@@ -1,8 +1,10 @@
 import React from "react";
-import { signIn, signOut, useSession } from "next-auth/client";
-import { CoreButton } from "@core/buttons";
+
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import config from "config";
+import { signIn, signOut, useSession } from "next-auth/client";
+
+import { CoreButton } from "@core/buttons";
 
 const useStyles = makeStyles({
   container: {

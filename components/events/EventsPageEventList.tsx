@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+
 import { IconButton } from "@material-ui/core";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+
+import grays from "@core/colors/grays";
 import { ChevronRightIcon, ChevronLeftIcon } from "@core/icons";
+import { PaginatedEventCards, EventCardData } from "utils/types";
 
 import EventsPageEventCard from "./EventsPageEventCard";
 import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
-import { PaginatedEventCards, EventCardData } from "utils/types";
-import grays from "@core/colors/grays";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({

@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useContext } from "react";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 
+import { Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 // @ts-ignore: We don't have type definitions for CurrencyTextField
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
+import clsx from "clsx";
 
 import {
   AmountStepProps,
@@ -15,8 +16,6 @@ import {
   MIN_OTHER_AMOUNT,
   MAX_OTHER_AMOUNT
 } from "./reducer";
-
-import { Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 
 const useStyles = makeStyles({
   container: {

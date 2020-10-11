@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from "react";
 
-import { EyeIcon, EyeClosedIcon, LockIcon } from "@core/icons";
-
 import { IconButton, InputAdornment, TextField } from "@material-ui/core";
+
+import { EyeIcon, EyeClosedIcon, LockIcon } from "@core/icons";
 
 export const PASSWORD_INPUT_FIELD_NAME = "user_password";
 

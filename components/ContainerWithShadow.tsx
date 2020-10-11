@@ -1,7 +1,7 @@
 import React from "react";
-import clsx from "clsx";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import clsx from "clsx";
 
 const white = "white";
 const useStyles = makeStyles({

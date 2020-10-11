@@ -1,20 +1,21 @@
 import React from "react";
+
 import {
   NextPage,
   InferGetServerSidePropsType,
   GetServerSidePropsContext
 } from "next";
+
 import EventsPageFiltered from "components/events/EventsPageFiltered";
 import EventsPageUnfiltered from "components/events/EventsPageUnfiltered";
-
-import { Dropdown } from "utils/types";
-import { returnQueryAsArray } from "utils/util";
-import { getCauses } from "server/actions/nonprofit";
 import {
   getUpcomingEventsCardData,
   getUpcomingEventsCardDataCount,
   getByCausesEventsCardData
 } from "server/actions/events";
+import { getCauses } from "server/actions/nonprofit";
+import { Dropdown } from "utils/types";
+import { returnQueryAsArray } from "utils/util";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps

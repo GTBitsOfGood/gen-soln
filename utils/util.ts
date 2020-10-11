@@ -1,6 +1,7 @@
-import { stringify as querystringify } from "querystringify";
-import { NextApiRequest, NextApiResponse } from "next";
 import fetch from "isomorphic-unfetch";
+import { NextApiRequest, NextApiResponse } from "next";
+import { stringify as querystringify } from "querystringify";
+
 import errors from "utils/errors";
 
 interface APISuccessResponse<T> {

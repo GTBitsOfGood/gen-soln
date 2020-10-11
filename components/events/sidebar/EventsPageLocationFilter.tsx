@@ -1,11 +1,12 @@
 import React from "react";
+
+import { Chip } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+
+import { XIcon } from "@core/icons";
 import LocationAutocompleteInput from "components/LocationAutocompleteInput";
 
 import useRouterQueryParamsState from "./useRouterQueryParamsState";
-import { XIcon } from "@core/icons";
-
-import { Chip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

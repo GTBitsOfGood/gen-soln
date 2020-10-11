@@ -1,12 +1,10 @@
 import React from "react";
 
+import { Button } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-import ContainerWithShadow from "components/ContainerWithShadow";
-
 import { ChevronLeftIcon } from "@core/icons";
-
-import { Button } from "@material-ui/core";
+import ContainerWithShadow from "components/ContainerWithShadow";
 
 const useStyles = makeStyles({
   container: {

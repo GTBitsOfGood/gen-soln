@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
-import dynamic from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import dynamic from "next/dynamic";
 
 import DonationPageNonprofitDescription from "./DonationPageNonprofitDescription";
 import DonationPageForm from "./form/DonationPageForm";

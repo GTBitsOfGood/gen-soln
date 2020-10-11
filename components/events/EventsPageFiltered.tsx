@@ -1,4 +1,5 @@
 import React from "react";
+
 import EventsPageWithSidebar from "./EventsPageWithSidebar";
 
 // Right now we have no additional props

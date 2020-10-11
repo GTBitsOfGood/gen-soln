@@ -1,8 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-
-import { CoreButton } from "@core/buttons";
-import { SearchIcon, ThreeBarsIcon } from "@core/icons";
 
 import {
   AppBar,
@@ -12,6 +8,10 @@ import {
   MenuItem,
   Menu
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+import { CoreButton } from "@core/buttons";
+import { SearchIcon, ThreeBarsIcon } from "@core/icons";
 
 const useStyles = makeStyles(theme => ({
   grow: {

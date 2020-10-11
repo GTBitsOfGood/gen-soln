@@ -1,14 +1,13 @@
 import React, { useEffect, useContext, useState } from "react";
-import clsx from "clsx";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 
+import { TextField } from "@material-ui/core";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement
 } from "@stripe/react-stripe-js";
-
-import StripeTextField from "./StripeTextField";
+import clsx from "clsx";
 
 import {
   DonationPageStateDispatch,
@@ -17,8 +16,7 @@ import {
   setZipcode,
   setIsCurStepCompleted
 } from "./reducer";
-
-import { TextField } from "@material-ui/core";
+import StripeTextField from "./StripeTextField";
 
 const useStyles = makeStyles({
   container: {

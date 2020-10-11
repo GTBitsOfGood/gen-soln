@@ -1,10 +1,9 @@
 import React from "react";
 
+import { TextField, InputAdornment } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import { MailIcon } from "@core/icons";
-
-import { TextField, InputAdornment } from "@material-ui/core";
 
 export const EMAIL_INPUT_FIELD_NAME = "user_email";
 

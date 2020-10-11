@@ -1,10 +1,9 @@
 import React, { forwardRef, useState, useCallback } from "react";
 
+import { Typography, CircularProgress, Button } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import AuthPageFormContainer from "./AuthPageFormContainer";
-
-import { Typography, CircularProgress, Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
   form: {
