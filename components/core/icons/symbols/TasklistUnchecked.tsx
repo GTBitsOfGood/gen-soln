@@ -1,5 +1,7 @@
 import React from "react";
-import SvgIcon, { SvgIconProps } from "@material-ui/core/SvgIcon";
+import { SvgIconProps } from "@material-ui/core/SvgIcon";
+
+import { SvgIcon } from "@material-ui/core";
 
 const TasklistUnchecked: React.FC<SvgIconProps> = props => {
   return (

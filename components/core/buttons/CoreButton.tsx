@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { CreateCSSProperties } from "@material-ui/core/styles/withStyles";
-import Button from "@material-ui/core/Button";
-
 import { typographyStyles } from "@core/typography";
+
+import { Button } from "@material-ui/core";
 
 type Props = Omit<React.ComponentProps<typeof Button>, "color" | "size">;
 

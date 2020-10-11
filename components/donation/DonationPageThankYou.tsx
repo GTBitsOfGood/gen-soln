@@ -3,12 +3,12 @@ import React from "react";
 import { useRouter } from "next/router";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 
 import { CheckCircleIcon } from "@core/icons";
 
 import config from "config";
+
+import { Typography, Button } from "@material-ui/core";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({

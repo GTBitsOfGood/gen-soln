@@ -1,12 +1,11 @@
 import React from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
 
 import Branding from "components/Branding";
 import { QuestionIcon } from "@core/icons";
+
+import { Typography, IconButton, Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles({
   container: {

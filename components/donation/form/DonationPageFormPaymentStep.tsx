@@ -2,8 +2,6 @@ import React, { useEffect, useContext, useState } from "react";
 import clsx from "clsx";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-import TextField from "@material-ui/core/TextField";
-
 import {
   CardNumberElement,
   CardExpiryElement,
@@ -19,6 +17,8 @@ import {
   setZipcode,
   setIsCurStepCompleted
 } from "./reducer";
+
+import { TextField } from "@material-ui/core";
 
 const useStyles = makeStyles({
   container: {

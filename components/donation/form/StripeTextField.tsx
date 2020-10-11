@@ -4,9 +4,9 @@ import {
   CardExpiryElement,
   CardCvcElement
 } from "@stripe/react-stripe-js";
-import TextField from "@material-ui/core/TextField";
 import StripeInput from "./StripeInput";
 import * as stripeJs from "@stripe/stripe-js";
+import { TextField } from "@material-ui/core";
 
 type Props = React.ComponentProps<typeof TextField> & {
   stripeElement:

@@ -7,7 +7,7 @@ import {
   ReviewStepProps,
   setIsCurStepCompleted
 } from "./reducer";
-import TextField from "@material-ui/core/TextField";
+import { TextField } from "@material-ui/core";
 
 const useStyles = makeStyles({
   container: {

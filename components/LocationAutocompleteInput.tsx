@@ -1,16 +1,15 @@
 import React, { useRef, useState, useMemo, useEffect } from "react";
 import clsx from "clsx";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Grid from "@material-ui/core/Grid";
 import parse from "autosuggest-highlight/parse";
 import throttle from "lodash/throttle";
 
 import CoreTypography, { typographyStyles } from "@core/typography";
 import { SearchIcon } from "@core/icons";
 import config from "config";
+
+import { TextField, InputAdornment, Grid } from "@material-ui/core";
 
 const useStyles = makeStyles({
   textStyle: typographyStyles.caption,
