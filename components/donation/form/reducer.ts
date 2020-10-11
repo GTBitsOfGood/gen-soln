@@ -14,11 +14,11 @@ export interface BillingStepProps {
   lastName: string;
   email: string;
   address: PlaceType | null;
+  zipcode: string;
 }
 
 export interface PaymentStepProps {
   nameOnCard: string;
-  zipcode: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -45,15 +45,15 @@ export const initialState: State = {
     firstName: "",
     lastName: "",
     email: "",
-    address: null
+    address: null,
+    zipcode: ""
   },
   amountStep: {
     radioButtonAmount: AMOUNTS[0],
     otherAmount: +MIN_OTHER_AMOUNT
   },
   paymentStep: {
-    nameOnCard: "",
-    zipcode: ""
+    nameOnCard: ""
   }
 };
 
@@ -99,9 +99,9 @@ const { actions, reducer } = createSlice({
     setNameOnCard({ paymentStep }, { payload }: PayloadAction<string>) {
       paymentStep.nameOnCard = payload;
     },
-    setZipcode({ paymentStep }, { payload }: PayloadAction<string>) {
+    setZipcode({ billingStep }, { payload }: PayloadAction<string>) {
       // From https://github.com/medipass/react-credit-card-input/blob/master/src/utils/formatter.js#L135
-      paymentStep.zipcode = (payload.match(/\d+/g) || []).join("");
+      billingStep.zipcode = (payload.match(/\d+/g) || []).join("");
     }
   }
 });

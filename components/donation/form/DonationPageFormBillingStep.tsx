@@ -13,8 +13,11 @@ import {
   DonationPageStateDispatch,
   setBillingStepField,
   setIsCurStepCompleted,
-  setAddress
+  setAddress,
+  setZipcode
 } from "./reducer";
+
+const MAX_ZIP_CODE_LENGTH = 5;
 
 const useStyles = makeStyles({
   container: {
@@ -42,7 +45,8 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
   firstName,
   lastName,
   email,
-  address
+  address,
+  zipcode
 }) => {
   const {
     container,
@@ -120,6 +124,24 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
           required
           defaultValue={address}
           label="Address"
+        />
+      </div>
+      <div className={clsx(name, verticalPositiveMargin)}>
+        <TextField
+          fullWidth
+          required
+          type="tel"
+          label="Zipcode"
+          autoComplete="postal-code"
+          inputProps={{
+            maxLength: MAX_ZIP_CODE_LENGTH,
+            pattern: `[0-9s]{${MAX_ZIP_CODE_LENGTH}}`
+          }}
+          value={zipcode}
+          onChange={e => {
+            dispatch && dispatch(setZipcode(e.target.value));
+          }}
+          placeholder={"0".repeat(MAX_ZIP_CODE_LENGTH)}
         />
       </div>
     </div>
