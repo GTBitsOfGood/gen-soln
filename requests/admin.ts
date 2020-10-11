@@ -1,5 +1,4 @@
 import config from "config";
-
 import { fetchRequestWithPayloadResponse } from "utils/util";
 
 export const login = async (email: string, password: string): Promise<string> =>

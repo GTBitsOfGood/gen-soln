@@ -2,7 +2,6 @@ import React from "react";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import config from "config";
 import {
   NextPage,
   GetStaticPaths,
@@ -13,6 +12,7 @@ import ErrorPage from "next/error";
 import { useRouter } from "next/router";
 
 import DonationPage from "components/donation/DonationPage";
+import config from "config";
 import {
   getNonprofitIds,
   getNonprofitNamesWithIds,

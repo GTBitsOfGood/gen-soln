@@ -2,11 +2,11 @@ import React from "react";
 
 import { Typography, TextField } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import config from "config";
 import { signIn } from "next-auth/client";
 
 import { CoreButton } from "@core/buttons";
 import CoreLink from "@core/link";
+import config from "config";
 
 const useStyles = makeStyles({
   container: {

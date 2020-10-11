@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useRef } from "react";
 
-import config from "config";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 
 import { CoreButton } from "@core/buttons";
 import { ContentComponentProps } from "components/auth";
+import config from "config";
 import { login } from "requests/admin";
 import errors from "utils/errors";
 

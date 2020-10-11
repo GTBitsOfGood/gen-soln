@@ -1,6 +1,6 @@
-import config from "config";
 import Stripe from "stripe";
 
+import config from "config";
 import Mongo, { stripeConstructor } from "server/index";
 import Nonprofit, { CAUSES } from "server/models/nonprofit";
 import errors from "utils/errors";

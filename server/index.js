@@ -1,6 +1,7 @@
-import config from "config";
 import mongoose from "mongoose";
 import Stripe from "stripe";
+
+import config from "config";
 
 const MongoConnect = async () => {
   if (mongoose.connections[0].readyState) return;

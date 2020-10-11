@@ -5,11 +5,11 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import parse from "autosuggest-highlight/parse";
 import clsx from "clsx";
-import config from "config";
 import throttle from "lodash/throttle";
 
 import { SearchIcon } from "@core/icons";
 import CoreTypography, { typographyStyles } from "@core/typography";
+import config from "config";
 
 const useStyles = makeStyles({
   textStyle: typographyStyles.caption,

@@ -1,5 +1,4 @@
 import config from "config";
-
 import { Donation } from "utils/types";
 import { fetchRequestWithPayloadResponse } from "utils/util";
 

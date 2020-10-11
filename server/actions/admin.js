@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
-import config from "config";
 import jwt from "jsonwebtoken";
 
+import config from "config";
 import Mongo from "server/index";
 import Admin from "server/models/admin";
 import Nonprofit from "server/models/nonprofit";

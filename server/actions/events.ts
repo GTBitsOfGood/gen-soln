@@ -1,6 +1,6 @@
 import { Client } from "@googlemaps/google-maps-services-js";
-import config from "config";
 
+import config from "config";
 import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";

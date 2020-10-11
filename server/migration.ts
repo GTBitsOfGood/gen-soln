@@ -8,7 +8,6 @@ loadEnvForScript();
 // Code based on https://github.com/seppevs/migrate-mongo/blob/master/bin/migrate-mongo.js
 import Table from "cli-table3";
 import program from "commander";
-import config from "config";
 import lodash from "lodash";
 import {
   create,
@@ -18,6 +17,8 @@ import {
   config as mongoConfig,
   database
 } from "migrate-mongo";
+
+import config from "config";
 
 type MIGRATION_DIRECTION = "UP" | "DOWN";
 

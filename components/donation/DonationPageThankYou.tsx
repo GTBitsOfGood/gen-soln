@@ -2,10 +2,10 @@ import React from "react";
 
 import { Typography, Button } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import config from "config";
 import { useRouter } from "next/router";
 
 import { CheckCircleIcon } from "@core/icons";
+import config from "config";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({

@@ -39,6 +39,10 @@
             "group": "internal"
           },
           {
+            "pattern": "config",
+            "group": "internal"
+          },
+          {
             "pattern": "requests/**",
             "group": "internal"
           },
@@ -119,6 +123,10 @@
               },
               {
                 "pattern": "@core/**",
+                "group": "internal"
+              },
+              {
+                "pattern": "config",
                 "group": "internal"
               },
               {
