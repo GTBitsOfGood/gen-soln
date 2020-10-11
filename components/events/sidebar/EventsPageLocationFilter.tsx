@@ -5,6 +5,8 @@ import Chip from "@material-ui/core/Chip";
 import LocationAutocompleteInput from "components/LocationAutocompleteInput";
 import useRouterQueryParamsState from "./useRouterQueryParamsState";
 
+import { XIcon } from "@core/icons";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -38,6 +40,7 @@ const EventsPageLocationFilter: React.FC = () => {
                 label={location}
                 onDelete={() => remove(location)}
                 className={classes.chip}
+                deleteIcon={<XIcon />}
               />
             </li>
           );

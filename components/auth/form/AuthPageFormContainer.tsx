@@ -5,7 +5,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import ContainerWithShadow from "components/ContainerWithShadow";
 
 import Button from "@material-ui/core/Button";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+
+import { ChevronLeftIcon } from "@core/icons";
 
 const useStyles = makeStyles({
   container: {
@@ -44,7 +45,7 @@ const AuthPageFormContainer: React.FC<Props> = ({
           <Button
             disableRipple
             color="secondary"
-            startIcon={<ArrowBackIosIcon />}
+            startIcon={<ChevronLeftIcon />}
             onClick={onPressBackButton}
           >
             Back

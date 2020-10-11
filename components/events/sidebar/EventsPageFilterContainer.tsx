@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import FocusVisibleOnly from "components/FocusVisibleOnly";
 
+import FocusVisibleOnly from "components/FocusVisibleOnly";
 import CoreTypography from "@core/typography";
+import { ChevronDownIcon, ChevronUpIcon } from "@core/icons";
 
 interface Props {
   header: string;
@@ -43,7 +42,11 @@ const EventsPageFilterContainer: React.FC<Props> = ({
     <FocusVisibleOnly onClick={() => setCollapsed(s => !s)}>
       <div className={collapseBar}>
         {headerJSX}
-        {collapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+        {collapsed ? (
+          <ChevronDownIcon fontSize="inherit" />
+        ) : (
+          <ChevronUpIcon fontSize="inherit" />
+        )}
       </div>
     </FocusVisibleOnly>
   ) : (

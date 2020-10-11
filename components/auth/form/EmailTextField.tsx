@@ -4,7 +4,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
+
+import { MailIcon } from "@core/icons";
 
 export const EMAIL_INPUT_FIELD_NAME = "user_email";
 
@@ -39,7 +40,7 @@ const EmailTextField: React.FC<Props> = ({
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <EmailOutlinedIcon color="secondary" />
+            <MailIcon color="secondary" fontSize="inherit" />
           </InputAdornment>
         )
       }}
