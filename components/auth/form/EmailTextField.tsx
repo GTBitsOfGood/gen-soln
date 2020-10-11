@@ -1,9 +1,7 @@
 import React from "react";
 
+import { TextField, InputAdornment } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
 
 import { MailIcon } from "@core/icons";
 

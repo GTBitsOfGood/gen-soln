@@ -1,7 +1,7 @@
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
-import { orange } from "@core/colors/primary";
 import grays from "@core/colors/grays";
+import { orange } from "@core/colors/primary";
 import { typographyStyles } from "@core/typography";
 
 import { Spacing } from "./types";

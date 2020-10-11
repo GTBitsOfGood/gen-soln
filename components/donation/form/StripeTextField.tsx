@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+
+import { TextField } from "@material-ui/core";
 import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement
 } from "@stripe/react-stripe-js";
-import TextField from "@material-ui/core/TextField";
-import StripeInput from "./StripeInput";
 import * as stripeJs from "@stripe/stripe-js";
+
+import StripeInput from "./StripeInput";
 
 type Props = React.ComponentProps<typeof TextField> & {
   stripeElement:

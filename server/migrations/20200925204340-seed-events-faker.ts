@@ -1,6 +1,7 @@
-import { Db } from "mongodb";
-import { MigrationFunction } from "migrate-mongo";
 import faker from "faker";
+import { MigrationFunction } from "migrate-mongo";
+import { Db } from "mongodb";
+
 import { DEFAULT_IMAGE } from "server/models/event";
 
 // Don't use 0 as seed, there is a bug in faker code

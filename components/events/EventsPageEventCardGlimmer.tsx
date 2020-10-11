@@ -1,12 +1,11 @@
 import React from "react";
-import clsx from "clsx";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { Skeleton } from "@material-ui/lab";
-
-import CoreTypography from "@core/typography";
+import clsx from "clsx";
 
 import grays from "@core/colors/grays";
+import CoreTypography from "@core/typography";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({

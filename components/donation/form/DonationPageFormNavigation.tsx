@@ -2,9 +2,10 @@ import React, { useContext } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-import { DonationPageStateDispatch, setStep } from "./reducer";
 import { CoreButton } from "@core/buttons";
 import { ChevronRightIcon } from "@core/icons";
+
+import { DonationPageStateDispatch, setStep } from "./reducer";
 
 const white = "white";
 const useStyles = makeStyles({

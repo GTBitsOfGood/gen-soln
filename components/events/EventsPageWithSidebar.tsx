@@ -1,8 +1,9 @@
 import React from "react";
-import EventsPageLayout from "components/events/EventsPageLayout";
-import EventsPageSidebarComponent from "./sidebar/EventsPageSidebarComponent";
 
+import EventsPageLayout from "components/events/EventsPageLayout";
 import { Dropdown } from "utils/types";
+
+import EventsPageSidebarComponent from "./sidebar/EventsPageSidebarComponent";
 
 interface Props {
   timeFilterOptions: Dropdown[];

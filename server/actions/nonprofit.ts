@@ -1,9 +1,10 @@
 import Stripe from "stripe";
+
+import config from "config";
 import Mongo, { stripeConstructor } from "server/index";
 import Nonprofit, { CAUSES } from "server/models/nonprofit";
 import errors from "utils/errors";
 import { Nonprofit as NonprofitType, Dropdown } from "utils/types";
-import config from "config";
 
 type NonprofitNameWithId = Pick<NonprofitType, "name" | "_id">;
 

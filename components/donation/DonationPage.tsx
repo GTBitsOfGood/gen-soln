@@ -6,8 +6,8 @@ import ContainerWithShadow from "components/ContainerWithShadow";
 import { Nonprofit, DropdownProps } from "utils/types";
 
 import DonationPageLayout from "./DonationPageLayout";
-import DonationPageNonprofitBanner from "./DonationPageNonprofitBanner";
 import DonationPageMainContent from "./DonationPageMainContent";
+import DonationPageNonprofitBanner from "./DonationPageNonprofitBanner";
 
 const useStyles = makeStyles({
   container: {

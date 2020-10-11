@@ -1,5 +1,6 @@
-import { Db } from "mongodb";
 import { MigrationFunction } from "migrate-mongo";
+import { Db } from "mongodb";
+
 import { DEFAULT_IMAGE } from "server/models/event";
 
 export const up: MigrationFunction = async (db: Db) => {

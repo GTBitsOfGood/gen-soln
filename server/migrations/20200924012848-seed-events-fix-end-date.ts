@@ -1,5 +1,5 @@
-import { Db } from "mongodb";
 import { MigrationFunction } from "migrate-mongo";
+import { Db } from "mongodb";
 
 const MILLISECONDS_IN_AN_HOUR = 60 * 60 * 1000;
 

@@ -1,14 +1,11 @@
 import React, { useState, useCallback, useEffect } from "react";
+
+import { Typography, Select, MenuItem } from "@material-ui/core";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { useRouter, Router } from "next/router";
 
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-
-import { DropdownProps } from "utils/types";
-
 import config from "config";
+import { DropdownProps } from "utils/types";
 
 const useStyles = makeStyles(({ typography }: Theme) =>
   createStyles({

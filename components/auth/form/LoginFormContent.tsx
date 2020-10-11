@@ -1,20 +1,19 @@
 import React, { useState, useCallback, useRef } from "react";
 
-import { login } from "requests/admin";
-import { useRouter } from "next/router";
-import errors from "utils/errors";
-import config from "config";
 import cookie from "js-cookie";
+import { useRouter } from "next/router";
 
 import { CoreButton } from "@core/buttons";
+import { ContentComponentProps } from "components/auth";
+import config from "config";
+import { login } from "requests/admin";
+import errors from "utils/errors";
 
 import AuthPageForm from "./AuthPageForm";
 import EmailTextField, { EMAIL_INPUT_FIELD_NAME } from "./EmailTextField";
 import PasswordTextField, {
   PASSWORD_INPUT_FIELD_NAME
 } from "./PasswordTextField";
-
-import { ContentComponentProps } from "components/auth";
 
 const LoginFormContent: React.FC<ContentComponentProps> = ({
   navigateToContent

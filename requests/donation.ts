@@ -1,6 +1,6 @@
 import config from "config";
-import { fetchRequestWithPayloadResponse } from "utils/util";
 import { Donation } from "utils/types";
+import { fetchRequestWithPayloadResponse } from "utils/util";
 
 /**
  * Send request to server to create a Stripe PaymentIntent, and send an email notification

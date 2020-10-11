@@ -1,7 +1,7 @@
 import React from "react";
 
+import { Typography } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   textContainer: {

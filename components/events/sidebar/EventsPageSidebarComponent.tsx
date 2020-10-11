@@ -1,12 +1,13 @@
 import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import EventsPageSidebarComponentHeader from "./EventsPageSidebarComponentHeader";
-import EventsPageFilterContainer from "./EventsPageFilterContainer";
-import EventsPageDropdownFilter from "./EventsPageDropdownFilter";
-import EventsPageLocationFilter from "./EventsPageLocationFilter";
 
 import { Dropdown } from "utils/types";
+
+import EventsPageDropdownFilter from "./EventsPageDropdownFilter";
+import EventsPageFilterContainer from "./EventsPageFilterContainer";
+import EventsPageLocationFilter from "./EventsPageLocationFilter";
+import EventsPageSidebarComponentHeader from "./EventsPageSidebarComponentHeader";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({

@@ -19,7 +19,51 @@
     "react/prop-types": "off",
     "react/display-name": "off",
     "react/react-in-jsx-scope": "off",
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "import/order": [
+      "warn",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "components/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "@core/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "config",
+            "group": "internal"
+          },
+          {
+            "pattern": "requests/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "server/**",
+            "group": "internal"
+          },
+
+          {
+            "pattern": "utils/**",
+            "group": "internal"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
   },
   "settings": {
     "react": {
@@ -62,7 +106,51 @@
             "ts-ignore": "allow-with-description"
           }
         ],
-        "import/no-unresolved": "off"
+        "import/no-unresolved": "off",
+        "import/order": [
+          "warn",
+          {
+            "groups": ["builtin", "external", "internal"],
+            "pathGroups": [
+              {
+                "pattern": "react",
+                "group": "external",
+                "position": "before"
+              },
+              {
+                "pattern": "components/**",
+                "group": "internal"
+              },
+              {
+                "pattern": "@core/**",
+                "group": "internal"
+              },
+              {
+                "pattern": "config",
+                "group": "internal"
+              },
+              {
+                "pattern": "requests/**",
+                "group": "internal"
+              },
+              {
+                "pattern": "server/**",
+                "group": "internal"
+              },
+
+              {
+                "pattern": "utils/**",
+                "group": "internal"
+              }
+            ],
+            "pathGroupsExcludedImportTypes": ["react"],
+            "newlines-between": "always",
+            "alphabetize": {
+              "order": "asc",
+              "caseInsensitive": true
+            }
+          }
+        ]
       }
     }
   ]

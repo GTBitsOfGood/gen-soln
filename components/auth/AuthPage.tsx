@@ -1,7 +1,7 @@
 import React from "react";
 
-import AuthPageLayout from "./AuthPageLayout";
 import AuthPageContent from "./AuthPageContent";
+import AuthPageLayout from "./AuthPageLayout";
 
 const AuthPage: React.FC = () => {
   return (

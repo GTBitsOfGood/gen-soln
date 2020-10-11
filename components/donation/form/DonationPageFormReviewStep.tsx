@@ -1,13 +1,14 @@
 import React, { useEffect, useContext } from "react";
-import clsx from "clsx";
+
+import { TextField } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import clsx from "clsx";
 
 import {
   DonationPageStateDispatch,
   ReviewStepProps,
   setIsCurStepCompleted
 } from "./reducer";
-import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles({
   container: {

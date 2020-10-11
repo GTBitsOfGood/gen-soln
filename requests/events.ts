@@ -1,11 +1,11 @@
 import config from "config";
-import { fetchRequestWithPayloadResponse } from "utils/util";
 import {
   DatePageInformation,
   DatePaginatedEventCards,
   LocationPageInformation,
   LocationPaginatedEventCards
 } from "utils/types";
+import { fetchRequestWithPayloadResponse } from "utils/util";
 
 export const getUpcomingEvents = async (
   datePageInformation: DatePageInformation

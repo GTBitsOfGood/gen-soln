@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-import FocusVisibleOnly from "components/FocusVisibleOnly";
-import CoreTypography from "@core/typography";
 import { ChevronDownIcon, ChevronUpIcon } from "@core/icons";
+import CoreTypography from "@core/typography";
+import FocusVisibleOnly from "components/FocusVisibleOnly";
 
 interface Props {
   header: string;

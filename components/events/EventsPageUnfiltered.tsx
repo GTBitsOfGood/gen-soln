@@ -1,8 +1,9 @@
 import React from "react";
-import EventsPageWithSidebar from "./EventsPageWithSidebar";
-import EventsPageMainContent from "./EventsPageMainContent";
 
 import { DatePaginatedEventCards } from "utils/types";
+
+import EventsPageMainContent from "./EventsPageMainContent";
+import EventsPageWithSidebar from "./EventsPageWithSidebar";
 
 interface Props extends React.ComponentProps<typeof EventsPageWithSidebar> {
   upcomingEventsFirstPageData: DatePaginatedEventCards;

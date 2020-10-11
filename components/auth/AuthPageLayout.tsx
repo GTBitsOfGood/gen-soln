@@ -2,9 +2,9 @@ import React from "react";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-import AuthPageHeader from "./AuthPageHeader";
-
 import FullPageLayout from "components/FullPageLayout";
+
+import AuthPageHeader from "./AuthPageHeader";
 
 const useStyles = makeStyles(({ margins }: Theme) =>
   createStyles({
