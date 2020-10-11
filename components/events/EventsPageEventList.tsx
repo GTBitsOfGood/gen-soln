@@ -15,7 +15,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       backgroundColor: palette.background.paper,
       boxShadow: `inset 0 0 0 1px ${palette.object.lightOutline}`,
       "&:hover": {
-        backgroundColor: palette.object.lightOutline
+        backgroundColor: palette.object.darkOutline
       }
     },
     nextButtonContainer: {
