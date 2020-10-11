@@ -2,7 +2,7 @@ import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
-import { Dropdown } from "utils/types";
+import { filters } from "utils/filters";
 
 import EventsPageDropdownFilter from "./EventsPageDropdownFilter";
 import EventsPageFilterContainer from "./EventsPageFilterContainer";
@@ -19,15 +19,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   })
 );
 
-interface Props {
-  timeFilterOptions: Dropdown[];
-  causesFilterOptions: Dropdown[];
-}
-
-const EventsPageSidebarComponent: React.FC<Props> = ({
-  timeFilterOptions,
-  causesFilterOptions
-}) => {
+const EventsPageSidebarComponent: React.FC = () => {
   const { root } = useStyles();
 
   return (
@@ -39,13 +31,13 @@ const EventsPageSidebarComponent: React.FC<Props> = ({
       <EventsPageFilterContainer header="Time" collapsible>
         <EventsPageDropdownFilter
           filter="time"
-          filterOptions={timeFilterOptions}
+          filterOptions={filters["time"]}
         />
       </EventsPageFilterContainer>
       <EventsPageFilterContainer header="Causes" collapsible>
         <EventsPageDropdownFilter
           filter="cause"
-          filterOptions={causesFilterOptions}
+          filterOptions={filters["cause"]}
         />
       </EventsPageFilterContainer>
     </div>

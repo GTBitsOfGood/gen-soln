@@ -126,13 +126,3 @@ export const fetchRequestWithPayloadResponse = async <T>(
 
   return json.payload;
 };
-
-export const returnQueryAsArray = (query: string | string[] | undefined) => {
-  if (query == null) {
-    return [];
-  }
-  if (Array.isArray(query)) {
-    return query;
-  }
-  return [query];
-};
