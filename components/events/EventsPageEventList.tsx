@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { IconButton } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
-import grays from "@core/colors/grays";
 import { ChevronRightIcon, ChevronLeftIcon } from "@core/icons";
 import { PaginatedEventCards, EventCardData } from "utils/types";
 
@@ -14,9 +13,9 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
     button: {
       backgroundColor: palette.background.paper,
-      boxShadow: `inset 0 0 0 1px ${grays["5"]}`,
+      boxShadow: `inset 0 0 0 1px ${palette.object.lightOutline}`,
       "&:hover": {
-        backgroundColor: grays["20"]
+        backgroundColor: palette.object.lightOutline
       }
     },
     nextButtonContainer: {

@@ -2,7 +2,6 @@ import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
-import grays from "@core/colors/grays";
 import CoreTypography from "@core/typography";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
 
@@ -14,7 +13,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       height: 200,
       borderRadius: 10,
       overflow: "hidden",
-      boxShadow: `0 0 0 1px ${grays["5"]}`,
+      boxShadow: `0 0 0 1px ${palette.object.lightOutline}`,
       outline: "none"
     },
     cardContainer: {

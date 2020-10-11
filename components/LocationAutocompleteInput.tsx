@@ -35,36 +35,29 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
 
 export type PlaceType = google.maps.places.AutocompletePrediction;
 
-interface BaseProps {
+interface Props {
   locationType: string;
+  parentCallback: (value: PlaceType) => void;
+  filterOptions?: (options: PlaceType[]) => PlaceType[];
   label?: string;
   fullWidth?: boolean;
   defaultValue?: PlaceType | null;
   required?: boolean;
   placeholder?: string;
+  clearInputOnClose?: boolean;
 }
 
-type Props = BaseProps &
-  (
-    | {
-        type: "PASS_FORMATTED_TEXT_TO_PARENT";
-        parentCallback: (value: string) => void;
-      }
-    | {
-        type: "PASS_PLACE_TYPE_TO_PARENT";
-        parentCallback: (value: PlaceType) => void;
-      }
-  );
-
-const LocationAutocompleteInput: React.FC<Props> = props => {
-  const {
-    locationType,
-    label = "",
-    fullWidth = false,
-    defaultValue = null,
-    required = false,
-    placeholder = ""
-  } = props;
+const LocationAutocompleteInput: React.FC<Props> = ({
+  locationType,
+  parentCallback,
+  filterOptions = x => x,
+  label = "",
+  fullWidth = false,
+  defaultValue = null,
+  required = false,
+  placeholder = "",
+  clearInputOnClose = false
+}) => {
   const { textStyle, highlightedText, inputAdornmentRoot } = useStyles();
   const [value, setValue] = useState<PlaceType | null>(defaultValue);
   const [inputValue, setInputValue] = useState("");
@@ -155,7 +148,8 @@ const LocationAutocompleteInput: React.FC<Props> = props => {
         typeof option === "string" ? option : option.description
       }
       classes={{ noOptions: textStyle }}
-      filterOptions={x => x}
+      blurOnSelect
+      filterOptions={filterOptions}
       options={options}
       autoComplete
       includeInputInList
@@ -168,18 +162,7 @@ const LocationAutocompleteInput: React.FC<Props> = props => {
       ) => {
         if (newValue) {
           setOptions(s => [newValue, ...s]);
-          switch (props.type) {
-            case "PASS_FORMATTED_TEXT_TO_PARENT":
-              props.parentCallback(newValue.structured_formatting.main_text);
-              break;
-            case "PASS_PLACE_TYPE_TO_PARENT":
-              props.parentCallback(newValue);
-              break;
-            default: {
-              const _exhaustiveCheck: never = props;
-              return _exhaustiveCheck;
-            }
-          }
+          parentCallback(newValue);
         }
 
         setValue(newValue);
@@ -187,6 +170,7 @@ const LocationAutocompleteInput: React.FC<Props> = props => {
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
+      onClose={() => void (clearInputOnClose && setValue(null))}
       renderInput={({ InputProps, ...rest }) => (
         <TextField
           {...rest}

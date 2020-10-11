@@ -115,7 +115,6 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
       <div className={clsx(name, verticalPositiveMargin)}>
         <LocationAutocompleteInput
           parentCallback={onAddressChange}
-          type="PASS_PLACE_TYPE_TO_PARENT"
           locationType="address"
           fullWidth
           required
