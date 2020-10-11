@@ -1,31 +1,32 @@
 import React from "react";
 
 import { Checkbox, FormControlLabel } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import clsx from "clsx";
 
-import grays from "@core/colors/grays";
 import { TasklistUncheckedIcon, TasklistCheckedIcon } from "@core/icons";
 import { typographyStyles } from "@core/typography";
 
-const useStyles = makeStyles({
-  optionRoot: {
-    height: 18
-  },
-  optionLabel: {
-    ...typographyStyles.caption,
-    maxWidth: 144,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis"
-  },
-  unselected: {
-    color: grays[40]
-  },
-  checkboxRoot: {
-    fontSize: "inherit"
-  }
-});
+const useStyles = makeStyles(({ palette }: Theme) =>
+  createStyles({
+    optionRoot: {
+      height: 18
+    },
+    optionLabel: {
+      ...typographyStyles.caption,
+      maxWidth: 144,
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis"
+    },
+    unselected: {
+      color: palette.text.disabled
+    },
+    checkboxRoot: {
+      fontSize: "inherit"
+    }
+  })
+);
 
 interface Props {
   label: string;

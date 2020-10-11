@@ -3,7 +3,6 @@ import React from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import clsx from "clsx";
 
-import grays from "@core/colors/grays";
 import CoreTypography from "@core/typography";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
 import { EventCardData } from "utils/types";
@@ -18,7 +17,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       backgroundColor: palette.background.paper,
       /* 1px borders don't play nice on Chrome, so we use an equivalent
        * box-shadow and wrap the div in another div */
-      boxShadow: `0 0 0 1px ${grays["5"]}`
+      boxShadow: `0 0 0 1px ${palette.object.lightOutline}`
     },
     cardContainer: {
       width: 250,

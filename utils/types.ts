@@ -1,4 +1,8 @@
 import { ThemeOptions, Theme } from "@material-ui/core/styles";
+import {
+  Palette,
+  PaletteOptions
+} from "@material-ui/core/styles/createPalette";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
@@ -92,5 +96,20 @@ declare module "@material-ui/core/styles" {
 
   interface ThemeOptions {
     margins: Record<Spacing, string>;
+  }
+}
+
+interface OutlineColors {
+  lightOutline: string;
+  darkOutline: string;
+}
+
+declare module "@material-ui/core/styles/createPalette" {
+  interface Palette {
+    object: OutlineColors;
+  }
+
+  interface PaletteOptions {
+    object: OutlineColors;
   }
 }

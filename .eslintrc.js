@@ -81,13 +81,14 @@ module.exports = {
       },
       plugins: ["@typescript-eslint"],
       extends: [
+        ...SHARED_EXTENDS,
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:import/typescript",
-        "prettier/@typescript-eslint",
-        ...SHARED_EXTENDS
+        "prettier/@typescript-eslint"
       ],
       rules: {
+        ...SHARED_RULES,
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/ban-ts-ignore": "off",
@@ -97,8 +98,7 @@ module.exports = {
           {
             "ts-ignore": "allow-with-description"
           }
-        ],
-        ...SHARED_RULES
+        ]
       }
     }
   ]

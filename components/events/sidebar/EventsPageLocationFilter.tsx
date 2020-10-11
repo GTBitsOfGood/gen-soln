@@ -4,27 +4,46 @@ import { Chip } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import { XIcon } from "@core/icons";
-import LocationAutocompleteInput from "components/LocationAutocompleteInput";
+import { typographyStyles } from "@core/typography";
+import LocationAutocompleteInput, {
+  PlaceType
+} from "components/LocationAutocompleteInput";
 
 import useRouterQueryParamsState from "./useRouterQueryParamsState";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
-    root: {
+    rootContainer: {
       display: "flex",
       flexWrap: "wrap",
-      listStyle: "none",
-      padding: theme.spacing(0.5),
-      margin: 0
+      marginTop: 8,
+      marginRight: -4,
+      marginBottom: -6
     },
     chip: {
-      margin: theme.spacing(0.5)
+      marginRight: 4,
+      marginBottom: 6,
+      backgroundColor: palette.object.lightOutline,
+      ...typographyStyles.caption
+    },
+    deleteIcon: {
+      color: "inherit",
+      "&:hover": {
+        color: "inherit"
+      },
+      height: 14,
+      width: 14,
+      marginRight: 7,
+      marginLeft: -8
     }
   })
 );
 
+const formattedPlace = ({ description }: PlaceType) =>
+  description.slice(0, description.lastIndexOf(","));
+
 const EventsPageLocationFilter: React.FC = () => {
-  const classes = useStyles();
+  const { rootContainer, chip, deleteIcon } = useStyles();
   const {
     currentState: selectedLocations,
     put,
@@ -33,26 +52,28 @@ const EventsPageLocationFilter: React.FC = () => {
 
   return (
     <>
-      <ul className={classes.root}>
-        {selectedLocations.map(location => {
-          return (
-            <li key={location}>
-              <Chip
-                label={location}
-                onDelete={() => remove(location)}
-                className={classes.chip}
-                deleteIcon={<XIcon />}
-              />
-            </li>
-          );
-        })}
-      </ul>
       <LocationAutocompleteInput
-        parentCallback={value => void put(value)}
-        type="PASS_FORMATTED_TEXT_TO_PARENT"
+        clearInputOnClose
         locationType="(cities)"
         placeholder="E.g. Atlanta, Boston"
+        parentCallback={place => void put(formattedPlace(place))}
+        filterOptions={options =>
+          options.filter(
+            option => !selectedLocations.includes(formattedPlace(option))
+          )
+        }
       />
+      <div className={rootContainer}>
+        {selectedLocations.map(location => (
+          <Chip
+            label={location}
+            key={location}
+            onDelete={() => void remove(location)}
+            classes={{ root: chip, deleteIcon }}
+            deleteIcon={<XIcon />}
+          />
+        ))}
+      </div>
     </>
   );
 };
