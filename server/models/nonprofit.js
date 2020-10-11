@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const customAlphabet = require("nanoid").customAlphabet;
 
-const CAUSES = require("utils/filters").causesFilter.options;
+const CAUSES = require("utils/filters").filters.cause;
+
 const Schema = mongoose.Schema;
 
 const ALPHABET = "0123456789";

@@ -1,6 +1,7 @@
+import { ParsedUrlQuery } from "querystring";
+
 import { Dropdown } from "./types";
 
-export const FILTER_TYPES = ["cause", "location", "time"] as const;
 const CAUSES = [
   { text: "Arts", value: "ARTS" },
   { text: "Culture and Humanities", value: "CULTURE_AND_HUMANITIES" },
@@ -22,26 +23,27 @@ const TIMES = [
   { text: "Next Weekend", value: "NWEEKEND" }
 ] as const;
 
-export interface Filter<T extends Readonly<Dropdown[]> = Readonly<Dropdown[]>> {
-  type: typeof FILTER_TYPES[number];
-  options: T;
-}
-type FilterOption<T extends Filter> = T["options"][number]["value"];
+export const filters = {
+  cause: CAUSES,
+  time: TIMES,
+  location: [] as Dropdown[] // Just to help TS; not actually going to put values here
+} as const;
 
-export const causesFilter: Filter<typeof CAUSES> = {
-  type: "cause",
-  options: CAUSES
-};
-export type CausesFilterOption = FilterOption<typeof causesFilter>;
+export type FilterType = keyof typeof filters;
+export type FilterOptions<T extends FilterType> = typeof filters[T];
+type FilterValue<T extends FilterType> = FilterOptions<T>[number]["value"];
 
-export const timesFilter: Filter<typeof TIMES> = {
-  type: "time",
-  options: TIMES
-};
-export type TimesFilterOption = FilterOption<typeof timesFilter>;
+export const getFilterValuesInQuery = <T extends FilterType>(
+  query: ParsedUrlQuery,
+  type: T
+) => {
+  const queryValues = query[type];
 
-export const locationsFilter: Filter = {
-  type: "location",
-  options: []
+  if (queryValues == null) {
+    return [];
+  }
+  if (Array.isArray(queryValues)) {
+    return queryValues as Array<FilterValue<T>>;
+  }
+  return [queryValues] as Array<FilterValue<T>>;
 };
-export type LocationsFilterOption = FilterOption<typeof locationsFilter>;

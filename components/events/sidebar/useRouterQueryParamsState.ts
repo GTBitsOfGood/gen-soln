@@ -2,26 +2,27 @@ import { useCallback, useMemo } from "react";
 
 import { useRouter } from "next/router";
 
-import { Filter } from "utils/filters";
-import { returnQueryAsArray } from "utils/util";
+import { FilterType, getFilterValuesInQuery } from "utils/filters";
 
-const useRouterQueryParamsState = (key: Filter["type"]) => {
-  const router = useRouter();
+const useRouterQueryParamsState = <T extends FilterType>(key: T) => {
+  const { query, pathname, push } = useRouter();
 
-  const query = router.query[key];
-  const currentState = useMemo(() => returnQueryAsArray(query), [query]);
+  const currentState = useMemo(() => getFilterValuesInQuery(query, key), [
+    query,
+    key
+  ]);
 
   const routerPushWithUpdatedState = useCallback(
     (updatedState: string[]) => {
-      void router.push({
-        pathname: router.pathname,
+      void push({
+        pathname,
         query: {
-          ...router.query,
+          ...query,
           [key]: updatedState
         }
       });
     },
-    [router, key]
+    [query, key, pathname, push]
   );
 
   const put = useCallback(

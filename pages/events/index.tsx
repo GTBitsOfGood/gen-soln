@@ -13,7 +13,7 @@ import {
   getUpcomingEventsCardDataCount,
   getByCausesEventsCardData
 } from "server/actions/events";
-import { returnQueryAsArray } from "utils/util";
+import { getFilterValuesInQuery } from "utils/filters";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -60,7 +60,7 @@ export const getServerSideProps = async (
       }
     };
   } else {
-    const query = returnQueryAsArray(context.query["cause"]);
+    const query = getFilterValuesInQuery(context.query, "cause");
     /*upcomingEventsFirstPageData = */ await getByCausesEventsCardData(query);
   }
 
