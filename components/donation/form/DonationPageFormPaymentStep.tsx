@@ -13,7 +13,6 @@ import {
   DonationPageStateDispatch,
   PaymentStepProps,
   setNameOnCard,
-  setZipcode,
   setIsCurStepCompleted
 } from "./reducer";
 import StripeTextField from "./StripeTextField";

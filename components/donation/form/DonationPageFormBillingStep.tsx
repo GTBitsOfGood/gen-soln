@@ -38,6 +38,9 @@ const useStyles = makeStyles({
   verticalNegativeMargin: {
     marginTop: -7,
     marginBottom: -7
+  },
+  fullWidth: {
+    width: "100%"
   }
 });
 
@@ -53,7 +56,8 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
     name,
     rightMargin,
     verticalNegativeMargin,
-    verticalPositiveMargin
+    verticalPositiveMargin,
+    fullWidth
   } = useStyles();
   const dispatch = useContext(DonationPageStateDispatch);
 
@@ -128,6 +132,7 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
       </div>
       <div className={clsx(name, verticalPositiveMargin)}>
         <TextField
+          className={rightMargin}
           fullWidth
           required
           type="tel"
@@ -143,6 +148,7 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
           }}
           placeholder={"0".repeat(MAX_ZIP_CODE_LENGTH)}
         />
+        <div className={fullWidth} />
       </div>
     </div>
   );
