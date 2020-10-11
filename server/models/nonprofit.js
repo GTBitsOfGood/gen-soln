@@ -1,22 +1,12 @@
 const mongoose = require("mongoose");
 const customAlphabet = require("nanoid").customAlphabet;
+
+const CAUSES = require("utils/filters").causesFilter.options;
 const Schema = mongoose.Schema;
 
 const ALPHABET = "0123456789";
 const ID_LENGTH = 8;
 const nanoid = customAlphabet(ALPHABET, ID_LENGTH);
-const CAUSES = [
-  { text: "Arts", value: "ARTS" },
-  { text: "Culture and Humanities", value: "CULTURE_AND_HUMANITIES" },
-  { text: "Education and Research", value: "EDUCATION_AND_RESEARCH" },
-  { text: "Environment and Animals", value: "ENVIRONMENT_AND_ANIMALS" },
-  { text: "Health", value: "HEALTH" },
-  { text: "Human Services", value: "HUMAN_SERVICES" },
-  { text: "International", value: "INTERNATIONAL" },
-  { text: "Public, Societal", value: "PUBLIC_SOCIETAL" },
-  { text: "Religion", value: "RELIGION" },
-  { text: "Other", value: "OTHER" }
-];
 
 // Keep in sync with utils/types Nonprofit
 const nonprofitSchema = new Schema({
@@ -77,4 +67,3 @@ const nonprofitSchema = new Schema({
 
 module.exports =
   mongoose.models?.Nonprofit || mongoose.model("Nonprofit", nonprofitSchema);
-module.exports.CAUSES = CAUSES;

@@ -2,9 +2,9 @@ import Stripe from "stripe";
 
 import config from "config";
 import Mongo, { stripeConstructor } from "server/index";
-import Nonprofit, { CAUSES } from "server/models/nonprofit";
+import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
-import { Nonprofit as NonprofitType, Dropdown } from "utils/types";
+import { Nonprofit as NonprofitType } from "utils/types";
 
 type NonprofitNameWithId = Pick<NonprofitType, "name" | "_id">;
 
@@ -101,8 +101,4 @@ export async function linkStripeAccount(
     type: "account_onboarding"
   });
   return accountLink.url;
-}
-
-export function getCauses(): Dropdown[] {
-  return CAUSES;
 }

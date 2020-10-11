@@ -2,9 +2,10 @@ import { useCallback, useMemo } from "react";
 
 import { useRouter } from "next/router";
 
+import { Filter } from "utils/filters";
 import { returnQueryAsArray } from "utils/util";
 
-const useRouterQueryParamsState = (key: string) => {
+const useRouterQueryParamsState = (key: Filter["type"]) => {
   const router = useRouter();
 
   const query = router.query[key];
