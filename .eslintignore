@@ -1,13 +1,5 @@
-/build/**
-/coverage/**
-/node_modules/**
-/out/**
-/docs/**
-/jsdoc/**
-/templates/**
-/tests/bench/**
-/tests/fixtures/**
-/tests/performance/**
-/tmp/**
-/tools/internal-rules/node_modules/**
-*.d.ts
+# /node_modules, Dotfiles and Dotfolders are ignored by default
+
+# next.js
+/out/
+/public/
