@@ -127,7 +127,7 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
           fullWidth
           required
           defaultValue={address}
-          label="Address"
+          label="Billing Address"
         />
       </div>
       <div className={clsx(name, verticalPositiveMargin)}>
@@ -136,7 +136,7 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
           fullWidth
           required
           type="tel"
-          label="Zipcode"
+          label="Billing Zipcode"
           autoComplete="postal-code"
           inputProps={{
             maxLength: MAX_ZIP_CODE_LENGTH,
