@@ -164,7 +164,7 @@ export function getCityPolygonCoordinates(cities: string[]) {
           address: city, // space delineated street address of location
           components: "country:US",
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          key: config.googleMapsKey!
+          key: config.googleMapsServerKey!
         }
       });
 

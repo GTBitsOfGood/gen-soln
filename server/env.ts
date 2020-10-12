@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 // Add paths to all ".env.*" files here, relative to the root folder since that's where
 // yarn will execute this script from. Order matters, ".env.*" file with higher precedence should appear first.
-const envFilePaths = [".env.local", ".env.development.local", ".env"];
+const envFilePaths = [".env.local", ".env"];
 const loadEnvForScript = () => {
   envFilePaths.forEach(path => void dotenv.config({ path }));
 };

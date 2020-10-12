@@ -31,6 +31,8 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Lint files and run type-checks
         run: yarn lint
+      - name: Ensure it builds successfully
+        run: yarn build
   cd:
     runs-on: ubuntu-latest
     needs: ci
@@ -52,20 +54,21 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - uses: amondnet/vercel-action@v19 # Deploys PR previews
-        id: deploy-preview
-        if: github.event_name == 'pull_request'
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }} # Needed for PR comments
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.PROJECT_ID }}
-      - uses: amondnet/vercel-action@v19 # Deploys to production Vercel domain (used as development prototype)
-        id: deploy-dev
+      - name: Run all migrations on staging DB
+        run: yarn staging:db:migrate:up
+      - uses: amondnet/vercel-action@v19 # Deploys to staging Vercel domain
+        id: deploy-staging
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID }}
           vercel-project-id: ${{ secrets.PROJECT_ID }}
-          vercel-args: '--prod'
-
+          alias-domains: gen-soln-staging.vercel.app
+      - uses: amondnet/vercel-action@v19 # Deploys to production Vercel domain
+        id: deploy-prod
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+          vercel-args: "--prod"
