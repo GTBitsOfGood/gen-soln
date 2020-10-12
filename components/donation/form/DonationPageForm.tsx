@@ -146,7 +146,7 @@ const DonationPageForm: React.FC<Props> = ({
           (await createPaymentMethod(
             name,
             billingStep.email,
-            paymentStep.zipcode
+            billingStep.zipcode
           ));
         dispatch(incrementStep());
       }
@@ -157,7 +157,7 @@ const DonationPageForm: React.FC<Props> = ({
       billingStep.email,
       billingStep.firstName,
       billingStep.lastName,
-      paymentStep.zipcode,
+      billingStep.zipcode,
       processPayment,
       createPaymentMethod,
       isPaymentStep,

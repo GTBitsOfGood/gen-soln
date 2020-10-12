@@ -13,7 +13,6 @@ import {
   DonationPageStateDispatch,
   PaymentStepProps,
   setNameOnCard,
-  setZipcode,
   setIsCurStepCompleted
 } from "./reducer";
 import StripeTextField from "./StripeTextField";
@@ -44,11 +43,8 @@ const useStyles = makeStyles({
   }
 });
 
-const MAX_ZIP_CODE_LENGTH = 5;
-
 const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
-  nameOnCard,
-  zipcode
+  nameOnCard
 }) => {
   const {
     container,
@@ -121,26 +117,6 @@ const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
             setHasCompletedCVC(val);
           }}
         />
-      </div>
-      <div className={clsx(rowFlex, verticalPositiveMargin)}>
-        <TextField
-          fullWidth
-          required
-          type="tel"
-          label="Zipcode"
-          autoComplete="postal-code"
-          className={rightMargin}
-          inputProps={{
-            maxLength: MAX_ZIP_CODE_LENGTH,
-            pattern: `[0-9s]{${MAX_ZIP_CODE_LENGTH}}`
-          }}
-          value={zipcode}
-          onChange={e => {
-            dispatch && dispatch(setZipcode(e.target.value));
-          }}
-          placeholder={"0".repeat(MAX_ZIP_CODE_LENGTH)}
-        />
-        <div className={width} />
       </div>
     </div>
   );
