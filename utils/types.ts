@@ -38,6 +38,7 @@ interface EventBase {
   duration: number;
   image: string;
   address: { text: string; location: { type: "Point"; coordinates: number[] } };
+  _id: string;
 }
 
 export type Event = EventBase & {
