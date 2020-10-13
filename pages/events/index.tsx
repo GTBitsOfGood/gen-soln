@@ -61,7 +61,11 @@ export const getServerSideProps = async (
     };
   } else {
     const query = getFilterValuesInQuery(context.query, "cause");
-    /*upcomingEventsFirstPageData = */ await getByCausesEventsCardData(query);
+    const cities = getFilterValuesInQuery(context.query, "location");
+    /*upcomingEventsFirstPageData = */ await getByCausesEventsCardData(
+      query,
+      cities
+    );
   }
 
   return {

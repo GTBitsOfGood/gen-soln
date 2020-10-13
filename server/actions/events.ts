@@ -120,9 +120,11 @@ export async function getNearestEventsCardDataCount({
   });
 }
 
-export async function getByCausesEventsCardData(causes: string[]) {
+export async function getByCausesEventsCardData(
+  causes: string[],
+  cities: string[]
+) {
   await Mongo();
-
   const idsWithCause = await Nonprofit.find(
     {
       cause: { $in: causes }
@@ -130,8 +132,21 @@ export async function getByCausesEventsCardData(causes: string[]) {
     "nonprofitId"
   );
 
+  console.log(idsWithCause);
+
+  console.log(cities);
+  const bounds = await getCityPolygonCoordinates(cities);
+
   const result = await Event.find({
-    nonprofitId: { $in: idsWithCause.map(r => r["_id"]) }
+    nonprofitId: { $in: idsWithCause.map(r => r["_id"]) },
+    "address.location": {
+      $geoWithin: {
+        $geometry: {
+          type: "MultiPolygon",
+          coordinates: bounds
+        }
+      }
+    }
   }).limit(5);
 
   return result.map(r => r.toJSON()) as EventCardDataType[];
@@ -155,7 +170,7 @@ export async function getAllEventIds(): Promise<string[]> {
   return Event.distinct("_id").exec();
 }
 
-export function getCityPolygonCoordinates(cities: string[]) {
+function getCityPolygonCoordinates(cities: string[]) {
   const client = new Client({});
 
   return Promise.all(
@@ -181,7 +196,8 @@ export function getCityPolygonCoordinates(cities: string[]) {
           [north, east],
           [south, east],
           [south, west],
-          [north, west]
+          [north, west],
+          [north, east]
         ]
       ];
     })
