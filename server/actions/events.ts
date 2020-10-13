@@ -50,7 +50,7 @@ export async function getUpcomingEventsCardData({
     .limit(CARDS_PER_PAGE);
 
   return {
-    eventCards: result.map(r => r.toJSON()) as EventCardDataType[],
+    cards: result.map(r => r.toJSON()) as EventCardDataType[],
     page,
     totalCount,
     date,
@@ -96,7 +96,7 @@ export async function getNearestEventsCardData({
     .limit(CARDS_PER_PAGE);
 
   return {
-    eventCards: result.map(r => r.toJSON()) as EventCardDataType[],
+    cards: result.map(r => r.toJSON()) as EventCardDataType[],
     page,
     totalCount,
     lat,

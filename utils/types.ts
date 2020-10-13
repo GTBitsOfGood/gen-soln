@@ -52,14 +52,14 @@ export type EventCardData = EventBase & {
   nonprofitId: Pick<Nonprofit, "_id" | "name">;
 };
 
-interface PageInformation {
+export interface PageInformation {
   page: number;
   totalCount: number;
   isLastPage: boolean;
 }
 
 export type PaginatedEventCards = PageInformation & {
-  eventCards: EventCardData[];
+  cards: EventCardData[];
 };
 
 interface PaginateWithLocation {
