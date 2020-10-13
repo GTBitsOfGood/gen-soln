@@ -6,8 +6,8 @@ import ContainerWithShadow from "components/ContainerWithShadow";
 import { Nonprofit, DropdownProps } from "utils/types";
 
 import DonationPageLayout from "./DonationPageLayout";
-import DonationPageNonprofitBanner from "./DonationPageNonprofitBanner";
 import DonationPageMainContent from "./DonationPageMainContent";
+import DonationPageNonprofitBanner from "./DonationPageNonprofitBanner";
 
 const useStyles = makeStyles({
   container: {
@@ -21,20 +21,20 @@ interface Props {
 }
 
 const DonationPage: React.FC<Props & DropdownProps> = ({
-  nonprofit,
+  nonprofit: { background, headline, about, stripeAccount, logo },
   ...dropdownProps
 }) => {
   const { container } = useStyles();
 
   // Setting key will tell React to re-mount the DonationPageMainContent component when the selected Nonprofit in the dropdown changes
   return (
-    <DonationPageLayout {...dropdownProps}>
+    <DonationPageLayout {...dropdownProps} backgroundImage={background}>
       <ContainerWithShadow className={container}>
-        <DonationPageNonprofitBanner headline={nonprofit.headline} />
+        <DonationPageNonprofitBanner headline={headline} logoImage={logo} />
         <DonationPageMainContent
-          description={nonprofit.about}
+          description={about}
           selectedNonprofitId={dropdownProps.selectedValue}
-          stripeAccount={nonprofit.stripeAccount}
+          stripeAccount={stripeAccount}
           key={dropdownProps.selectedValue}
         />
       </ContainerWithShadow>

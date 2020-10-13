@@ -1,23 +1,20 @@
-import React, { useCallback, useEffect, useMemo, useContext } from "react";
+import React, { useEffect, useContext } from "react";
+
+import { TextField } from "@material-ui/core";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import {
   DonationPageStateDispatch,
   ReviewStepProps,
   setIsCurStepCompleted
 } from "./reducer";
-import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles({
   container: {
     display: "flex",
     flexDirection: "column",
     flex: 1
-  },
-  rowFlex: {
-    display: "flex",
-    justifyContent: "space-between"
   },
   rightMargin: {
     marginRight: 24
@@ -29,9 +26,6 @@ const useStyles = makeStyles({
   verticalNegativeMargin: {
     marginTop: -7,
     marginBottom: -7
-  },
-  width: {
-    width: "55%"
   }
 });
 

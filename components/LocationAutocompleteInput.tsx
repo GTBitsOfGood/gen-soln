@@ -1,14 +1,13 @@
 import React, { useRef, useState, useMemo, useEffect } from "react";
-import clsx from "clsx";
+
+import { TextField, InputAdornment, Grid } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import SearchIcon from "@material-ui/icons/Search";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Grid from "@material-ui/core/Grid";
 import parse from "autosuggest-highlight/parse";
+import clsx from "clsx";
 import throttle from "lodash/throttle";
 
+import { SearchIcon } from "@core/icons";
 import CoreTypography, { typographyStyles } from "@core/typography";
 import config from "config";
 
@@ -16,6 +15,9 @@ const useStyles = makeStyles({
   textStyle: typographyStyles.caption,
   highlightedText: {
     fontWeight: 800
+  },
+  inputAdornmentRoot: {
+    marginLeft: 6
   }
 });
 
@@ -33,39 +35,38 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
 
 export type PlaceType = google.maps.places.AutocompletePrediction;
 
-interface BaseProps {
+interface Props {
   locationType: string;
+  parentCallback: (value: PlaceType) => void;
+  parentInputChangeCallback?: (value: string) => void;
+  filterOptions?: (options: PlaceType[]) => PlaceType[];
   label?: string;
   fullWidth?: boolean;
   defaultValue?: PlaceType | null;
+  defaultInputValue?: string;
   required?: boolean;
   placeholder?: string;
+  clearInputOnClose?: boolean;
+  freeSolo?: boolean;
 }
 
-type Props = BaseProps &
-  (
-    | {
-        type: "PASS_FORMATTED_TEXT_TO_PARENT";
-        parentCallback: (value: string) => void;
-      }
-    | {
-        type: "PASS_PLACE_TYPE_TO_PARENT";
-        parentCallback: (value: PlaceType) => void;
-      }
-  );
-
-const LocationAutocompleteInput: React.FC<Props> = props => {
-  const {
-    locationType,
-    label = "",
-    fullWidth = false,
-    defaultValue = null,
-    required = false,
-    placeholder = ""
-  } = props;
-  const { textStyle, highlightedText } = useStyles();
+const LocationAutocompleteInput: React.FC<Props> = ({
+  locationType,
+  parentCallback,
+  parentInputChangeCallback,
+  filterOptions = x => x,
+  label = "",
+  fullWidth = false,
+  defaultValue = null,
+  defaultInputValue = "",
+  required = false,
+  placeholder = "",
+  clearInputOnClose = false,
+  freeSolo = false
+}) => {
+  const { textStyle, highlightedText, inputAdornmentRoot } = useStyles();
   const [value, setValue] = useState<PlaceType | null>(defaultValue);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(defaultInputValue);
   const [options, setOptions] = useState<PlaceType[]>([]);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(
     null
@@ -149,42 +150,37 @@ const LocationAutocompleteInput: React.FC<Props> = props => {
 
   return (
     <Autocomplete
+      freeSolo={freeSolo}
       getOptionLabel={option =>
         typeof option === "string" ? option : option.description
       }
       classes={{ noOptions: textStyle }}
-      filterOptions={x => x}
+      blurOnSelect
+      filterOptions={filterOptions}
       options={options}
       autoComplete
       includeInputInList
       filterSelectedOptions
       fullWidth={fullWidth}
-      value={value}
+      value={inputValue}
       onChange={(
         event: React.ChangeEvent<unknown>,
-        newValue: PlaceType | null
+        newValue: PlaceType | string | null
       ) => {
-        if (newValue) {
+        if (newValue && typeof newValue !== "string") {
           setOptions(s => [newValue, ...s]);
-          switch (props.type) {
-            case "PASS_FORMATTED_TEXT_TO_PARENT":
-              props.parentCallback(newValue.structured_formatting.main_text);
-              break;
-            case "PASS_PLACE_TYPE_TO_PARENT":
-              props.parentCallback(newValue);
-              break;
-            default: {
-              const _exhaustiveCheck: never = props;
-              return _exhaustiveCheck;
-            }
-          }
+          parentCallback(newValue);
+          parentInputChangeCallback
+            ? setInputValue(newValue.structured_formatting.main_text)
+            : setValue(newValue);
         }
-
-        setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
+        parentInputChangeCallback && parentInputChangeCallback(newInputValue);
       }}
+      disableClearable={!clearInputOnClose}
+      onClose={() => void setValue(null)}
       renderInput={({ InputProps, ...rest }) => (
         <TextField
           {...rest}
@@ -196,8 +192,11 @@ const LocationAutocompleteInput: React.FC<Props> = props => {
           InputProps={{
             ...InputProps,
             startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon fontSize="small" />
+              <InputAdornment
+                classes={{ root: inputAdornmentRoot }}
+                position="start"
+              >
+                <SearchIcon fontSize="inherit" />
               </InputAdornment>
             ),
             classes: { root: textStyle }

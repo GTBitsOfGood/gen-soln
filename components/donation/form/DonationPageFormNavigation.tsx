@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+
+import { CoreButton } from "@core/buttons";
+import { ChevronRightIcon } from "@core/icons";
 
 import { DonationPageStateDispatch, setStep } from "./reducer";
-import { CoreButton } from "@core/buttons";
 
 const white = "white";
 const useStyles = makeStyles({
@@ -16,13 +17,6 @@ const useStyles = makeStyles({
     backgroundColor: white,
     marginLeft: -4,
     marginRight: -4
-  },
-  button: {
-    width: "50%",
-    alignSelf: "center"
-  },
-  icon: {
-    fontSize: "0.8rem"
   },
   positiveMargin: {
     marginLeft: 4,
@@ -39,7 +33,7 @@ const DonationPageFormNavigation: React.FC<Props> = ({
   curStepIndex,
   stepTitles
 }) => {
-  const { container, icon, positiveMargin } = useStyles();
+  const { container, positiveMargin } = useStyles();
   const dispatch = useContext(DonationPageStateDispatch);
 
   const arr: React.ReactNode[] = [];
@@ -55,10 +49,9 @@ const DonationPageFormNavigation: React.FC<Props> = ({
       >
         {title}
       </CoreButton>,
-      <ArrowForwardIosIcon
+      <ChevronRightIcon
         key={`arrow_${title}`}
-        fontSize="small"
-        classes={{ fontSizeSmall: icon }}
+        fontSize="inherit"
         color="secondary"
         className={positiveMargin}
       />

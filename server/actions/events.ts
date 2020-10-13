@@ -1,8 +1,10 @@
+import { Client } from "@googlemaps/google-maps-services-js";
+
+import config from "config";
 import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
-
 import {
   Event as EventType,
   EventCardData as EventCardDataType,
@@ -19,7 +21,8 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   image: 1,
   address: 1,
   nonprofitId: 1,
-  duration: 1
+  duration: 1,
+  _id: 1
 };
 const CARDS_PER_PAGE = 4;
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
@@ -150,4 +153,37 @@ export async function getAllEventIds(): Promise<string[]> {
   await Mongo();
 
   return Event.distinct("_id").exec();
+}
+
+export function getCityPolygonCoordinates(cities: string[]) {
+  const client = new Client({});
+
+  return Promise.all(
+    cities.map(async city => {
+      const geocode = await client.geocode({
+        params: {
+          address: city, // space delineated street address of location
+          components: "country:US",
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          key: config.googleMapsKey!
+        }
+      });
+
+      const viewport = geocode.data.results[0].geometry.viewport;
+
+      const north = viewport.northeast.lng;
+      const east = viewport.northeast.lat;
+      const south = viewport.southwest.lng;
+      const west = viewport.southwest.lat;
+
+      return [
+        [
+          [north, east],
+          [south, east],
+          [south, west],
+          [north, west]
+        ]
+      ];
+    })
+  );
 }

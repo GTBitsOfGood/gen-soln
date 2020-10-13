@@ -1,10 +1,14 @@
 #!/usr/bin/env ts-node-script
 // A ts-node script to manage our MongoDB migrations.
 // For module aliases to work correctly in this script, we had to define "_moduleAliases" in our package.json
-
+// eslint-disable-next-line import/order
 import loadEnvForScript from "./env";
+
 loadEnvForScript();
 // Code based on https://github.com/seppevs/migrate-mongo/blob/master/bin/migrate-mongo.js
+import Table from "cli-table3";
+import program from "commander";
+import lodash from "lodash";
 import {
   create,
   up,
@@ -13,9 +17,6 @@ import {
   config as mongoConfig,
   database
 } from "migrate-mongo";
-import program from "commander";
-import Table from "cli-table3";
-import lodash from "lodash";
 
 import config from "config";
 

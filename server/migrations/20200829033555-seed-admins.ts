@@ -1,5 +1,6 @@
-import { Db } from "mongodb";
 import { MigrationFunction } from "migrate-mongo";
+import { Db } from "mongodb";
+
 import { hashPassword } from "server/actions/admin";
 
 const admin = {

@@ -9,16 +9,19 @@ export interface AmountStepProps {
   otherAmount: number;
 }
 
-export interface ContactStepProps {
+export interface BillingStepProps {
   firstName: string;
   lastName: string;
   email: string;
-  address: PlaceType | null;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  state: string;
+  zipcode: string;
 }
 
 export interface PaymentStepProps {
   nameOnCard: string;
-  zipcode: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -27,7 +30,7 @@ export interface ReviewStepProps {}
 type State = {
   curStepIndex: number;
   isCurStepCompleted: boolean;
-  contactStep: ContactStepProps;
+  billingStep: BillingStepProps;
   amountStep: AmountStepProps;
   paymentStep: PaymentStepProps;
 };
@@ -41,19 +44,22 @@ export const initialState: State = {
   curStepIndex: 0,
   // The first step, DonationPageFormAmountStep, is complete by default since the first radio button is selected
   isCurStepCompleted: true,
-  contactStep: {
+  billingStep: {
     firstName: "",
     lastName: "",
     email: "",
-    address: null
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    state: "",
+    zipcode: ""
   },
   amountStep: {
     radioButtonAmount: AMOUNTS[0],
     otherAmount: +MIN_OTHER_AMOUNT
   },
   paymentStep: {
-    nameOnCard: "",
-    zipcode: ""
+    nameOnCard: ""
   }
 };
 
@@ -82,26 +88,23 @@ const { actions, reducer } = createSlice({
     setOtherAmount({ amountStep }, { payload }: PayloadAction<number>) {
       amountStep.otherAmount = payload;
     },
-    setContactStepField(
-      { contactStep },
+    setBillingStepField(
+      { billingStep },
       {
         payload
       }: PayloadAction<{
-        key: keyof Omit<ContactStepProps, "address">;
+        key: keyof BillingStepProps;
         value: string;
       }>
     ) {
-      contactStep[payload.key] = payload.value;
-    },
-    setAddress({ contactStep }, { payload }: PayloadAction<PlaceType | null>) {
-      contactStep.address = payload;
+      billingStep[payload.key] = payload.value;
     },
     setNameOnCard({ paymentStep }, { payload }: PayloadAction<string>) {
       paymentStep.nameOnCard = payload;
     },
-    setZipcode({ paymentStep }, { payload }: PayloadAction<string>) {
+    setZipcode({ billingStep }, { payload }: PayloadAction<string>) {
       // From https://github.com/medipass/react-credit-card-input/blob/master/src/utils/formatter.js#L135
-      paymentStep.zipcode = (payload.match(/\d+/g) || []).join("");
+      billingStep.zipcode = (payload.match(/\d+/g) || []).join("");
     }
   }
 });
@@ -116,8 +119,7 @@ export const {
   setIsCurStepCompleted,
   setRadioButtonAmount,
   setOtherAmount,
-  setContactStepField,
-  setAddress,
+  setBillingStepField,
   setNameOnCard,
   setZipcode
 } = actions;

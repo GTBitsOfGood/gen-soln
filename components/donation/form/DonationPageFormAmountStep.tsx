@@ -1,13 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useContext } from "react";
-import clsx from "clsx";
+
+import { Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-
 // @ts-ignore: We don't have type definitions for CurrencyTextField
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
+import clsx from "clsx";
 
 import {
   AmountStepProps,

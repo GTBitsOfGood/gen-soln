@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+
 import { getNearestEventsCardData } from "server/actions/events";
 import { handleGetRequestWithPayloadResponse } from "utils/util";
 

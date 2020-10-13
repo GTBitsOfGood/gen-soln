@@ -1,12 +1,10 @@
 import React from "react";
-import clsx from "clsx";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { Skeleton } from "@material-ui/lab";
+import clsx from "clsx";
 
 import CoreTypography from "@core/typography";
-
-import grays from "@core/colors/grays";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -18,7 +16,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       backgroundColor: palette.background.paper,
       /* 1px borders don't play nice on Chrome, so we use an equivalent
        * box-shadow and wrap the div in another div */
-      boxShadow: `0 0 0 1px ${grays["5"]}`
+      boxShadow: `0 0 0 1px ${palette.object.lightOutline}`
     },
     cardContainer: {
       width: 250,

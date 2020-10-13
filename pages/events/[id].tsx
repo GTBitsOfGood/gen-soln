@@ -1,12 +1,14 @@
+import React from "react";
+
 import {
   NextPage,
   GetStaticPaths,
   GetStaticPropsContext,
   InferGetStaticPropsType
 } from "next";
-
-import { useRouter } from "next/router";
 import ErrorPage from "next/error";
+import { useRouter } from "next/router";
+
 import config from "config";
 import { getAllEventIds, getEventById } from "server/actions/events";
 

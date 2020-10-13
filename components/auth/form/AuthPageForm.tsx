@@ -1,10 +1,7 @@
 import React, { forwardRef, useState, useCallback } from "react";
 
+import { Typography, CircularProgress, Button } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
 
 import AuthPageFormContainer from "./AuthPageFormContainer";
 
@@ -30,12 +27,12 @@ const useStyles = makeStyles({
   }
 });
 
-type Props = {
+interface Props extends React.ComponentProps<typeof AuthPageFormContainer> {
   title: string;
   ctaText: string;
   onPressCTA: (stopLoading: () => void) => Promise<void>;
   footer?: React.ReactNode;
-} & React.ComponentProps<typeof AuthPageFormContainer>;
+}
 
 const AuthPageForm = forwardRef<HTMLFormElement, Props>(
   ({ children, title, onPressCTA, ctaText, footer, ...rest }, ref) => {

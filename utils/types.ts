@@ -1,4 +1,8 @@
 import { ThemeOptions, Theme } from "@material-ui/core/styles";
+import {
+  Palette,
+  PaletteOptions
+} from "@material-ui/core/styles/createPalette";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
@@ -34,13 +38,14 @@ interface EventBase {
   duration: number;
   image: string;
   address: { text: string; location: { type: "Point"; coordinates: number[] } };
+  _id: string;
 }
 
 export type Event = EventBase & {
-  about: string;
   maxVolunteers: number;
   volunteers: Array<string>;
   nonprofitId: string;
+  about: string;
 };
 
 export type EventCardData = EventBase & {
@@ -88,13 +93,24 @@ export interface DropdownProps {
 declare module "@material-ui/core/styles" {
   interface Theme {
     margins: Record<Spacing, string>;
-    nonprofitBackgroundImage: Nonprofit["background"];
-    nonprofitLogoImage: Nonprofit["logo"];
   }
 
   interface ThemeOptions {
     margins: Record<Spacing, string>;
-    nonprofitBackgroundImage?: Nonprofit["background"];
-    nonprofitLogoImage?: Nonprofit["logo"];
+  }
+}
+
+interface OutlineColors {
+  lightOutline: string;
+  darkOutline: string;
+}
+
+declare module "@material-ui/core/styles/createPalette" {
+  interface Palette {
+    object: OutlineColors;
+  }
+
+  interface PaletteOptions {
+    object: OutlineColors;
   }
 }

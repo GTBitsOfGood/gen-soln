@@ -1,6 +1,7 @@
-import { stringify as querystringify } from "querystringify";
-import { NextApiRequest, NextApiResponse } from "next";
 import fetch from "isomorphic-unfetch";
+import { NextApiRequest, NextApiResponse } from "next";
+import { stringify as querystringify } from "querystringify";
+
 import errors from "utils/errors";
 
 interface APISuccessResponse<T> {
@@ -124,14 +125,4 @@ export const fetchRequestWithPayloadResponse = async <T>(
   if (!json.success) throw new Error(json.message);
 
   return json.payload;
-};
-
-export const returnQueryAsArray = (query: string | string[] | undefined) => {
-  if (query == null) {
-    return [];
-  }
-  if (Array.isArray(query)) {
-    return query;
-  }
-  return [query];
 };

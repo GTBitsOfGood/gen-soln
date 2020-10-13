@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+
 import {
   NextPage,
   GetServerSidePropsContext,
@@ -7,10 +8,8 @@ import {
 import nextCookie from "next-cookies";
 import { useRouter } from "next/router";
 
-import config from "config";
-
 import AuthPage from "components/auth/AuthPage";
-
+import config from "config";
 import { checkToken } from "server/actions/admin";
 
 const LoginPage: NextPage<InferGetServerSidePropsType<

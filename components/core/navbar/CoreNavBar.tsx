@@ -1,14 +1,17 @@
 import React from "react";
+
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  InputBase,
+  MenuItem,
+  Menu
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import InputBase from "@material-ui/core/InputBase";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import MoreIcon from "@material-ui/icons/MoreVert";
+
 import { CoreButton } from "@core/buttons";
+import { SearchIcon, ThreeBarsIcon } from "@core/icons";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -121,7 +124,6 @@ export default function CoreNavBar() {
           <a href="https://www.bitsofgood.org/">
             <img alt="Bits of Good Logo" src="/site/bog-logo.svg" />
           </a>
-          {/* <img src={Logo} alt="logo" className={classes.Logo} /> */}
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -159,7 +161,7 @@ export default function CoreNavBar() {
               onClick={handleMobileMenuOpen}
               color="primary"
             >
-              <MoreIcon />
+              <ThreeBarsIcon />
             </IconButton>
           </div>
         </Toolbar>

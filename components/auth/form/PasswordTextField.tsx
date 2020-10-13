@@ -1,12 +1,8 @@
 import React, { useState, useCallback } from "react";
 
-import IconButton from "@material-ui/core/IconButton";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { IconButton, InputAdornment, TextField } from "@material-ui/core";
 
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { EyeIcon, EyeClosedIcon, LockIcon } from "@core/icons";
 
 export const PASSWORD_INPUT_FIELD_NAME = "user_password";
 
@@ -38,7 +34,7 @@ const PasswordTextField: React.FC<Props> = ({
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <LockOutlinedIcon color="secondary" />
+            <LockIcon color="secondary" fontSize="inherit" />
           </InputAdornment>
         ),
         endAdornment: (
@@ -47,7 +43,7 @@ const PasswordTextField: React.FC<Props> = ({
               aria-label="toggle password visibility"
               onClick={handleClickShowPassword}
             >
-              {showPassword ? <Visibility /> : <VisibilityOff />}
+              {showPassword ? <EyeIcon /> : <EyeClosedIcon />}
             </IconButton>
           </InputAdornment>
         )

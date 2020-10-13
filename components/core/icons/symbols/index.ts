@@ -1,5 +1,11 @@
+export { default as CheckCircleIcon } from "./CheckCircle";
+export { default as ChevronDownIcon } from "./ChevronDown";
 export { default as ChevronLeftIcon } from "./ChevronLeft";
 export { default as ChevronRightIcon } from "./ChevronRight";
+export { default as ChevronUpIcon } from "./ChevronUp";
 export { default as LongArrowRightIcon } from "./LongArrowRight";
+export { default as QuestionIcon } from "./Question";
 export { default as TasklistCheckedIcon } from "./TasklistChecked";
 export { default as TasklistUncheckedIcon } from "./TasklistUnchecked";
+export { default as ThreeBarsIcon } from "./ThreeBars";
+export { default as XIcon } from "./X";

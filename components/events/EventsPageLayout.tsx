@@ -1,4 +1,5 @@
 import React from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 import FullPageLayout from "components/FullPageLayout";
@@ -11,7 +12,6 @@ const useStyles = makeStyles({
     flex: 1,
     minWidth: 230,
     display: "flex",
-    height: "100vh",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
       display: "none"
@@ -20,7 +20,6 @@ const useStyles = makeStyles({
   content: {
     flex: 5.25,
     display: "flex",
-    height: "100vh",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
       display: "none"

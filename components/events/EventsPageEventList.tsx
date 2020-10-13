@@ -1,20 +1,23 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+
 import { IconButton } from "@material-ui/core";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { useRouter } from "next/router";
+
 import { ChevronRightIcon, ChevronLeftIcon } from "@core/icons";
+import config from "config";
+import { PaginatedEventCards, EventCardData } from "utils/types";
 
 import EventsPageEventCard from "./EventsPageEventCard";
 import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
-import { PaginatedEventCards, EventCardData } from "utils/types";
-import grays from "@core/colors/grays";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
     button: {
       backgroundColor: palette.background.paper,
-      boxShadow: `inset 0 0 0 1px ${grays["5"]}`,
+      boxShadow: `inset 0 0 0 1px ${palette.object.lightOutline}`,
       "&:hover": {
-        backgroundColor: grays["20"]
+        backgroundColor: palette.object.darkOutline
       }
     },
     nextButtonContainer: {
@@ -62,6 +65,8 @@ const EventsPageEventList: React.FC<Props> = ({
   const classes = useStyles();
 
   const [events, setEvents] = useState(paginatedEventCardsData.eventCards);
+
+  const router = useRouter();
 
   // Index of the first element displayed in the list
   const [first, setFirst] = useState(0);
@@ -166,12 +171,12 @@ const EventsPageEventList: React.FC<Props> = ({
         <div className={classes.item} key={i}>
           {event != null ? (
             <EventsPageEventCard
-              headerText={event.name}
-              bodyText={event.nonprofitId.name}
-              metaText={event.duration.toString()} //TODO: replace with formatting from figma
-              imagePath={event.image}
+              eventCardData={event}
               onClick={() => {
-                return;
+                void router.push(
+                  config.pages.event(),
+                  config.pages.event(event._id)
+                );
               }}
             />
           ) : (

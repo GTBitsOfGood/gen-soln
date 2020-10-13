@@ -1,57 +1,62 @@
 import React from "react";
+
+import { Typography } from "@material-ui/core";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 
-import { Theme, makeStyles, createStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+interface StyleProps {
+  logoImage: string;
+}
 
 const white = "white";
-const useStyles = makeStyles(({ nonprofitLogoImage }: Theme) =>
-  createStyles({
-    container: {
-      display: "flex",
-      alignItems: "center",
-      backgroundColor: "#333333", // TODO: change this based on designs
-      padding: "3vh"
-    },
-    logo: {
-      borderWidth: 3,
-      borderStyle: "solid",
-      content: nonprofitLogoImage,
-      borderRadius: "50%",
-      backgroundColor: white,
-      height: 80,
-      width: 80
-    },
-    text: {
-      color: white,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      flex: 1
-    },
-    horizontalPositiveMargin: {
-      marginLeft: 8,
-      marginRight: 8
-    },
-    horizontalNegativeMargin: {
-      marginLeft: -8,
-      marginRight: -8
-    }
-  })
-);
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#333333", // TODO: change this based on designs
+    padding: "3vh"
+  },
+  logo: {
+    borderWidth: 3,
+    borderStyle: "solid",
+    content: (props: StyleProps) => props.logoImage,
+    borderRadius: "50%",
+    backgroundColor: white,
+    height: 80,
+    width: 80
+  },
+  text: {
+    color: white,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    flex: 1
+  },
+  horizontalPositiveMargin: {
+    marginLeft: 8,
+    marginRight: 8
+  },
+  horizontalNegativeMargin: {
+    marginLeft: -8,
+    marginRight: -8
+  }
+});
 
-interface Props {
+interface Props extends StyleProps {
   headline: string;
 }
 
-const DonationPageNonprofitBanner: React.FC<Props> = ({ headline }) => {
+const DonationPageNonprofitBanner: React.FC<Props> = ({
+  headline,
+  logoImage
+}) => {
   const {
     container,
     text,
     logo,
     horizontalPositiveMargin,
     horizontalNegativeMargin
-  } = useStyles();
+  } = useStyles({ logoImage });
 
   return (
     <div className={clsx(container, horizontalNegativeMargin)}>

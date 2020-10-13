@@ -1,11 +1,16 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
 
-import EventsPageEventList from "./EventsPageEventList";
-import { getUpcomingEvents } from "requests/events";
-import { DatePaginatedEventCards } from "utils/types";
+import { makeStyles } from "@material-ui/core/styles";
 
 import CoreTypography from "@core/typography";
+import { getUpcomingEvents, getNearestEvents } from "requests/events";
+import {
+  DatePaginatedEventCards,
+  LocationPaginatedEventCards
+} from "utils/types";
+
+import EventsPageEventList from "./EventsPageEventList";
+import { usePosition } from "./usePosition";
 
 const useStyles = makeStyles({
   mainContainer: {
@@ -16,6 +21,9 @@ const useStyles = makeStyles({
   },
   listContainer: {
     paddingTop: 24
+  },
+  nearestEventsContainer: {
+    marginTop: 60
   }
 });
 
@@ -24,7 +32,31 @@ interface Props {
 }
 
 const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
-  const { mainContainer, listContainer } = useStyles();
+  const { mainContainer, listContainer, nearestEventsContainer } = useStyles();
+
+  const { position, error } = usePosition();
+
+  const [nearestEvents, setNearestEvents] = useState<
+    LocationPaginatedEventCards
+  >();
+
+  useEffect(() => {
+    const fetchNearestEvents = async () => {
+      if (position) {
+        const result = await getNearestEvents({
+          lat: position.coords.latitude,
+          long: position.coords.longitude,
+          page: 0,
+          totalCount: -1,
+          isLastPage: false
+        });
+
+        setNearestEvents(result);
+      }
+    };
+
+    void fetchNearestEvents();
+  }, [position, error]);
 
   return (
     <div className={mainContainer}>
@@ -45,6 +77,29 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
                 })
               }
             />
+          </div>
+        </>
+      )}
+      {nearestEvents && nearestEvents.eventCards.length > 0 && (
+        <>
+          <div className={nearestEventsContainer}>
+            <CoreTypography variant="h2">
+              Volunteer Events Near You
+            </CoreTypography>
+            <div className={listContainer}>
+              <EventsPageEventList
+                paginatedEventCardsData={nearestEvents}
+                getMoreEvents={(page: number) =>
+                  getNearestEvents({
+                    page,
+                    lat: nearestEvents.lat,
+                    long: nearestEvents.long,
+                    totalCount: nearestEvents.totalCount,
+                    isLastPage: nearestEvents.isLastPage
+                  })
+                }
+              />
+            </div>
           </div>
         </>
       )}

@@ -1,7 +1,8 @@
 import React from "react";
+
+import { Button } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { CreateCSSProperties } from "@material-ui/core/styles/withStyles";
-import Button from "@material-ui/core/Button";
 
 import { typographyStyles } from "@core/typography";
 

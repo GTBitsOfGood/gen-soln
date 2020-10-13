@@ -1,24 +1,21 @@
 import React, { useEffect, useContext, useState } from "react";
-import clsx from "clsx";
+
+import { TextField } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-
-import TextField from "@material-ui/core/TextField";
-
 import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement
 } from "@stripe/react-stripe-js";
-
-import StripeTextField from "./StripeTextField";
+import clsx from "clsx";
 
 import {
   DonationPageStateDispatch,
   PaymentStepProps,
   setNameOnCard,
-  setZipcode,
   setIsCurStepCompleted
 } from "./reducer";
+import StripeTextField from "./StripeTextField";
 
 const useStyles = makeStyles({
   container: {
@@ -46,11 +43,8 @@ const useStyles = makeStyles({
   }
 });
 
-const MAX_ZIP_CODE_LENGTH = 5;
-
 const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
-  nameOnCard,
-  zipcode
+  nameOnCard
 }) => {
   const {
     container,
@@ -123,26 +117,6 @@ const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
             setHasCompletedCVC(val);
           }}
         />
-      </div>
-      <div className={clsx(rowFlex, verticalPositiveMargin)}>
-        <TextField
-          fullWidth
-          required
-          type="tel"
-          label="Zipcode"
-          autoComplete="postal-code"
-          className={rightMargin}
-          inputProps={{
-            maxLength: MAX_ZIP_CODE_LENGTH,
-            pattern: `[0-9s]{${MAX_ZIP_CODE_LENGTH}}`
-          }}
-          value={zipcode}
-          onChange={e => {
-            dispatch && dispatch(setZipcode(e.target.value));
-          }}
-          placeholder={"0".repeat(MAX_ZIP_CODE_LENGTH)}
-        />
-        <div className={width} />
       </div>
     </div>
   );

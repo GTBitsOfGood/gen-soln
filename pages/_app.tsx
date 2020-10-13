@@ -1,10 +1,11 @@
 import React from "react";
+
+import { CssBaseline } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core/styles";
 import App from "next/app";
 import Head from "next/head";
-import { ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import createNonprofitMuiTheme from "utils/theme";
-import { Nonprofit } from "utils/types";
+
+import theme from "utils/theme";
 
 export default class MyApp extends App {
   componentDidMount(): void {
@@ -26,14 +27,7 @@ export default class MyApp extends App {
             content="minimum-scale=1, initial-scale=1, width=device-width"
           />
         </Head>
-        <ThemeProvider
-          theme={createNonprofitMuiTheme(
-            "nonprofit" in pageProps
-              ? /* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */
-                (pageProps.nonprofit as Nonprofit)
-              : undefined
-          )}
-        >
+        <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Component {...pageProps} />

@@ -1,4 +1,7 @@
 import React from "react";
+
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import {
   NextPage,
   GetStaticPaths,
@@ -6,18 +9,16 @@ import {
   GetStaticPropsContext
 } from "next";
 import ErrorPage from "next/error";
-import { Dropdown } from "utils/types";
+import { useRouter } from "next/router";
+
+import DonationPage from "components/donation/DonationPage";
+import config from "config";
 import {
   getNonprofitIds,
   getNonprofitNamesWithIds,
   getNonprofitById
 } from "server/actions/nonprofit";
-import DonationPage from "components/donation/DonationPage";
-import config from "config";
-import { useRouter } from "next/router";
-
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { Dropdown } from "utils/types";
 
 const NonprofitDonationPage: NextPage<InferGetStaticPropsType<
   typeof getStaticProps

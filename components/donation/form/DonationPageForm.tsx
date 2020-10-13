@@ -5,27 +5,25 @@ import React, {
   useReducer,
   useEffect
 } from "react";
-import { Router } from "next/router";
-import dynamic from "next/dynamic";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
-
-import useStripePayment from "./useStripePayment";
-
-import DonationPageFormNavigation from "./DonationPageFormNavigation";
-import DonationPageFormButton from "./DonationPageFormButton";
+import dynamic from "next/dynamic";
+import { Router } from "next/router";
 
 import { logDonation } from "requests/donation";
 
+import DonationPageFormButton from "./DonationPageFormButton";
+import DonationPageFormNavigation from "./DonationPageFormNavigation";
 import reducer, {
   AmountStepProps,
-  ContactStepProps,
+  BillingStepProps,
   PaymentStepProps,
   initialState,
   DonationPageStateDispatch,
   incrementStep,
   ReviewStepProps
 } from "./reducer";
+import useStripePayment from "./useStripePayment";
 
 const useStyles = makeStyles({
   container: {
@@ -54,9 +52,9 @@ const STEPS = [
     )
   },
   {
-    title: "Contact" as const,
-    component: dynamic<ContactStepProps>(
-      () => import("./DonationPageFormContactStep"),
+    title: "Billing" as const,
+    component: dynamic<BillingStepProps>(
+      () => import("./DonationPageFormBillingStep"),
       options
     )
   },
@@ -89,7 +87,7 @@ const DonationPageForm: React.FC<Props> = ({
 }) => {
   const { container, contentContainer } = useStyles();
   const [
-    { curStepIndex, isCurStepCompleted, contactStep, amountStep, paymentStep },
+    { curStepIndex, isCurStepCompleted, billingStep, amountStep, paymentStep },
     dispatch
   ] = useReducer(reducer, initialState);
 
@@ -120,7 +118,7 @@ const DonationPageForm: React.FC<Props> = ({
       e.preventDefault();
       if (!e.currentTarget.reportValidity()) return;
 
-      const name = `${contactStep.firstName} ${contactStep.lastName}`;
+      const name = `${billingStep.firstName} ${billingStep.lastName}`;
 
       if (isLastStep) {
         setIsSubmitting(true);
@@ -128,7 +126,7 @@ const DonationPageForm: React.FC<Props> = ({
         try {
           // Deliberately limit this try-catch only to Stripe's payment processing.
           // Catching errors from other miscellaneous code might make it seem like the payment failed, even when it succeeded.
-          await processPayment(contactStep.email, amount, stripeAccount);
+          await processPayment(billingStep.email, amount, stripeAccount);
         } catch (err) {
           // TODO: Not sure how else to handle and display the error
           setIsSubmitting(false);
@@ -139,7 +137,7 @@ const DonationPageForm: React.FC<Props> = ({
         // TODO: What should we do if Stripe has processed the payment correctly, but our logDonation API call errored?
         void logDonation({
           name,
-          email: contactStep.email,
+          email: billingStep.email,
           amount,
           nonprofitId: selectedNonprofitId
         });
@@ -147,8 +145,8 @@ const DonationPageForm: React.FC<Props> = ({
         isPaymentStep &&
           (await createPaymentMethod(
             name,
-            contactStep.email,
-            paymentStep.zipcode
+            billingStep.email,
+            billingStep.zipcode
           ));
         dispatch(incrementStep());
       }
@@ -156,11 +154,10 @@ const DonationPageForm: React.FC<Props> = ({
     [
       dispatch,
       amount,
-      contactStep.email,
-      contactStep.firstName,
-      contactStep.lastName,
-      contactStep.address,
-      paymentStep.zipcode,
+      billingStep.email,
+      billingStep.firstName,
+      billingStep.lastName,
+      billingStep.zipcode,
       processPayment,
       createPaymentMethod,
       isPaymentStep,
@@ -178,9 +175,9 @@ const DonationPageForm: React.FC<Props> = ({
         Component = step.component;
         return <Component {...amountStep} />;
 
-      case "Contact":
+      case "Billing":
         Component = step.component;
-        return <Component {...contactStep} />;
+        return <Component {...billingStep} />;
 
       case "Payment":
         Component = step.component;
@@ -195,7 +192,7 @@ const DonationPageForm: React.FC<Props> = ({
         return _exhaustiveCheck;
       }
     }
-  }, [step, contactStep, amountStep, paymentStep]);
+  }, [step, billingStep, amountStep, paymentStep]);
 
   const routeChangeStart = useCallback(() => {
     setIsRouteChanging(true);
