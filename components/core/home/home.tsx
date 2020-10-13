@@ -3,6 +3,7 @@ import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { signIn, signOut, useSession } from "next-auth/client";
 
+import SimpleContainer from "@core/banner/Banner";
 import { CoreButton } from "@core/buttons";
 import CoreNavBar from "@core/navbar/CoreNavBar";
 import config from "config";
@@ -12,8 +13,7 @@ const useStyles = makeStyles({
     display: "flex",
     "min-width": "420px",
     flexDirection: "column",
-    "align-self": "center",
-    "margin-top": "10vh"
+    "align-self": "center"
   },
   text: {
     "text-align": "center",
@@ -35,6 +35,7 @@ const HomePage = () => {
   return (
     <div className={container}>
       <CoreNavBar></CoreNavBar>
+      <SimpleContainer></SimpleContainer>
       {!session && (
         <div className={text}>
           Not signed in <br />
