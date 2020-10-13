@@ -71,7 +71,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
     if (!document.querySelector("#google-maps")) {
       loadScript(
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsKey!}&libraries=places`,
+        `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsClientKey!}&libraries=places`,
         document.querySelector("head"),
         "google-maps"
       );
