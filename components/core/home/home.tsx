@@ -4,6 +4,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import { signIn, signOut, useSession } from "next-auth/client";
 
 import { CoreButton } from "@core/buttons";
+import CoreNavBar from "@core/navbar/CoreNavBar";
 import config from "config";
 
 const useStyles = makeStyles({
@@ -33,6 +34,7 @@ const HomePage = () => {
 
   return (
     <div className={container}>
+      <CoreNavBar></CoreNavBar>
       {!session && (
         <div className={text}>
           Not signed in <br />
