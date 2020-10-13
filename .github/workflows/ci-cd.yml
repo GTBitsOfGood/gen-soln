@@ -31,8 +31,6 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Lint files and run type-checks
         run: yarn lint
-      - name: Ensure it builds successfully
-        run: yarn build
   cd:
     runs-on: ubuntu-latest
     needs: ci
@@ -54,8 +52,14 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Run all migrations on staging DB
-        run: yarn staging:db:migrate:up
+      - uses: amondnet/vercel-action@v19 # Deploys PR previews
+        id: deploy-preview
+        if: github.event_name == 'pull_request'
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }} # Needed for PR comments
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
       - uses: amondnet/vercel-action@v19 # Deploys to staging Vercel domain
         id: deploy-staging
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
