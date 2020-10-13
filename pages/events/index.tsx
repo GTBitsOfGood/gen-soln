@@ -60,10 +60,10 @@ export const getServerSideProps = async (
       }
     };
   } else {
-    const query = getFilterValuesInQuery(context.query, "cause");
+    const causes = getFilterValuesInQuery(context.query, "cause");
     const cities = getFilterValuesInQuery(context.query, "location");
     /*upcomingEventsFirstPageData = */ await getByCausesEventsCardData(
-      query,
+      causes,
       cities
     );
   }

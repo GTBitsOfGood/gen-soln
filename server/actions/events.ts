@@ -125,8 +125,7 @@ export async function getByCausesEventsCardData(
   cities: string[]
 ) {
   await Mongo();
-  console.log(causes);
-  console.log(cities);
+
   const idsWithCause = await Nonprofit.find(
     {
       cause: { $in: causes }
@@ -196,7 +195,7 @@ function getCityPolygonCoordinates(cities: string[]) {
           [south, east],
           [south, west],
           [north, west],
-          [north, east]
+          [north, east] // duplicate the first one in order to create a closed loop for mongo
         ]
       ];
     })
