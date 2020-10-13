@@ -125,6 +125,8 @@ export async function getByCausesEventsCardData(
   cities: string[]
 ) {
   await Mongo();
+  console.log(causes);
+  console.log(cities);
   const idsWithCause = await Nonprofit.find(
     {
       cause: { $in: causes }
@@ -132,9 +134,6 @@ export async function getByCausesEventsCardData(
     "nonprofitId"
   );
 
-  console.log(idsWithCause);
-
-  console.log(cities);
   const bounds = await getCityPolygonCoordinates(cities);
 
   const result = await Event.find({
