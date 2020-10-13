@@ -2,8 +2,10 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 
 import { IconButton } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { useRouter } from "next/router";
 
 import { ChevronRightIcon, ChevronLeftIcon } from "@core/icons";
+import config from "config";
 import { PaginatedEventCards, EventCardData } from "utils/types";
 
 import EventsPageEventCard from "./EventsPageEventCard";
@@ -63,6 +65,8 @@ const EventsPageEventList: React.FC<Props> = ({
   const classes = useStyles();
 
   const [events, setEvents] = useState(paginatedEventCardsData.eventCards);
+
+  const router = useRouter();
 
   // Index of the first element displayed in the list
   const [first, setFirst] = useState(0);
@@ -169,7 +173,10 @@ const EventsPageEventList: React.FC<Props> = ({
             <EventsPageEventCard
               eventCardData={event}
               onClick={() => {
-                return;
+                void router.push(
+                  config.pages.event(),
+                  config.pages.event(event._id)
+                );
               }}
             />
           ) : (
