@@ -60,7 +60,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
 
   return (
     <div className={mainContainer}>
-      {upcomingEvents.eventCards.length > 0 && (
+      {upcomingEvents.cards.length > 0 && (
         <>
           <CoreTypography variant="h2">
             Upcoming Volunteer Events
@@ -80,7 +80,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
           </div>
         </>
       )}
-      {nearestEvents && nearestEvents.eventCards.length > 0 && (
+      {nearestEvents && nearestEvents.cards.length > 0 && (
         <>
           <div className={nearestEventsContainer}>
             <CoreTypography variant="h2">
