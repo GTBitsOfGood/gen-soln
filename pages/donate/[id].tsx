@@ -28,6 +28,7 @@ const NonprofitDonationPage: NextPage<InferGetStaticPropsType<
   if (router.isFallback) {
     return null;
   } else if (props.nonprofit) {
+    console.log(config.stripe.publishable_key == null);
     return (
       <Elements
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
