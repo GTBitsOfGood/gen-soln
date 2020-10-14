@@ -120,32 +120,47 @@ export async function getNearestEventsCardDataCount({
   });
 }
 
-export async function getByCausesEventsCardData(
-  causes: string[],
-  cities: string[]
-) {
+interface test {
+  cities: string[];
+  causes: string[];
+}
+
+export async function getByCausesEventsCardData({ causes, cities }: test) {
+  /*causes: string[],
+  cities: string[]*/
   await Mongo();
 
-  const idsWithCause = await Nonprofit.find(
-    {
-      cause: { $in: causes }
-    },
-    "nonprofitId"
-  );
+  let findQuery = {};
+  if (causes.length) {
+    const idsWithCause = await Nonprofit.find(
+      {
+        cause: { $in: causes }
+      },
+      "nonprofitId"
+    );
 
-  const bounds = await getCityPolygonCoordinates(cities);
+    findQuery = {
+      ...findQuery,
+      nonprofitId: { $in: idsWithCause.map(r => r["_id"]) }
+    };
+  }
+  if (cities.length) {
+    const bounds = await getCityPolygonCoordinates(cities);
 
-  const result = await Event.find({
-    nonprofitId: { $in: idsWithCause.map(r => r["_id"]) },
-    "address.location": {
-      $geoWithin: {
-        $geometry: {
-          type: "MultiPolygon",
-          coordinates: bounds
+    findQuery = {
+      ...findQuery,
+      "address.location": {
+        $geoWithin: {
+          $geometry: {
+            type: "MultiPolygon",
+            coordinates: bounds
+          }
         }
       }
-    }
-  }).limit(5);
+    };
+  }
+
+  const result = await Event.find(findQuery).limit(5);
 
   return result.map(r => r.toJSON()) as EventCardDataType[];
 }
