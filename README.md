@@ -49,7 +49,7 @@ TODO: Add a note about migrations, why we are using them, and how to create and 
 The project uses 3 types of deployments:
 
 1. Preview deployments: These deployments are created on every PR opened to `develop` and `master`. We use these deployments to ensure that the PR doesn't break builds and they can be used by the reviewer to test functionality without pulling any changes locally.
-2. Staging deployment: On every push to `develop`, our staging deployment is updated. The deployment uses the same database and environment variables as preview deployments, however, it utilizes a fixed URL, https://gen-soln-staging.vercel.app/, and certain API requests like to the Google Maps Autocomplete API work on staging but not in previews (we can't specify an HTTP referer restriction that applies to all preview deployment URLs).
+2. Staging deployment: On every push to `develop`, our staging deployment is updated. The deployment uses the same database and environment variables as preview deployments, however, it utilizes a fixed URL, https://gen-soln-staging.vercel.app/, and certain API requests, like those to the Google Maps Autocomplete API, work on staging but not in previews (we can't specify an HTTP referer restriction that applies to all preview deployment URLs).
 3. Production deployment: Any push to `master` updates our production deployment, https://bog-gen-soln.vercel.app/. This deployment uses real data stored in a different database and different environment variables.
 
 ## Environment Variables
