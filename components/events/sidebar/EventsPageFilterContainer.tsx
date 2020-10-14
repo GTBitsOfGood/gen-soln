@@ -18,7 +18,6 @@ const useStyles = makeStyles({
   collapseBar: {
     display: "flex",
     justifyContent: "space-between",
-    cursor: "pointer",
     "&:focusVisible": {
       outline: "none"
     }
