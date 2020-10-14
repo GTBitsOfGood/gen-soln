@@ -30,7 +30,7 @@ const NonprofitDonationPage: NextPage<InferGetStaticPropsType<
     return (
       <Elements
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        stripe={loadStripe(config.stripe.publishable_key!, {
+        stripe={loadStripe(config.stripe.publishableKey!, {
           stripeAccount: props.nonprofit.stripeAccount
         })}
       >

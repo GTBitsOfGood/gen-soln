@@ -22,7 +22,7 @@ const MongoConnect = async () => {
 export default MongoConnect;
 
 export function stripeConstructor() {
-  return new Stripe(config.stripe.secret_key, {
+  return new Stripe(config.stripe.secretKey, {
     apiVersion: "2020-03-02"
   });
 }
