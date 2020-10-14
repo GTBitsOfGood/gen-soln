@@ -14,10 +14,10 @@ From https://github.com/GTBitsOfGood/nextjs-starter-typescript
 - Follow the instructions [here](https://www.notion.so/gtbitsofgood/Getting-Started-56106473076a47eaa8c863741becbf34) to install Git, Node.js (v12.X LTS at least) and the MongoDB Community Server.
 - Install the Node.js package manager [yarn](https://classic.yarnpkg.com/en/docs/install/).
 - Navigate to this project in the terminal and run `yarn install`.
-- Run `yarn secrets` to sync project secrets from Bitwarden and save them to `.env.*` files locally. Contact a leadership member for the Bitwarden password.
+- Run `yarn secrets` to sync development secrets from Bitwarden and save them to `.env.local` file locally. Contact a leadership member for the Bitwarden password.
   - **Note**: If you are using the Windows command prompt, enter `yarn secrets:login` and then `yarn secrets:sync`.
 - Start your local MongoDB server by running `mongod` (this command will work if you created aliases as recommended in [this](https://zellwk.com/blog/install-mongodb/) article).
-- Next, perform migrations on your local database: `yarn dev:db:migrate up`. You should run this command whenever a new migration is added to the codebase; you can run `yarn dev:db:migrate status` to check if your local database is up to date.
+- Next, perform migrations on your local database: `yarn db:migrate up`. You should run this command whenever a new migration is added to the codebase; you can run `yarn db:migrate status` to check if your local database is up to date.
 - Run the dev version of this project by entering `yarn dev`.
 
 ## Code/PR Workflow
@@ -42,11 +42,20 @@ While you are encouraged to use TypeScript, you **don't** have to. Our codebase 
 
 ## Migrations
 
-TODO: Add a note about migrations, why we are using them and how to create and run them.
+TODO: Add a note about migrations, why we are using them, and how to create and run them.
 
-## Storybook
+## Continuous Deployment
 
-TODO: Add a note about Storybook and how to use it.
+The project uses 3 types of deployments:
+
+1. Preview deployments: These deployments are created on every PR opened to `develop` and `master`. We use these deployments to ensure that the PR doesn't break builds and they can be used by the reviewer to test functionality without pulling any changes locally.
+2. Staging deployment: On every push to `develop`, our staging deployment is updated. The deployment uses the same database and environment variables as preview deployments, however, it utilizes a fixed URL, https://gen-soln-staging.vercel.app/, and certain API requests, like those to the Google Maps Autocomplete API, work on staging but not in previews (we can't specify an HTTP referer restriction that applies to all preview deployment URLs). This URL is also used by PMs and designers to track progress and share feedback with engineering.
+3. Production deployment: Any push to `master` updates our production deployment, https://bog-gen-soln.vercel.app/. This deployment uses real data stored in a different database and different environment variables.
+
+## Environment Variables
+
+We have three sets of environment variables. Environment variables for staging and production are stored in the production Bitwarden vault, while those for local development are stored in the regular Bitwarden vault. When you run `yarn secrets`, you only sync the development set.
+Vercel is provided with all three sets, though it never uses the development environment.
 
 # Project Structure
 

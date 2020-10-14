@@ -1,9 +1,7 @@
-const isDevEnv = process.env.NODE_ENV === "development";
-
 export default {
   db: {
-    name: isDevEnv ? process.env.DEV_DB_NAME : process.env.PROD_DB_NAME,
-    url: isDevEnv ? process.env.DEV_DB_URL : process.env.PROD_DB_URL,
+    name: process.env.DB_NAME,
+    url: process.env.DB_URL,
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -12,17 +10,15 @@ export default {
     }
   },
   stripe: {
-    publishable_key: isDevEnv
-      ? process.env.NEXT_PUBLIC_DEV_STRIPE_PUBLISHABLE
-      : process.env.NEXT_PUBLIC_PROD_STRIPE_PUBLISHABLE,
-    secret_key: isDevEnv
-      ? process.env.DEV_STRIPE_SECRET
-      : process.env.PROD_STRIPE_SECRET
+    publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE,
+    secretKey: process.env.STRIPE_SECRET
   },
-  jwtSecret: isDevEnv
-    ? process.env.DEV_JWT_SECRET
-    : process.env.PROD_JWT_SECRET,
-  baseUrl: isDevEnv ? process.env.DEV_BASE_URL : process.env.PROD_BASE_URL,
+  googleMaps: {
+    clientKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY,
+    serverKey: process.env.SERVER_GOOGLE_MAPS_KEY
+  },
+  jwtSecret: process.env.JWT_SECRET,
+  baseUrl: process.env.BASE_URL,
   pages: {
     index: "/",
     login: "/login",
@@ -38,6 +34,5 @@ export default {
     recoverPassword: "/api/recoverPassword",
     getUpcomingEvents: "/api/getUpcomingEvents",
     getNearestEvents: "/api/getNearestEvents"
-  },
-  googleMapsKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
+  }
 };

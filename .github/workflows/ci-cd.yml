@@ -60,12 +60,19 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }} # Needed for PR comments
           vercel-org-id: ${{ secrets.ORG_ID }}
           vercel-project-id: ${{ secrets.PROJECT_ID }}
-      - uses: amondnet/vercel-action@v19 # Deploys to production Vercel domain (used as development prototype)
-        id: deploy-dev
+      - uses: amondnet/vercel-action@v19 # Deploys to staging Vercel domain
+        id: deploy-staging
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID }}
           vercel-project-id: ${{ secrets.PROJECT_ID }}
-          vercel-args: '--prod'
-
+          alias-domains: gen-soln-staging.vercel.app
+      - uses: amondnet/vercel-action@v19 # Deploys to production Vercel domain
+        id: deploy-prod
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+          vercel-args: "--prod"
