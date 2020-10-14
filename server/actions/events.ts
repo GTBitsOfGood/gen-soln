@@ -120,14 +120,10 @@ export async function getNearestEventsCardDataCount({
   });
 }
 
-interface test {
-  cities: string[];
-  causes: string[];
-}
-
-export async function getByCausesEventsCardData({ causes, cities }: test) {
-  /*causes: string[],
-  cities: string[]*/
+export async function getByCausesEventsCardData(
+  causes: string[],
+  cities: string[]
+) {
   await Mongo();
 
   let findQuery = {};
