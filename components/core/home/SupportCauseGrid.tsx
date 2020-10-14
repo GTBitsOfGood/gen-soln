@@ -1,29 +1,20 @@
 import React from "react";
 
-import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  CardMedia,
-  CardActionArea
-} from "@material-ui/core/";
+import { Grid, Typography } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(2)
   },
-  media: {
-    height: 140,
-    maxWidth: 345
-  },
   container: {
     display: "flex",
     "min-width": "420px",
     flexDirection: "column",
     "align-self": "center",
-    "margin-top": "10vh"
+    "margin-top": "10vh",
+    "margin-left": "5vh",
+    "margin-right": "5vh"
   },
   text: {
     "text-align": "center",
@@ -80,32 +71,22 @@ export default function MediaCard() {
       <div className={classes.root}>
         <Grid
           container
-          spacing={3}
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
+          spacing={2}
+          justify="center"
+          alignItems="center"
+          style={{ minHeight: "100vh", maxWidth: "100%" }}
         >
           {data.map(elem => (
-            <Grid item md={4} key={data.indexOf(elem)}>
-              <img
-                src={`${elem.image}`}
-                alt="Placeholder"
-                height="200"
-                width="300"
-              />
-              {/*
-              <Card>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    alt="Contemplative Reptile"
-                    height="200"
-                    image={`${elem.image}`}
-                  />
-                  <CardContent></CardContent>
-                </CardActionArea>
-              </Card>
-              */}
+            <Grid item sm={4} key={data.indexOf(elem)}>
+              <Grid container justify="center" alignItems="center">
+                <img
+                  className="image"
+                  src={`${elem.image}`}
+                  alt="Placeholder"
+                  height="202"
+                  width="360"
+                />
+              </Grid>
             </Grid>
           ))}
         </Grid>
