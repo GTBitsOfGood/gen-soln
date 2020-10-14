@@ -23,6 +23,7 @@ import { Dropdown } from "utils/types";
 const NonprofitDonationPage: NextPage<InferGetStaticPropsType<
   typeof getStaticProps
 >> = props => {
+  console.log({ stripe_client: config.stripe.publishable_key });
   const router = useRouter();
   if (router.isFallback) {
     return null;

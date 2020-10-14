@@ -2,6 +2,9 @@ const env = process.env.FORCE_NODE_ENV ?? process.env.NODE_ENV ?? "development";
 const isDevEnv = env === "development";
 const isStagingEnv = env === "staging";
 
+console.log(process.env.FORCE_NODE_ENV);
+console.log({ isDevEnv, isStagingEnv });
+
 // works for server-side env variables only
 const getServerEnvVar = (
   DEV_ENV_VAR_NAME: string,
