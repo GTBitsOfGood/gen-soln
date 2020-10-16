@@ -78,6 +78,24 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
     truncate
   } = useStyles();
 
+  const formatDate = (event: EventCardData) => {
+    const startDate = new Date(event.startDate);
+    const startDateFormatted = startDate.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true
+    });
+    const endDate = new Date(event.endDate);
+    const endDateFormatted = endDate.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true
+    });
+    return startDateFormatted + "-" + endDateFormatted;
+  };
+
   return (
     <FocusVisibleOnly onClick={onClick}>
       <div className={cardContainer}>
@@ -89,9 +107,7 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
           />
           <div className={content}>
             <CoreTypography variant="h4" className={clsx(meta, truncate)}>
-              {
-                eventCardData.duration /*TODO: replace with formatting from figma*/
-              }
+              {formatDate(eventCardData)}
             </CoreTypography>
             <CoreTypography variant="h4" className={header}>
               {eventCardData.name}
