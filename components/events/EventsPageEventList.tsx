@@ -2,10 +2,10 @@ import React from "react";
 
 import { useRouter } from "next/router";
 
+import CardPaginationList from "@core/list";
 import config from "config";
 import { PaginatedEventCards } from "utils/types";
 
-import EventsPageCardList from "./EventsPageCardList";
 import EventsPageEventCard from "./EventsPageEventCard";
 import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
 
@@ -20,7 +20,7 @@ const EventsPageEventList: React.FC<Props> = ({
 }) => {
   const router = useRouter();
   return (
-    <EventsPageCardList
+    <CardPaginationList
       paginatedCardsData={paginatedEventCardsData}
       fetchCards={getMoreEvents}
       cardGlimmer={<EventsPageEventCardGlimmer />}

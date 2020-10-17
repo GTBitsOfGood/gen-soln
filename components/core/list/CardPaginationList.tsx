@@ -54,7 +54,7 @@ interface Props<CardData> {
 const DEFAULT_ROW_SIZE = 4;
 const MARGIN_ADJUSTMENT = 24;
 
-const EventsPageCardList = <CardData,>({
+const CardPaginationList = <CardData,>({
   paginatedCardsData,
   fetchCards,
   renderCard,
@@ -136,12 +136,12 @@ const EventsPageCardList = <CardData,>({
   };
 
   // holds all the elements currently displayed
-  const display: (CardData | null)[] = cards.slice(first, first + rowSize);
+  const display = cards.slice(first, first + rowSize).map(renderCard);
   const hasNext = maxElem == -1 || first + rowSize < maxElem;
   if (hasNext) {
     // pad the display items with null if necessary
     while (display.length < rowSize) {
-      display.push(null);
+      display.push(cardGlimmer);
     }
   }
 
@@ -160,7 +160,7 @@ const EventsPageCardList = <CardData,>({
       )}
       {display.map((card, i) => (
         <div className={classes.item} key={i}>
-          {card == null ? cardGlimmer : renderCard(card)}
+          {card}
         </div>
       ))}
       {hasNext && !loading && (
@@ -178,4 +178,4 @@ const EventsPageCardList = <CardData,>({
   );
 };
 
-export default EventsPageCardList;
+export default CardPaginationList;
