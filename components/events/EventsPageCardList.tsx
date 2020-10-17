@@ -49,20 +49,21 @@ interface Props<CardData> {
     newPage: number
   ) => Promise<PageInformation & { cards: CardData[] }>;
   renderCard: (c: CardData | null) => JSX.Element;
+  cardWidth?: number;
 }
 
 const DEFAULT_ROW_SIZE = 4;
 const MARGIN_ADJUSTMENT = 24;
-const CARD_WIDTH = 283;
 
 const EventsPageCardList = <CardData,>({
   paginatedCardsData,
   fetchCards,
-  renderCard
+  renderCard,
+  cardWidth = 283
 }: Props<CardData>) => {
   const classes = useStyles();
 
-  const [events, setEvents] = useState(paginatedCardsData.cards);
+  const [cards, setCards] = useState(paginatedCardsData.cards);
 
   // Index of the first element displayed in the list
   const [first, setFirst] = useState(0);
@@ -75,35 +76,33 @@ const EventsPageCardList = <CardData,>({
   const containerRef = useRef<HTMLDivElement>(null);
   const pageRef = useRef(paginatedCardsData.page);
 
-  // Lock calls to getEvents if one is currently in progress
+  // Lock calls to fetchCards if one is currently in progress
   const fetchingRef = useRef(false);
 
   const resizeTimeoutRef = useRef<number>();
 
   useEffect(() => {
-    if (first + rowSize > events.length && !fetchingRef.current) {
+    if (first + rowSize > cards.length && !fetchingRef.current) {
       void (async () => {
         fetchingRef.current = true;
         setLoading(true);
 
-        const {
-          cards: newEvents,
-          page: newPage,
-          isLastPage
-        } = await fetchCards(pageRef.current + 1);
+        const { cards: newCards, page: newPage, isLastPage } = await fetchCards(
+          pageRef.current + 1
+        );
 
         pageRef.current = newPage;
 
         if (isLastPage) {
-          setMaxElem(events.length + newEvents.length);
+          setMaxElem(cards.length + newCards.length);
         }
 
-        setEvents(prevEvents => [...prevEvents, ...newEvents]);
+        setCards(prevCards => [...prevCards, ...newCards]);
         setLoading(false);
         fetchingRef.current = false;
       })();
     }
-  }, [events.length, first, rowSize, fetchCards]);
+  }, [cards.length, first, rowSize, fetchCards]);
 
   const handleResize = useCallback(() => {
     // wrap the resize in a 100ms debounce to prevent excess polling
@@ -112,11 +111,11 @@ const EventsPageCardList = <CardData,>({
     resizeTimeoutRef.current = window.setTimeout(() => {
       if (w != null) {
         setRowSize(
-          Math.max(1, Math.floor((w - MARGIN_ADJUSTMENT) / CARD_WIDTH))
+          Math.max(1, Math.floor((w - MARGIN_ADJUSTMENT) / cardWidth))
         );
       }
     }, 100);
-  }, []);
+  }, [cardWidth]);
 
   // add an event listener and call the initial row size update
   useEffect(() => {
@@ -136,9 +135,8 @@ const EventsPageCardList = <CardData,>({
     setFirst(Math.max(first - rowSize, 0));
   };
 
-  // holds all the elements currently displayed - gets rendered as
-  // EventsPageEventCard, while null gets rendered as EventsPageEventCardGlimmer
-  const display: (CardData | null)[] = events.slice(first, first + rowSize);
+  // holds all the elements currently displayed
+  const display: (CardData | null)[] = cards.slice(first, first + rowSize);
   const hasNext = maxElem == -1 || first + rowSize < maxElem;
   if (hasNext) {
     // pad the display items with null if necessary
@@ -152,7 +150,7 @@ const EventsPageCardList = <CardData,>({
       {first > 0 && (
         <div className={classes.prevButtonContainer}>
           <IconButton
-            aria-label="previous events"
+            aria-label="previous cards"
             className={classes.button}
             onClick={prevPage}
           >
@@ -160,15 +158,15 @@ const EventsPageCardList = <CardData,>({
           </IconButton>
         </div>
       )}
-      {display.map((event, i) => (
+      {display.map((card, i) => (
         <div className={classes.item} key={i}>
-          {renderCard(event)}
+          {renderCard(card)}
         </div>
       ))}
       {hasNext && !loading && (
         <div className={classes.nextButtonContainer}>
           <IconButton
-            aria-label="next events"
+            aria-label="next cards"
             className={classes.button}
             onClick={nextPage}
           >
