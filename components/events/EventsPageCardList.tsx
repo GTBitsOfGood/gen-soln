@@ -4,7 +4,7 @@ import { IconButton } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
 import { ChevronRightIcon, ChevronLeftIcon } from "@core/icons";
-import { PageInformation } from "utils/types";
+import { PaginatedCards } from "utils/types";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -44,11 +44,10 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 );
 
 interface Props<CardData> {
-  paginatedCardsData: PageInformation & { cards: CardData[] };
-  fetchCards: (
-    newPage: number
-  ) => Promise<PageInformation & { cards: CardData[] }>;
-  renderCard: (c: CardData | null) => JSX.Element;
+  paginatedCardsData: PaginatedCards<CardData>;
+  fetchCards: (newPage: number) => Promise<PaginatedCards<CardData>>;
+  renderCard: (c: CardData) => JSX.Element;
+  cardGlimmer: JSX.Element;
   cardWidth?: number;
 }
 
@@ -59,6 +58,7 @@ const EventsPageCardList = <CardData,>({
   paginatedCardsData,
   fetchCards,
   renderCard,
+  cardGlimmer,
   cardWidth = 283
 }: Props<CardData>) => {
   const classes = useStyles();
@@ -160,7 +160,7 @@ const EventsPageCardList = <CardData,>({
       )}
       {display.map((card, i) => (
         <div className={classes.item} key={i}>
-          {renderCard(card)}
+          {card == null ? cardGlimmer : renderCard(card)}
         </div>
       ))}
       {hasNext && !loading && (

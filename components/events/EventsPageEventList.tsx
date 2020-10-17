@@ -23,21 +23,18 @@ const EventsPageEventList: React.FC<Props> = ({
     <EventsPageCardList
       paginatedCardsData={paginatedEventCardsData}
       fetchCards={getMoreEvents}
-      renderCard={cardData =>
-        cardData == null ? (
-          <EventsPageEventCardGlimmer />
-        ) : (
-          <EventsPageEventCard
-            eventCardData={cardData}
-            onClick={() => {
-              void router.push(
-                config.pages.event(),
-                config.pages.event(cardData._id)
-              );
-            }}
-          />
-        )
-      }
+      cardGlimmer={<EventsPageEventCardGlimmer />}
+      renderCard={cardData => (
+        <EventsPageEventCard
+          eventCardData={cardData}
+          onClick={() => {
+            void router.push(
+              config.pages.event(),
+              config.pages.event(cardData._id)
+            );
+          }}
+        />
+      )}
     />
   );
 };

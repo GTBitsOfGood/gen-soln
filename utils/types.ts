@@ -62,6 +62,8 @@ export type PaginatedEventCards = PageInformation & {
   cards: EventCardData[];
 };
 
+export type PaginatedCards<CardData> = PageInformation & { cards: CardData[] };
+
 interface PaginateWithLocation {
   lat: number;
   long: number;
