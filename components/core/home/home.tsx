@@ -6,6 +6,8 @@ import { signIn, signOut, useSession } from "next-auth/client";
 import { CoreButton } from "@core/buttons";
 import config from "config";
 
+import SupportCauseGrid from "./SupportCauseGrid";
+
 const useStyles = makeStyles({
   container: {
     display: "flex",
@@ -70,6 +72,7 @@ const HomePage = () => {
       >
         Sign up
       </CoreButton>
+      <SupportCauseGrid />
     </div>
   );
 };

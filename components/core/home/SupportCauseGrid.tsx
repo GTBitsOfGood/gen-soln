@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MediaCard() {
+const SupportCauseGrid = () => {
   const classes = useStyles();
   const data = [
     {
@@ -93,11 +93,6 @@ export default function MediaCard() {
       </div>
     </div>
   );
-}
-/*
-const SupportCauseGrid = () => {
-  return null;
 };
 
 export default SupportCauseGrid;
-*/
