@@ -159,14 +159,13 @@ export async function getByFilteredEventsCardData(
   }
 
   if (times.length) {
-    let timeFilters: any[] = [];
-    for (const time of times) {
+    const timeFilters = times.map(time => {
       let startTime = new Date();
       startTime.setHours(0);
       startTime.setMinutes(0);
       startTime.setSeconds(0);
       startTime.setMilliseconds(0);
-      let endTime = null;
+      let endTime;
       switch (time) {
         case "TODAY": {
           endTime = new Date(startTime);
@@ -180,14 +179,14 @@ export async function getByFilteredEventsCardData(
           break;
         }
         case "WEEKEND": {
-          const offset = 6 - startTime.getDay();
+          const offset = startTime.getDay() == 0 ? 0 : 6 - startTime.getDay();
           startTime.setDate(startTime.getDate() + offset);
           endTime = new Date(startTime);
           endTime.setDate(startTime.getDate() + 2);
           break;
         }
         case "NWEEKEND": {
-          const offset = 6 - startTime.getDay();
+          const offset = startTime.getDay() == 0 ? 0 : 6 - startTime.getDay();
           startTime.setDate(startTime.getDate() + offset + 7);
           endTime = new Date(startTime);
           endTime.setDate(startTime.getDate() + 2);
@@ -206,21 +205,26 @@ export async function getByFilteredEventsCardData(
           endTime.setDate(startTime.getDate() + 7);
           break;
         }
+        default: {
+          const _exhaustiveCheck: never = time;
+          return _exhaustiveCheck;
+        }
       }
-      const tempQuery = {
+      return {
         startDate: {
           $gte: startTime,
           $lt: endTime
         }
       };
-      timeFilters = [...timeFilters, tempQuery];
-    }
+    });
     findQuery = {
       ...findQuery,
       $or: timeFilters
     };
   }
+  console.log(JSON.stringify(findQuery));
   const result = await Event.find(findQuery).limit(5);
+  console.log(result);
   return result.map(r => r.toJSON()) as EventCardDataType[];
 }
 
