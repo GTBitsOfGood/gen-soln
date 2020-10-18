@@ -58,9 +58,7 @@ export interface PageInformation {
   isLastPage: boolean;
 }
 
-export type PaginatedEventCards = PageInformation & {
-  cards: EventCardData[];
-};
+export type PaginatedEventCards = PaginatedCards<EventCardData>;
 
 export type PaginatedCards<CardData> = PageInformation & { cards: CardData[] };
 
@@ -70,7 +68,7 @@ export type CauseCardData = {
   filterValue: string;
 };
 
-export type PaginatedCauseCards = PageInformation & { cards: CauseCardData[] };
+export type PaginatedCauseCards = PaginatedCards<CauseCardData>;
 
 interface PaginateWithLocation {
   lat: number;
