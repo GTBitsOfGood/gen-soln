@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import CoreTypography from "@core/typography";
 import { getUpcomingEvents, getNearestEvents } from "requests/events";
-import { CAUSE_CARDS } from "utils/causes";
 import {
   DatePaginatedEventCards,
   LocationPaginatedEventCards
@@ -108,7 +107,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
       <div className={nearestEventsContainer}>
         <CoreTypography variant="h2">Volunteer For a Cause</CoreTypography>
         <div className={listContainer}>
-          <EventsPageCauseList paginatedCauseCardsData={CAUSE_CARDS} />
+          <EventsPageCauseList />
         </div>
       </div>
     </div>
