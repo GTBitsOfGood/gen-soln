@@ -123,7 +123,7 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
               {eventCardData.name}
             </CoreTypography>
             <CoreTypography className={clsx(body, truncate)}>
-              {eventCardData.nonprofitId.name}
+              {eventCardData.address.text.main}
             </CoreTypography>
           </div>
         </div>

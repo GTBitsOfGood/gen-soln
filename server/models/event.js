@@ -50,8 +50,14 @@ const eventSchema = new Schema(
     },
     address: {
       text: {
-        type: String,
-        required: true
+        main: {
+          type: String,
+          required: true
+        },
+        secondary: {
+          type: String,
+          required: true
+        }
       },
       location: {
         type: pointSchema,
