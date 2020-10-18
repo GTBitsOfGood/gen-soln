@@ -104,7 +104,7 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
       endFormatted = `${endMonth} ${endDateString}, ${endTime}`;
     }
     return `${startFormatted} - ${endFormatted}`;
-  }, [eventCardData.startDate, eventCardData.endDate]);
+  }, [eventCardData]);
 
   return (
     <FocusVisibleOnly onClick={onClick}>
