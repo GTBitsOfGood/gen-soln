@@ -45,7 +45,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 
 interface Props<CardData> {
   paginatedCardsData: PaginatedCards<CardData>;
-  fetchCards: (newPage: number) => Promise<PaginatedCards<CardData>>;
+  fetchCards?: (newPage: number) => Promise<PaginatedCards<CardData>>;
   renderCard: (c: CardData) => JSX.Element;
   cardGlimmer: JSX.Element;
   cardWidth?: number;
@@ -70,7 +70,9 @@ const CardPaginationList = <CardData,>({
 
   // Number of elements displayed
   const [rowSize, setRowSize] = useState(DEFAULT_ROW_SIZE);
-  const [maxElem, setMaxElem] = useState(-1);
+  const [maxElem, setMaxElem] = useState(
+    paginatedCardsData.isLastPage ? paginatedCardsData.totalCount : -1
+  );
   const [loading, setLoading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -82,7 +84,11 @@ const CardPaginationList = <CardData,>({
   const resizeTimeoutRef = useRef<number>();
 
   useEffect(() => {
-    if (first + rowSize > cards.length && !fetchingRef.current) {
+    if (
+      first + rowSize > cards.length &&
+      !fetchingRef.current &&
+      fetchCards != null
+    ) {
       void (async () => {
         fetchingRef.current = true;
         setLoading(true);

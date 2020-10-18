@@ -4,11 +4,13 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import CoreTypography from "@core/typography";
 import { getUpcomingEvents, getNearestEvents } from "requests/events";
+import { CAUSE_CARDS } from "utils/causes";
 import {
   DatePaginatedEventCards,
   LocationPaginatedEventCards
 } from "utils/types";
 
+import EventsPageCauseList from "./EventsPageCauseList";
 import EventsPageEventList from "./EventsPageEventList";
 import { usePosition } from "./usePosition";
 
@@ -103,6 +105,12 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
           </div>
         </>
       )}
+      <div className={nearestEventsContainer}>
+        <CoreTypography variant="h2">Volunteer For a Cause</CoreTypography>
+        <div className={listContainer}>
+          <EventsPageCauseList paginatedCauseCardsData={CAUSE_CARDS} />
+        </div>
+      </div>
     </div>
   );
 };

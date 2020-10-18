@@ -64,6 +64,14 @@ export type PaginatedEventCards = PageInformation & {
 
 export type PaginatedCards<CardData> = PageInformation & { cards: CardData[] };
 
+export type CauseCardData = {
+  cause: string;
+  imagePath: string;
+  filterValue: string;
+};
+
+export type PaginatedCauseCards = PageInformation & { cards: CauseCardData[] };
+
 interface PaginateWithLocation {
   lat: number;
   long: number;
