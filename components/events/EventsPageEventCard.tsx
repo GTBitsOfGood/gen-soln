@@ -97,7 +97,7 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
     const endTime = end.toLocaleString("en-US", timeOptions);
     let endFormatted = endTime;
 
-    if (end.getDate() !== startDate) {
+    if (end.getDate() !== startDate || end.getMonth() !== start.getMonth()) {
       const endMonth = end.toLocaleString("en-US", { month: "short" });
       const endDate = end.getDate();
       const endDateString = `${endDate.toString()}${nthDate(endDate)}`;
