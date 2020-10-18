@@ -37,20 +37,21 @@ interface EventBase {
   endDate: string;
   duration: number;
   image: string;
-  address: { text: string; location: { type: "Point"; coordinates: number[] } };
+  address: {
+    text: { main: string; secondary: string };
+    location: { type: "Point"; coordinates: number[] };
+  };
   _id: string;
+  nonprofitId: string;
 }
 
 export type Event = EventBase & {
   maxVolunteers: number;
   volunteers: Array<string>;
-  nonprofitId: string;
   about: string;
 };
 
-export type EventCardData = EventBase & {
-  nonprofitId: Pick<Nonprofit, "_id" | "name">;
-};
+export type EventCardData = EventBase;
 
 export interface PageInformation {
   page: number;

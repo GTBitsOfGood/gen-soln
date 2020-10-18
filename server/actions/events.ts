@@ -44,7 +44,6 @@ export async function getUpcomingEventsCardData({
     },
     CARD_FIELDS
   )
-    .populate("nonprofitId", "name", Nonprofit)
     .sort({ startDate: 1 })
     .skip(page > 0 ? (page - 1) * CARDS_PER_PAGE : 0)
     .limit(CARDS_PER_PAGE);
@@ -91,7 +90,6 @@ export async function getNearestEventsCardData({
     },
     CARD_FIELDS
   )
-    .populate("nonprofitId", "name", Nonprofit)
     .skip(page > 0 ? (page - 1) * CARDS_PER_PAGE : 0)
     .limit(CARDS_PER_PAGE);
 
