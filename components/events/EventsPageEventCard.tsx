@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -6,6 +6,7 @@ import clsx from "clsx";
 import CoreTypography from "@core/typography";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
 import { EventCardData } from "utils/types";
+import { nthDate } from "utils/util";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -78,6 +79,33 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
     truncate
   } = useStyles();
 
+  const formatDate = useMemo(() => {
+    const start = new Date(eventCardData.startDate);
+    const timeOptions = {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true
+    };
+
+    const startMonth = start.toLocaleString("en-US", { month: "short" });
+    const startDate = start.getDate();
+    const startDateString = `${startDate.toString()}${nthDate(startDate)}`;
+    const startTime = start.toLocaleString("en-US", timeOptions);
+    const startFormatted = `${startMonth} ${startDateString}, ${startTime}`;
+
+    const end = new Date(eventCardData.endDate);
+    const endTime = end.toLocaleString("en-US", timeOptions);
+    let endFormatted = endTime;
+
+    if (end.getDate() !== startDate || end.getMonth() !== start.getMonth()) {
+      const endMonth = end.toLocaleString("en-US", { month: "short" });
+      const endDate = end.getDate();
+      const endDateString = `${endDate.toString()}${nthDate(endDate)}`;
+      endFormatted = `${endMonth} ${endDateString}, ${endTime}`;
+    }
+    return `${startFormatted} - ${endFormatted}`;
+  }, [eventCardData]);
+
   return (
     <FocusVisibleOnly onClick={onClick}>
       <div className={cardContainer}>
@@ -89,9 +117,7 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
           />
           <div className={content}>
             <CoreTypography variant="h4" className={clsx(meta, truncate)}>
-              {
-                eventCardData.duration /*TODO: replace with formatting from figma*/
-              }
+              {formatDate}
             </CoreTypography>
             <CoreTypography variant="h4" className={header}>
               {eventCardData.name}
