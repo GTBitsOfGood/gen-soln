@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Container, makeStyles } from "@material-ui/core";
+import { Container, makeStyles, createStyles, Theme } from "@material-ui/core";
 
 import { CoreButtonWithLongArrow, CoreButton } from "@core/buttons";
 import CoreDivider from "@core/divider";
@@ -18,59 +18,72 @@ import { Event, Nonprofit } from "utils/types";
 
 import EventsPageDescriptionImage from "./EventsPageDescriptionImage";
 
-const useStyles = makeStyles({
-  bigBox: {
-    display: "flex",
-    justifyContent: "center",
-    padding: 0
-  },
-  mainContent: {
-    display: "flex",
-    flexDirection: "column",
-    paddingTop: 64,
-    width: "50%",
-    marginRight: 150
-  },
-  details: {
-    display: "flex",
-    flexDirection: "column",
-    paddingTop: 160,
-    width: "15%"
-  },
-  image: {
-    marginBottom: 24
-  },
-  date: {
-    marginBottom: 8
-  },
-  name: {
-    marginBottom: 8
-  },
-  signUp: {
-    width: "100px",
-    borderRadius: 20,
-    marginTop: 15
-  },
-  divider: {
-    margin: "48px 0"
-  },
-  detail: {
-    marginTop: 10
-  },
-  aboutHeader: {
-    marginBottom: 12
-  },
-  eventParagraph: {
-    marginBottom: 42
-  },
-  nonProfitParagraph: {
-    marginBottom: 24
-  },
-  buttonRow: {
-    display: "flex",
-    justifyContent: "flex-end"
-  }
-});
+const useStyles = makeStyles(({ palette }: Theme) =>
+  createStyles({
+    bigBox: {
+      display: "flex",
+      justifyContent: "center",
+      padding: 0
+    },
+    mainContent: {
+      display: "flex",
+      flexDirection: "column",
+      paddingTop: 64,
+      width: "50%",
+      marginRight: 150
+    },
+    details: {
+      display: "flex",
+      flexDirection: "column",
+      paddingTop: 160,
+      width: "210px"
+    },
+    image: {
+      marginBottom: 24
+    },
+    date: {
+      marginBottom: 8
+    },
+    name: {
+      marginBottom: 8
+    },
+    signUp: {
+      width: "100px",
+      borderRadius: 20,
+      marginTop: 15
+    },
+    divider: {
+      margin: "48px 0"
+    },
+    detail: {
+      marginTop: 0
+    },
+    aboutHeader: {
+      marginBottom: 12
+    },
+    eventParagraph: {
+      marginBottom: 42
+    },
+    nonProfitParagraph: {
+      marginBottom: 24
+    },
+    buttonRow: {
+      display: "flex",
+      justifyContent: "flex-end"
+    },
+    infoGrid: {
+      display: "grid",
+      gridTemplateColumns: "30px 1fr",
+      alignItems: "start",
+      rowGap: "10px",
+      columnGap: "10px",
+      marginTop: "15px"
+    },
+    shareSave: {
+      color: palette.text.primary
+    }
+  })
+);
 
 interface Props {
   event: Event;
@@ -116,36 +129,38 @@ const EventsPageDescription: React.FC<Props> = ({
 
       <div className={classes.details}>
         <CoreTypography variant="h3">Event Details</CoreTypography>
-        <div>
-          <PersonLayeredIcon></PersonLayeredIcon>
-          <ClockIcon></ClockIcon>
-          <GlobeIcon></GlobeIcon>
-          <HeartIcon></HeartIcon>
-          <PaperPlaneIcon></PaperPlaneIcon>
-          <SaveFlagIcon></SaveFlagIcon>
+        <div className={classes.infoGrid}>
+          <PersonLayeredIcon />
+          <CoreTypography variant="body2" className={classes.detail}>
+            {event.volunteers.length}/{event.maxVolunteers} Volunteers
+          </CoreTypography>
+          <ClockIcon />
+          <CoreTypography variant="body2" className={classes.detail}>
+            {formatDateRange(event.startDate, event.endDate)}
+          </CoreTypography>
+          <GlobeIcon />
+          <CoreTypography variant="body2" className={classes.detail}>
+            {event.address.text}
+          </CoreTypography>
+          <HeartIcon />
+          <div style={{ flexDirection: "column" }}>
+            <CoreTypography variant="caption">Hosted by</CoreTypography>
+            <CoreTypography variant="h4">{nonProfit.name}</CoreTypography>
+          </div>
         </div>
-        <CoreTypography variant="caption" className={classes.detail}>
-          {event.volunteers.length}/{event.maxVolunteers} Volunteers
-        </CoreTypography>
-        <CoreTypography variant="caption" className={classes.detail}>
-          {event.startDate} - {event.endDate}
-        </CoreTypography>
-        <CoreTypography variant="caption" className={classes.detail}>
-          {event.address.text}
-        </CoreTypography>
-        <div style={{ flexDirection: "column", marginTop: 10 }}>
-          <CoreTypography variant="caption">Hosted by</CoreTypography>
-          <CoreTypography variant="h4">{nonProfit.name}</CoreTypography>
-        </div>
-        <CoreButton
-          /*variant="contained" size="small"*/ className={classes.signUp}
-        >
+        <CoreButton className={classes.signUp} variant="contained">
           Sign Up
         </CoreButton>
         <CoreDivider style={{ marginTop: 20, marginBottom: 20 }} />
         <div style={{ flexDirection: "row" }}>
-          <CoreButton>Share</CoreButton>
-          <CoreButton>Save</CoreButton>
+          <CoreButton className={classes.shareSave}>
+            <PaperPlaneIcon style={{ marginRight: "5" }} />
+            Share
+          </CoreButton>
+          <CoreButton className={classes.shareSave}>
+            <SaveFlagIcon style={{ marginRight: "5" }} />
+            Save
+          </CoreButton>
         </div>
       </div>
     </Container>
