@@ -222,9 +222,7 @@ export async function getByFilteredEventsCardData(
       $or: timeFilters
     };
   }
-  console.log(JSON.stringify(findQuery));
   const result = await Event.find(findQuery).limit(5);
-  console.log(result);
   return result.map(r => r.toJSON()) as EventCardDataType[];
 }
 
