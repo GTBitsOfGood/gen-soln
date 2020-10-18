@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -6,6 +6,7 @@ import clsx from "clsx";
 import CoreTypography from "@core/typography";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
 import { EventCardData } from "utils/types";
+import { nthDate } from "utils/util";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -78,23 +79,32 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
     truncate
   } = useStyles();
 
-  const formatDate = (event: EventCardData) => {
-    const startDate = new Date(event.startDate);
-    const startDateFormatted = startDate.toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
+  const formatDate = useMemo(() => {
+    const start = new Date(eventCardData.startDate);
+    const timeOptions = {
       hour: "numeric",
       minute: "numeric",
       hour12: true
-    });
-    const endDate = new Date(event.endDate);
-    const endDateFormatted = endDate.toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true
-    });
-    return startDateFormatted + "-" + endDateFormatted;
-  };
+    };
+
+    const startMonth = start.toLocaleString("en-US", { month: "short" });
+    const startDate = start.getDate();
+    const startDateString = `${startDate.toString()}${nthDate(startDate)}`;
+    const startTime = start.toLocaleString("en-US", timeOptions);
+    const startFormatted = `${startMonth} ${startDateString}, ${startTime}`;
+
+    const end = new Date(eventCardData.endDate);
+    const endTime = end.toLocaleString("en-US", timeOptions);
+    let endFormatted = endTime;
+
+    if (end.getDate() !== startDate) {
+      const endMonth = end.toLocaleString("en-US", { month: "short" });
+      const endDate = end.getDate();
+      const endDateString = `${endDate.toString()}${nthDate(endDate)}`;
+      endFormatted = `${endMonth} ${endDateString}, ${endTime}`;
+    }
+    return `${startFormatted} - ${endFormatted}`;
+  }, [eventCardData.startDate, eventCardData.endDate]);
 
   return (
     <FocusVisibleOnly onClick={onClick}>
@@ -107,7 +117,7 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
           />
           <div className={content}>
             <CoreTypography variant="h4" className={clsx(meta, truncate)}>
-              {formatDate(eventCardData)}
+              {formatDate}
             </CoreTypography>
             <CoreTypography variant="h4" className={header}>
               {eventCardData.name}
