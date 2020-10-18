@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 
-import { Grid } from "@material-ui/core";
+import { makeStyles, Grid } from "@material-ui/core";
 import InfiniteScroll from "react-infinite-scroller";
 
+import CoreTypography from "@core/typography";
 import { EventCardData, PaginatedEventCards } from "utils/types";
 
 import EventsPageEventCard from "./EventsPageEventCard";
 import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
+
+const useStyles = makeStyles({
+  endTextContainer: {
+    display: "flex",
+    justifyContent: "center",
+    paddingTop: 60
+  }
+});
 
 const CARDS_PER_PAGE = 12;
 
@@ -28,7 +37,6 @@ let pageId = 0;
 const totalMockCards = 50;
 
 const fetchCards = async (): Promise<PaginatedEventCards> => {
-  console.log("fetching cards");
   await new Promise(r => setTimeout(r, 300));
 
   pageId++;
@@ -42,15 +50,17 @@ const fetchCards = async (): Promise<PaginatedEventCards> => {
 };
 
 const EventsPageInfiniteScroll: React.FC = () => {
+  const { endTextContainer } = useStyles();
+
   const [cards, setCards] = useState<EventCardData[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
   const getMoreCards = (): void => {
     void fetchCards().then(paginatedCards => {
-      console.log(paginatedCards);
       if (paginatedCards.isLastPage) {
         setHasMore(false);
       }
+
       setCards([...cards, ...paginatedCards.cards]);
     });
   };
@@ -96,6 +106,11 @@ const EventsPageInfiniteScroll: React.FC = () => {
           </Grid>
         ))}
       </Grid>
+      {!hasMore && (
+        <div className={endTextContainer}>
+          <CoreTypography>End of filter results</CoreTypography>
+        </div>
+      )}
     </InfiniteScroll>
   );
 };
