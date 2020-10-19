@@ -5,6 +5,7 @@ import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
+import { FilterValue } from "utils/filters";
 import {
   Event as EventType,
   EventCardData as EventCardDataType,
@@ -118,9 +119,10 @@ export async function getNearestEventsCardDataCount({
   });
 }
 
-export async function getByCausesEventsCardData(
-  causes: string[],
-  cities: string[]
+export async function getByFilteredEventsCardData(
+  causes: FilterValue<"cause">[],
+  cities: string[],
+  times: FilterValue<"time">[]
 ) {
   await Mongo();
 
@@ -154,8 +156,71 @@ export async function getByCausesEventsCardData(
     };
   }
 
+  if (times.length) {
+    const timeFilters = times.map(time => {
+      let startTime = new Date();
+      startTime.setHours(0);
+      startTime.setMinutes(0);
+      startTime.setSeconds(0);
+      startTime.setMilliseconds(0);
+      let endTime;
+      switch (time) {
+        case "TODAY": {
+          endTime = new Date(startTime);
+          endTime.setDate(startTime.getDate() + 1);
+          break;
+        }
+        case "TOMORROW": {
+          startTime.setDate(startTime.getDate() + 1);
+          endTime = new Date(startTime);
+          endTime.setDate(startTime.getDate() + 1);
+          break;
+        }
+        case "WEEKEND": {
+          const offset = startTime.getDay() == 0 ? -1 : 6 - startTime.getDay();
+          startTime.setDate(startTime.getDate() + offset);
+          endTime = new Date(startTime);
+          endTime.setDate(startTime.getDate() + 2);
+          break;
+        }
+        case "NWEEKEND": {
+          const offset = startTime.getDay() == 0 ? -1 : 6 - startTime.getDay();
+          startTime.setDate(startTime.getDate() + offset + 7);
+          endTime = new Date(startTime);
+          endTime.setDate(startTime.getDate() + 2);
+          break;
+        }
+        case "NWEEK": {
+          startTime = new Date();
+          startTime.setDate(startTime.getDate() + 7);
+          endTime = new Date(startTime);
+          endTime.setDate(startTime.getDate() + 7);
+          break;
+        }
+        case "WEEK": {
+          startTime = new Date();
+          endTime = new Date(startTime);
+          endTime.setDate(startTime.getDate() + 7);
+          break;
+        }
+        default: {
+          const _exhaustiveCheck: never = time;
+          return _exhaustiveCheck;
+        }
+      }
+      return {
+        startDate: {
+          $gte: startTime,
+          $lt: endTime
+        }
+      };
+    });
+    findQuery = {
+      ...findQuery,
+      $or: timeFilters
+    };
+  }
   const result = await Event.find(findQuery).limit(5);
-
   return result.map(r => r.toJSON()) as EventCardDataType[];
 }
 
