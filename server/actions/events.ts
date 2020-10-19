@@ -179,14 +179,14 @@ export async function getByFilteredEventsCardData(
           break;
         }
         case "WEEKEND": {
-          const offset = startTime.getDay() == 0 ? 0 : 6 - startTime.getDay();
+          const offset = startTime.getDay() == 0 ? -1 : 6 - startTime.getDay();
           startTime.setDate(startTime.getDate() + offset);
           endTime = new Date(startTime);
           endTime.setDate(startTime.getDate() + 2);
           break;
         }
         case "NWEEKEND": {
-          const offset = startTime.getDay() == 0 ? 0 : 6 - startTime.getDay();
+          const offset = startTime.getDay() == 0 ? -1 : 6 - startTime.getDay();
           startTime.setDate(startTime.getDate() + offset + 7);
           endTime = new Date(startTime);
           endTime.setDate(startTime.getDate() + 2);
