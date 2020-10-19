@@ -46,7 +46,7 @@ export async function getUpcomingEventsCardData({
     CARD_FIELDS
   )
     .sort({ startDate: 1 })
-    .skip(page > 0 ? (page - 1) * CARDS_PER_PAGE : 0)
+    .skip(page * CARDS_PER_PAGE)
     .limit(CARDS_PER_PAGE);
 
   return {
@@ -91,7 +91,7 @@ export async function getNearestEventsCardData({
     },
     CARD_FIELDS
   )
-    .skip(page > 0 ? (page - 1) * CARDS_PER_PAGE : 0)
+    .skip(page * CARDS_PER_PAGE)
     .limit(CARDS_PER_PAGE);
 
   return {

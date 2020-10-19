@@ -13,10 +13,6 @@ export default class MyDocument extends Document {
           {/* PWA primary color */}
           <meta name="theme-color" content={orange["500"]} />
           <link rel="stylesheet" href="/fonts/style.css" />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          />
           <link href="/site/favicon.png" rel="icon" type="image/png" />
         </Head>
         <body>

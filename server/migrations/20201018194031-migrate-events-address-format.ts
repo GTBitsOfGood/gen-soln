@@ -20,19 +20,16 @@ export const up: MigrationFunction = async (db: Db) => {
     .collection("events")
     .find({}, { fields: { _id: 1, address: 1 } })
     .toArray();
-
   await Promise.all(
     documents.map(({ _id, address }) =>
       db.collection("events").updateOne(
         { _id },
         {
           $set: {
-            address: {
-              text: {
-                main: faker.random.arrayElement(MAIN_TEXT_OPTIONS),
-                // @ts-ignore: Address is of type { text: string }
-                secondary: address.text
-              }
+            "address.text": {
+              main: faker.random.arrayElement(MAIN_TEXT_OPTIONS),
+              // @ts-ignore: address.text is of type string
+              secondary: address.text
             }
           }
         }
@@ -46,13 +43,12 @@ export const down: MigrationFunction = async (db: Db) => {
     .collection("events")
     .find({}, { fields: { _id: 1, address: 1 } })
     .toArray();
-
   await Promise.all(
     documents.map(({ _id, address }) =>
       db.collection("events").updateOne(
         { _id },
-        // @ts-ignore: Address was set to type { main: string, secondary: string } in up()
-        { $set: { address: { text: address.text.secondary } } }
+        // @ts-ignore: address.text was set to type { main: string, secondary: string } in up()
+        { $set: { "address.text": address.text.secondary } }
       )
     )
   );
