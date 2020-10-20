@@ -17,9 +17,9 @@ const useStyles = makeStyles(theme => ({
     "margin-left": "5vh",
     "margin-right": "5vh"
   },
-  individual_container: {
-    "min-width": 360
-  },
+  individual_container: minGridWidth => ({
+    "min-width": minGridWidth.toString() + "%"
+  }),
   text: {
     "text-align": "center",
     color: "#333333",
@@ -31,46 +31,15 @@ const SupportCauseGrid = () => {
   const { width } = useWindowDimensions();
   const min = width ? width * 0.9 : 360 * 0.9;
   const split = min / 360 > 3 ? 3 : Math.max(1, Math.floor(min / 360));
+  const minGridWidth = 100 / split;
   const grid_sm = 12 / split;
-  const classes = useStyles();
-  const data = [
-    {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
-    },
-    {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
-    },
-    {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
-    },
-    {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
-    },
-    {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
-    },
-    {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
-    },
-    {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
-    },
-    {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
-    },
-    {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
-    }
-  ];
+  const classes = useStyles(minGridWidth);
+  const image_url =
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png";
+  const data = [{ image: image_url }];
+  for (let x = 0; x < 8; x++) {
+    data.push({ image: image_url });
+  }
   return (
     <div className={classes.container}>
       <Typography className={classes.text} variant="h4">
