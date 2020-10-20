@@ -2,20 +2,13 @@ import React from "react";
 
 import { Container, makeStyles, createStyles, Theme } from "@material-ui/core";
 
-import { CoreButtonWithLongArrow, CoreButton } from "@core/buttons";
+import { CoreButtonWithLongArrow } from "@core/buttons";
 import CoreDivider from "@core/divider";
-import {
-  PersonLayeredIcon,
-  ClockIcon,
-  GlobeIcon,
-  HeartIcon,
-  PaperPlaneIcon,
-  SaveFlagIcon
-} from "@core/icons";
 import CoreTypography from "@core/typography";
 import { formatDateRange } from "utils/date";
 import { Event, Nonprofit } from "utils/types";
 
+import EventsPageDescriptionDetailsBox from "./EventsPageDescriptionDetailsBox";
 import EventsPageDescriptionImage from "./EventsPageDescriptionImage";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
@@ -32,12 +25,6 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       width: "50%",
       marginRight: 150
     },
-    details: {
-      display: "flex",
-      flexDirection: "column",
-      paddingTop: 160,
-      width: "210px"
-    },
     image: {
       marginBottom: 24
     },
@@ -47,16 +34,8 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     name: {
       marginBottom: 8
     },
-    signUp: {
-      width: "100px",
-      borderRadius: 20,
-      marginTop: 15
-    },
     divider: {
       margin: "48px 0"
-    },
-    detail: {
-      marginTop: 0
     },
     aboutHeader: {
       marginBottom: 12
@@ -70,24 +49,14 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     buttonRow: {
       display: "flex",
       justifyContent: "flex-end"
-    },
-    infoGrid: {
-      display: "grid",
-      gridTemplateColumns: "30px 1fr",
-      alignItems: "start",
-      rowGap: "10px",
-      columnGap: "10px",
-      marginTop: "15px"
-    },
-    shareSave: {
-      color: palette.text.primary
     }
   })
 );
 
 interface Props {
   event: Event;
-  nonProfit: Nonprofit;
+  nonProfit: Nonprofit; // TODO: Don't get the entire nonprofit object
+  // figure out a way to get nonprofit info associated with the nonprofit hosting an event
 }
 
 const EventsPageDescription: React.FC<Props> = ({
@@ -108,7 +77,7 @@ const EventsPageDescription: React.FC<Props> = ({
         <CoreTypography variant="h1" className={classes.name}>
           {event.name}
         </CoreTypography>
-        <CoreTypography variant="h3">{nonProfit.name}</CoreTypography>
+        <CoreTypography variant="h3">{event.address.text.main}</CoreTypography>
         <CoreDivider className={classes.divider} />
         <CoreTypography variant="h3" className={classes.aboutHeader}>
           About the Event
@@ -123,46 +92,13 @@ const EventsPageDescription: React.FC<Props> = ({
           {nonProfit.about}
         </CoreTypography>
         <div className={classes.buttonRow}>
-          <CoreButtonWithLongArrow>Learn More</CoreButtonWithLongArrow>
+          <CoreButtonWithLongArrow>
+            Learn About This Non-profit
+          </CoreButtonWithLongArrow>
         </div>
       </div>
 
-      <div className={classes.details}>
-        <CoreTypography variant="h3">Event Details</CoreTypography>
-        <div className={classes.infoGrid}>
-          <PersonLayeredIcon />
-          <CoreTypography variant="body2" className={classes.detail}>
-            {event.volunteers.length}/{event.maxVolunteers} Volunteers
-          </CoreTypography>
-          <ClockIcon />
-          <CoreTypography variant="body2" className={classes.detail}>
-            {formatDateRange(event.startDate, event.endDate)}
-          </CoreTypography>
-          <GlobeIcon />
-          <CoreTypography variant="body2" className={classes.detail}>
-            {event.address.text}
-          </CoreTypography>
-          <HeartIcon />
-          <div style={{ flexDirection: "column" }}>
-            <CoreTypography variant="caption">Hosted by</CoreTypography>
-            <CoreTypography variant="h4">{nonProfit.name}</CoreTypography>
-          </div>
-        </div>
-        <CoreButton className={classes.signUp} variant="contained">
-          Sign Up
-        </CoreButton>
-        <CoreDivider style={{ marginTop: 20, marginBottom: 20 }} />
-        <div style={{ flexDirection: "row" }}>
-          <CoreButton className={classes.shareSave}>
-            <PaperPlaneIcon style={{ marginRight: "5" }} />
-            Share
-          </CoreButton>
-          <CoreButton className={classes.shareSave}>
-            <SaveFlagIcon style={{ marginRight: "5" }} />
-            Save
-          </CoreButton>
-        </div>
-      </div>
+      <EventsPageDescriptionDetailsBox event={event} nonProfit={nonProfit} />
     </Container>
   );
 };
