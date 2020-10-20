@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 
+import CoreDivider from "@core/divider";
 import CoreTypography from "@core/typography";
 import { getUpcomingEvents, getNearestEvents } from "requests/events";
 import {
@@ -25,6 +26,10 @@ const useStyles = makeStyles({
   },
   nearestEventsContainer: {
     marginTop: 60
+  },
+  divider: {
+    marginTop: 72,
+    marginBottom: 72
   }
 });
 
@@ -33,7 +38,12 @@ interface Props {
 }
 
 const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
-  const { mainContainer, listContainer, nearestEventsContainer } = useStyles();
+  const {
+    mainContainer,
+    listContainer,
+    nearestEventsContainer,
+    divider
+  } = useStyles();
 
   const { position, error } = usePosition(false);
 
@@ -104,12 +114,14 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
           </div>
         </>
       )}
-      <div className={nearestEventsContainer}>
+      <CoreDivider className={divider} />
+      <div>
         <CoreTypography variant="h2">Volunteer For a Cause</CoreTypography>
         <div className={listContainer}>
           <EventsPageCauseList />
         </div>
       </div>
+      <CoreDivider className={divider} />
     </div>
   );
 };
