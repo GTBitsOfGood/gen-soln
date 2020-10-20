@@ -61,6 +61,10 @@ export interface PageInformation {
 
 export type PaginatedEventCards = PaginatedCards<EventCardData>;
 
+export type PaginatedNonprofitCards = PaginatedCards<NonprofitCardData>;
+
+export type NonprofitCardData = Nonprofit;
+
 export type PaginatedCards<CardData> = PageInformation & { cards: CardData[] };
 
 export type CauseCardData = {
