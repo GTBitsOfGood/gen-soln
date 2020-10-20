@@ -24,6 +24,9 @@ const useStyles = makeStyles(theme => ({
     "text-align": "center",
     color: "#333333",
     margin: "5px 0px"
+  },
+  image: {
+    "border-radius": "10px"
   }
 }));
 
@@ -62,7 +65,7 @@ const SupportCauseGrid = () => {
             >
               <Grid container justify="center" alignItems="center">
                 <img
-                  className="image"
+                  className={classes.image}
                   src={`${elem.image}`}
                   alt="Placeholder"
                   height="202"
