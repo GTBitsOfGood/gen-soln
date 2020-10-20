@@ -32,13 +32,20 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     signUp: {
       width: "100px",
       borderRadius: 20,
-      marginTop: 15
+      marginTop: 24
     },
     details: {
       display: "flex",
       flexDirection: "column",
       paddingTop: 160,
       width: "210px"
+    },
+    divider: {
+      marginTop: 36,
+      marginBottom: 36
+    },
+    volunteers: {
+      display: "inline"
     }
   })
 );
@@ -59,27 +66,29 @@ const EventsPageDescriptionDetailsBox: React.FC<Props> = ({
       <CoreTypography variant="h3">Event Details</CoreTypography>
       <div className={classes.infoGrid}>
         <PersonLayeredIcon />
-        <CoreTypography variant="body2">
-          {event.volunteers.length}/{event.maxVolunteers} Volunteers
+        <CoreTypography variant="h4">
+          {event.volunteers.length}/{event.maxVolunteers}{" "}
+          <CoreTypography variant="h5" className={classes.volunteers}>
+            Volunteers
+          </CoreTypography>
         </CoreTypography>
+
         <ClockIcon />
-        <CoreTypography variant="body2">
+        <CoreTypography variant="h5">
           {formatDateRange(event.startDate, event.endDate)}
         </CoreTypography>
         <GlobeIcon />
-        <CoreTypography variant="body2">
-          {event.address.text.main}
-        </CoreTypography>
+        <CoreTypography variant="h5">{event.address.text.main}</CoreTypography>
         <HeartIcon />
         <div style={{ flexDirection: "column" }}>
-          <CoreTypography variant="caption">Hosted by</CoreTypography>
+          <CoreTypography variant="h5">Hosted by</CoreTypography>
           <CoreTypography variant="h4">{nonProfit.name}</CoreTypography>
         </div>
       </div>
       <CoreButton className={classes.signUp} variant="contained">
         Sign Up
       </CoreButton>
-      <CoreDivider style={{ marginTop: 20, marginBottom: 20 }} />
+      <CoreDivider className={classes.divider} />
       <div style={{ flexDirection: "row" }}>
         <CoreButton className={classes.shareSave}>
           <PaperPlaneIcon style={{ marginRight: "5" }} />

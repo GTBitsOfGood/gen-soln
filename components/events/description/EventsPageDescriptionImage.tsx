@@ -33,7 +33,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       flexDirection: "column",
       alignItems: "center",
       backgroundColor: palette.primary.main,
-      color: palette.common.white
+      color: palette.primary.contrastText
     },
     day: {
       marginBottom: -4
@@ -53,8 +53,6 @@ const EventsPageDescriptionImage: React.FC<Props> = ({ event }: Props) => {
   const start = new Date(startDate);
   const day = start.toLocaleString("en-US", { day: "numeric" });
   const month = start.toLocaleString("en-US", { month: "short" });
-
-  console.log(start);
 
   return (
     <div className={classes.root}>
