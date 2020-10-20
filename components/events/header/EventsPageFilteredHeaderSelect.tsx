@@ -1,64 +1,76 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 
-import { makeStyles, Select, MenuItem, FormControl } from "@material-ui/core";
+import {
+  makeStyles,
+  createStyles,
+  Select,
+  MenuItem,
+  FormControl,
+  Theme
+} from "@material-ui/core";
 
 import { ChevronDownIcon } from "@core/icons";
 import CoreTypography from "@core/typography";
-import { DropdownProps } from "utils/types";
 
 import { usePosition } from "../usePosition";
 import EventsPageFilteredHeaderAlert from "./EventsPageFilteredHeaderAlert";
 
-const useStyles = makeStyles({
-  container: {
-    display: "flex",
-    color: "#FD8033",
-    paddingTop: 6
-  },
-  select: {
-    color: "#FD8033"
-  },
-  input: {
-    "&:focus": {
-      backgroundColor: "transparent"
+const useStyles = makeStyles(({ palette }: Theme) =>
+  createStyles({
+    container: {
+      display: "flex",
+      color: palette.primary.main,
+      paddingTop: 6
     },
-    paddingRight: "0 !important"
-  },
-  icon: {
-    color: "#FD8033",
-    fontSize: "0.90rem",
-    marginTop: 2.5,
-    marginLeft: 10
-  },
-  menu: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    border: "1px solid #F0F0F0",
-    borderRadius: 10,
-    boxSizing: "border-box",
-    boxShadow: "0 5px 10px"
-  },
-  menuRoot: {
-    borderRadius: 10
-  },
-  menuItemRoot: {
-    "&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover": {
-      backgroundColor: "#FD8033",
-      borderRadius: 15
+    select: {
+      color: palette.primary.main
     },
-    "&:hover": {
-      backgroundColor: "transparent"
-    }
-  },
-  menuItemSelected: {}
-});
+    input: {
+      "&:focus": {
+        backgroundColor: "transparent"
+      },
+      paddingRight: "0 !important",
+      minWidth: 120
+    },
+    icon: {
+      color: palette.primary.main,
+      fontSize: "0.90rem",
+      marginTop: 2.5,
+      marginLeft: 10
+    },
+    menu: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      border: `1px solid ${palette.object.lightOutline}`,
+      borderRadius: 10,
+      boxSizing: "border-box",
+      boxShadow: "0 5px 10px"
+    },
+    menuRoot: {
+      borderRadius: 10
+    },
+    menuItemRoot: {
+      "&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover": {
+        backgroundColor: palette.primary.main,
+        borderRadius: 15
+      },
+      "&:hover": {
+        backgroundColor: "transparent"
+      }
+    },
+    menuItemSelected: {}
+  })
+);
 
-const EventsPageFilteredHeaderSelect: React.FC<DropdownProps> = ({
-  items,
-  selectedValue
-}) => {
+const SORT_OPTIONS = [
+  { text: "Closest to you", value: "location" },
+  { text: "Most signed up", value: "participants" }
+] as const;
+type OptionValue = typeof SORT_OPTIONS[number]["value"];
+
+const EventsPageFilteredHeaderSelect: React.FC = () => {
   const {
     container,
     select,
@@ -72,9 +84,9 @@ const EventsPageFilteredHeaderSelect: React.FC<DropdownProps> = ({
 
   const isDisabled = useRef(true);
 
-  const { position, error } = usePosition(isDisabled.current);
+  const { error } = usePosition(isDisabled.current);
 
-  const [value, setValue] = useState(selectedValue);
+  const [value, setValue] = useState<OptionValue>("participants");
 
   const onChange = useCallback(
     (
@@ -83,14 +95,21 @@ const EventsPageFilteredHeaderSelect: React.FC<DropdownProps> = ({
         value: unknown;
       }>
     ) => {
-      setValue(event.target.value as typeof selectedValue);
+      const selectedValue = event.target.value as OptionValue;
+      setValue(selectedValue);
 
-      if (event.target.value === "location") {
+      if (selectedValue === "location") {
         isDisabled.current = false;
       }
     },
     []
   );
+
+  useEffect(() => {
+    if (error != null && value === "location") {
+      setValue("participants");
+    }
+  }, [error, value]);
 
   return (
     <div className={container}>
@@ -125,7 +144,7 @@ const EventsPageFilteredHeaderSelect: React.FC<DropdownProps> = ({
             getContentAnchorEl: null
           }}
         >
-          {items.map(({ text, value }) => (
+          {SORT_OPTIONS.map(({ text, value }) => (
             <MenuItem
               key={value}
               value={value}
@@ -133,7 +152,7 @@ const EventsPageFilteredHeaderSelect: React.FC<DropdownProps> = ({
                 root: menuItemRoot,
                 selected: menuItemSelected
               }}
-              disabled={(error && value === "location") as boolean}
+              disabled={error != null && value === "location"}
             >
               <CoreTypography variant="body2">{text}</CoreTypography>
             </MenuItem>
