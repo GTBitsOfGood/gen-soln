@@ -19,7 +19,7 @@ export const typographyStyles: Readonly<Record<
   TypographyStyleOptions
 >> = {
   h1: {
-    fontFamily: "Visby CF",
+    fontFamily: "VisbyCF-ExtraBold",
     fontWeight: 800,
     fontSize: "2.25rem",
     fontStyle: "normal",
@@ -28,7 +28,7 @@ export const typographyStyles: Readonly<Record<
     letterSpacing: "normal"
   },
   h2: {
-    fontFamily: "Visby CF",
+    fontFamily: "VisbyCF-ExtraBold",
     fontWeight: 800,
     fontSize: "1.5rem",
     fontStyle: "normal",
@@ -37,7 +37,7 @@ export const typographyStyles: Readonly<Record<
     letterSpacing: "normal"
   },
   h3: {
-    fontFamily: "Visby CF",
+    fontFamily: "VisbyCF-Bold",
     fontWeight: "bold",
     fontSize: "1.5rem",
     fontStyle: "normal",
@@ -46,7 +46,7 @@ export const typographyStyles: Readonly<Record<
     letterSpacing: "normal"
   },
   h4: {
-    fontFamily: "Visby CF",
+    fontFamily: "VisbyCF-ExtraBold",
     fontWeight: 800,
     fontSize: "1rem",
     fontStyle: "normal",
@@ -55,7 +55,7 @@ export const typographyStyles: Readonly<Record<
     letterSpacing: "normal"
   },
   h5: {
-    fontFamily: "Visby CF",
+    fontFamily: "VisbyCF-Bold",
     fontWeight: "bold",
     fontSize: "1rem",
     fontStyle: "normal",
@@ -64,7 +64,7 @@ export const typographyStyles: Readonly<Record<
     letterSpacing: "normal"
   },
   body1: {
-    fontFamily: "Open Sans",
+    fontFamily: "OpenSans-Regular",
     fontWeight: "normal",
     fontSize: "1.25rem",
     fontStyle: "normal",
@@ -72,7 +72,7 @@ export const typographyStyles: Readonly<Record<
     letterSpacing: "normal"
   },
   body2: {
-    fontFamily: "Open Sans",
+    fontFamily: "OpenSans-Regular",
     fontWeight: "normal",
     fontSize: "1rem",
     fontStyle: "normal",
@@ -80,7 +80,7 @@ export const typographyStyles: Readonly<Record<
     letterSpacing: "normal"
   },
   overline: {
-    fontFamily: "Visby CF",
+    fontFamily: "VisbyCF-ExtraBold",
     fontWeight: 800,
     fontSize: "0.875rem",
     fontStyle: "normal",
@@ -89,7 +89,7 @@ export const typographyStyles: Readonly<Record<
     textTransform: "uppercase"
   },
   caption: {
-    fontFamily: "Open Sans",
+    fontFamily: "OpenSans-Regular",
     fontWeight: "normal",
     fontSize: "0.875rem",
     fontStyle: "normal",

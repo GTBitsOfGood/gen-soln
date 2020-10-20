@@ -9,6 +9,7 @@ import {
   LocationPaginatedEventCards
 } from "utils/types";
 
+import EventsPageCauseList from "./EventsPageCauseList";
 import EventsPageEventList from "./EventsPageEventList";
 import { usePosition } from "./usePosition";
 
@@ -34,7 +35,7 @@ interface Props {
 const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
   const { mainContainer, listContainer, nearestEventsContainer } = useStyles();
 
-  const { position, error } = usePosition();
+  const { position, error } = usePosition(false);
 
   const [nearestEvents, setNearestEvents] = useState<
     LocationPaginatedEventCards
@@ -60,7 +61,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
 
   return (
     <div className={mainContainer}>
-      {upcomingEvents.eventCards.length > 0 && (
+      {upcomingEvents.cards.length > 0 && (
         <>
           <CoreTypography variant="h2">
             Upcoming Volunteer Events
@@ -80,7 +81,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
           </div>
         </>
       )}
-      {nearestEvents && nearestEvents.eventCards.length > 0 && (
+      {nearestEvents && nearestEvents.cards.length > 0 && (
         <>
           <div className={nearestEventsContainer}>
             <CoreTypography variant="h2">
@@ -103,6 +104,12 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
           </div>
         </>
       )}
+      <div className={nearestEventsContainer}>
+        <CoreTypography variant="h2">Volunteer For a Cause</CoreTypography>
+        <div className={listContainer}>
+          <EventsPageCauseList />
+        </div>
+      </div>
     </div>
   );
 };

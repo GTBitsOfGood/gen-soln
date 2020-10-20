@@ -14,14 +14,22 @@ const IndexPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const router = useRouter();
 
   useEffect(() => {
-    void router.push(config.pages.donate(defaultNonprofitId));
+    defaultNonprofitId &&
+      void router.push(config.pages.donate(defaultNonprofitId));
   }, [router, defaultNonprofitId]);
 
   return null;
 };
 
 export const getStaticProps = async () => {
-  return { props: { defaultNonprofitId: await getDefaultNonprofitId() } };
+  let defaultNonprofitId;
+  try {
+    defaultNonprofitId = await getDefaultNonprofitId();
+  } catch {
+    defaultNonprofitId = null;
+  }
+
+  return { props: { defaultNonprofitId } };
 };
 
 export default IndexPage;

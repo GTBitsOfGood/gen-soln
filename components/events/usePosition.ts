@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const usePosition = () => {
+export const usePosition = (disabled: boolean) => {
   const [position, setPosition] = useState<Position>();
   const [error, setError] = useState<string>();
 
@@ -13,13 +13,15 @@ export const usePosition = () => {
   };
 
   useEffect(() => {
-    if (!navigator || !navigator.geolocation) {
-      setError("Geolocation is not supported");
-      return;
-    }
+    if (!disabled) {
+      if (!navigator || !navigator.geolocation) {
+        setError("Geolocation is not supported");
+        return;
+      }
 
-    navigator.geolocation.getCurrentPosition(onChange, onError);
-  }, []);
+      navigator.geolocation.getCurrentPosition(onChange, onError);
+    }
+  }, [disabled]);
 
   return { position, error };
 };

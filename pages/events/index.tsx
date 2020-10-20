@@ -11,7 +11,7 @@ import EventsPageUnfiltered from "components/events/EventsPageUnfiltered";
 import {
   getUpcomingEventsCardData,
   getUpcomingEventsCardDataCount,
-  getByCausesEventsCardData
+  getByFilteredEventsCardData
 } from "server/actions/events";
 import { getFilterValuesInQuery } from "utils/filters";
 
@@ -60,8 +60,14 @@ export const getServerSideProps = async (
       }
     };
   } else {
-    const query = getFilterValuesInQuery(context.query, "cause");
-    /*upcomingEventsFirstPageData = */ await getByCausesEventsCardData(query);
+    const causes = getFilterValuesInQuery(context.query, "cause");
+    const cities = getFilterValuesInQuery(context.query, "location");
+    const times = getFilterValuesInQuery(context.query, "time");
+    /*upcomingEventsFirstPageData = */ await getByFilteredEventsCardData(
+      causes,
+      cities,
+      times
+    );
   }
 
   return {

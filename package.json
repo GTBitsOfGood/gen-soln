@@ -6,8 +6,8 @@
     "dev": "next",
     "build": "next build",
     "debug": "NODE_OPTIONS='--inspect' next",
-    "run:ts-node:script": "cross-env NODE_ENV=development ts-node -O {\\\"module\\\":\\\"commonjs\\\"} -r module-alias/register",
-    "dev:db:migrate": "yarn run:ts-node:script server/migration.ts",
+    "run:ts-node:script": "cross-env ts-node -O {\\\"module\\\":\\\"commonjs\\\"} -r module-alias/register",
+    "db:migrate": "yarn run:ts-node:script server/migration.ts",
     "run:server:action": "yarn run:ts-node:script server/run-action.ts",
     "start": "next start",
     "lint": "yarn lint:tsc && yarn lint:eslint",
@@ -16,7 +16,7 @@
     "secrets": "yarn secrets:logout && cross-env-shell BW_SESSION=`bw login product@bitsofgood.org --raw` \"yarn secrets:sync\"",
     "secrets:logout": "(bw logout || exit 0)",
     "secrets:login": "bw login product@bitsofgood.org",
-    "secrets:sync": "bw sync && bw get item gen-soln/.env.local | fx .notes > \".env.local\" && bw get item gen-soln/.env.development.local | fx .notes > \".env.development.local\"",
+    "secrets:sync": "bw sync && bw get item gen-soln/.env.local | fx .notes > \".env.local\"",
     "mui:codemod:top-level-imports": "find components pages utils -name '*.tsx' -print | xargs npx jscodeshift -t node_modules/@material-ui/codemod/lib/v4.0.0/top-level-imports.js --parser=tsx"
   },
   "dependencies": {
@@ -41,6 +41,7 @@
     "querystringify": "^2.2.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-infinite-scroller": "^1.2.4",
     "stripe": "^8.40.0"
   },
   "devDependencies": {
@@ -60,6 +61,7 @@
     "@types/node": "^14.6.0",
     "@types/querystringify": "^2.0.0",
     "@types/react": "^16.9.47",
+    "@types/react-infinite-scroller": "^1.2.1",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "babel-eslint": "^10.1.0",
