@@ -35,7 +35,7 @@ interface Props {
 const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
   const { mainContainer, listContainer, nearestEventsContainer } = useStyles();
 
-  const { position, error } = usePosition();
+  const { position, error } = usePosition(false);
 
   const [nearestEvents, setNearestEvents] = useState<
     LocationPaginatedEventCards
