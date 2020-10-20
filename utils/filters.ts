@@ -31,7 +31,9 @@ export const filters = {
 
 export type FilterType = keyof typeof filters;
 export type FilterOptions<T extends FilterType> = typeof filters[T];
-type FilterValue<T extends FilterType> = FilterOptions<T>[number]["value"];
+export type FilterValue<T extends FilterType> = FilterOptions<
+  T
+>[number]["value"];
 
 export const getFilterValuesInQuery = <T extends FilterType>(
   query: ParsedUrlQuery,

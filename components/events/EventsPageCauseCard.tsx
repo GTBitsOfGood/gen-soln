@@ -4,6 +4,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
 import CoreTypography from "@core/typography";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
+import { CauseCardData } from "utils/types";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -44,17 +45,14 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 );
 
 interface Props {
-  cause: string;
-  imagePath: string;
+  causeCardData: CauseCardData;
   onClick: () => void;
 }
 
-const EventsPageCauseCard: React.FC<Props> = ({
-  cause,
-  imagePath,
-  onClick
-}) => {
+const EventsPageCauseCard: React.FC<Props> = ({ causeCardData, onClick }) => {
   const { card, cardContainer, textContainer, image, causeText } = useStyles();
+
+  const { imagePath, cause } = causeCardData;
 
   return (
     <div className={cardContainer}>

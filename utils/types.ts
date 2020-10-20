@@ -37,20 +37,21 @@ interface EventBase {
   endDate: string;
   duration: number;
   image: string;
-  address: { text: string; location: { type: "Point"; coordinates: number[] } };
+  address: {
+    text: { main: string; secondary: string };
+    location: { type: "Point"; coordinates: number[] };
+  };
   _id: string;
+  nonprofitId: string;
 }
 
 export type Event = EventBase & {
   maxVolunteers: number;
   volunteers: Array<string>;
-  nonprofitId: string;
   about: string;
 };
 
-export type EventCardData = EventBase & {
-  nonprofitId: Pick<Nonprofit, "_id" | "name">;
-};
+export type EventCardData = EventBase;
 
 export interface PageInformation {
   page: number;
@@ -58,11 +59,17 @@ export interface PageInformation {
   isLastPage: boolean;
 }
 
-export type PaginatedEventCards = PageInformation & {
-  cards: EventCardData[];
-};
+export type PaginatedEventCards = PaginatedCards<EventCardData>;
 
 export type PaginatedCards<CardData> = PageInformation & { cards: CardData[] };
+
+export type CauseCardData = {
+  cause: string;
+  imagePath: string;
+  filterValue: string;
+};
+
+export type PaginatedCauseCards = PaginatedCards<CauseCardData>;
 
 interface PaginateWithLocation {
   lat: number;
