@@ -3,18 +3,22 @@ import React from "react";
 import { Grid, Typography } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
+import useWindowDimensions from "@core/util/findWindowSize";
+
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(2)
   },
   container: {
     display: "flex",
-    "min-width": "420px",
     flexDirection: "column",
     "align-self": "center",
     "margin-top": "10vh",
     "margin-left": "5vh",
     "margin-right": "5vh"
+  },
+  individual_container: {
+    "min-width": 360
   },
   text: {
     "text-align": "center",
@@ -24,6 +28,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SupportCauseGrid = () => {
+  const { width } = useWindowDimensions();
+  const min = width ? width * 0.9 : 360 * 0.9;
+  const split = min / 360 > 3 ? 3 : Math.max(1, Math.floor(min / 360));
+  const grid_sm = 12 / split;
   const classes = useStyles();
   const data = [
     {
@@ -77,7 +85,12 @@ const SupportCauseGrid = () => {
           style={{ minHeight: "100vh", maxWidth: "100%" }}
         >
           {data.map(elem => (
-            <Grid item sm={4} key={data.indexOf(elem)}>
+            <Grid
+              item
+              sm={grid_sm == 3 ? 3 : grid_sm == 2 ? 2 : 1}
+              key={data.indexOf(elem)}
+              className={classes.individual_container}
+            >
               <Grid container justify="center" alignItems="center">
                 <img
                   className="image"
