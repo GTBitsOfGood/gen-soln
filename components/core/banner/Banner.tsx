@@ -10,9 +10,9 @@ import { SearchIcon } from "@core/icons";
 const useStyles = makeStyles({
   banner: {
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     margin: 0,
-    background: "deepskyblue",
+    backgroundImage: "url(" + "../backgrounds/HeroImg.jpg" + ")",
     height: "530px",
     alignItems: "center"
   },
