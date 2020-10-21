@@ -34,6 +34,7 @@ export default {
     createPaymentIntent: "/api/createPaymentIntent",
     recoverPassword: "/api/recoverPassword",
     getUpcomingEvents: "/api/getUpcomingEvents",
-    getNearestEvents: "/api/getNearestEvents"
+    getNearestEvents: "/api/getNearestEvents",
+    getNonProfitsByDate: "/api/getNonProfitsByDate"
   }
 };

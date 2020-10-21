@@ -80,7 +80,7 @@ interface PaginateWithLocation {
   long: number;
 }
 
-interface PaginateWithDate {
+export interface PaginateWithDate {
   date: string;
 }
 

@@ -4,6 +4,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import { signIn, signOut, useSession } from "next-auth/client";
 
 import { CoreButton } from "@core/buttons";
+import LandingCarousel from "@core/home/LandingCarousel";
 import config from "config";
 
 import SupportCauseGrid from "./SupportCauseGrid";
@@ -73,6 +74,7 @@ const HomePage = () => {
         Sign up
       </CoreButton>
       <SupportCauseGrid />
+      <LandingCarousel />
     </div>
   );
 };
