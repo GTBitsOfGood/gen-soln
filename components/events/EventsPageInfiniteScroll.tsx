@@ -43,7 +43,6 @@ const fetchCards = async (): Promise<PaginatedEventCards> => {
 
   return {
     page: pageId,
-    totalCount: totalMockCards,
     isLastPage: totalMockCards - pageId * CARDS_PER_PAGE <= 0,
     cards: Array(CARDS_PER_PAGE).fill(mockCardData) as EventCardData[]
   };

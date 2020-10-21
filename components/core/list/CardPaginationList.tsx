@@ -84,6 +84,7 @@ const CardPaginationList = <CardData,>({
   const resizeTimeoutRef = useRef<number>();
 
   useEffect(() => {
+    console.log({ first, rowSize, len: cards.length });
     if (
       !hasReceivedLastPageData &&
       first + rowSize > cards.length &&
@@ -97,6 +98,7 @@ const CardPaginationList = <CardData,>({
         const { cards: newCards, page: newPage, isLastPage } = await fetchCards(
           pageRef.current + 1
         );
+        console.log({ isLastPage, newPage, newLen: newCards.length });
 
         setHasReceivedLastPageData(isLastPage); // technically we shouldn't over-write hasSeenLastPage after it has become true, but this code will never be called if hasSeenLastPage is already true
         setCards(prevCards => [...prevCards, ...newCards]);

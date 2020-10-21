@@ -55,49 +55,45 @@ export type Event = EventBase & {
 
 export type EventCardData = EventBase;
 
-export interface PageInformation {
-  page: number;
-  totalCount: number;
-  isLastPage: boolean;
-}
-
-export type PaginatedEventCards = PaginatedCards<EventCardData>;
-
-export type PaginatedCards<CardData> = PageInformation & { cards: CardData[] };
-
 export type CauseCardData = {
   cause: string;
   imagePath: string;
   filterValue: string;
 };
 
+export interface PageInformation {
+  page: number;
+  isLastPage: boolean;
+}
+
+export type PaginatedCards<T> = PageInformation & { cards: T[] };
+export type PaginatedEventCards = PaginatedCards<EventCardData>;
 export type PaginatedCauseCards = PaginatedCards<CauseCardData>;
 
 interface PaginateWithLocation {
   lat: number;
   long: number;
 }
-
 interface PaginateWithDate {
   date: string;
 }
-
-export interface PaginateWithFilter {
+interface PaginateWithFilter {
   causes: FilterValue<"cause">[];
   cities: string[];
   times: FilterValue<"time">[];
+  totalCount: number; // Filtered events page needs to explicitly display total number of results
 }
 
 export type LocationPaginatedEventCards = PaginatedEventCards &
   PaginateWithLocation;
-
-export type LocationPageInformation = PageInformation & PaginateWithLocation;
+export type LocationPageRequest = Pick<PageInformation, "page"> &
+  PaginateWithLocation;
 
 export type DatePaginatedEventCards = PaginatedEventCards & PaginateWithDate;
+export type DatePageRequest = Pick<PageInformation, "page"> & PaginateWithDate;
 
-export type DatePageInformation = PageInformation & PaginateWithDate;
-
-export type FilterPageInformation = PageInformation & PaginateWithFilter;
+export type FilterPageRequest = Pick<PageInformation, "page"> &
+  PaginateWithFilter;
 
 export interface Dropdown {
   text: string;

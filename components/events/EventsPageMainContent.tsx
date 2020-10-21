@@ -57,9 +57,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
         const result = await getNearestEvents({
           lat: position.coords.latitude,
           long: position.coords.longitude,
-          page: 0,
-          totalCount: -1,
-          isLastPage: false
+          page: 0
         });
 
         setNearestEvents(result);
@@ -82,9 +80,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
               getMoreEvents={(page: number) =>
                 getUpcomingEvents({
                   page,
-                  date: upcomingEvents.date,
-                  totalCount: upcomingEvents.totalCount,
-                  isLastPage: upcomingEvents.isLastPage
+                  date: upcomingEvents.date
                 })
               }
             />
@@ -104,9 +100,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
                   getNearestEvents({
                     page,
                     lat: nearestEvents.lat,
-                    long: nearestEvents.long,
-                    totalCount: nearestEvents.totalCount,
-                    isLastPage: nearestEvents.isLastPage
+                    long: nearestEvents.long
                   })
                 }
               />

@@ -9,11 +9,10 @@ import {
   Event as EventType,
   EventCardData as EventCardDataType,
   DatePaginatedEventCards,
-  DatePageInformation,
+  DatePageRequest,
   LocationPaginatedEventCards,
-  LocationPageInformation,
-  PaginateWithFilter,
-  FilterPageInformation
+  LocationPageRequest,
+  FilterPageRequest
 } from "utils/types";
 
 const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
@@ -31,9 +30,8 @@ const NEAREST_EVENTS_RADIUS = 20 / 3959; // radius for nearest events in radians
 
 export async function getUpcomingEventsCardData({
   date,
-  page,
-  totalCount
-}: DatePageInformation): Promise<DatePaginatedEventCards> {
+  page
+}: DatePageRequest): Promise<DatePaginatedEventCards> {
   const CARDS_PER_PAGE = 4;
   await Mongo();
 
@@ -48,40 +46,25 @@ export async function getUpcomingEventsCardData({
   )
     .sort({ startDate: 1 })
     .skip(page * CARDS_PER_PAGE)
-    .limit(CARDS_PER_PAGE);
+    .limit(CARDS_PER_PAGE + 1); // get one more than required so that we can check if this is the last page
 
   return {
-    cards: result.map(r => r.toJSON()) as EventCardDataType[],
+    cards: result
+      .slice(0, CARDS_PER_PAGE)
+      .map(r => r.toJSON()) as EventCardDataType[],
     page,
-    totalCount,
     date,
-    isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
+    isLastPage: result.length < CARDS_PER_PAGE + 1
   };
-}
-
-export async function getUpcomingEventsCardDataCount(date: Date) {
-  await Mongo();
-
-  return Event.countDocuments({
-    startDate: {
-      $gte: date,
-      $lte: new Date(date.getTime() + MILLISECONDS_IN_WEEK)
-    }
-  });
 }
 
 export async function getNearestEventsCardData({
   lat,
   long,
-  page,
-  totalCount
-}: LocationPageInformation): Promise<LocationPaginatedEventCards> {
+  page
+}: LocationPageRequest): Promise<LocationPaginatedEventCards> {
   const CARDS_PER_PAGE = 4;
   await Mongo();
-
-  if (totalCount == -1) {
-    totalCount = await getNearestEventsCardDataCount({ lat, long });
-  }
 
   const result = await Event.find(
     {
@@ -94,40 +77,26 @@ export async function getNearestEventsCardData({
     CARD_FIELDS
   )
     .skip(page * CARDS_PER_PAGE)
-    .limit(CARDS_PER_PAGE);
+    .limit(CARDS_PER_PAGE + 1); // get one more than required so that we can check if this is the last page
 
   return {
-    cards: result.map(r => r.toJSON()) as EventCardDataType[],
+    cards: result
+      .slice(0, CARDS_PER_PAGE)
+      .map(r => r.toJSON()) as EventCardDataType[],
     page,
-    totalCount,
     lat,
     long,
-    isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
+    isLastPage: result.length < CARDS_PER_PAGE + 1
   };
 }
 
-export async function getNearestEventsCardDataCount({
-  lat,
-  long
-}: Pick<LocationPageInformation, "lat" | "long">) {
-  await Mongo();
-
-  return Event.countDocuments({
-    "address.location": {
-      $geoWithin: {
-        $centerSphere: [[long, lat], NEAREST_EVENTS_RADIUS]
-      }
-    }
-  });
-}
-
-export async function getByFilteredEventsCardData({
+export async function getFilteredEventsCardData({
   causes,
   cities,
   times,
   page,
   totalCount
-}: FilterPageInformation) {
+}: FilterPageRequest) {
   const CARDS_PER_PAGE = 16;
   await Mongo();
 
@@ -147,17 +116,21 @@ export async function getByFilteredEventsCardData({
   };
 }
 
-export async function getByFilteredEventsCardDataCount({
+export async function getFilteredEventsCardDataCount({
   causes,
   cities,
   times
-}: FilterPageInformation) {
+}: Pick<FilterPageRequest, "causes" | "cities" | "times">) {
   await Mongo();
   const findQuery = await createFilter({ causes, cities, times });
   return Event.countDocuments(findQuery);
 }
 
-const createFilter = async ({ causes, cities, times }: PaginateWithFilter) => {
+const createFilter = async ({
+  causes,
+  cities,
+  times
+}: Pick<FilterPageRequest, "causes" | "cities" | "times">) => {
   let findQuery = {};
   if (causes.length) {
     const idsWithCause = await Nonprofit.find(

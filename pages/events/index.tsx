@@ -10,8 +10,7 @@ import EventsPageFiltered from "components/events/EventsPageFiltered";
 import EventsPageUnfiltered from "components/events/EventsPageUnfiltered";
 import {
   getUpcomingEventsCardData,
-  getUpcomingEventsCardDataCount,
-  getByFilteredEventsCardData
+  getFilteredEventsCardData
 } from "server/actions/events";
 import { getFilterValuesInQuery } from "utils/filters";
 
@@ -44,12 +43,9 @@ export const getServerSideProps = async (
 
   if (Object.keys(context.query).length === 0) {
     const date = new Date();
-    const upcomingEventsTotalCount = await getUpcomingEventsCardDataCount(date);
     const upcomingEventsFirstPageData = await getUpcomingEventsCardData({
       date: date.toJSON(),
-      page: 0,
-      totalCount: upcomingEventsTotalCount,
-      isLastPage: false
+      page: 0
     });
 
     return {
