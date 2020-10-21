@@ -1,4 +1,5 @@
 import { Client } from "@googlemaps/google-maps-services-js";
+import { loadGetInitialProps } from "next/dist/next-server/lib/utils";
 
 import config from "config";
 import Mongo from "server/index";
@@ -126,15 +127,35 @@ export async function getByFilteredEventsCardData({
   cities,
   times,
   page,
+  lat = 0,
+  long = 0,
   totalCount
 }: FilterPageInformation) {
   const CARDS_PER_PAGE = 16;
   await Mongo();
 
-  const findQuery = await createFilter({ causes, cities, times });
+  let findQuery = await createFilter({ causes, cities, times });
+  let sortQuery = {};
+
+  if (lat && long) {
+    findQuery = {
+      ...findQuery,
+      "address.location": {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [long, lat]
+          }
+        }
+      }
+    };
+  } else {
+    sortQuery = { volunteers: -1 };
+  }
 
   const result = await Event.find(findQuery, CARD_FIELDS)
     .skip(page * CARDS_PER_PAGE)
+    .sort(sortQuery)
     .limit(CARDS_PER_PAGE);
   return {
     cards: result.map(r => r.toJSON()) as EventCardDataType[],

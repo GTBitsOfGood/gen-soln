@@ -97,7 +97,9 @@ export type DatePaginatedEventCards = PaginatedEventCards & PaginateWithDate;
 
 export type DatePageInformation = PageInformation & PaginateWithDate;
 
-export type FilterPageInformation = PageInformation & PaginateWithFilter;
+export type FilterPageInformation = PageInformation &
+  PaginateWithFilter &
+  PaginateWithLocation;
 
 export interface Dropdown {
   text: string;
