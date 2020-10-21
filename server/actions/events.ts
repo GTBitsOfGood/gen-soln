@@ -5,14 +5,15 @@ import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
-import { FilterValue } from "utils/filters";
 import {
   Event as EventType,
   EventCardData as EventCardDataType,
   DatePaginatedEventCards,
   DatePageInformation,
   LocationPaginatedEventCards,
-  LocationPageInformation
+  LocationPageInformation,
+  PaginateWithFilter,
+  FilterPageInformation
 } from "utils/types";
 
 const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
@@ -25,7 +26,6 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   duration: 1,
   _id: 1
 };
-const CARDS_PER_PAGE = 4;
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 const NEAREST_EVENTS_RADIUS = 20 / 3959; // radius for nearest events in radians (20 miles / earth's radius)
 
@@ -34,6 +34,7 @@ export async function getUpcomingEventsCardData({
   page,
   totalCount
 }: DatePageInformation): Promise<DatePaginatedEventCards> {
+  const CARDS_PER_PAGE = 4;
   await Mongo();
 
   const result = await Event.find(
@@ -75,6 +76,7 @@ export async function getNearestEventsCardData({
   page,
   totalCount
 }: LocationPageInformation): Promise<LocationPaginatedEventCards> {
+  const CARDS_PER_PAGE = 4;
   await Mongo();
 
   if (totalCount == -1) {
@@ -119,13 +121,43 @@ export async function getNearestEventsCardDataCount({
   });
 }
 
-export async function getByFilteredEventsCardData(
-  causes: FilterValue<"cause">[],
-  cities: string[],
-  times: FilterValue<"time">[]
-) {
+export async function getByFilteredEventsCardData({
+  causes,
+  cities,
+  times,
+  page,
+  totalCount
+}: FilterPageInformation) {
+  const CARDS_PER_PAGE = 16;
   await Mongo();
 
+  const findQuery = await createFilter({ causes, cities, times });
+
+  const result = await Event.find(findQuery, CARD_FIELDS)
+    .skip(page * CARDS_PER_PAGE)
+    .limit(CARDS_PER_PAGE);
+  return {
+    cards: result.map(r => r.toJSON()) as EventCardDataType[],
+    page,
+    totalCount,
+    cities,
+    causes,
+    times,
+    isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
+  };
+}
+
+export async function getByFilteredEventsCardDataCount({
+  causes,
+  cities,
+  times
+}: FilterPageInformation) {
+  await Mongo();
+  const findQuery = await createFilter({ causes, cities, times });
+  return Event.countDocuments(findQuery);
+}
+
+const createFilter = async ({ causes, cities, times }: PaginateWithFilter) => {
   let findQuery = {};
   if (causes.length) {
     const idsWithCause = await Nonprofit.find(
@@ -220,9 +252,8 @@ export async function getByFilteredEventsCardData(
       $or: timeFilters
     };
   }
-  const result = await Event.find(findQuery).limit(5);
-  return result.map(r => r.toJSON()) as EventCardDataType[];
-}
+  return findQuery;
+};
 
 export async function getEventById(_id: string): Promise<EventType> {
   await Mongo();
