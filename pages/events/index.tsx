@@ -63,11 +63,12 @@ export const getServerSideProps = async (
     const causes = getFilterValuesInQuery(context.query, "cause");
     const cities = getFilterValuesInQuery(context.query, "location");
     const times = getFilterValuesInQuery(context.query, "time");
-    /*upcomingEventsFirstPageData = */ await getByFilteredEventsCardData(
+    /*upcomingEventsFirstPageData =  await getByFilteredEventsCardData({
       causes,
       cities,
-      times
-    );
+      times,
+      // TO DO: ADD PAGE SUPPORT
+    });*/
   }
 
   return {
