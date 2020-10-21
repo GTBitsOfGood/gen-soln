@@ -4,6 +4,8 @@ import {
   PaletteOptions
 } from "@material-ui/core/styles/createPalette";
 
+import { FilterValue } from "./filters";
+
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
 // Fields from the back-end Nonprofit schema that should be exposed to the front-end.
@@ -80,6 +82,12 @@ interface PaginateWithDate {
   date: string;
 }
 
+export interface PaginateWithFilter {
+  causes: FilterValue<"cause">[];
+  cities: string[];
+  times: FilterValue<"time">[];
+}
+
 export type LocationPaginatedEventCards = PaginatedEventCards &
   PaginateWithLocation;
 
@@ -88,6 +96,8 @@ export type LocationPageInformation = PageInformation & PaginateWithLocation;
 export type DatePaginatedEventCards = PaginatedEventCards & PaginateWithDate;
 
 export type DatePageInformation = PageInformation & PaginateWithDate;
+
+export type FilterPageInformation = PageInformation & PaginateWithFilter;
 
 export interface Dropdown {
   text: string;
