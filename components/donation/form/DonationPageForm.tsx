@@ -159,7 +159,6 @@ const DonationPageForm: React.FC<Props> = ({
             state,
             country.slice(0, -1)
           );
-          billingStep.address;
         }
         dispatch(incrementStep());
       }
@@ -171,6 +170,7 @@ const DonationPageForm: React.FC<Props> = ({
       billingStep.firstName,
       billingStep.lastName,
       billingStep.zipcode,
+      billingStep.address,
       processPayment,
       createPaymentMethod,
       isPaymentStep,
