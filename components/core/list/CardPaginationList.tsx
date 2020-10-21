@@ -70,9 +70,9 @@ const CardPaginationList = <CardData,>({
 
   // Number of elements displayed
   const [rowSize, setRowSize] = useState(DEFAULT_ROW_SIZE);
-  const [maxElem, setMaxElem] = useState(
-    paginatedCardsData.isLastPage ? paginatedCardsData.totalCount : -1
-  );
+  const [hasReceivedLastPageData, setHasReceivedLastPageData] = useState(
+    paginatedCardsData.isLastPage
+  ); // if cards has achieved the maximum possible length
   const [loading, setLoading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -85,6 +85,7 @@ const CardPaginationList = <CardData,>({
 
   useEffect(() => {
     if (
+      !hasReceivedLastPageData &&
       first + rowSize > cards.length &&
       !fetchingRef.current &&
       fetchCards != null
@@ -97,18 +98,14 @@ const CardPaginationList = <CardData,>({
           pageRef.current + 1
         );
 
-        pageRef.current = newPage;
-
-        if (isLastPage) {
-          setMaxElem(cards.length + newCards.length);
-        }
-
+        setHasReceivedLastPageData(isLastPage); // technically we shouldn't over-write hasSeenLastPage after it has become true, but this code will never be called if hasSeenLastPage is already true
         setCards(prevCards => [...prevCards, ...newCards]);
         setLoading(false);
+        pageRef.current = newPage;
         fetchingRef.current = false;
       })();
     }
-  }, [cards.length, first, rowSize, fetchCards]);
+  }, [cards.length, first, rowSize, fetchCards, hasReceivedLastPageData]);
 
   const handleResize = useCallback(() => {
     // wrap the resize in a 100ms debounce to prevent excess polling
@@ -143,7 +140,7 @@ const CardPaginationList = <CardData,>({
 
   // holds all the elements currently displayed
   const display = cards.slice(first, first + rowSize).map(renderCard);
-  const hasNext = maxElem == -1 || first + rowSize < maxElem;
+  const hasNext = !hasReceivedLastPageData || first + rowSize < cards.length;
   if (hasNext) {
     // pad the display items with null if necessary
     while (display.length < rowSize) {
