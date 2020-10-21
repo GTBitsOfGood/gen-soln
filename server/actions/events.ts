@@ -70,6 +70,7 @@ export async function getUpcomingEventsCardDataCount(date: Date) {
   });
 }
 
+const obj = { 1: [2] };
 export async function getNearestEventsCardData({
   lat,
   long,
@@ -78,6 +79,10 @@ export async function getNearestEventsCardData({
 }: LocationPageInformation): Promise<LocationPaginatedEventCards> {
   const CARDS_PER_PAGE = 4;
   await Mongo();
+
+  console.log({ old: obj });
+  obj["1"].push(1);
+  console.log({ new: obj });
 
   if (totalCount == -1) {
     totalCount = await getNearestEventsCardDataCount({ lat, long });
