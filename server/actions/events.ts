@@ -137,7 +137,7 @@ export async function getByFilteredEventsCardData({
   let findQuery = await createFilter({ causes, cities, times });
   let sortQuery = {};
 
-  if (lat === INVALID_COORDINATE && long === INVALID_COORDINATE) {
+  if (lat !== INVALID_COORDINATE && long !== INVALID_COORDINATE) {
     // We can't sort by distance because of $geoWithin, but we can add a $near component
     // to the query using the user's location ($near returns sorted results).
     findQuery = {
