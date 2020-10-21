@@ -1,5 +1,4 @@
 import { Client } from "@googlemaps/google-maps-services-js";
-import { loadGetInitialProps } from "next/dist/next-server/lib/utils";
 
 import config from "config";
 import Mongo from "server/index";
