@@ -17,24 +17,12 @@ export default async (
     req,
     res,
     getUpcomingEventsCardData,
-    ["date", "page", "totalCount", "isLastPage"],
+    ["date", "page"],
     queryRecord => {
       const date = queryRecord.date;
       const page = Number(queryRecord.page);
-      const totalCount = Number(queryRecord.totalCount);
-      const isLastPage =
-        queryRecord.isLastPage === "true"
-          ? true
-          : queryRecord.isLastPage === "false"
-          ? false
-          : null;
 
-      if (
-        Array.isArray(date) ||
-        isNaN(page) ||
-        isNaN(totalCount) ||
-        typeof isLastPage !== "boolean"
-      ) {
+      if (Array.isArray(date) || isNaN(page)) {
         throw new Error(
           "API call to getUpcomingEvents did not receive data of the expected type!"
         );
@@ -42,9 +30,7 @@ export default async (
 
       return {
         date,
-        page,
-        totalCount,
-        isLastPage
+        page
       };
     }
   );

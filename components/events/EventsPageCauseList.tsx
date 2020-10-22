@@ -17,7 +17,6 @@ const CAUSE_CARDS: PaginatedCauseCards = {
     };
   }),
   page: 0,
-  totalCount: filters["cause"].length,
   isLastPage: true
 };
 
