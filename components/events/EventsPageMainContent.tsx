@@ -45,7 +45,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
     divider
   } = useStyles();
 
-  const { position, error } = usePosition(false);
+  const { position } = usePosition(false);
 
   const [nearestEvents, setNearestEvents] = useState<
     LocationPaginatedEventCards
@@ -65,7 +65,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
     };
 
     void fetchNearestEvents();
-  }, [position, error]);
+  }, [position]);
 
   return (
     <div className={mainContainer}>
@@ -109,11 +109,9 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
         </>
       )}
       <CoreDivider className={divider} />
-      <div>
-        <CoreTypography variant="h2">Volunteer For a Cause</CoreTypography>
-        <div className={listContainer}>
-          <EventsPageCauseList />
-        </div>
+      <CoreTypography variant="h2">Volunteer For a Cause</CoreTypography>
+      <div className={listContainer}>
+        <EventsPageCauseList />
       </div>
       <CoreDivider className={divider} />
     </div>

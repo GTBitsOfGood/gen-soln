@@ -1,7 +1,7 @@
 import React from "react";
 
 import EventsPageFilteredContent from "./EventsPageFilteredContent";
-import EventsPageWithSidebar from "./EventsPageWithSidebar";
+import EventsPageWithSidebar from "./sidebar/EventsPageWithSidebar";
 
 type Props = React.ComponentProps<typeof EventsPageWithSidebar>;
 

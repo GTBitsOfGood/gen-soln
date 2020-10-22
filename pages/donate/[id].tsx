@@ -73,12 +73,12 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
         items,
         selectedValue: id
       },
-      revalidate: 10
+      revalidate: config.nextJSPageRegenerationTime
     };
   } catch (err) {
     return {
       props: {},
-      revalidate: 10
+      revalidate: config.nextJSPageRegenerationTime
     };
   }
 };

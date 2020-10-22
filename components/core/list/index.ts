@@ -1,1 +1,1 @@
-export { default } from "./CardPaginationList";
+export { default } from "./CoreCardPaginationList";

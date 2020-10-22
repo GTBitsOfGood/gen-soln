@@ -44,8 +44,8 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       marginTop: 36,
       marginBottom: 36
     },
-    volunteers: {
-      display: "inline"
+    volunteerInfo: {
+      display: "flex"
     }
   })
 );
@@ -66,12 +66,12 @@ const EventsPageDescriptionDetailsBox: React.FC<Props> = ({
       <CoreTypography variant="h3">Event Details</CoreTypography>
       <div className={classes.infoGrid}>
         <PersonLayeredIcon />
-        <CoreTypography variant="h4">
-          {event.volunteers.length}/{event.maxVolunteers}{" "}
-          <CoreTypography variant="h5" className={classes.volunteers}>
-            Volunteers
+        <div className={classes.volunteerInfo}>
+          <CoreTypography variant="h4">
+            {`${event.volunteers.length}/${event.maxVolunteers}\u00a0`}
           </CoreTypography>
-        </CoreTypography>
+          <CoreTypography variant="h5">Volunteers</CoreTypography>
+        </div>
 
         <ClockIcon />
         <CoreTypography variant="h5">

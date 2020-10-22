@@ -135,7 +135,7 @@ const SignUp = () => {
             className={link}
             onClick={(e: { preventDefault: () => void }) => {
               e.preventDefault();
-              signIn().catch(err => console.log(err));
+              signIn().catch(err => console.error(err));
             }}
             href="#"
           >
