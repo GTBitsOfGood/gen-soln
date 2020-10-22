@@ -27,6 +27,7 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
 };
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 const NEAREST_EVENTS_RADIUS = 20 / 3959; // radius for nearest events in radians (20 miles / earth's radius)
+const INVALID_COORDINATE = -999;
 
 export async function getUpcomingEventsCardData({
   date,
@@ -95,15 +96,40 @@ export async function getFilteredEventsCardData({
   cities,
   times,
   page,
+  lat = INVALID_COORDINATE,
+  long = INVALID_COORDINATE,
   totalCount
 }: FilterPageRequest) {
   const CARDS_PER_PAGE = 16;
   await Mongo();
 
-  const findQuery = await createFilter({ causes, cities, times });
+  let findQuery = await createFilter({ causes, cities, times });
+  let sortQuery = {};
+
+  if (lat !== INVALID_COORDINATE && long !== INVALID_COORDINATE) {
+    // We can't sort by distance because of $geoWithin, but we can add a $near component
+    // to the query using the user's location ($near returns sorted results).
+    findQuery = {
+      ...findQuery,
+      "address.location": {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [long, lat]
+          }
+        }
+      }
+    };
+  } else {
+    sortQuery = {
+      ...sortQuery,
+      volunteers: -1
+    };
+  }
 
   const result = await Event.find(findQuery, CARD_FIELDS)
     .skip(page * CARDS_PER_PAGE)
+    .sort(sortQuery)
     .limit(CARDS_PER_PAGE);
   return {
     cards: result.map(r => r.toJSON()) as EventCardDataType[],

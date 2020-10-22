@@ -93,7 +93,8 @@ export type DatePaginatedEventCards = PaginatedEventCards & PaginateWithDate;
 export type DatePageRequest = Pick<PageInformation, "page"> & PaginateWithDate;
 
 export type FilterPageRequest = Pick<PageInformation, "page"> &
-  PaginateWithFilter;
+  PaginateWithFilter &
+  PaginateWithLocation;
 
 export interface Dropdown {
   text: string;
