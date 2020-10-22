@@ -142,12 +142,24 @@ const DonationPageForm: React.FC<Props> = ({
           nonprofitId: selectedNonprofitId
         });
       } else {
-        isPaymentStep &&
-          (await createPaymentMethod(
+        if (isPaymentStep && billingStep.address) {
+          const [
+            city,
+            state,
+            country
+          ] = billingStep.address.structured_formatting.secondary_text.split(
+            ", "
+          );
+          await createPaymentMethod(
             name,
             billingStep.email,
-            billingStep.zipcode
-          ));
+            billingStep.zipcode,
+            city,
+            billingStep.address.structured_formatting.main_text,
+            state,
+            country.slice(0, -1)
+          );
+        }
         dispatch(incrementStep());
       }
     },
@@ -158,6 +170,7 @@ const DonationPageForm: React.FC<Props> = ({
       billingStep.firstName,
       billingStep.lastName,
       billingStep.zipcode,
+      billingStep.address,
       processPayment,
       createPaymentMethod,
       isPaymentStep,
