@@ -13,6 +13,7 @@ import {
   DatePageRequest,
   LocationPaginatedEventCards,
   LocationPageRequest,
+  FilterPaginatedEventCards,
   FilterPageRequest
 } from "utils/types";
 
@@ -101,7 +102,7 @@ export async function getFilteredEventsCardData({
   long = INVALID_COORDINATE,
   totalCount,
   date
-}: FilterPageRequest) {
+}: FilterPageRequest): Promise<FilterPaginatedEventCards> {
   const CARDS_PER_PAGE = 16;
   await Mongo();
 
@@ -137,6 +138,9 @@ export async function getFilteredEventsCardData({
     cards: result.map(r => r.toJSON()) as EventCardDataType[],
     page,
     totalCount,
+    date,
+    lat,
+    long,
     cities,
     causes,
     times,

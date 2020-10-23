@@ -33,7 +33,8 @@ export default {
     createPaymentIntent: "/api/createPaymentIntent",
     recoverPassword: "/api/recoverPassword",
     getUpcomingEvents: "/api/getUpcomingEvents",
-    getNearestEvents: "/api/getNearestEvents"
+    getNearestEvents: "/api/getNearestEvents",
+    getFilteredEvents: "/api/getFilteredEvents"
   },
   nextJSPageRegenerationTime: 10 // Amount of seconds after which incremental static regeneration of Next.js pages can occur
 };
