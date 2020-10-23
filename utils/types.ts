@@ -94,7 +94,8 @@ export type DatePageRequest = Pick<PageInformation, "page"> & PaginateWithDate;
 
 export type FilterPageRequest = Pick<PageInformation, "page"> &
   PaginateWithFilter &
-  PaginateWithLocation;
+  PaginateWithLocation &
+  PaginateWithDate;
 
 export interface Dropdown {
   text: string;

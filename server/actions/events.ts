@@ -4,6 +4,7 @@ import config from "config";
 import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
+import { addDays, getBeginningOfDay, getWeekendOffset } from "utils/date";
 import errors from "utils/errors";
 import {
   Event as EventType,
@@ -98,12 +99,13 @@ export async function getFilteredEventsCardData({
   page,
   lat = INVALID_COORDINATE,
   long = INVALID_COORDINATE,
-  totalCount
+  totalCount,
+  date
 }: FilterPageRequest) {
   const CARDS_PER_PAGE = 16;
   await Mongo();
 
-  let findQuery = await createFilter({ causes, cities, times });
+  let findQuery = await createFilter({ causes, cities, times, date });
   let sortQuery = {};
 
   if (lat !== INVALID_COORDINATE && long !== INVALID_COORDINATE) {
@@ -145,30 +147,30 @@ export async function getFilteredEventsCardData({
 export async function getFilteredEventsCardDataCount({
   causes,
   cities,
-  times
-}: Pick<FilterPageRequest, "causes" | "cities" | "times">) {
+  times,
+  date
+}: Pick<FilterPageRequest, "causes" | "cities" | "times" | "date">) {
   await Mongo();
-  const findQuery = await createFilter({ causes, cities, times });
+  const findQuery = await createFilter({ causes, cities, times, date });
   return Event.countDocuments(findQuery);
 }
 
-const createFilter = async ({
+export const createFilter = async ({
   causes,
   cities,
-  times
-}: Pick<FilterPageRequest, "causes" | "cities" | "times">) => {
+  times,
+  date
+}: Pick<FilterPageRequest, "causes" | "cities" | "times" | "date">) => {
+  await Mongo();
   let findQuery = {};
   if (causes.length) {
-    const idsWithCause = await Nonprofit.find(
-      {
-        cause: { $in: causes }
-      },
-      "nonprofitId"
-    );
+    const idsWithCause = await Nonprofit.distinct("_id", {
+      cause: { $in: causes }
+    });
 
     findQuery = {
       ...findQuery,
-      nonprofitId: { $in: idsWithCause.map(r => r["_id"]) }
+      nonprofitId: { $in: idsWithCause }
     };
   }
   if (cities.length) {
@@ -188,52 +190,37 @@ const createFilter = async ({
   }
 
   if (times.length) {
+    const dateObj = new Date(date);
+    const beginningOfDay = getBeginningOfDay(dateObj);
+    const weekendOffset = getWeekendOffset(beginningOfDay);
+
     const timeFilters = times.map(time => {
-      let startTime = new Date();
-      startTime.setHours(0);
-      startTime.setMinutes(0);
-      startTime.setSeconds(0);
-      startTime.setMilliseconds(0);
-      let endTime;
+      let startTime, endTime;
       switch (time) {
-        case "TODAY": {
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 1);
+        case "TODAY":
+          startTime = beginningOfDay;
+          endTime = addDays(startTime, 1);
           break;
-        }
-        case "TOMORROW": {
-          startTime.setDate(startTime.getDate() + 1);
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 1);
+        case "TOMORROW":
+          startTime = addDays(beginningOfDay, 1);
+          endTime = addDays(startTime, 1);
           break;
-        }
-        case "WEEKEND": {
-          const offset = startTime.getDay() == 0 ? -1 : 6 - startTime.getDay();
-          startTime.setDate(startTime.getDate() + offset);
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 2);
+        case "WEEKEND":
+          startTime = addDays(beginningOfDay, weekendOffset);
+          endTime = addDays(startTime, 2);
           break;
-        }
-        case "NWEEKEND": {
-          const offset = startTime.getDay() == 0 ? -1 : 6 - startTime.getDay();
-          startTime.setDate(startTime.getDate() + offset + 7);
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 2);
+        case "NWEEKEND":
+          startTime = addDays(beginningOfDay, weekendOffset + 7);
+          endTime = addDays(startTime, 2);
           break;
-        }
-        case "NWEEK": {
-          startTime = new Date();
-          startTime.setDate(startTime.getDate() + 7);
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 7);
+        case "WEEK":
+          startTime = dateObj;
+          endTime = addDays(startTime, 7);
           break;
-        }
-        case "WEEK": {
-          startTime = new Date();
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 7);
+        case "NWEEK":
+          startTime = addDays(dateObj, 7);
+          endTime = addDays(startTime, 7);
           break;
-        }
         default: {
           const _exhaustiveCheck: never = time;
           return _exhaustiveCheck;

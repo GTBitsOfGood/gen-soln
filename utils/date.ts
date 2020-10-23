@@ -12,6 +12,7 @@ export const nthDate = (date: number) => {
   }
 };
 
+// Generates string representations like "Jun 29th, 2:00 PM - 4:00 PM" and "Jun 29th, 2:00 PM - Jun 30th 4:00 PM"
 export const formatDateRange = (s: string, e: string) => {
   const start = new Date(s);
   const timeOptions = {
@@ -37,4 +38,23 @@ export const formatDateRange = (s: string, e: string) => {
     endFormatted = `${endMonth} ${endDateString}, ${endTime}`;
   }
   return `${startFormatted} - ${endFormatted}`;
+};
+
+export const getBeginningOfDay = (date: Date) => {
+  const dateCopy = new Date(date); // Don't modify existing object
+  dateCopy.setHours(0);
+  dateCopy.setMinutes(0);
+  dateCopy.setSeconds(0);
+  dateCopy.setMilliseconds(0);
+  return dateCopy;
+};
+
+// How many days to the current or next Saturday? Returns 0 if date=Saturday, -1 if date=Sunday, 5 if date=Monday, etc.
+export const getWeekendOffset = (date: Date) =>
+  date.getDay() == 0 ? -1 : 6 - date.getDay();
+
+export const addDays = (date: Date, days: number) => {
+  const dateCopy = new Date(date); // Don't modify existing object
+  dateCopy.setDate(dateCopy.getDate() + days);
+  return dateCopy;
 };
