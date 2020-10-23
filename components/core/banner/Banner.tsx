@@ -12,9 +12,12 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     margin: 0,
-    backgroundImage: "url(" + "../backgrounds/HeroImg.jpg" + ")",
-    height: "530px",
-    alignItems: "center"
+    //backgroundImage: "url(" + "../backgrounds/HeroImg.jpg" + ")",
+    alignItems: "center",
+    overflow: "hidden",
+    position: "absolute",
+    transform: "translate(10%, -400px)",
+    marginRight: "10%"
   },
   overlay: {
     display: "flex",
@@ -64,6 +67,12 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     width: 14
+  },
+  bgimg: {
+    objectFit: "cover",
+    filter: "brightness(50%)",
+    height: "530px",
+    width: "100vw"
   }
 });
 
@@ -71,19 +80,26 @@ export default function SimpleContainer() {
   const classes = useStyles();
   return (
     <div>
-      <div className={classes.banner}>
-        <Container>
-          <Typography variant="h1" style={{ color: "white" }}>
-            Connecting Non-profits with Communities <br></br> of People Who Want
-            to do Good
-          </Typography>
-          <br></br>
-          <Typography variant="h3" style={{ color: "white" }}>
-            Free for Non-profits, no subscription or platform fees
-          </Typography>
-          <br></br>
-          <CoreButton variant="contained"> Non-profit sign up </CoreButton>
-        </Container>
+      <div>
+        <img
+          className={classes.bgimg}
+          src="../backgrounds/HeroImg.jpg"
+          alt="Background"
+        ></img>
+        <div className={classes.banner}>
+          <Container>
+            <Typography variant="h1" style={{ color: "white" }}>
+              Connecting Non-profits with Communities <br></br> of People Who to
+              to do Good
+            </Typography>
+            <br></br>
+            <Typography variant="h3" style={{ color: "white" }}>
+              Free for Non-profits, no subscription or platform fees
+            </Typography>
+            <br></br>
+            <CoreButton variant="contained"> Non-profit sign up </CoreButton>
+          </Container>
+        </div>
       </div>
       <div className={classes.c}>
         <div className={classes.box}>
