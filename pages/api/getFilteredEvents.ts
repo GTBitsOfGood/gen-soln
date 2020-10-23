@@ -1,10 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import {
-  getFilteredEventsCardData,
-  INVALID_COORDINATE
-} from "server/actions/events";
-import { getFilterValuesInQuery, FilterType, FilterValue } from "utils/filters";
+import { getFilteredEventsCardData } from "server/actions/events";
+import { FilterValue } from "utils/filters";
 import { handleGetRequestWithPayloadResponse } from "utils/util";
 
 // @route   GET filtered events card data
@@ -20,40 +17,17 @@ export default async (
     getFilteredEventsCardData,
     ["causes", "cities", "times", "lat", "long", "page", "totalCount", "date"],
     queryRecord => {
-      const causes = getFilterValuesInQuery(
-        queryRecord,
-        "causes" as FilterType
-      ) as FilterValue<"cause">[];
+      const { causes, cities, times, date } = queryRecord;
 
-      const cities = getFilterValuesInQuery(
-        queryRecord,
-        "locations" as FilterType
-      );
-
-      const times = getFilterValuesInQuery(
-        queryRecord,
-        "times" as FilterType
-      ) as FilterValue<"time">[];
-
-      let lat;
-      if (queryRecord.lat === "") {
-        lat = INVALID_COORDINATE;
-      } else {
-        lat = Number(queryRecord.lat);
-      }
-
-      let long;
-      if (queryRecord.long === "") {
-        long = INVALID_COORDINATE;
-      } else {
-        long = Number(queryRecord.long);
-      }
-
+      const lat = Number(queryRecord.lat);
+      const long = Number(queryRecord.long);
       const page = Number(queryRecord.page);
       const totalCount = Number(queryRecord.totalCount);
-      const date = queryRecord.date;
 
       if (
+        typeof causes !== "string" ||
+        typeof cities !== "string" ||
+        typeof times !== "string" ||
         isNaN(lat) ||
         isNaN(long) ||
         isNaN(page) ||
@@ -66,9 +40,10 @@ export default async (
       }
 
       return {
-        causes,
-        cities,
-        times,
+        causes:
+          causes === "" ? [] : (causes.split(",") as FilterValue<"cause">[]),
+        cities: cities === "" ? [] : cities.split(","),
+        times: times === "" ? [] : (times.split(",") as FilterValue<"time">[]),
         page,
         lat,
         long,

@@ -29,7 +29,7 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
 };
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 const NEAREST_EVENTS_RADIUS = 20 / 3959; // radius for nearest events in radians (20 miles / earth's radius)
-export const INVALID_COORDINATE = -999;
+const INVALID_COORDINATE = -999;
 
 export async function getUpcomingEventsCardData({
   date,
@@ -138,6 +138,9 @@ export async function getFilteredEventsCardData({
     cards: result.map(r => r.toJSON()) as EventCardDataType[],
     page,
     totalCount,
+    date,
+    lat,
+    long,
     cities,
     causes,
     times,

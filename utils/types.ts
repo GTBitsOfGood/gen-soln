@@ -93,7 +93,10 @@ export type DatePaginatedEventCards = PaginatedEventCards & PaginateWithDate;
 export type DatePageRequest = Pick<PageInformation, "page"> & PaginateWithDate;
 
 export type FilterPaginatedEventCards = PaginatedEventCards &
-  PaginateWithFilter;
+  PaginateWithFilter &
+  PaginateWithLocation &
+  PaginateWithDate;
+
 export type FilterPageRequest = Pick<PageInformation, "page"> &
   PaginateWithFilter &
   PaginateWithLocation &
