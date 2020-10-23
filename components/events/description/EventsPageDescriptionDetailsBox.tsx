@@ -12,6 +12,7 @@ import {
   PaperPlaneIcon,
   SaveFlagIcon
 } from "@core/icons";
+import CoreLink from "@core/link";
 import CoreTypography from "@core/typography";
 import { formatDateRange } from "utils/date";
 import { Event, Nonprofit } from "utils/types";
@@ -60,7 +61,6 @@ const EventsPageDescriptionDetailsBox: React.FC<Props> = ({
   nonProfit
 }: Props) => {
   const classes = useStyles();
-
   return (
     <div className={classes.details}>
       <CoreTypography variant="h3">Event Details</CoreTypography>
@@ -78,7 +78,20 @@ const EventsPageDescriptionDetailsBox: React.FC<Props> = ({
           {formatDateRange(event.startDate, event.endDate)}
         </CoreTypography>
         <GlobeIcon />
-        <CoreTypography variant="h5">{event.address.text.main}</CoreTypography>
+        <CoreLink
+          // NOTE: The url has double "/" after /maps/search// because corelink takes out one "/" for some reason
+          href={
+            "https://www.google.com/maps/search//?api=1&query=" +
+            String(event.address.location.coordinates[1]) +
+            "," +
+            String(event.address.location.coordinates[0])
+          }
+          variant="h5"
+          underline="always"
+          color="inherit"
+        >
+          {event.address.text.main}
+        </CoreLink>
         <HeartIcon />
         <div style={{ flexDirection: "column" }}>
           <CoreTypography variant="h5">Hosted by</CoreTypography>
