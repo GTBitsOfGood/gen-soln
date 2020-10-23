@@ -80,12 +80,7 @@ const EventsPageDescriptionDetailsBox: React.FC<Props> = ({
         <GlobeIcon />
         <CoreLink
           // NOTE: The url has double "/" after /maps/search// because corelink takes out one "/" for some reason
-          href={
-            "https://www.google.com/maps/search//?api=1&query=" +
-            String(event.address.location.coordinates[1]) +
-            "," +
-            String(event.address.location.coordinates[0])
-          }
+          href={`https://www.google.com/maps/search//?api=1&query=${event.address.location.coordinates[1]},${event.address.location.coordinates[0]}`}
           variant="h5"
           underline="always"
           color="inherit"
