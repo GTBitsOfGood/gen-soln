@@ -45,7 +45,8 @@ const SHARED_RULES = {
   "react/prop-types": "off",
   "react/display-name": "off",
   "import/no-unresolved": "off",
-  "import/order": ["warn", IMPORT_ORDER_CONFIG]
+  "import/order": ["warn", IMPORT_ORDER_CONFIG],
+  "no-console": ["warn", { allow: ["warn", "error"] }]
 };
 
 const SHARED_EXTENDS = [

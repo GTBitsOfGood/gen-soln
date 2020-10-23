@@ -21,8 +21,8 @@ const CARDS_PER_PAGE = 12;
 
 const mockCardData: EventCardData = {
   name: "Test",
-  startDate: "1603054033",
-  endDate: "1603054033",
+  startDate: "2020-10-22T23:04:00.103Z",
+  endDate: "2020-10-22T23:05:30.103Z",
   duration: 0,
   image: "/defaultImages/defaultEvent.png",
   address: {
@@ -66,6 +66,7 @@ const EventsPageInfiniteScroll: React.FC = () => {
 
   const glimmers = (
     <Grid
+      key="glimmer_container"
       container
       direction="row"
       justify="center"
@@ -73,7 +74,7 @@ const EventsPageInfiniteScroll: React.FC = () => {
       spacing={3}
     >
       {Array.from({ length: CARDS_PER_PAGE }, (_, i) => (
-        <Grid key={`glimmer${i}`} item>
+        <Grid key={`glimmer_${i}`} item>
           <EventsPageEventCardGlimmer />
         </Grid>
       ))}
@@ -99,7 +100,8 @@ const EventsPageInfiniteScroll: React.FC = () => {
             <EventsPageEventCard
               eventCardData={card}
               onClick={() => {
-                console.log(card._id);
+                // TODO
+                return;
               }}
             />
           </Grid>

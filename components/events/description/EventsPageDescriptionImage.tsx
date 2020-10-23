@@ -56,7 +56,7 @@ const EventsPageDescriptionImage: React.FC<Props> = ({ event }: Props) => {
 
   return (
     <div className={classes.root}>
-      <img src={image} alt={"event"} className={classes.image} />
+      <img src={image} alt="event" className={classes.image} />
       <div className={classes.dateBox}>
         <CoreTypography variant="h2" className={classes.day}>
           {day}

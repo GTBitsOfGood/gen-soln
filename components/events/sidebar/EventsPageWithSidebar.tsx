@@ -2,7 +2,7 @@ import React from "react";
 
 import EventsPageLayout from "components/events/EventsPageLayout";
 
-import EventsPageSidebarComponent from "./sidebar/EventsPageSidebarComponent";
+import EventsPageSidebarComponent from "./EventsPageSidebarComponent";
 
 const EventsPageWithSidebar: React.FC = ({ children, ...rest }) => {
   return (

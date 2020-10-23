@@ -29,14 +29,13 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       "&:focus": {
         backgroundColor: "transparent"
       },
-      paddingRight: "0 !important",
+      paddingRight: "1rem !important",
       minWidth: 120
     },
     icon: {
       color: palette.primary.main,
-      fontSize: "0.90rem",
-      marginTop: 2.5,
-      marginLeft: 10
+      fontSize: "0.9rem",
+      top: "auto"
     },
     menu: {
       display: "flex",
@@ -84,7 +83,7 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
 
   const isDisabled = useRef(true);
 
-  const { error } = usePosition(isDisabled.current);
+  const { hasError } = usePosition(isDisabled.current);
 
   const [value, setValue] = useState<OptionValue>("participants");
 
@@ -106,23 +105,23 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
   );
 
   useEffect(() => {
-    if (error != null && value === "location") {
+    if (hasError && value === "location") {
       setValue("participants");
     }
-  }, [error, value]);
+  }, [hasError, value]);
 
   return (
     <div className={container}>
-      {error && <EventsPageFilteredHeaderAlert />}
+      {hasError && <EventsPageFilteredHeaderAlert />}
       <FormControl className={input}>
         <CoreTypography variant="h4">Sort by</CoreTypography>
         <Select
-          classes={{ select }}
+          classes={{ select, icon }}
           value={value}
           onChange={onChange}
           autoWidth={true}
           disableUnderline={true}
-          IconComponent={() => <ChevronDownIcon className={icon} />}
+          IconComponent={ChevronDownIcon}
           inputProps={{
             classes: {
               root: input
@@ -144,15 +143,15 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
             getContentAnchorEl: null
           }}
         >
-          {SORT_OPTIONS.map(({ text, value }) => (
+          {SORT_OPTIONS.map(({ text, value: optionValue }) => (
             <MenuItem
-              key={value}
-              value={value}
+              key={optionValue}
+              value={optionValue}
               classes={{
                 root: menuItemRoot,
                 selected: menuItemSelected
               }}
-              disabled={error != null && value === "location"}
+              disabled={hasError && optionValue === "location"}
             >
               <CoreTypography variant="body2">{text}</CoreTypography>
             </MenuItem>

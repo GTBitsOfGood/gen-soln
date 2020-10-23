@@ -54,7 +54,7 @@ interface Props<CardData> {
 const DEFAULT_ROW_SIZE = 4;
 const MARGIN_ADJUSTMENT = 24;
 
-const CardPaginationList = <CardData,>({
+const CoreCardPaginationList = <CardData,>({
   paginatedCardsData,
   fetchCards,
   renderCard,
@@ -181,4 +181,4 @@ const CardPaginationList = <CardData,>({
   );
 };
 
-export default CardPaginationList;
+export default CoreCardPaginationList;

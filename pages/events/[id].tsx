@@ -50,14 +50,14 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
         event,
         nonProfit
       },
-      revalidate: 1
+      revalidate: config.nextJSPageRegenerationTime
     };
   } catch (error) {
     return {
       props: {
         hasError: true
       },
-      revalidate: 1
+      revalidate: config.nextJSPageRegenerationTime
     };
   }
 };
