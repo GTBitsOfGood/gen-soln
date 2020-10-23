@@ -3,6 +3,8 @@ import {
   DatePageRequest,
   DatePaginatedEventCards,
   LocationPageRequest,
+  FilterPageRequest,
+  FilterPaginatedEventCards,
   LocationPaginatedEventCards
 } from "utils/types";
 import { fetchRequestWithPayloadResponse } from "utils/util";
@@ -25,4 +27,15 @@ export const getNearestEvents = async (
       method: "GET"
     },
     locationPageInformation
+  );
+
+export const getFilteredEvents = async (
+  filterPageInformation: FilterPageRequest
+) =>
+  fetchRequestWithPayloadResponse<FilterPaginatedEventCards>(
+    config.apis.getFilteredEvents,
+    {
+      method: "GET"
+    },
+    filterPageInformation
   );

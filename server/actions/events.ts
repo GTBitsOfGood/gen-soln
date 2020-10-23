@@ -13,6 +13,7 @@ import {
   DatePageRequest,
   LocationPaginatedEventCards,
   LocationPageRequest,
+  FilterPaginatedEventCards,
   FilterPageRequest
 } from "utils/types";
 
@@ -28,7 +29,7 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
 };
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 const NEAREST_EVENTS_RADIUS = 20 / 3959; // radius for nearest events in radians (20 miles / earth's radius)
-const INVALID_COORDINATE = -999;
+export const INVALID_COORDINATE = -999;
 
 export async function getUpcomingEventsCardData({
   date,
@@ -101,7 +102,7 @@ export async function getFilteredEventsCardData({
   long = INVALID_COORDINATE,
   totalCount,
   date
-}: FilterPageRequest) {
+}: FilterPageRequest): Promise<FilterPaginatedEventCards> {
   const CARDS_PER_PAGE = 16;
   await Mongo();
 
