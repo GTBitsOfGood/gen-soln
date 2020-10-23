@@ -26,7 +26,7 @@ export default {
     donate: (path = "[id]"): string => `/donate/${path}`,
     events: "/events",
     event: (path = "[id]"): string => `/events/${path}`,
-    nonprofit: (path = "[id]"): string => `/nonprofit/${path}`
+    nonprofit: (path = "[id]"): string => `/nonprofits/${path}`
   },
   apis: {
     login: "/api/login",

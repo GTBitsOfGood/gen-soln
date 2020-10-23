@@ -32,12 +32,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths: ids.map(config.pages.nonprofit), fallback: true };
 };
 
-// eslint-disable-next-line
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params?.id as string;
 
-  /* For now, getNonprofitById excludes Nonprofit's donation field. If you were fetching it, ensure
-   * that donation IDs are mapped to a string array so that the nonprofit object is JSON serializable. */
   try {
     const nonProfit = await getNonprofitById(id);
     return {
