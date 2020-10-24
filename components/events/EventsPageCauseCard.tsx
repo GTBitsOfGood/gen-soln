@@ -31,7 +31,7 @@ const useStyles = makeStyles<Theme, StyleProps>(({ palette }: Theme) =>
       display: "flex",
       alignItems: "center",
       textAlign: "center",
-      maxWidth: 260
+      maxWidth: props => (props.isSmall ? 200 : 260)
     }
   })
 );
