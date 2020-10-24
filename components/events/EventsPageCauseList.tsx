@@ -33,9 +33,9 @@ const EventsPageCauseList: React.FC = () => {
           onClick={() => {
             put(cardData.filterValue);
           }}
+          isSmall
         />
       )}
-      cardWidth={358}
     />
   );
 };
