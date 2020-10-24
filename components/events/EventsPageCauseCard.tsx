@@ -8,14 +8,15 @@ import { CauseCardData } from "utils/types";
 
 interface StyleProps {
   imagePath: string;
+  isSmall: boolean;
 }
 
 const useStyles = makeStyles<Theme, StyleProps>(({ palette }: Theme) =>
   createStyles({
     card: {
       backgroundColor: palette.background.paper,
-      width: 246,
-      height: 138,
+      width: props => (props.isSmall ? 250 : 360),
+      height: props => (props.isSmall ? 138 : 202),
       borderRadius: 10,
       overflow: "hidden",
       outline: "none",
@@ -38,20 +39,32 @@ const useStyles = makeStyles<Theme, StyleProps>(({ palette }: Theme) =>
 interface Props {
   causeCardData: CauseCardData;
   onClick: () => void;
+  isSmall?: boolean;
 }
 
-const EventsPageCauseCard: React.FC<Props> = ({ causeCardData, onClick }) => {
+const EventsPageCauseCard: React.FC<Props> = ({
+  causeCardData,
+  onClick,
+  isSmall = false
+}) => {
   const { imagePath, cause } = causeCardData;
   const { card, causeText } = useStyles({
-    imagePath
+    imagePath,
+    isSmall
   });
 
   return (
     <FocusVisibleOnly onClick={onClick}>
       <div className={card}>
-        <CoreTypography variant="h2" className={causeText}>
-          {cause}
-        </CoreTypography>
+        {isSmall ? (
+          <CoreTypography variant="h4" className={causeText}>
+            {cause}
+          </CoreTypography>
+        ) : (
+          <CoreTypography variant="h2" className={causeText}>
+            {cause}
+          </CoreTypography>
+        )}
       </div>
     </FocusVisibleOnly>
   );
