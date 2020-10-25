@@ -1,4 +1,5 @@
 import { Client } from "@googlemaps/google-maps-services-js";
+import NodeCache from "node-cache";
 
 import config from "config";
 import Mongo from "server/index";
@@ -16,6 +17,8 @@ import {
   FilterPaginatedEventCards,
   FilterPageRequest
 } from "utils/types";
+
+const filterCache = new NodeCache();
 
 const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   name: 1,
@@ -168,9 +171,25 @@ export const createFilter = async ({
   await Mongo();
   let findQuery = {};
   if (causes.length) {
-    const idsWithCause = await Nonprofit.distinct("_id", {
-      cause: { $in: causes }
-    });
+    const idsWithCause = [];
+    for (const cause of causes) {
+      if (filterCache.has(cause)) {
+        const nonProfitsWithCause: string[] = filterCache.get(
+          cause
+        ) as string[];
+        idsWithCause.push(...nonProfitsWithCause);
+      } else {
+        const nonProfitsWithCause = await Nonprofit.distinct("_id", {
+          cause
+        });
+        idsWithCause.push(...nonProfitsWithCause);
+        filterCache.set(
+          cause,
+          nonProfitsWithCause,
+          MILLISECONDS_IN_WEEK / 1000
+        );
+      }
+    }
 
     findQuery = {
       ...findQuery,
@@ -268,31 +287,39 @@ function getCityPolygonCoordinates(cities: string[]) {
 
   return Promise.all(
     cities.map(async city => {
-      const geocode = await client.geocode({
-        params: {
-          address: city, // space delineated street address of location
-          components: "country:US",
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          key: config.googleMaps.serverKey!
-        }
-      });
+      if (filterCache.has(city)) {
+        return filterCache.get(city);
+      } else {
+        const geocode = await client.geocode({
+          params: {
+            address: city, // space delineated street address of location
+            components: "country:US",
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            key: config.googleMaps.serverKey!
+          }
+        });
 
-      const viewport = geocode.data.results[0].geometry.viewport;
+        const viewport = geocode.data.results[0].geometry.viewport;
 
-      const north = viewport.northeast.lng;
-      const east = viewport.northeast.lat;
-      const south = viewport.southwest.lng;
-      const west = viewport.southwest.lat;
+        const north = viewport.northeast.lng;
+        const east = viewport.northeast.lat;
+        const south = viewport.southwest.lng;
+        const west = viewport.southwest.lat;
 
-      return [
-        [
-          [north, east],
-          [south, east],
-          [south, west],
-          [north, west],
-          [north, east] // duplicate the first one in order to create a closed loop for mongo
-        ]
-      ];
+        const googleBounds = [
+          [
+            [north, east],
+            [south, east],
+            [south, west],
+            [north, west],
+            [north, east] // duplicate the first one in order to create a closed loop for mongo
+          ]
+        ];
+
+        filterCache.set(city, googleBounds);
+
+        return googleBounds;
+      }
     })
   );
 }
