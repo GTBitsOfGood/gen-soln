@@ -39,3 +39,12 @@ export const getFilteredEvents = async (
     },
     filterPageInformation
   );
+
+export const getAllEvents = async (datePageInformation: DatePageRequest) =>
+  fetchRequestWithPayloadResponse<DatePaginatedEventCards>(
+    config.apis.getAllEvents,
+    {
+      method: "GET"
+    },
+    datePageInformation
+  );
