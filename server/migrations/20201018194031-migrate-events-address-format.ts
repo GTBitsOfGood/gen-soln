@@ -28,7 +28,7 @@ export const up: MigrationFunction = async (db: Db) => {
           $set: {
             "address.text": {
               main: faker.random.arrayElement(MAIN_TEXT_OPTIONS),
-              // @ts-ignore: address.text is of type string
+              // @ts-ignore: addressLine.text is of type string
               secondary: address.text
             }
           }
@@ -47,7 +47,7 @@ export const down: MigrationFunction = async (db: Db) => {
     documents.map(({ _id, address }) =>
       db.collection("events").updateOne(
         { _id },
-        // @ts-ignore: address.text was set to type { main: string, secondary: string } in up()
+        // @ts-ignore: addressLine.text was set to type { main: string, secondary: string } in up()
         { $set: { "address.text": address.text.secondary } }
       )
     )

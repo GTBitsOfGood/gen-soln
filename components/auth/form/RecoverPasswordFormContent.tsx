@@ -11,7 +11,7 @@ import EmailTextField, { EMAIL_INPUT_FIELD_NAME } from "./EmailTextField";
 
 const states = {
   INITIAL: {
-    caption: "Enter the email address associated with your account.",
+    caption: "Enter the email addressLine associated with your account.",
     ctaText: "Get Password"
   },
   FINAL: {

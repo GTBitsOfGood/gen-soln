@@ -13,7 +13,11 @@ export interface BillingStepProps {
   firstName: string;
   lastName: string;
   email: string;
-  address: PlaceType | null;
+  addressField: PlaceType | string | null;
+  addressLine: string;
+  city: string;
+  state: string;
+  country: string;
   zipcode: string;
 }
 
@@ -45,7 +49,11 @@ export const initialState: State = {
     firstName: "",
     lastName: "",
     email: "",
-    address: null,
+    addressField: null,
+    addressLine: "",
+    city: "",
+    state: "",
+    country: "",
     zipcode: ""
   },
   amountStep: {
@@ -87,14 +95,39 @@ const { actions, reducer } = createSlice({
       {
         payload
       }: PayloadAction<{
-        key: keyof Omit<BillingStepProps, "address">;
+        key: keyof Omit<BillingStepProps, "addressField">;
         value: string;
       }>
     ) {
       billingStep[payload.key] = payload.value;
     },
-    setAddress({ billingStep }, { payload }: PayloadAction<PlaceType | null>) {
-      billingStep.address = payload;
+    setAddressField(
+      { billingStep },
+      { payload }: PayloadAction<string | PlaceType>
+    ) {
+      billingStep.addressField = payload;
+      if (typeof payload === "string") {
+        billingStep.addressLine = payload;
+      } else {
+        billingStep.addressLine = payload.structured_formatting.main_text;
+        const [
+          city,
+          state,
+          country
+        ] = payload.structured_formatting.secondary_text.split(", ");
+        billingStep.city = city;
+        billingStep.state = state;
+        billingStep.country = country;
+      }
+    },
+    setCity({ billingStep }, { payload }: PayloadAction<string>) {
+      billingStep.city = payload;
+    },
+    setState({ billingStep }, { payload }: PayloadAction<string>) {
+      billingStep.state = payload;
+    },
+    setCountry({ billingStep }, { payload }: PayloadAction<string>) {
+      billingStep.country = payload;
     },
     setNameOnCard({ paymentStep }, { payload }: PayloadAction<string>) {
       paymentStep.nameOnCard = payload;
@@ -117,7 +150,10 @@ export const {
   setRadioButtonAmount,
   setOtherAmount,
   setBillingStepField,
-  setAddress,
+  setAddressField,
+  setCity,
+  setState,
+  setCountry,
   setNameOnCard,
   setZipcode
 } = actions;

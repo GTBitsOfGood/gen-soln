@@ -37,11 +37,11 @@ export type PlaceType = google.maps.places.AutocompletePrediction;
 
 interface Props {
   locationType: string;
-  parentCallback: (value: PlaceType) => void;
+  parentCallback: (value: PlaceType | string) => void;
   filterOptions?: (options: PlaceType[]) => PlaceType[];
   label?: string;
   fullWidth?: boolean;
-  defaultValue?: PlaceType | null;
+  defaultValue?: PlaceType | string | null;
   required?: boolean;
   placeholder?: string;
   clearInputOnClose?: boolean;
@@ -59,7 +59,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
   clearInputOnClose = false
 }) => {
   const { textStyle, highlightedText, inputAdornmentRoot } = useStyles();
-  const [value, setValue] = useState<PlaceType | null>(defaultValue);
+  const [value, setValue] = useState<PlaceType | string | null>(defaultValue);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<PlaceType[]>([]);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(
@@ -112,7 +112,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       return undefined;
     }
 
-    if (inputValue === "") {
+    if (inputValue === "" && typeof value !== "string") {
       setOptions(value ? [value] : []);
       return undefined;
     }
@@ -124,8 +124,8 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       (results?: PlaceType[]) => {
         if (active) {
           let newOptions = [] as PlaceType[];
-
-          if (value) {
+          console.log(value);
+          if (value && typeof value !== "string") {
             newOptions = [value];
           }
 
@@ -157,12 +157,14 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       filterSelectedOptions
       fullWidth={fullWidth}
       value={value}
+      freeSolo
+      autoSelect
       onChange={(
         event: React.ChangeEvent<unknown>,
-        newValue: PlaceType | null
+        newValue: PlaceType | string | null
       ) => {
         if (newValue) {
-          setOptions(s => [newValue, ...s]);
+          if (typeof newValue !== "string") setOptions(s => [newValue, ...s]);
           parentCallback(newValue);
         }
 
@@ -176,7 +178,6 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         <TextField
           {...rest}
           label={label}
-          variant="outlined"
           fullWidth
           required={required}
           placeholder={placeholder}
@@ -189,8 +190,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
               >
                 <SearchIcon fontSize="inherit" />
               </InputAdornment>
-            ),
-            classes: { root: textStyle }
+            )
           }}
         />
       )}

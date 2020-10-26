@@ -13,7 +13,10 @@ import {
   DonationPageStateDispatch,
   setBillingStepField,
   setIsCurStepCompleted,
-  setAddress,
+  setAddressField,
+  setCity,
+  setState,
+  setCountry,
   setZipcode
 } from "./reducer";
 
@@ -48,7 +51,10 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
   firstName,
   lastName,
   email,
-  address,
+  addressLine,
+  city,
+  state,
+  country,
   zipcode
 }) => {
   const {
@@ -68,7 +74,7 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
 
   const onChange = useCallback(
     (
-      key: keyof Omit<BillingStepProps, "address">,
+      key: keyof Omit<BillingStepProps, "addressField">,
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
       dispatch && dispatch(setBillingStepField({ key, value: e.target.value }));
@@ -77,8 +83,8 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
   );
 
   const onAddressChange = useCallback(
-    (address: PlaceType) => {
-      dispatch && dispatch(setAddress(address));
+    (address: PlaceType | string) => {
+      dispatch && dispatch(setAddressField(address));
     },
     [dispatch]
   );
@@ -123,10 +129,10 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
       <div className={clsx(name, verticalPositiveMargin)}>
         <LocationAutocompleteInput
           parentCallback={onAddressChange}
-          locationType="address"
+          locationType="addressLine"
           fullWidth
           required
-          defaultValue={address}
+          defaultValue={addressLine}
           label="Billing Address"
         />
       </div>
