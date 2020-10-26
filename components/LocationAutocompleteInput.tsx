@@ -147,7 +147,9 @@ const LocationAutocompleteInput: React.FC<Props> = ({
   return (
     <Autocomplete
       getOptionLabel={option =>
-        typeof option === "string" ? option : option.description
+        typeof option === "string"
+          ? option
+          : option.structured_formatting.main_text
       }
       classes={{ noOptions: textStyle }}
       blurOnSelect
@@ -198,30 +200,32 @@ const LocationAutocompleteInput: React.FC<Props> = ({
           }}
         />
       )}
-      renderOption={(option: PlaceType) => {
-        const matches =
-          option.structured_formatting.main_text_matched_substrings;
-        const parts = parse(
-          option.structured_formatting.main_text,
-          matches.map(match => [match.offset, match.offset + match.length])
-        );
+      renderOption={option => {
+        if (typeof option !== "string") {
+          const matches =
+            option.structured_formatting.main_text_matched_substrings;
+          const parts = parse(
+            option.structured_formatting.main_text,
+            matches.map(match => [match.offset, match.offset + match.length])
+          );
 
-        return (
-          <Grid container alignItems="center">
-            {parts.map(({ text, highlight }, index) => (
-              <CoreTypography
-                variant="caption"
-                key={index}
-                className={clsx(highlight && highlightedText)}
-              >
-                {text.replace(/ /g, "\u00a0")}
+          return (
+            <Grid container alignItems="center">
+              {parts.map(({ text, highlight }, index) => (
+                <CoreTypography
+                  variant="caption"
+                  key={index}
+                  className={clsx(highlight && highlightedText)}
+                >
+                  {text.replace(/ /g, "\u00a0")}
+                </CoreTypography>
+              ))}
+              <CoreTypography variant="caption">
+                , {option.structured_formatting.secondary_text}
               </CoreTypography>
-            ))}
-            <CoreTypography variant="caption">
-              , {option.structured_formatting.secondary_text}
-            </CoreTypography>
-          </Grid>
-        );
+            </Grid>
+          );
+        }
       }}
     />
   );
