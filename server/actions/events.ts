@@ -270,7 +270,7 @@ function getCityPolygonCoordinates(cities: string[]) {
     cities.map(async city => {
       const geocode = await client.geocode({
         params: {
-          address: city, // space delineated street addressLine of location
+          address: city, // space delineated street address of location
           components: "country:US",
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           key: config.googleMaps.serverKey!

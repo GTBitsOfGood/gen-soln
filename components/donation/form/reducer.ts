@@ -14,7 +14,7 @@ export interface BillingStepProps {
   lastName: string;
   email: string;
   addressField: PlaceType | string | null;
-  addressLine: string;
+  addressLine: PlaceType | string | null;
   city: string;
   state: string;
   country: string;
@@ -50,7 +50,7 @@ export const initialState: State = {
     lastName: "",
     email: "",
     addressField: null,
-    addressLine: "",
+    addressLine: null,
     city: "",
     state: "",
     country: "",

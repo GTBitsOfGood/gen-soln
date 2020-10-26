@@ -151,7 +151,9 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       }
       classes={{ noOptions: textStyle }}
       blurOnSelect
+      // @ts-ignore
       filterOptions={filterOptions}
+      // @ts-ignore
       options={options}
       autoComplete
       includeInputInList
@@ -172,6 +174,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
+        console.log(options);
         setInputValue(newInputValue);
       }}
       onClose={() => void (clearInputOnClose && setValue(null))}
@@ -195,32 +198,30 @@ const LocationAutocompleteInput: React.FC<Props> = ({
           }}
         />
       )}
-      renderOption={option => {
-        if (typeof option !== "string") {
-          const matches =
-            option.structured_formatting.main_text_matched_substrings;
-          const parts = parse(
-            option.structured_formatting.main_text,
-            matches.map(match => [match.offset, match.offset + match.length])
-          );
+      renderOption={(option: PlaceType) => {
+        const matches =
+          option.structured_formatting.main_text_matched_substrings;
+        const parts = parse(
+          option.structured_formatting.main_text,
+          matches.map(match => [match.offset, match.offset + match.length])
+        );
 
-          return (
-            <Grid container alignItems="center">
-              {parts.map(({ text, highlight }, index) => (
-                <CoreTypography
-                  variant="caption"
-                  key={index}
-                  className={clsx(highlight && highlightedText)}
-                >
-                  {text.replace(/ /g, "\u00a0")}
-                </CoreTypography>
-              ))}
-              <CoreTypography variant="caption">
-                , {option.structured_formatting.secondary_text}
+        return (
+          <Grid container alignItems="center">
+            {parts.map(({ text, highlight }, index) => (
+              <CoreTypography
+                variant="caption"
+                key={index}
+                className={clsx(highlight && highlightedText)}
+              >
+                {text.replace(/ /g, "\u00a0")}
               </CoreTypography>
-            </Grid>
-          );
-        }
+            ))}
+            <CoreTypography variant="caption">
+              , {option.structured_formatting.secondary_text}
+            </CoreTypography>
+          </Grid>
+        );
       }}
     />
   );
