@@ -31,6 +31,35 @@ const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 const NEAREST_EVENTS_RADIUS = 20 / 3959; // radius for nearest events in radians (20 miles / earth's radius)
 const INVALID_COORDINATE = -999;
 
+export async function getAllEventsCardData({
+  date,
+  page
+}: DatePageRequest): Promise<DatePaginatedEventCards> {
+  const CARDS_PER_PAGE = 4;
+  await Mongo();
+
+  const result = await Event.find(
+    {
+      startDate: {
+        $gte: new Date(date)
+      }
+    },
+    CARD_FIELDS
+  )
+    .sort({ startDate: 1 })
+    .skip(page * CARDS_PER_PAGE)
+    .limit(CARDS_PER_PAGE + 1);
+
+  return {
+    cards: result
+      .slice(0, CARDS_PER_PAGE)
+      .map(r => r.toJSON()) as EventCardDataType[],
+    page,
+    date,
+    isLastPage: result.length < CARDS_PER_PAGE + 1
+  };
+}
+
 export async function getUpcomingEventsCardData({
   date,
   page
