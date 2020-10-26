@@ -142,22 +142,21 @@ const DonationPageForm: React.FC<Props> = ({
           nonprofitId: selectedNonprofitId
         });
       } else {
-        if (isPaymentStep && billingStep.address) {
-          const [
-            city,
-            state,
-            country
-          ] = billingStep.address.structured_formatting.secondary_text.split(
-            ", "
-          );
+        if (
+          isPaymentStep &&
+          billingStep.addressLine &&
+          billingStep.city &&
+          billingStep.state &&
+          billingStep.country
+        ) {
           await createPaymentMethod(
             name,
             billingStep.email,
             billingStep.zipcode,
-            city,
-            billingStep.address.structured_formatting.main_text,
-            state,
-            country.slice(0, -1)
+            billingStep.city,
+            billingStep.addressLine,
+            billingStep.state,
+            billingStep.country.slice(0, -1)
           );
         }
         dispatch(incrementStep());
@@ -170,7 +169,10 @@ const DonationPageForm: React.FC<Props> = ({
       billingStep.firstName,
       billingStep.lastName,
       billingStep.zipcode,
-      billingStep.address,
+      billingStep.addressLine,
+      billingStep.city,
+      billingStep.state,
+      billingStep.country,
       processPayment,
       createPaymentMethod,
       isPaymentStep,

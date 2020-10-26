@@ -38,7 +38,9 @@ export type PlaceType = google.maps.places.AutocompletePrediction;
 interface Props {
   locationType: string;
   parentCallback: (value: PlaceType | string) => void;
-  filterOptions?: (options: PlaceType[]) => PlaceType[];
+  filterOptions?: (
+    options: Array<PlaceType | string>
+  ) => Array<PlaceType | string>;
   label?: string;
   fullWidth?: boolean;
   defaultValue?: PlaceType | string | null;
@@ -61,7 +63,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
   const { textStyle, highlightedText, inputAdornmentRoot } = useStyles();
   const [value, setValue] = useState<PlaceType | string | null>(defaultValue);
   const [inputValue, setInputValue] = useState("");
-  const [options, setOptions] = useState<PlaceType[]>([]);
+  const [options, setOptions] = useState<Array<string | PlaceType>>([]);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(
     null
   );
@@ -112,7 +114,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       return undefined;
     }
 
-    if (inputValue === "" && typeof value !== "string") {
+    if (inputValue === "") {
       setOptions(value ? [value] : []);
       return undefined;
     }
@@ -123,9 +125,8 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       },
       (results?: PlaceType[]) => {
         if (active) {
-          let newOptions = [] as PlaceType[];
-          console.log(value);
-          if (value && typeof value !== "string") {
+          let newOptions: Array<PlaceType | string> = [];
+          if (value) {
             newOptions = [value];
           }
 
@@ -164,7 +165,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         newValue: PlaceType | string | null
       ) => {
         if (newValue) {
-          if (typeof newValue !== "string") setOptions(s => [newValue, ...s]);
+          setOptions(s => [newValue, ...s]);
           parentCallback(newValue);
         }
 
@@ -195,29 +196,31 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         />
       )}
       renderOption={option => {
-        const matches =
-          option.structured_formatting.main_text_matched_substrings;
-        const parts = parse(
-          option.structured_formatting.main_text,
-          matches.map(match => [match.offset, match.offset + match.length])
-        );
+        if (typeof option !== "string") {
+          const matches =
+            option.structured_formatting.main_text_matched_substrings;
+          const parts = parse(
+            option.structured_formatting.main_text,
+            matches.map(match => [match.offset, match.offset + match.length])
+          );
 
-        return (
-          <Grid container alignItems="center">
-            {parts.map(({ text, highlight }, index) => (
-              <CoreTypography
-                variant="caption"
-                key={index}
-                className={clsx(highlight && highlightedText)}
-              >
-                {text.replace(/ /g, "\u00a0")}
+          return (
+            <Grid container alignItems="center">
+              {parts.map(({ text, highlight }, index) => (
+                <CoreTypography
+                  variant="caption"
+                  key={index}
+                  className={clsx(highlight && highlightedText)}
+                >
+                  {text.replace(/ /g, "\u00a0")}
+                </CoreTypography>
+              ))}
+              <CoreTypography variant="caption">
+                , {option.structured_formatting.secondary_text}
               </CoreTypography>
-            ))}
-            <CoreTypography variant="caption">
-              , {option.structured_formatting.secondary_text}
-            </CoreTypography>
-          </Grid>
-        );
+            </Grid>
+          );
+        }
       }}
     />
   );
