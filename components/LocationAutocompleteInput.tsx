@@ -47,6 +47,9 @@ interface Props {
   required?: boolean;
   placeholder?: string;
   clearInputOnClose?: boolean;
+  freeInput?: boolean;
+  outlined?: boolean;
+  small?: boolean;
 }
 
 const LocationAutocompleteInput: React.FC<Props> = ({
@@ -58,9 +61,13 @@ const LocationAutocompleteInput: React.FC<Props> = ({
   defaultValue = null,
   required = false,
   placeholder = "",
-  clearInputOnClose = false
+  clearInputOnClose = false,
+  freeInput = false,
+  outlined = true,
+  small = true
 }) => {
   const { textStyle, highlightedText, inputAdornmentRoot } = useStyles();
+  // may be string if freeInput is true and user selects text not in autocomplete suggestions
   const [value, setValue] = useState<PlaceType | string | null>(defaultValue);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<Array<string | PlaceType>>([]);
@@ -162,8 +169,8 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       filterSelectedOptions
       fullWidth={fullWidth}
       value={value}
-      freeSolo
-      autoSelect
+      freeSolo={freeInput}
+      autoSelect={freeInput}
       onChange={(
         event: React.ChangeEvent<unknown>,
         newValue: PlaceType | string | null
@@ -176,7 +183,6 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
-        console.log(options);
         setInputValue(newInputValue);
       }}
       onClose={() => void (clearInputOnClose && setValue(null))}
@@ -184,6 +190,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         <TextField
           {...rest}
           label={label}
+          variant={outlined ? "outlined" : "standard"}
           fullWidth
           required={required}
           placeholder={placeholder}
@@ -196,7 +203,8 @@ const LocationAutocompleteInput: React.FC<Props> = ({
               >
                 <SearchIcon fontSize="inherit" />
               </InputAdornment>
-            )
+            ),
+            ...(small && { classes: { root: textStyle } })
           }}
         />
       )}
