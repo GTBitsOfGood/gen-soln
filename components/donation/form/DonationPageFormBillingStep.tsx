@@ -41,9 +41,6 @@ const useStyles = makeStyles({
   verticalNegativeMargin: {
     marginTop: -7,
     marginBottom: -7
-  },
-  fullWidth: {
-    width: "100%"
   }
 });
 
@@ -62,8 +59,7 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
     name,
     rightMargin,
     verticalNegativeMargin,
-    verticalPositiveMargin,
-    fullWidth
+    verticalPositiveMargin
   } = useStyles();
   const dispatch = useContext(DonationPageStateDispatch);
 

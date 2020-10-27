@@ -56,10 +56,11 @@ const EventsPageLocationFilter: React.FC = () => {
         clearInputOnClose
         locationType="(cities)"
         placeholder="E.g. Atlanta, Boston"
-        parentCallback={place => void put(formattedPlace(place))}
+        parentCallback={place => void put(formattedPlace(place as PlaceType))}
         filterOptions={options =>
           options.filter(
-            option => !selectedLocations.includes(formattedPlace(option))
+            option =>
+              !selectedLocations.includes(formattedPlace(option as PlaceType))
           )
         }
       />
