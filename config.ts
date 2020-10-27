@@ -35,7 +35,8 @@ export default {
     recoverPassword: "/api/recoverPassword",
     getUpcomingEvents: "/api/getUpcomingEvents",
     getNearestEvents: "/api/getNearestEvents",
-    getFilteredEvents: "/api/getFilteredEvents"
+    getFilteredEvents: "/api/getFilteredEvents",
+    getAllEvents: "api/getAllEvents"
   },
   nextJSPageRegenerationTime: 10 // Amount of seconds after which incremental static regeneration of Next.js pages can occur
 };
