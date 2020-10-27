@@ -170,35 +170,18 @@ export const createFilter = async ({
 }: Pick<FilterPageRequest, "causes" | "cities" | "times" | "date">) => {
   await Mongo();
   let findQuery = {};
+  const [idsWithCauses, bounds] = await Promise.all([
+    getNonprofitIdsByCause(causes),
+    getCityPolygonCoordinates(cities)
+  ]);
   if (causes.length) {
-    const idsWithCause = [];
-    for (const cause of causes) {
-      if (filterCache.has(cause)) {
-        const nonProfitsWithCause: string[] = filterCache.get(
-          cause
-        ) as string[];
-        idsWithCause.push(...nonProfitsWithCause);
-      } else {
-        const nonProfitsWithCause = await Nonprofit.distinct("_id", {
-          cause
-        });
-        idsWithCause.push(...nonProfitsWithCause);
-        filterCache.set(
-          cause,
-          nonProfitsWithCause,
-          MILLISECONDS_IN_WEEK / 1000
-        );
-      }
-    }
-
     findQuery = {
       ...findQuery,
-      nonprofitId: { $in: idsWithCause }
+      nonprofitId: { $in: idsWithCauses.flat() }
     };
   }
+  console.log(idsWithCauses);
   if (cities.length) {
-    const bounds = await getCityPolygonCoordinates(cities);
-
     findQuery = {
       ...findQuery,
       "address.location": {
@@ -282,13 +265,37 @@ export async function getAllEventIds(): Promise<string[]> {
   return Event.distinct("_id").exec();
 }
 
+function getNonprofitIdsByCause(causes: FilterPageRequest["causes"]) {
+  return Promise.all(
+    causes.map(async cause => {
+      if (filterCache.has(cause)) {
+        const nonProfitsWithCause: string[] = filterCache.get<string[]>(
+          cause
+        ) as string[];
+        return nonProfitsWithCause;
+      } else {
+        const nonProfitsWithCause: string[] = await Nonprofit.distinct("_id", {
+          cause
+        });
+        filterCache.set(
+          cause,
+          nonProfitsWithCause,
+          MILLISECONDS_IN_WEEK / 1000
+        );
+        return nonProfitsWithCause;
+      }
+    })
+  );
+}
+
 function getCityPolygonCoordinates(cities: string[]) {
   const client = new Client({});
 
   return Promise.all(
     cities.map(async city => {
       if (filterCache.has(city)) {
-        return filterCache.get(city);
+        const cachedBounds = filterCache.get<number[][][]>(city);
+        return cachedBounds;
       } else {
         const geocode = await client.geocode({
           params: {
