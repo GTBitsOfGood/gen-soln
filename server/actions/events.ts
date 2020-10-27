@@ -1,4 +1,5 @@
 import { Client } from "@googlemaps/google-maps-services-js";
+import NodeCache from "node-cache";
 
 import config from "config";
 import Mongo from "server/index";
@@ -16,6 +17,8 @@ import {
   FilterPaginatedEventCards,
   FilterPageRequest
 } from "utils/types";
+
+const filterCache = new NodeCache();
 
 const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   name: 1,
@@ -196,19 +199,18 @@ export const createFilter = async ({
 }: Pick<FilterPageRequest, "causes" | "cities" | "times" | "date">) => {
   await Mongo();
   let findQuery = {};
+  const [idsWithCauses, bounds] = await Promise.all([
+    getNonprofitIdsByCause(causes),
+    getCityPolygonCoordinates(cities)
+  ]);
   if (causes.length) {
-    const idsWithCause = await Nonprofit.distinct("_id", {
-      cause: { $in: causes }
-    });
-
     findQuery = {
       ...findQuery,
-      nonprofitId: { $in: idsWithCause }
+      nonprofitId: { $in: idsWithCauses.flat() }
     };
   }
-  if (cities.length) {
-    const bounds = await getCityPolygonCoordinates(cities);
 
+  if (cities.length) {
     findQuery = {
       ...findQuery,
       "address.location": {
@@ -292,36 +294,66 @@ export async function getAllEventIds(): Promise<string[]> {
   return Event.distinct("_id").exec();
 }
 
+function getNonprofitIdsByCause(causes: FilterPageRequest["causes"]) {
+  return Promise.all(
+    causes.map(async cause => {
+      const nonProfitsWithCause = filterCache.get<string[]>(cause);
+      if (nonProfitsWithCause != null) {
+        return nonProfitsWithCause;
+      } else {
+        const nonProfitsWithCause: string[] = await Nonprofit.distinct("_id", {
+          cause
+        });
+        filterCache.set(
+          cause,
+          nonProfitsWithCause,
+          MILLISECONDS_IN_WEEK / 1000
+        );
+        return nonProfitsWithCause;
+      }
+    })
+  );
+}
+
 function getCityPolygonCoordinates(cities: string[]) {
   const client = new Client({});
 
   return Promise.all(
     cities.map(async city => {
-      const geocode = await client.geocode({
-        params: {
-          address: city, // space delineated street address of location
-          components: "country:US",
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          key: config.googleMaps.serverKey!
-        }
-      });
+      const cachedBounds = filterCache.get<number[][][]>(city);
+      if (cachedBounds != null) {
+        return cachedBounds;
+      } else {
+        const geocode = await client.geocode({
+          params: {
+            address: city, // space delineated street address of location
+            components: "country:US",
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            key: config.googleMaps.serverKey!
+          }
+        });
 
-      const viewport = geocode.data.results[0].geometry.viewport;
+        const viewport = geocode.data.results[0].geometry.viewport;
 
-      const north = viewport.northeast.lng;
-      const east = viewport.northeast.lat;
-      const south = viewport.southwest.lng;
-      const west = viewport.southwest.lat;
+        const north = viewport.northeast.lng;
+        const east = viewport.northeast.lat;
+        const south = viewport.southwest.lng;
+        const west = viewport.southwest.lat;
 
-      return [
-        [
-          [north, east],
-          [south, east],
-          [south, west],
-          [north, west],
-          [north, east] // duplicate the first one in order to create a closed loop for mongo
-        ]
-      ];
+        const googleBounds = [
+          [
+            [north, east],
+            [south, east],
+            [south, west],
+            [north, west],
+            [north, east] // duplicate the first one in order to create a closed loop for mongo
+          ]
+        ];
+
+        filterCache.set(city, googleBounds);
+
+        return googleBounds;
+      }
     })
   );
 }
