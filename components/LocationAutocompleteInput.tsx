@@ -160,9 +160,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       }
       classes={{ noOptions: textStyle }}
       blurOnSelect
-      // @ts-ignore
       filterOptions={filterOptions}
-      // @ts-ignore
       options={options}
       autoComplete
       includeInputInList

@@ -14,7 +14,7 @@ export interface BillingStepProps {
   lastName: string;
   email: string;
   addressField: PlaceType | string | null;
-  addressLine: PlaceType | string | null;
+  addressLine: string | null;
   city: string;
   state: string;
   country: string;
