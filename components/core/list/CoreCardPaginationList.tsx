@@ -44,7 +44,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 );
 
 interface Props<CardData> {
-  paginatedCardsData: PaginatedCards<CardData>;
+  paginatedCardsData?: PaginatedCards<CardData>;
   fetchCards?: (newPage: number) => Promise<PaginatedCards<CardData>>;
   renderCard: (c: CardData) => JSX.Element;
   cardGlimmer: JSX.Element;
@@ -63,7 +63,7 @@ const CoreCardPaginationList = <CardData,>({
 }: Props<CardData>) => {
   const classes = useStyles();
 
-  const [cards, setCards] = useState(paginatedCardsData.cards);
+  const [cards, setCards] = useState(paginatedCardsData?.cards ?? []);
 
   // Index of the first element displayed in the list
   const [first, setFirst] = useState(0);
@@ -71,12 +71,12 @@ const CoreCardPaginationList = <CardData,>({
   // Number of elements displayed
   const [rowSize, setRowSize] = useState(DEFAULT_ROW_SIZE);
   const [hasReceivedLastPageData, setHasReceivedLastPageData] = useState(
-    paginatedCardsData.isLastPage
+    paginatedCardsData?.isLastPage
   ); // if cards has achieved the maximum possible length
   const [loading, setLoading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const pageRef = useRef(paginatedCardsData.page);
+  const pageRef = useRef(paginatedCardsData?.page ?? 0);
 
   // Lock calls to fetchCards if one is currently in progress
   const fetchingRef = useRef(false);

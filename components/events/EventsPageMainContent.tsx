@@ -45,7 +45,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
     divider
   } = useStyles();
 
-  const { position } = usePosition(false);
+  const { position, hasError: hasPositionError } = usePosition(false);
 
   const [nearestEvents, setNearestEvents] = useState<
     LocationPaginatedEventCards
@@ -59,7 +59,6 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
           long: position.coords.longitude,
           page: 0
         });
-
         setNearestEvents(result);
       }
     };
@@ -87,26 +86,27 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
           </div>
         </>
       )}
-      {nearestEvents && nearestEvents.cards.length > 0 && (
-        <>
-          <div className={nearestEventsContainer}>
-            <CoreTypography variant="h2">
-              Volunteer Events Near You
-            </CoreTypography>
-            <div className={listContainer}>
-              <EventsPageEventList
-                paginatedEventCardsData={nearestEvents}
-                getMoreEvents={(page: number) =>
-                  getNearestEvents({
-                    page,
-                    lat: nearestEvents.lat,
-                    long: nearestEvents.long
-                  })
-                }
-              />
-            </div>
+      {!hasPositionError && (
+        <div className={nearestEventsContainer}>
+          <CoreTypography variant="h2">
+            Volunteer Events Near You
+          </CoreTypography>
+          <div className={listContainer}>
+            <EventsPageEventList
+              paginatedEventCardsData={nearestEvents}
+              getMoreEvents={
+                nearestEvents != null
+                  ? (page: number) =>
+                      getNearestEvents({
+                        page,
+                        lat: nearestEvents.lat,
+                        long: nearestEvents.long
+                      })
+                  : undefined
+              }
+            />
           </div>
-        </>
+        </div>
       )}
       <CoreDivider className={divider} />
       <CoreTypography variant="h2">Volunteer For a Cause</CoreTypography>

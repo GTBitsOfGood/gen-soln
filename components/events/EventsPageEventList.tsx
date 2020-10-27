@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useRouter } from "next/router";
 
@@ -10,8 +10,8 @@ import EventsPageEventCard from "./EventsPageEventCard";
 import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
 
 interface Props {
-  paginatedEventCardsData: PaginatedEventCards;
-  getMoreEvents: (newPage: number) => Promise<PaginatedEventCards>;
+  paginatedEventCardsData?: PaginatedEventCards;
+  getMoreEvents?: (newPage: number) => Promise<PaginatedEventCards>;
 }
 
 const EventsPageEventList: React.FC<Props> = ({
