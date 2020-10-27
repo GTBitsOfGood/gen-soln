@@ -209,7 +209,7 @@ export const createFilter = async ({
       nonprofitId: { $in: idsWithCauses.flat() }
     };
   }
-  console.log(idsWithCauses);
+
   if (cities.length) {
     findQuery = {
       ...findQuery,
@@ -297,10 +297,8 @@ export async function getAllEventIds(): Promise<string[]> {
 function getNonprofitIdsByCause(causes: FilterPageRequest["causes"]) {
   return Promise.all(
     causes.map(async cause => {
-      if (filterCache.has(cause)) {
-        const nonProfitsWithCause: string[] = filterCache.get<string[]>(
-          cause
-        ) as string[];
+      const nonProfitsWithCause = filterCache.get<string[]>(cause);
+      if (nonProfitsWithCause != null) {
         return nonProfitsWithCause;
       } else {
         const nonProfitsWithCause: string[] = await Nonprofit.distinct("_id", {
@@ -322,8 +320,8 @@ function getCityPolygonCoordinates(cities: string[]) {
 
   return Promise.all(
     cities.map(async city => {
-      if (filterCache.has(city)) {
-        const cachedBounds = filterCache.get<number[][][]>(city);
+      const cachedBounds = filterCache.get<number[][][]>(city);
+      if (cachedBounds != null) {
         return cachedBounds;
       } else {
         const geocode = await client.geocode({
