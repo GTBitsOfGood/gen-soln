@@ -139,6 +139,7 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
       <div className={clsx(name, verticalPositiveMargin)}>
         <TextField
           className={rightMargin}
+          fullWidth
           required
           label="City"
           autoComplete="city"
@@ -148,6 +149,7 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
           }}
         />
         <TextField
+          fullWidth
           required
           label="State"
           autoComplete="state"
@@ -160,6 +162,7 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
       <div className={clsx(name, verticalPositiveMargin)}>
         <TextField
           className={rightMargin}
+          fullWidth
           required
           label="Country"
           autoComplete="country"
@@ -169,9 +172,10 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
           }}
         />
         <TextField
+          fullWidth
           required
-          type="tel"
-          label="Billing Zipcode"
+          type="text"
+          label="Zip Code"
           autoComplete="postal-code"
           inputProps={{
             maxLength: MAX_ZIP_CODE_LENGTH,
