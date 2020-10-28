@@ -119,8 +119,8 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
           classes={{ select, icon }}
           value={value}
           onChange={onChange}
-          autoWidth={true}
-          disableUnderline={true}
+          autoWidth
+          disableUnderline
           IconComponent={ChevronDownIcon}
           inputProps={{
             classes: {

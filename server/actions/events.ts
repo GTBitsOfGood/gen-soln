@@ -191,7 +191,7 @@ export async function getFilteredEventsCardDataCount({
   return Event.countDocuments(findQuery);
 }
 
-export const createFilter = async ({
+const createFilter = async ({
   causes,
   cities,
   times,
@@ -315,7 +315,7 @@ function getNonprofitIdsByCause(causes: FilterPageRequest["causes"]) {
   );
 }
 
-function getCityPolygonCoordinates(cities: string[]) {
+function getCityPolygonCoordinates(cities: FilterPageRequest["cities"]) {
   const client = new Client({});
 
   return Promise.all(

@@ -79,7 +79,7 @@ interface PaginateWithDate {
 }
 interface PaginateWithFilter {
   causes: FilterValue<"cause">[];
-  cities: string[];
+  cities: FilterValue<"location">[];
   times: FilterValue<"time">[];
   totalCount: number; // Filtered events page needs to explicitly display total number of results
 }

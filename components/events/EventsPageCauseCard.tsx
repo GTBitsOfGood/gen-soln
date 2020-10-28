@@ -11,7 +11,7 @@ interface StyleProps {
   isSmall: boolean;
 }
 
-const useStyles = makeStyles<Theme, StyleProps>(({ palette }: Theme) =>
+const useStyles = makeStyles<Theme, StyleProps>(({ palette }) =>
   createStyles({
     card: {
       backgroundColor: palette.background.paper,
