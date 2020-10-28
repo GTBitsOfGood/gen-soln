@@ -10,7 +10,8 @@ import EventsPageFiltered from "components/events/EventsPageFiltered";
 import EventsPageUnfiltered from "components/events/EventsPageUnfiltered";
 import {
   getUpcomingEventsCardData,
-  getFilteredEventsCardData
+  getFilteredEventsCardData,
+  getFilteredEventsCardDataCount
 } from "server/actions/events";
 import { getFilterValuesInQuery } from "utils/filters";
 
@@ -25,7 +26,11 @@ const EventsNextPage: NextPage<InferGetServerSidePropsType<
         />
       );
     case "WITH_QUERY":
-      return <EventsPageFiltered />;
+      return (
+        <EventsPageFiltered
+          filteredEventsFirstPageData={props.filteredEventsFirstPageData}
+        />
+      );
     default: {
       const _exhaustiveCheck: never = props;
       return _exhaustiveCheck;
@@ -40,11 +45,11 @@ export const getServerSideProps = async (
   // Don't remove the async otherwise InferGetStaticPropsType won't work as expected
   // TODO: Use this eventually, if we need common props between filtered and unfiltered event pages.
   const commonProps = {};
+  const date = new Date().toJSON();
 
   if (Object.keys(context.query).length === 0) {
-    const date = new Date();
     const upcomingEventsFirstPageData = await getUpcomingEventsCardData({
-      date: date.toJSON(),
+      date,
       page: 0
     });
 
@@ -59,20 +64,33 @@ export const getServerSideProps = async (
     const causes = getFilterValuesInQuery(context.query, "cause");
     const cities = getFilterValuesInQuery(context.query, "location");
     const times = getFilterValuesInQuery(context.query, "time");
-    /*upcomingEventsFirstPageData =  await getByFilteredEventsCardData({
+
+    const totalCount = await getFilteredEventsCardDataCount({
       causes,
       cities,
       times,
-      // TO DO: ADD PAGE SUPPORT
-    });*/
-  }
+      date
+    });
 
-  return {
-    props: {
-      ...commonProps,
-      type: "WITH_QUERY" as const
-    }
-  };
+    const filteredEventsFirstPageData = await getFilteredEventsCardData({
+      causes,
+      cities,
+      times,
+      page: 0,
+      lat: -999,
+      long: -999,
+      totalCount,
+      date
+    });
+
+    return {
+      props: {
+        ...commonProps,
+        filteredEventsFirstPageData,
+        type: "WITH_QUERY" as const
+      }
+    };
+  }
 };
 
 export default EventsNextPage;

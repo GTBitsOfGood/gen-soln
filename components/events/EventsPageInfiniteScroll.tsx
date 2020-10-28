@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import { makeStyles, Grid } from "@material-ui/core";
+import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroller";
 
 import CoreTypography from "@core/typography";
-import { EventCardData, PaginatedEventCards } from "utils/types";
+import config from "config";
+import { getFilteredEvents } from "requests/events";
+import { EventCardData, FilterPaginatedEventCards } from "utils/types";
 
 import EventsPageEventCard from "./EventsPageEventCard";
 import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
@@ -19,49 +22,58 @@ const useStyles = makeStyles({
 
 const CARDS_PER_PAGE = 12;
 
-const mockCardData: EventCardData = {
-  name: "Test",
-  startDate: "2020-10-22T23:04:00.103Z",
-  endDate: "2020-10-22T23:05:30.103Z",
-  duration: 0,
-  image: "/defaultImages/defaultEvent.png",
-  address: {
-    text: { main: "main location", secondary: "secondary location" },
-    location: { type: "Point", coordinates: [1, 2] }
-  },
-  _id: "abc123",
-  nonprofitId: "1234"
-};
+interface Props {
+  filteredEvents: FilterPaginatedEventCards;
+}
 
-let pageId = 0;
-const totalMockCards = 50;
-
-const fetchCards = async (): Promise<PaginatedEventCards> => {
-  await new Promise(r => setTimeout(r, 300));
-
-  pageId++;
-
-  return {
-    page: pageId,
-    isLastPage: totalMockCards - pageId * CARDS_PER_PAGE <= 0,
-    cards: Array(CARDS_PER_PAGE).fill(mockCardData) as EventCardData[]
-  };
-};
-
-const EventsPageInfiniteScroll: React.FC = () => {
+const EventsPageInfiniteScroll: React.FC<Props> = ({ filteredEvents }) => {
   const { endTextContainer } = useStyles();
 
-  const [cards, setCards] = useState<EventCardData[]>([]);
-  const [hasMore, setHasMore] = useState(true);
+  const {
+    cards: initialCards,
+    causes,
+    cities,
+    times,
+    page,
+    lat,
+    long,
+    totalCount,
+    date,
+    isLastPage
+  } = filteredEvents;
 
-  const getMoreCards = (): void => {
-    void fetchCards().then(paginatedCards => {
-      if (paginatedCards.isLastPage) {
-        setHasMore(false);
-      }
+  const [cards, setCards] = useState<EventCardData[]>(initialCards);
+  const [hasMore, setHasMore] = useState(!isLastPage);
 
-      setCards([...cards, ...paginatedCards.cards]);
+  const router = useRouter();
+
+  const pageRef = useRef(page);
+
+  useEffect(() => {
+    setCards(filteredEvents.cards);
+    setHasMore(!filteredEvents.isLastPage);
+    pageRef.current = filteredEvents.page;
+  }, [filteredEvents]);
+
+  const getMoreCards = async () => {
+    const paginatedEvents = await getFilteredEvents({
+      causes,
+      cities,
+      times,
+      page: pageRef.current + 1,
+      lat,
+      long,
+      totalCount,
+      date
     });
+
+    pageRef.current = paginatedEvents.page;
+
+    if (paginatedEvents.isLastPage) {
+      setHasMore(false);
+    }
+
+    setCards([...cards, ...paginatedEvents.cards]);
   };
 
   const glimmers = (
@@ -100,8 +112,10 @@ const EventsPageInfiniteScroll: React.FC = () => {
             <EventsPageEventCard
               eventCardData={card}
               onClick={() => {
-                // TODO
-                return;
+                void router.push(
+                  config.pages.event(),
+                  config.pages.event(card._id)
+                );
               }}
             />
           </Grid>

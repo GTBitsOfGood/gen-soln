@@ -1,4 +1,5 @@
 import { Client } from "@googlemaps/google-maps-services-js";
+import { flatten } from "lodash";
 import NodeCache from "node-cache";
 
 import config from "config";
@@ -206,7 +207,7 @@ export const createFilter = async ({
   if (causes.length) {
     findQuery = {
       ...findQuery,
-      nonprofitId: { $in: idsWithCauses.flat() }
+      nonprofitId: { $in: flatten(idsWithCauses) }
     };
   }
 

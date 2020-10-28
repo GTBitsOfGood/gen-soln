@@ -1,14 +1,21 @@
 import React from "react";
 
+import { FilterPaginatedEventCards } from "utils/types";
+
 import EventsPageFilteredContent from "./EventsPageFilteredContent";
 import EventsPageWithSidebar from "./sidebar/EventsPageWithSidebar";
 
-type Props = React.ComponentProps<typeof EventsPageWithSidebar>;
+interface Props extends React.ComponentProps<typeof EventsPageWithSidebar> {
+  filteredEventsFirstPageData: FilterPaginatedEventCards;
+}
 
-const EventsPageFiltered: React.FC<Props> = props => {
+const EventsPageFiltered: React.FC<Props> = ({
+  filteredEventsFirstPageData,
+  ...rest
+}) => {
   return (
-    <EventsPageWithSidebar {...props}>
-      <EventsPageFilteredContent />
+    <EventsPageWithSidebar {...rest}>
+      <EventsPageFilteredContent filteredEvents={filteredEventsFirstPageData} />
     </EventsPageWithSidebar>
   );
 };
