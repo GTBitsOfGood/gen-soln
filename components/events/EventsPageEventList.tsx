@@ -10,13 +10,17 @@ import EventsPageEventCard from "./EventsPageEventCard";
 import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
 
 interface Props {
-  paginatedEventCardsData?: PaginatedEventCards;
+  paginatedEventCardsData: PaginatedEventCards;
   getMoreEvents?: (newPage: number) => Promise<PaginatedEventCards>;
+  shouldWait?: boolean;
+  setHasNoEvents?: (hasNoEvents: boolean) => void;
 }
 
 const EventsPageEventList: React.FC<Props> = ({
   paginatedEventCardsData,
-  getMoreEvents
+  getMoreEvents,
+  shouldWait = false,
+  setHasNoEvents
 }) => {
   const router = useRouter();
   return (
@@ -35,6 +39,8 @@ const EventsPageEventList: React.FC<Props> = ({
           }}
         />
       )}
+      shouldWait={shouldWait}
+      setHasNoResults={setHasNoEvents}
     />
   );
 };

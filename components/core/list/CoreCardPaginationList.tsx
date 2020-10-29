@@ -44,11 +44,13 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 );
 
 interface Props<CardData> {
-  paginatedCardsData?: PaginatedCards<CardData>;
+  paginatedCardsData: PaginatedCards<CardData>;
   fetchCards?: (newPage: number) => Promise<PaginatedCards<CardData>>;
   renderCard: (c: CardData) => JSX.Element;
   cardGlimmer: JSX.Element;
   cardWidth?: number;
+  shouldWait?: boolean;
+  setHasNoResults?: (b: boolean) => void;
 }
 
 const DEFAULT_ROW_SIZE = 4;
@@ -59,11 +61,13 @@ const CoreCardPaginationList = <CardData,>({
   fetchCards,
   renderCard,
   cardGlimmer,
-  cardWidth = 283
+  cardWidth = 283,
+  shouldWait = false,
+  setHasNoResults
 }: Props<CardData>) => {
   const classes = useStyles();
 
-  const [cards, setCards] = useState(paginatedCardsData?.cards ?? []);
+  const [cards, setCards] = useState(paginatedCardsData.cards);
 
   // Index of the first element displayed in the list
   const [first, setFirst] = useState(0);
@@ -71,12 +75,12 @@ const CoreCardPaginationList = <CardData,>({
   // Number of elements displayed
   const [rowSize, setRowSize] = useState(DEFAULT_ROW_SIZE);
   const [hasReceivedLastPageData, setHasReceivedLastPageData] = useState(
-    paginatedCardsData?.isLastPage
+    paginatedCardsData.isLastPage
   ); // if cards has achieved the maximum possible length
   const [loading, setLoading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const pageRef = useRef(paginatedCardsData?.page ?? 0);
+  const pageRef = useRef(paginatedCardsData.page);
 
   // Lock calls to fetchCards if one is currently in progress
   const fetchingRef = useRef(false);
@@ -88,24 +92,37 @@ const CoreCardPaginationList = <CardData,>({
       !hasReceivedLastPageData &&
       first + rowSize > cards.length &&
       !fetchingRef.current &&
-      fetchCards != null
+      fetchCards != null &&
+      !shouldWait
     ) {
       void (async () => {
         fetchingRef.current = true;
         setLoading(true);
-
         const { cards: newCards, page: newPage, isLastPage } = await fetchCards(
           pageRef.current + 1
         );
 
+        pageRef.current = newPage;
         setHasReceivedLastPageData(isLastPage); // technically we shouldn't over-write hasSeenLastPage after it has become true, but this code will never be called if hasSeenLastPage is already true
         setCards(prevCards => [...prevCards, ...newCards]);
         setLoading(false);
-        pageRef.current = newPage;
         fetchingRef.current = false;
+
+        // allow parent component to unmount this list if necessary
+        if (isLastPage && cards.length + newCards.length === 0) {
+          setHasNoResults != null && setHasNoResults(true);
+        }
       })();
     }
-  }, [cards.length, first, rowSize, fetchCards, hasReceivedLastPageData]);
+  }, [
+    cards.length,
+    first,
+    rowSize,
+    fetchCards,
+    hasReceivedLastPageData,
+    shouldWait,
+    setHasNoResults
+  ]);
 
   const handleResize = useCallback(() => {
     // wrap the resize in a 100ms debounce to prevent excess polling
@@ -166,7 +183,7 @@ const CoreCardPaginationList = <CardData,>({
           {card}
         </div>
       ))}
-      {hasNext && !loading && (
+      {hasNext && !loading && !shouldWait && (
         <div className={classes.nextButtonContainer}>
           <IconButton
             aria-label="next cards"

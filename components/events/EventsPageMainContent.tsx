@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -46,25 +46,15 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
   } = useStyles();
 
   const { position, hasError: hasPositionError } = usePosition(false);
+  const [hasNoNearestEvents, setHasNoNearestEvents] = useState(false);
 
-  const [nearestEvents, setNearestEvents] = useState<
-    LocationPaginatedEventCards
-  >();
-
-  useEffect(() => {
-    const fetchNearestEvents = async () => {
-      if (position) {
-        const result = await getNearestEvents({
-          lat: position.coords.latitude,
-          long: position.coords.longitude,
-          page: 0
-        });
-        setNearestEvents(result);
-      }
-    };
-
-    void fetchNearestEvents();
-  }, [position]);
+  const [nearestEvents] = useState<LocationPaginatedEventCards>({
+    lat: 0,
+    long: 0,
+    page: -1,
+    isLastPage: false,
+    cards: []
+  });
 
   return (
     <div className={mainContainer}>
@@ -86,7 +76,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
           </div>
         </>
       )}
-      {!hasPositionError && (
+      {!hasPositionError && !hasNoNearestEvents && (
         <div className={nearestEventsContainer}>
           <CoreTypography variant="h2">
             Volunteer Events Near You
@@ -95,15 +85,17 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
             <EventsPageEventList
               paginatedEventCardsData={nearestEvents}
               getMoreEvents={
-                nearestEvents != null
+                position != null
                   ? (page: number) =>
                       getNearestEvents({
                         page,
-                        lat: nearestEvents.lat,
-                        long: nearestEvents.long
+                        lat: position.coords.latitude,
+                        long: position.coords.longitude
                       })
                   : undefined
               }
+              shouldWait={position == null}
+              setHasNoEvents={setHasNoNearestEvents}
             />
           </div>
         </div>
