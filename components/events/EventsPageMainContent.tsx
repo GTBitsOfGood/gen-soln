@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -45,27 +45,16 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
     divider
   } = useStyles();
 
-  const { position } = usePosition(false);
+  const { position, hasError: hasPositionError } = usePosition(false);
+  const [hasNoNearestEvents, setHasNoNearestEvents] = useState(false);
 
-  const [nearestEvents, setNearestEvents] = useState<
-    LocationPaginatedEventCards
-  >();
-
-  useEffect(() => {
-    const fetchNearestEvents = async () => {
-      if (position) {
-        const result = await getNearestEvents({
-          lat: position.coords.latitude,
-          long: position.coords.longitude,
-          page: 0
-        });
-
-        setNearestEvents(result);
-      }
-    };
-
-    void fetchNearestEvents();
-  }, [position]);
+  const [nearestEvents] = useState<LocationPaginatedEventCards>({
+    lat: 0,
+    long: 0,
+    page: -1,
+    isLastPage: false,
+    cards: []
+  });
 
   return (
     <div className={mainContainer}>
@@ -87,26 +76,29 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
           </div>
         </>
       )}
-      {nearestEvents && nearestEvents.cards.length > 0 && (
-        <>
-          <div className={nearestEventsContainer}>
-            <CoreTypography variant="h2">
-              Volunteer Events Near You
-            </CoreTypography>
-            <div className={listContainer}>
-              <EventsPageEventList
-                paginatedEventCardsData={nearestEvents}
-                getMoreEvents={(page: number) =>
-                  getNearestEvents({
-                    page,
-                    lat: nearestEvents.lat,
-                    long: nearestEvents.long
-                  })
-                }
-              />
-            </div>
+      {!hasPositionError && !hasNoNearestEvents && (
+        <div className={nearestEventsContainer}>
+          <CoreTypography variant="h2">
+            Volunteer Events Near You
+          </CoreTypography>
+          <div className={listContainer}>
+            <EventsPageEventList
+              paginatedEventCardsData={nearestEvents}
+              getMoreEvents={
+                position != null
+                  ? (page: number) =>
+                      getNearestEvents({
+                        page,
+                        lat: position.coords.latitude,
+                        long: position.coords.longitude
+                      })
+                  : undefined
+              }
+              shouldWait={position == null}
+              setHasNoEvents={setHasNoNearestEvents}
+            />
           </div>
-        </>
+        </div>
       )}
       <CoreDivider className={divider} />
       <CoreTypography variant="h2">Volunteer For a Cause</CoreTypography>
