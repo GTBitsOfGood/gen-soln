@@ -104,8 +104,12 @@ export async function getNearestEventsCardData({
   const result = await Event.find(
     {
       "address.location": {
-        $geoWithin: {
-          $centerSphere: [[long, lat], NEAREST_EVENTS_RADIUS]
+        $nearSphere: {
+          $geometry: {
+            type: "Point",
+            coordinates: [long, lat]
+          },
+          $maxDistance: NEAREST_EVENTS_RADIUS
         }
       }
     },
