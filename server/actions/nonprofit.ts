@@ -66,13 +66,25 @@ export async function getNonprofitById(_id: string): Promise<NonprofitType> {
   return nonprofit;
 }
 
+const NONPROFIT_FIELDS_FOR_EVENT_PAGE: Record<
+  keyof NonprofitInfoForEventPage,
+  1
+> = {
+  name: 1,
+  about: 1,
+  _id: 1
+};
+
 export async function getNonprofitInfoForEventPageById(
   _id: string
 ): Promise<NonprofitInfoForEventPage> {
   await Mongo();
 
   // Exclude donation information for now:
-  const nonprofit = await Nonprofit.findOne({ _id }, { donations: 0 }).lean();
+  const nonprofit = await Nonprofit.findOne(
+    { _id },
+    NONPROFIT_FIELDS_FOR_EVENT_PAGE
+  ).lean();
   if (nonprofit == null) {
     throw new Error(errors.nonprofit.INVALID_ID);
   }
@@ -82,7 +94,7 @@ export async function getNonprofitInfoForEventPageById(
   }
 
   // @ts-ignore: Temporary, until our Nonprofit Mongoose model is typed
-  return { name: nonprofit.name, _id: nonprofit._id, about: nonprofit.about };
+  return nonprofit;
 }
 
 export async function getDefaultNonprofitId(): Promise<string> {
