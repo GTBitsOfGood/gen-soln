@@ -23,6 +23,11 @@ export interface Nonprofit {
   // TODO: consider adding the donations field?
 }
 
+export type NonprofitInfoForEventPage = Pick<
+  Nonprofit,
+  "name" | "_id" | "about"
+>;
+
 // Keep in sync with the backend schema
 export interface Donation {
   name: string;

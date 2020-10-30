@@ -2,7 +2,7 @@ import React from "react";
 
 import { Container, makeStyles } from "@material-ui/core";
 
-import { Event, Nonprofit } from "utils/types";
+import { Event, NonprofitInfoForEventPage } from "utils/types";
 
 import EventsPageDescriptionDetailsBox from "./EventsPageDescriptionDetailsBox";
 import EventsPageDescriptionMainContent from "./EventsPageDescriptionMainContent";
@@ -24,23 +24,28 @@ const useStyles = makeStyles({
 
 interface Props {
   event: Event;
-  nonProfit: Nonprofit; // TODO: Don't get the entire nonprofit object
-  // figure out a way to get nonprofit info associated with the nonprofit hosting an event
+  nonProfitInfo: NonprofitInfoForEventPage;
 }
 
 const EventsPageDescription: React.FC<Props> = ({
   event,
-  nonProfit
+  nonProfitInfo
 }: Props) => {
   const classes = useStyles();
 
   return (
     <Container className={classes.bigBox}>
       <div className={classes.mainContent}>
-        <EventsPageDescriptionMainContent event={event} nonProfit={nonProfit} />
+        <EventsPageDescriptionMainContent
+          event={event}
+          nonProfitInfo={nonProfitInfo}
+        />
       </div>
 
-      <EventsPageDescriptionDetailsBox event={event} nonProfit={nonProfit} />
+      <EventsPageDescriptionDetailsBox
+        event={event}
+        nonProfitInfo={nonProfitInfo}
+      />
     </Container>
   );
 };

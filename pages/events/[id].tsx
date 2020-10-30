@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import EventsPageDescription from "components/events/description/EventsPageEventDescription";
 import config from "config";
 import { getAllEventIds, getEventById } from "server/actions/events";
-import { getNonprofitById } from "server/actions/nonprofit";
+import { getNonprofitInfoForEventPageById } from "server/actions/nonprofit";
 
 const NonprofitEventPage: NextPage<InferGetStaticPropsType<
   typeof getStaticProps
@@ -28,7 +28,10 @@ const NonprofitEventPage: NextPage<InferGetStaticPropsType<
   }
 
   return (
-    <EventsPageDescription event={props.event} nonProfit={props.nonProfit} />
+    <EventsPageDescription
+      event={props.event}
+      nonProfitInfo={props.nonProfitInfo}
+    />
   );
 };
 
@@ -43,12 +46,14 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 
   try {
     const event = await getEventById(id);
-    const nonProfit = await getNonprofitById(event.nonprofitId);
+    const nonProfitInfo = await getNonprofitInfoForEventPageById(
+      event.nonprofitId
+    );
 
     return {
       props: {
         event,
-        nonProfit
+        nonProfitInfo
       },
       revalidate: config.nextJSPageRegenerationTime
     };
