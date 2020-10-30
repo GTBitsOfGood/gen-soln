@@ -49,3 +49,10 @@ export const getFilterValuesInQuery = <T extends FilterType>(
   }
   return [queryValues] as Array<FilterValue<T>>;
 };
+
+export const getFilterCountFromQuery = (query: ParsedUrlQuery) =>
+  Object.keys(filters).reduce(
+    (sum, filter) =>
+      sum + getFilterValuesInQuery(query, filter as FilterType).length,
+    0
+  );

@@ -38,7 +38,7 @@ export interface Donation {
 }
 
 // Keep in sync with the backend schema
-interface EventBase {
+export interface Event {
   name: string;
   startDate: string;
   endDate: string;
@@ -50,15 +50,15 @@ interface EventBase {
   };
   _id: string;
   nonprofitId: string;
-}
-
-export type Event = EventBase & {
   maxVolunteers: number;
   volunteers: Array<string>;
   about: string;
-};
+}
 
-export type EventCardData = EventBase;
+export type EventCardData = Omit<
+  Event,
+  "maxVolunteers" | "volunteers" | "about"
+>;
 
 export type CauseCardData = {
   cause: string;
