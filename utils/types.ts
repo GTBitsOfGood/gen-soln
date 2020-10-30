@@ -92,7 +92,8 @@ interface PaginateWithFilter {
 export type LocationPaginatedEventCards = PaginatedEventCards &
   PaginateWithLocation;
 export type LocationPageRequest = Pick<PageInformation, "page"> &
-  PaginateWithLocation;
+  PaginateWithLocation &
+  PaginateWithDate;
 
 export type DatePaginatedEventCards = PaginatedEventCards & PaginateWithDate;
 export type DatePageRequest = Pick<PageInformation, "page"> & PaginateWithDate;
