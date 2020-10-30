@@ -12,7 +12,7 @@ import {
   getUpcomingEventsCardData,
   getFilteredEventsCardData
 } from "server/actions/events";
-import { getFilterValuesInQuery } from "utils/filters";
+import { getFilterValuesInQuery, getFilterCountFromQuery } from "utils/filters";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -41,7 +41,7 @@ export const getServerSideProps = async (
   // TODO: Use this eventually, if we need common props between filtered and unfiltered event pages.
   const commonProps = {};
 
-  if (Object.keys(context.query).length === 0) {
+  if (getFilterCountFromQuery(context.query) === 0) {
     const date = new Date();
     const upcomingEventsFirstPageData = await getUpcomingEventsCardData({
       date: date.toJSON(),
