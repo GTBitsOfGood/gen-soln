@@ -140,11 +140,18 @@ const CoreCardPaginationList = <CardData,>({
   // add an event listener and call the initial row size update
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-    handleResize();
+
+    // we can't call handleResize directly here, the component might get
+    // unmounted immediately and we can't set state after unmount
+    const w = containerRef.current?.offsetWidth;
+    if (w != null) {
+      setRowSize(Math.max(1, Math.floor((w - MARGIN_ADJUSTMENT) / cardWidth)));
+    }
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [handleResize]);
+  }, [cardWidth, handleResize]);
 
   // click handlers for buttons
   const nextPage = () => {
