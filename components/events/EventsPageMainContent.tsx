@@ -90,7 +90,8 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
                       getNearestEvents({
                         page,
                         lat: position.coords.latitude,
-                        long: position.coords.longitude
+                        long: position.coords.longitude,
+                        date: upcomingEvents.date
                       })
                   : undefined
               }

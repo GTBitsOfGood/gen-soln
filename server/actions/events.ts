@@ -96,6 +96,7 @@ export async function getUpcomingEventsCardData({
 export async function getNearestEventsCardData({
   lat,
   long,
+  date,
   page
 }: LocationPageRequest): Promise<LocationPaginatedEventCards> {
   const CARDS_PER_PAGE = 4;
@@ -107,6 +108,9 @@ export async function getNearestEventsCardData({
         $geoWithin: {
           $centerSphere: [[long, lat], NEAREST_EVENTS_RADIUS]
         }
+      },
+      startDate: {
+        $gte: new Date(date)
       }
     },
     CARD_FIELDS
