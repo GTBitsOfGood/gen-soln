@@ -53,12 +53,12 @@ const CoreCardPaginationList = <CardData,>({
       cardsData={cards}
       renderCard={renderCard}
       cardWidth={cardWidth}
-      // always show the next button until we have received all the data and we aren't fetching more; else let CoreCardList use its own logic.
+      // Always show the next button until we have fetched all data, but hide it while fetching additional data. In other case, let CoreCardList use its own logic.
       shouldShowNextButton={
         !hasReceivedLastPageData && !loading ? true : undefined
       }
       hasReachedEndOfListCallback={fetchMoreCards}
-      // once we have received all data, CoreCardList shouldn't try to render something for empty card slots
+      // Once we have fetched all data, we shouldn't try to render anything for empty card slots.
       emptySlotCard={!hasReceivedLastPageData && cardGlimmer}
     />
   );

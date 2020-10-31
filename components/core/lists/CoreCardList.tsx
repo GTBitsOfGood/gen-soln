@@ -104,7 +104,7 @@ const CoreCardList = <CardData,>({
   // holds all the elements currently displayed
   const display = cardsData.slice(first, first + rowSize).map(renderCard);
   if (emptySlotCard && display.length < rowSize) {
-    // not enough data to display; check if user wants some special UI to render in the empty slots
+    // not enough data to display; check if user wants to render custom UI in the empty slots
     display.push(...Array(rowSize - display.length).fill(emptySlotCard));
   }
 

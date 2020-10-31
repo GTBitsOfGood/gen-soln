@@ -3,7 +3,7 @@ import React from "react";
 import { CoreCardList } from "@core/lists";
 import { filters } from "utils/filters";
 
-import EventsPageCauseCard from "./EventsPageCauseCard";
+import EventsPageCauseCard, { SMALL_CARD_WIDTH } from "./EventsPageCauseCard";
 import useRouterQueryParamsState from "./sidebar/useRouterQueryParamsState";
 
 const CAUSE_CARDS = filters["cause"].map(({ text, value }) => ({
@@ -17,7 +17,7 @@ const EventsPageCauseList: React.FC = () => {
 
   return (
     <CoreCardList
-      cardWidth={250}
+      cardWidth={SMALL_CARD_WIDTH}
       cardsData={CAUSE_CARDS}
       renderCard={cardData => (
         <EventsPageCauseCard

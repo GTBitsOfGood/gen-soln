@@ -11,11 +11,13 @@ interface StyleProps {
   isSmall: boolean;
 }
 
+export const SMALL_CARD_WIDTH = 250;
+
 const useStyles = makeStyles<Theme, StyleProps>(({ palette }) =>
   createStyles({
     card: {
       backgroundColor: palette.background.paper,
-      width: props => (props.isSmall ? 250 : 360),
+      width: props => (props.isSmall ? SMALL_CARD_WIDTH : 360),
       height: props => (props.isSmall ? 138 : 202),
       borderRadius: 10,
       overflow: "hidden",
