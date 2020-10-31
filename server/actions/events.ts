@@ -31,7 +31,8 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   _id: 1
 };
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
-const NEAREST_EVENTS_RADIUS = 20 / 3959; // radius for nearest events in radians (20 miles / earth's radius)
+const METERS_IN_A_MILE = 1609.34;
+const NEAREST_EVENTS_RADIUS_IN_MILES = 20;
 const INVALID_COORDINATE = -999;
 
 export async function getAllEventsCardData({
@@ -105,8 +106,12 @@ export async function getNearestEventsCardData({
   const result = await Event.find(
     {
       "address.location": {
-        $geoWithin: {
-          $centerSphere: [[long, lat], NEAREST_EVENTS_RADIUS]
+        $nearSphere: {
+          $geometry: {
+            type: "Point",
+            coordinates: [long, lat]
+          },
+          $maxDistance: METERS_IN_A_MILE * NEAREST_EVENTS_RADIUS_IN_MILES
         }
       },
       startDate: {
