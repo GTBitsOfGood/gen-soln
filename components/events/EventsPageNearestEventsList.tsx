@@ -28,7 +28,11 @@ const EventsPageNearestEventsListContainer: React.FC = ({ children }) => {
   );
 };
 
-const EventsPageNearestEventsList: React.FC = () => {
+interface Props {
+  date: string;
+}
+
+const EventsPageNearestEventsList: React.FC<Props> = ({ date }) => {
   const { position, hasError: hasPositionError } = usePosition(false);
 
   const [nearestEvents, setNearestEvents] = useState<
@@ -41,7 +45,8 @@ const EventsPageNearestEventsList: React.FC = () => {
         const result = await getNearestEvents({
           lat: position.coords.latitude,
           long: position.coords.longitude,
-          page: 0
+          page: 0,
+          date
         });
 
         setNearestEvents(result);
@@ -49,7 +54,7 @@ const EventsPageNearestEventsList: React.FC = () => {
     };
 
     void fetchNearestEvents();
-  }, [position]);
+  }, [date, position]);
 
   if (hasPositionError) {
     return null;
@@ -72,6 +77,7 @@ const EventsPageNearestEventsList: React.FC = () => {
         getMoreEvents={(page: number) =>
           getNearestEvents({
             page,
+            date,
             lat: nearestEvents.lat,
             long: nearestEvents.long
           })

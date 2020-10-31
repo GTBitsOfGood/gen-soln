@@ -55,7 +55,7 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
           </div>
         </>
       )}
-      <EventsPageNearestEventsList />
+      <EventsPageNearestEventsList date={upcomingEvents.date} />
       <CoreDivider className={divider} />
       <CoreTypography variant="h2">Volunteer For a Cause</CoreTypography>
       <div className={listContainer}>
