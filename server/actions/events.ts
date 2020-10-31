@@ -115,7 +115,6 @@ export async function getNearestEventsCardData({
     },
     CARD_FIELDS
   )
-    .sort({ startDate: 1 })
     .skip(page * CARDS_PER_PAGE)
     .limit(CARDS_PER_PAGE + 1); // get one more than required so that we can check if this is the last page
 
