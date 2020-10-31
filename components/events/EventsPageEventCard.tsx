@@ -8,10 +8,12 @@ import FocusVisibleOnly from "components/FocusVisibleOnly";
 import { formatDateRange } from "utils/date";
 import { EventCardData } from "utils/types";
 
+export const CARD_WIDTH = 250;
+
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
     card: {
-      width: 248,
+      width: CARD_WIDTH - 2,
       height: 267,
       borderRadius: 10,
       overflow: "hidden",
@@ -21,7 +23,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       boxShadow: `0 0 0 1px ${palette.object.lightOutline}`
     },
     cardContainer: {
-      width: 250,
+      width: CARD_WIDTH,
       height: 269,
       padding: 1,
       "&:focusVisible": {

@@ -56,15 +56,9 @@ const EventsPageCauseCard: React.FC<Props> = ({
   return (
     <FocusVisibleOnly onClick={onClick}>
       <div className={card}>
-        {isSmall ? (
-          <CoreTypography variant="h4" className={causeText}>
-            {cause}
-          </CoreTypography>
-        ) : (
-          <CoreTypography variant="h2" className={causeText}>
-            {cause}
-          </CoreTypography>
-        )}
+        <CoreTypography variant={isSmall ? "h4" : "h2"} className={causeText}>
+          {cause}
+        </CoreTypography>
       </div>
     </FocusVisibleOnly>
   );
