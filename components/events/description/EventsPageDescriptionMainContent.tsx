@@ -1,10 +1,12 @@
 import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core";
+import { useRouter } from "next/router";
 
 import { CoreButtonWithLongArrow } from "@core/buttons";
 import CoreDivider from "@core/divider";
 import CoreTypography from "@core/typography";
+import config from "config";
 import { formatDateRange } from "utils/date";
 import { Event, NonprofitInfoForEventPage } from "utils/types";
 
@@ -48,6 +50,7 @@ interface Props {
 
 const EventsPageDescriptionMainContent = ({ event, nonProfitInfo }: Props) => {
   const classes = useStyles();
+  const router = useRouter();
 
   return (
     <>
@@ -75,7 +78,14 @@ const EventsPageDescriptionMainContent = ({ event, nonProfitInfo }: Props) => {
         {nonProfitInfo.about}
       </CoreTypography>
       <div className={classes.buttonRow}>
-        <CoreButtonWithLongArrow>
+        <CoreButtonWithLongArrow
+          onClick={() => {
+            void router.push(
+              config.pages.nonprofit(),
+              config.pages.nonprofit(nonProfitInfo._id)
+            );
+          }}
+        >
           Learn About This Non-profit
         </CoreButtonWithLongArrow>
       </div>
