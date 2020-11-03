@@ -8,8 +8,7 @@ const BitsAuth0Provider = Providers.Auth0({
   domain: config.auth0.domain as string
 });
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-BitsAuth0Provider.profile = (auth0Profile: any): any => {
+BitsAuth0Provider.profile = (auth0Profile: any) => {
   return {
     id: auth0Profile.sub,
     firstName: auth0Profile.given_name,

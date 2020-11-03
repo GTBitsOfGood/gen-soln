@@ -72,7 +72,7 @@ const AdminSchema = {
   }
 };
 
-export const AdminTypeORM = {
+export default {
   model: Admin,
   schema: AdminSchema
 };

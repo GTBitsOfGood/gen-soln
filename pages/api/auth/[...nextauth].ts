@@ -1,18 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import NextAuth from "next-auth";
+import NextAuth, { InitOptions } from "next-auth";
 import Adapters from "next-auth/adapters";
 
 import config from "config";
-import { Admin, AdminTypeORM } from "server/auth/AdminTypeORM";
+import AdminTypeORM, { Admin } from "server/auth/AdminTypeORM";
 import BitsAuth0Provider from "server/auth/BitsAuth0Provider";
 
 export type AuthSession = {
   user: Admin;
-  expiresAt: string;
   accessToken?: string;
+  expires: string;
 };
 
-const options = {
+const options: InitOptions = {
   providers: [BitsAuth0Provider],
   /* The typescript definition for this function is wrong:
   See src for correct definition: https://github.com/nextauthjs/next-auth/blob/main/src/adapters/typeorm/index.js */
@@ -23,26 +23,15 @@ const options = {
       User: AdminTypeORM
     }
   }),
-  database: config.db.url,
-  events: {},
   callbacks: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    session: (session: any, user: Admin): Promise<AuthSession> => {
-      // See comment in @link /server/models/User.ts for why the User class does not include an "id" attribute
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
-      const newUser: any = {
-        ...session.user, // eslint-disable-line @typescript-eslint/no-unsafe-member-access
-        id: (user as any)["id"], // eslint-disable-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        emailVerified: user.emailVerified,
-        image: user.image
-      };
-      return Promise.resolve({
+    session: async (session, user) => {
+      return {
         ...session,
-        user: newUser // eslint-disable-line @typescript-eslint/no-unsafe-assignment
-      } as AuthSession);
+        user: {
+          ...session.user,
+          ...user
+        }
+      }
     }
   }
 };
