@@ -17,7 +17,7 @@ const pointSchema = new Schema(
   { _id: false }
 );
 
-const DEFAULT_IMAGE = "/defaultImages/defaultEvent.png";
+const DEFAULT_IMAGE = "/defaultImages/defaultEvent.png"; // TODO: File was deleted
 // Keep in sync with utils/types Event
 const eventSchema = new Schema(
   {
