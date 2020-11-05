@@ -10,9 +10,11 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
     button: {
       backgroundColor: palette.background.paper,
+      color: palette.text.primary,
       boxShadow: `inset 0 0 0 1px ${palette.object.lightOutline}`,
       "&:hover": {
-        backgroundColor: palette.object.darkOutline
+        backgroundColor: palette.background.default,
+        color: palette.text.hint
       }
     },
     nextButtonContainer: {
