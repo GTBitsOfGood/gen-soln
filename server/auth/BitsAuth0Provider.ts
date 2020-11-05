@@ -2,14 +2,14 @@ import Providers from "next-auth/providers";
 
 import config from "config";
 
+// eslint-disable @typescript-eslint/no-non-null-assertion
 const BitsAuth0Provider = Providers.Auth0({
   clientId: config.auth0.clientId as string,
   clientSecret: config.auth0.clientSecret as string,
   domain: config.auth0.domain as string
 });
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-BitsAuth0Provider.profile = (auth0Profile: any): any => {
+BitsAuth0Provider.profile = (auth0Profile: any) => {
   return {
     id: auth0Profile.sub,
     firstName: auth0Profile.given_name,
