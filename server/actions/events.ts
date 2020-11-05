@@ -106,7 +106,7 @@ export async function getNearestEventsCardData({
   const result = await Event.find(
     {
       "address.location": {
-        $nearSphere: {
+        $near: {
           $geometry: {
             type: "Point",
             coordinates: [long, lat]
