@@ -12,7 +12,7 @@ const CAUSE_CARDS: PaginatedCauseCards = {
   cards: filters["cause"].map(({ text, value }) => {
     return {
       cause: text,
-      imagePath: "/defaultImages/defaultCause.png",
+      imagePath: `/causes/${value}.jpg`,
       filterValue: value
     };
   }),
