@@ -52,7 +52,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     },
     menuItemRoot: {
       "&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover": {
-        backgroundColor: palette.primary.main,
+        backgroundColor: palette.object.lightOutline,
         borderRadius: 15
       },
       "&:hover": {
