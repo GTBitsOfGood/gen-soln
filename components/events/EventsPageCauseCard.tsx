@@ -24,7 +24,9 @@ const useStyles = makeStyles<Theme, StyleProps>(({ palette }) =>
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      backgroundImage: props => `url(${props.imagePath})`
+      backgroundImage: props => `url(${props.imagePath})`,
+      backgroundPosition: "center",
+      backgroundSize: "cover"
     },
     causeText: {
       color: palette.primary.contrastText,
