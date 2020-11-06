@@ -176,14 +176,16 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         if (newValue && typeof newValue !== "string") {
           setOptions(s => [newValue, ...s]);
           parentCallback(newValue);
-          parentInputChangeCallback
-            ? setInputValue(newValue.structured_formatting.main_text)
-            : (value.current = newValue);
+          value.current = newValue;
         }
       }}
       onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-        parentInputChangeCallback && parentInputChangeCallback(newInputValue);
+        if (parentInputChangeCallback) {
+          const splitInputValue = newInputValue.split(",")[0];
+          setInputValue(splitInputValue);
+          parentInputChangeCallback &&
+            parentInputChangeCallback(splitInputValue);
+        }
       }}
       disableClearable={!clearInputOnClose}
       onClose={() => void (clearInputOnClose && setInputValue(""))}
