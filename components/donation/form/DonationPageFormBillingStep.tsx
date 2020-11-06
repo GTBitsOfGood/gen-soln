@@ -148,6 +148,8 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
           required
           defaultInputValue={addressLine1}
           label="Address Line 1"
+          outlined={false}
+          textVariant="body1"
         />
       </div>
       <div className={clsx(name, verticalPositiveMargin)}>

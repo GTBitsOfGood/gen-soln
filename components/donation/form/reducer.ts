@@ -2,8 +2,6 @@ import { createContext, Dispatch } from "react";
 
 import { PayloadAction, createSlice, AnyAction } from "@reduxjs/toolkit";
 
-import { PlaceType } from "components/LocationAutocompleteInput";
-
 export interface AmountStepProps {
   radioButtonAmount: number | null;
   otherAmount: number;
@@ -20,9 +18,8 @@ export interface BillingStepProps {
   zipcode: string;
 }
 
-export interface PaymentStepProps {
-  nameOnCard: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface PaymentStepProps {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ReviewStepProps {}
@@ -58,9 +55,7 @@ export const initialState: State = {
     radioButtonAmount: AMOUNTS[0],
     otherAmount: +MIN_OTHER_AMOUNT
   },
-  paymentStep: {
-    nameOnCard: ""
-  }
+  paymentStep: {}
 };
 
 const name = "donationPageSlice";
@@ -99,9 +94,6 @@ const { actions, reducer } = createSlice({
     ) {
       billingStep[payload.key] = payload.value;
     },
-    setNameOnCard({ paymentStep }, { payload }: PayloadAction<string>) {
-      paymentStep.nameOnCard = payload;
-    },
     setZipcode({ billingStep }, { payload }: PayloadAction<string>) {
       // From https://github.com/medipass/react-credit-card-input/blob/master/src/utils/formatter.js#L135
       billingStep.zipcode = (payload.match(/\d+/g) || []).join("");
@@ -120,7 +112,6 @@ export const {
   setRadioButtonAmount,
   setOtherAmount,
   setBillingStepField,
-  setNameOnCard,
   setZipcode
 } = actions;
 

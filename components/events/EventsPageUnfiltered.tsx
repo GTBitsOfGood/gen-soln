@@ -3,18 +3,17 @@ import React from "react";
 import { DatePaginatedEventCards } from "utils/types";
 
 import EventsPageMainContent from "./EventsPageMainContent";
-import EventsPageWithSidebar from "./EventsPageWithSidebar";
+import EventsPageWithSidebar from "./sidebar/EventsPageWithSidebar";
 
-interface Props extends React.ComponentProps<typeof EventsPageWithSidebar> {
+interface Props {
   upcomingEventsFirstPageData: DatePaginatedEventCards;
 }
 
 const EventsPageUnfiltered: React.FC<Props> = ({
-  upcomingEventsFirstPageData,
-  ...rest
+  upcomingEventsFirstPageData
 }) => {
   return (
-    <EventsPageWithSidebar {...rest}>
+    <EventsPageWithSidebar>
       <EventsPageMainContent upcomingEvents={upcomingEventsFirstPageData} />
     </EventsPageWithSidebar>
   );

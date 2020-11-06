@@ -51,17 +51,20 @@ async function createMigrationFile(description: string) {
   }
 }
 
-async function migrate(direction: MIGRATION_DIRECTION) {
+async function migrate(direction: MIGRATION_DIRECTION, nDown = 1) {
   try {
     const { db } = await database.connect();
 
-    let migrated;
+    let migrated = [];
     switch (direction) {
       case "UP":
         migrated = await up(db);
         break;
       case "DOWN":
-        migrated = await down(db);
+        while (nDown) {
+          migrated.push(...(await down(db)));
+          nDown--;
+        }
         break;
       default: {
         const _exhaustiveCheck: never = direction;
@@ -104,9 +107,11 @@ program
   .action(() => void migrate("UP"));
 
 program
-  .command("down")
-  .description("undo the last applied database migration")
-  .action(() => void migrate("DOWN"));
+  .command("down [times]")
+  .description(
+    "undo the last applied database migration; supports an integer 'times' argument to repeatdely call 'down'"
+  )
+  .action((times = "1") => void migrate("DOWN", Number(times)));
 
 program
   .command("status")

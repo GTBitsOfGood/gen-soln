@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
-export const usePosition = () => {
+const ERROR_TIMEOUT = 1e4; // 10 seconds, doesn't time the user to allow or deny the request but times the getCurrentPosition function itself
+export const usePosition = (disabled: boolean) => {
   const [position, setPosition] = useState<Position>();
   const [error, setError] = useState<string>();
 
@@ -13,13 +14,17 @@ export const usePosition = () => {
   };
 
   useEffect(() => {
-    if (!navigator || !navigator.geolocation) {
-      setError("Geolocation is not supported");
-      return;
+    if (!disabled) {
+      if (!navigator || !navigator.geolocation) {
+        setError("Geolocation is not supported");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(onChange, onError, {
+        timeout: ERROR_TIMEOUT
+      });
     }
+  }, [disabled]);
 
-    navigator.geolocation.getCurrentPosition(onChange, onError);
-  }, []);
-
-  return { position, error };
+  return { position, hasError: error != null };
 };

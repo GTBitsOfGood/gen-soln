@@ -9,3 +9,6 @@ export { default as TasklistCheckedIcon } from "./TasklistChecked";
 export { default as TasklistUncheckedIcon } from "./TasklistUnchecked";
 export { default as ThreeBarsIcon } from "./ThreeBars";
 export { default as XIcon } from "./X";
+export { default as GlobeIcon } from "./Globe";
+export { default as HeartIcon } from "./Heart";
+export { default as SaveFlagIcon } from "./SaveFlag";

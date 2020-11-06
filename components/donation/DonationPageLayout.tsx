@@ -10,7 +10,7 @@ interface StyleProps {
   backgroundImage: string;
 }
 
-const useStyles = makeStyles(({ margins }: Theme) =>
+const useStyles = makeStyles<Theme, StyleProps>(({ margins }) =>
   createStyles({
     container: {
       flexDirection: "column"
@@ -18,7 +18,7 @@ const useStyles = makeStyles(({ margins }: Theme) =>
     content: {
       flex: 1,
       display: "flex",
-      backgroundImage: (props: StyleProps) => props.backgroundImage,
+      backgroundImage: props => props.backgroundImage,
       backgroundSize: "cover",
       backgroundRepeat: "repeat-y",
       backgroundPosition: "center",

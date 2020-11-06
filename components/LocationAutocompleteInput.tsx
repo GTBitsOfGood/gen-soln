@@ -11,8 +11,13 @@ import { SearchIcon } from "@core/icons";
 import CoreTypography, { typographyStyles } from "@core/typography";
 import config from "config";
 
+interface StyleProps {
+  textVariant?: keyof typeof typographyStyles;
+}
+
 const useStyles = makeStyles({
-  textStyle: typographyStyles.caption,
+  // @ts-ignore: Pretty sure bug in mui types
+  textStyle: (props: StyleProps) => typographyStyles[props.textVariant], // eslint-disable-line
   highlightedText: {
     fontWeight: 800
   },
@@ -35,7 +40,7 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
 
 export type PlaceType = google.maps.places.AutocompletePrediction;
 
-interface Props {
+interface Props extends StyleProps {
   locationType: string;
   parentCallback: (value: PlaceType) => void;
   parentInputChangeCallback?: (value: string) => void;
@@ -48,6 +53,7 @@ interface Props {
   placeholder?: string;
   clearInputOnClose?: boolean;
   freeSolo?: boolean;
+  outlined?: boolean;
 }
 
 const LocationAutocompleteInput: React.FC<Props> = ({
@@ -62,9 +68,13 @@ const LocationAutocompleteInput: React.FC<Props> = ({
   required = false,
   placeholder = "",
   clearInputOnClose = false,
-  freeSolo = false
+  freeSolo = false,
+  outlined = true,
+  textVariant = "caption"
 }) => {
-  const { textStyle, highlightedText, inputAdornmentRoot } = useStyles();
+  const { textStyle, highlightedText, inputAdornmentRoot } = useStyles({
+    textVariant
+  });
   const [value, setValue] = useState<PlaceType | null>(defaultValue);
   const [inputValue, setInputValue] = useState(defaultInputValue);
   const [options, setOptions] = useState<PlaceType[]>([]);
@@ -77,7 +87,8 @@ const LocationAutocompleteInput: React.FC<Props> = ({
     if (!document.querySelector("#google-maps")) {
       loadScript(
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsKey!}&libraries=places`,
+        `https://maps.googleapis.com/maps/api/js?key=${config.googleMaps
+          .clientKey!}&libraries=places`,
         document.querySelector("head"),
         "google-maps"
       );
@@ -185,7 +196,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         <TextField
           {...rest}
           label={label}
-          variant="outlined"
+          variant={outlined ? "outlined" : "standard"}
           fullWidth
           required={required}
           placeholder={placeholder}

@@ -10,10 +10,9 @@ import EventsPageFiltered from "components/events/EventsPageFiltered";
 import EventsPageUnfiltered from "components/events/EventsPageUnfiltered";
 import {
   getUpcomingEventsCardData,
-  getUpcomingEventsCardDataCount,
-  getByCausesEventsCardData
+  getFilteredEventsCardData
 } from "server/actions/events";
-import { getFilterValuesInQuery } from "utils/filters";
+import { getFilterValuesInQuery, getFilterCountFromQuery } from "utils/filters";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -42,14 +41,11 @@ export const getServerSideProps = async (
   // TODO: Use this eventually, if we need common props between filtered and unfiltered event pages.
   const commonProps = {};
 
-  if (Object.keys(context.query).length === 0) {
+  if (getFilterCountFromQuery(context.query) === 0) {
     const date = new Date();
-    const upcomingEventsTotalCount = await getUpcomingEventsCardDataCount(date);
     const upcomingEventsFirstPageData = await getUpcomingEventsCardData({
       date: date.toJSON(),
-      page: 0,
-      totalCount: upcomingEventsTotalCount,
-      isLastPage: false
+      page: 0
     });
 
     return {
@@ -60,8 +56,15 @@ export const getServerSideProps = async (
       }
     };
   } else {
-    const query = getFilterValuesInQuery(context.query, "cause");
-    /*upcomingEventsFirstPageData = */ await getByCausesEventsCardData(query);
+    const causes = getFilterValuesInQuery(context.query, "cause");
+    const cities = getFilterValuesInQuery(context.query, "location");
+    const times = getFilterValuesInQuery(context.query, "time");
+    /*upcomingEventsFirstPageData =  await getByFilteredEventsCardData({
+      causes,
+      cities,
+      times,
+      // TO DO: ADD PAGE SUPPORT
+    });*/
   }
 
   return {

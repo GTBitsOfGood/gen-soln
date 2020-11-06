@@ -1,14 +1,26 @@
 @font-face {
-  font-family: "Visby CF";
-  src: url("/fonts/VisbyCF-ExtraBold.woff2") format("woff2"),
-    url("/fonts/VisbyCF-ExtraBold.woff") format("woff"),
-    url("/fonts/VisbyCF-ExtraBold.ttf") format("truetype");
+  font-family: "VisbyCF-ExtraBold";
+  src: url("/fonts/VisbyCF-ExtraBold.eot"); /* IE9 Compat Modes */
+  src: url("/fonts/VisbyCF-ExtraBold.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    url("/fonts/VisbyCF-ExtraBold.ttf") format("truetype"), /* Safari, Android, iOS */
+    url("/fonts/VisbyCF-ExtraBold.woff") format("woff"), /* Modern Browsers */
+    url("/fonts/VisbyCF-ExtraBold.woff2") format("woff2"); /* Modern Browsers */
 }
 
 @font-face {
-  font-family: "Open Sans";
-  src: url("/fonts/OpenSans-Regular.eot") format("embedded-opentype"),
-    url("/fonts/OpenSans-Regular.woff2") format("woff2"),
-    url("/fonts/OpenSans-Regular.woff") format("woff"),
-    url("/fonts/OpenSans-Regular.ttf") format("truetype");
+  font-family: "VisbyCF-Bold";
+  src: url("/fonts/VisbyCF-Bold.eot"); /* IE9 Compat Modes */
+  src: url("/fonts/VisbyCF-Bold.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    url("/fonts/VisbyCF-Bold.ttf") format("truetype"), /* Safari, Android, iOS */
+    url("/fonts/VisbyCF-Bold.woff") format("woff"), /* Modern Browsers */
+    url("/fonts/VisbyCF-Bold.woff2") format("woff2"); /* Modern Browsers */
+}
+
+@font-face {
+  font-family: "OpenSans-Regular";
+  src: url("/fonts/OpenSans-Regular.eot"); /* IE9 Compat Modes */
+  src: url("/fonts/OpenSans-Regular.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    url("/fonts/OpenSans-Regular.ttf") format("truetype"), /* Safari, Android, iOS */
+    url("/fonts/OpenSans-Regular.woff") format("woff"), /* Modern Browsers */
+    url("/fonts/OpenSans-Regular.woff2") format("woff2"); /* Modern Browsers */
 }

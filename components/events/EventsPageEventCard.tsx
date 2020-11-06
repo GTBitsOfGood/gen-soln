@@ -5,6 +5,7 @@ import clsx from "clsx";
 
 import CoreTypography from "@core/typography";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
+import { formatDateRange } from "utils/date";
 import { EventCardData } from "utils/types";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
@@ -89,15 +90,13 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
           />
           <div className={content}>
             <CoreTypography variant="h4" className={clsx(meta, truncate)}>
-              {
-                eventCardData.duration /*TODO: replace with formatting from figma*/
-              }
+              {formatDateRange(eventCardData.startDate, eventCardData.endDate)}
             </CoreTypography>
             <CoreTypography variant="h4" className={header}>
               {eventCardData.name}
             </CoreTypography>
             <CoreTypography className={clsx(body, truncate)}>
-              {eventCardData.nonprofitId.name}
+              {eventCardData.address.text.main}
             </CoreTypography>
           </div>
         </div>
