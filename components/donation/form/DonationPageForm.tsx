@@ -35,7 +35,13 @@ const useStyles = makeStyles({
     flex: 7,
     marginTop: 8,
     marginBottom: 8,
-    minHeight: 260
+    minHeight: 280
+  },
+  billingContentContainer: {
+    flex: 7,
+    marginTop: 8,
+    marginBottom: 8,
+    minHeight: 320
   }
 });
 
@@ -85,7 +91,7 @@ const DonationPageForm: React.FC<Props> = ({
   selectedNonprofitId,
   stripeAccount
 }) => {
-  const { container, contentContainer } = useStyles();
+  const { container, contentContainer, billingContentContainer } = useStyles();
   const [
     { curStepIndex, isCurStepCompleted, billingStep, amountStep, paymentStep },
     dispatch
@@ -103,6 +109,11 @@ const DonationPageForm: React.FC<Props> = ({
   ]);
 
   const isPaymentStep = useMemo(() => step.title === "Payment", [step]);
+  const dynamicContentContainer = useMemo(
+    () =>
+      step.title === "Billing" ? billingContentContainer : contentContainer,
+    [step]
+  );
 
   const amount = useMemo(
     () => amountStep.radioButtonAmount ?? amountStep.otherAmount,
@@ -234,7 +245,7 @@ const DonationPageForm: React.FC<Props> = ({
           curStepIndex={curStepIndex}
           stepTitles={STEPS.map(_ => _.title)}
         />
-        <div className={contentContainer}>{componentJSX}</div>
+        <div className={dynamicContentContainer}>{componentJSX}</div>
         <DonationPageFormButton
           disabled={isContinueButtonDisabled}
           ctaText={ctaText}
