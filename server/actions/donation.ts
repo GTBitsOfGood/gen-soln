@@ -11,11 +11,13 @@ export async function logDonation({
   name,
   email,
   amount,
+  userId,
   nonprofitId
 }: DonationType): Promise<void> {
   await Mongo();
 
   const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
+  const user = await Donation.findOne({ _id: userId }); // TODO: Don't allow front end to pass null resulting userId
 
   if (!nonprofit) {
     throw new Error(errors.nonprofit.INVALID_ID);
@@ -25,6 +27,7 @@ export async function logDonation({
     name,
     email,
     amount,
+    user,
     nonprofitId
   });
 

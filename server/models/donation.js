@@ -20,6 +20,11 @@ const donationSchema = new Schema({
     ref: "Nonprofit",
     required: true
   },
+  userId: {
+    type: String,
+    ref: "User",
+    required: true
+  },
   timestamp: {
     type: Date,
     default: Date.now

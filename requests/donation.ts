@@ -25,12 +25,12 @@ export const createPaymentIntent = async (
   });
 
 export const logDonation = async (
-  dontaion: Omit<Donation, "timestamp">
+  donation: Omit<Donation, "timestamp">
 ): Promise<boolean> =>
   fetchRequestWithPayloadResponse<boolean>(config.apis.logDonation, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(dontaion)
+    body: JSON.stringify(donation)
   });
