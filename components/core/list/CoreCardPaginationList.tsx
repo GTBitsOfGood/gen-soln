@@ -10,9 +10,11 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
     button: {
       backgroundColor: palette.background.paper,
+      color: palette.text.primary,
       boxShadow: `inset 0 0 0 1px ${palette.object.lightOutline}`,
       "&:hover": {
-        backgroundColor: palette.object.darkOutline
+        backgroundColor: palette.background.default,
+        color: palette.text.hint
       }
     },
     nextButtonContainer: {
@@ -49,6 +51,8 @@ interface Props<CardData> {
   renderCard: (c: CardData) => JSX.Element;
   cardGlimmer: JSX.Element;
   cardWidth?: number;
+  shouldWait?: boolean;
+  setHasNoResults?: (b: boolean) => void;
 }
 
 const DEFAULT_ROW_SIZE = 4;
@@ -59,7 +63,9 @@ const CoreCardPaginationList = <CardData,>({
   fetchCards,
   renderCard,
   cardGlimmer,
-  cardWidth = 283
+  cardWidth = 283,
+  shouldWait = false,
+  setHasNoResults
 }: Props<CardData>) => {
   const classes = useStyles();
 
@@ -88,24 +94,37 @@ const CoreCardPaginationList = <CardData,>({
       !hasReceivedLastPageData &&
       first + rowSize > cards.length &&
       !fetchingRef.current &&
-      fetchCards != null
+      fetchCards != null &&
+      !shouldWait
     ) {
       void (async () => {
         fetchingRef.current = true;
         setLoading(true);
-
         const { cards: newCards, page: newPage, isLastPage } = await fetchCards(
           pageRef.current + 1
         );
 
+        pageRef.current = newPage;
         setHasReceivedLastPageData(isLastPage); // technically we shouldn't over-write hasSeenLastPage after it has become true, but this code will never be called if hasSeenLastPage is already true
         setCards(prevCards => [...prevCards, ...newCards]);
         setLoading(false);
-        pageRef.current = newPage;
         fetchingRef.current = false;
+
+        // allow parent component to unmount this list if necessary
+        if (isLastPage && cards.length + newCards.length === 0) {
+          setHasNoResults != null && setHasNoResults(true);
+        }
       })();
     }
-  }, [cards.length, first, rowSize, fetchCards, hasReceivedLastPageData]);
+  }, [
+    cards.length,
+    first,
+    rowSize,
+    fetchCards,
+    hasReceivedLastPageData,
+    shouldWait,
+    setHasNoResults
+  ]);
 
   const handleResize = useCallback(() => {
     // wrap the resize in a 100ms debounce to prevent excess polling
@@ -123,11 +142,18 @@ const CoreCardPaginationList = <CardData,>({
   // add an event listener and call the initial row size update
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-    handleResize();
+
+    // we can't call handleResize directly here, the component might get
+    // unmounted immediately and we can't set state after unmount
+    const w = containerRef.current?.offsetWidth;
+    if (w != null) {
+      setRowSize(Math.max(1, Math.floor((w - MARGIN_ADJUSTMENT) / cardWidth)));
+    }
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [handleResize]);
+  }, [cardWidth, handleResize]);
 
   // click handlers for buttons
   const nextPage = () => {
@@ -166,7 +192,7 @@ const CoreCardPaginationList = <CardData,>({
           {card}
         </div>
       ))}
-      {hasNext && !loading && (
+      {hasNext && !loading && !shouldWait && (
         <div className={classes.nextButtonContainer}>
           <IconButton
             aria-label="next cards"

@@ -53,7 +53,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     },
     menuItemRoot: {
       "&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover": {
-        backgroundColor: palette.primary.main,
+        backgroundColor: palette.object.lightOutline,
         borderRadius: 15
       },
       "&:hover": {
@@ -126,8 +126,8 @@ const EventsPageFilteredHeaderSelect: React.FC<Props> = ({
           classes={{ select, icon }}
           value={sort}
           onChange={onChange}
-          autoWidth={true}
-          disableUnderline={true}
+          autoWidth
+          disableUnderline
           IconComponent={ChevronDownIcon}
           inputProps={{
             classes: {

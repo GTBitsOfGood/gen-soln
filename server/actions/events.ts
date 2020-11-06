@@ -32,7 +32,8 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   _id: 1
 };
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
-const NEAREST_EVENTS_RADIUS = 20 / 3959; // radius for nearest events in radians (20 miles / earth's radius)
+const METERS_IN_A_MILE = 1609.34;
+const NEAREST_EVENTS_RADIUS_IN_MILES = 20;
 const INVALID_COORDINATE = -999;
 
 export async function getAllEventsCardData({
@@ -97,6 +98,7 @@ export async function getUpcomingEventsCardData({
 export async function getNearestEventsCardData({
   lat,
   long,
+  date,
   page
 }: LocationPageRequest): Promise<LocationPaginatedEventCards> {
   const CARDS_PER_PAGE = 4;
@@ -105,9 +107,16 @@ export async function getNearestEventsCardData({
   const result = await Event.find(
     {
       "address.location": {
-        $geoWithin: {
-          $centerSphere: [[long, lat], NEAREST_EVENTS_RADIUS]
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [long, lat]
+          },
+          $maxDistance: METERS_IN_A_MILE * NEAREST_EVENTS_RADIUS_IN_MILES
         }
+      },
+      startDate: {
+        $gte: new Date(date)
       }
     },
     CARD_FIELDS
@@ -192,7 +201,7 @@ export async function getFilteredEventsCardDataCount({
   return Event.countDocuments(findQuery);
 }
 
-export const createFilter = async ({
+const createFilter = async ({
   causes,
   cities,
   times,
@@ -316,7 +325,7 @@ function getNonprofitIdsByCause(causes: FilterPageRequest["causes"]) {
   );
 }
 
-function getCityPolygonCoordinates(cities: string[]) {
+function getCityPolygonCoordinates(cities: FilterPageRequest["cities"]) {
   const client = new Client({});
 
   return Promise.all(

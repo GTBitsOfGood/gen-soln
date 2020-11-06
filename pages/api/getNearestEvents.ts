@@ -14,13 +14,14 @@ export default async (
     req,
     res,
     getNearestEventsCardData,
-    ["lat", "long", "page"],
+    ["lat", "long", "date", "page"],
     queryRecord => {
       const lat = Number(queryRecord.lat);
       const long = Number(queryRecord.long);
+      const date = queryRecord.date;
       const page = Number(queryRecord.page);
 
-      if (isNaN(lat) || isNaN(long) || isNaN(page)) {
+      if (isNaN(lat) || isNaN(long) || Array.isArray(date) || isNaN(page)) {
         throw new Error(
           "API call to getNearestEvents did not receive data of the expected type!"
         );
@@ -29,6 +30,7 @@ export default async (
       return {
         lat,
         long,
+        date,
         page
       };
     }

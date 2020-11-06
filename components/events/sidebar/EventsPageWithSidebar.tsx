@@ -4,11 +4,9 @@ import EventsPageLayout from "components/events/EventsPageLayout";
 
 import EventsPageSidebarComponent from "./EventsPageSidebarComponent";
 
-const EventsPageWithSidebar: React.FC = ({ children, ...rest }) => {
+const EventsPageWithSidebar: React.FC = ({ children }) => {
   return (
-    <EventsPageLayout
-      sidebarComponent={<EventsPageSidebarComponent {...rest} />}
-    >
+    <EventsPageLayout sidebarComponent={<EventsPageSidebarComponent />}>
       {children}
     </EventsPageLayout>
   );

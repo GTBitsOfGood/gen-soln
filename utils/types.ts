@@ -23,6 +23,11 @@ export interface Nonprofit {
   // TODO: consider adding the donations field?
 }
 
+export type NonprofitInfoForEventPage = Pick<
+  Nonprofit,
+  "name" | "_id" | "about"
+>;
+
 // Keep in sync with the backend schema
 export interface Donation {
   name: string;
@@ -33,7 +38,7 @@ export interface Donation {
 }
 
 // Keep in sync with the backend schema
-interface EventBase {
+export interface Event {
   name: string;
   startDate: string;
   endDate: string;
@@ -45,15 +50,15 @@ interface EventBase {
   };
   _id: string;
   nonprofitId: string;
-}
-
-export type Event = EventBase & {
   maxVolunteers: number;
   volunteers: Array<string>;
   about: string;
-};
+}
 
-export type EventCardData = EventBase;
+export type EventCardData = Omit<
+  Event,
+  "maxVolunteers" | "volunteers" | "about"
+>;
 
 export type CauseCardData = {
   cause: string;
@@ -79,7 +84,7 @@ interface PaginateWithDate {
 }
 interface PaginateWithFilter {
   causes: FilterValue<"cause">[];
-  cities: string[];
+  cities: FilterValue<"location">[];
   times: FilterValue<"time">[];
   totalCount: number; // Filtered events page needs to explicitly display total number of results
 }
@@ -87,7 +92,8 @@ interface PaginateWithFilter {
 export type LocationPaginatedEventCards = PaginatedEventCards &
   PaginateWithLocation;
 export type LocationPageRequest = Pick<PageInformation, "page"> &
-  PaginateWithLocation;
+  PaginateWithLocation &
+  PaginateWithDate;
 
 export type DatePaginatedEventCards = PaginatedEventCards & PaginateWithDate;
 export type DatePageRequest = Pick<PageInformation, "page"> & PaginateWithDate;

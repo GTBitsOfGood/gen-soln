@@ -15,7 +15,7 @@ import {
 import CoreLink from "@core/link";
 import CoreTypography from "@core/typography";
 import { formatDateRange } from "utils/date";
-import { Event, Nonprofit } from "utils/types";
+import { Event, NonprofitInfoForEventPage } from "utils/types";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -53,12 +53,12 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 
 interface Props {
   event: Event;
-  nonProfit: Nonprofit;
+  nonProfitInfo: NonprofitInfoForEventPage;
 }
 
 const EventsPageDescriptionDetailsBox: React.FC<Props> = ({
   event,
-  nonProfit
+  nonProfitInfo
 }: Props) => {
   const classes = useStyles();
   return (
@@ -90,7 +90,7 @@ const EventsPageDescriptionDetailsBox: React.FC<Props> = ({
         <HeartIcon />
         <div style={{ flexDirection: "column" }}>
           <CoreTypography variant="h5">Hosted by</CoreTypography>
-          <CoreTypography variant="h4">{nonProfit.name}</CoreTypography>
+          <CoreTypography variant="h4">{nonProfitInfo.name}</CoreTypography>
         </div>
       </div>
       <CoreButton className={classes.signUp} variant="contained">
