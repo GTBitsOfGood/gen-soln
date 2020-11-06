@@ -12,12 +12,12 @@ import CoreTypography, { typographyStyles } from "@core/typography";
 import config from "config";
 
 interface StyleProps {
-  textVariant?: keyof typeof typographyStyles;
+  textVariant: keyof typeof typographyStyles;
 }
 
 const useStyles = makeStyles({
   // @ts-ignore: Pretty sure bug in mui types
-  textStyle: (props: StyleProps) => typographyStyles[props.textVariant], // eslint-disable-line
+  textStyle: (props: StyleProps) => typographyStyles[props.textVariant],
   highlightedText: {
     fontWeight: 800
   },
@@ -47,7 +47,6 @@ interface Props extends StyleProps {
   filterOptions?: (options: PlaceType[]) => PlaceType[];
   label?: string;
   fullWidth?: boolean;
-  defaultValue?: PlaceType | null;
   defaultInputValue?: string;
   required?: boolean;
   placeholder?: string;
@@ -63,19 +62,18 @@ const LocationAutocompleteInput: React.FC<Props> = ({
   filterOptions = x => x,
   label = "",
   fullWidth = false,
-  defaultValue = null,
   defaultInputValue = "",
   required = false,
   placeholder = "",
   clearInputOnClose = false,
   freeSolo = false,
   outlined = true,
-  textVariant = "caption"
+  textVariant
 }) => {
   const { textStyle, highlightedText, inputAdornmentRoot } = useStyles({
     textVariant
   });
-  const [value, setValue] = useState<PlaceType | null>(defaultValue);
+  const value = useRef<PlaceType | null>(null);
   const [inputValue, setInputValue] = useState(defaultInputValue);
   const [options, setOptions] = useState<PlaceType[]>([]);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(
@@ -129,7 +127,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
     }
 
     if (inputValue === "") {
-      setOptions(value ? [value] : []);
+      setOptions(value.current ? [value.current] : []);
       return undefined;
     }
 
@@ -141,8 +139,8 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         if (active) {
           let newOptions = [] as PlaceType[];
 
-          if (value) {
-            newOptions = [value];
+          if (value.current) {
+            newOptions = [value.current];
           }
 
           if (results) {
@@ -157,7 +155,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }, [inputValue, fetch]);
 
   return (
     <Autocomplete
@@ -174,16 +172,13 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       filterSelectedOptions
       fullWidth={fullWidth}
       value={inputValue}
-      onChange={(
-        event: React.ChangeEvent<unknown>,
-        newValue: PlaceType | string | null
-      ) => {
+      onChange={(event, newValue) => {
         if (newValue && typeof newValue !== "string") {
           setOptions(s => [newValue, ...s]);
           parentCallback(newValue);
           parentInputChangeCallback
             ? setInputValue(newValue.structured_formatting.main_text)
-            : setValue(newValue);
+            : (value.current = newValue);
         }
       }}
       onInputChange={(event, newInputValue) => {
@@ -191,7 +186,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         parentInputChangeCallback && parentInputChangeCallback(newInputValue);
       }}
       disableClearable={!clearInputOnClose}
-      onClose={() => void setValue(null)}
+      onClose={() => void (clearInputOnClose && setInputValue(""))}
       renderInput={({ InputProps, ...rest }) => (
         <TextField
           {...rest}

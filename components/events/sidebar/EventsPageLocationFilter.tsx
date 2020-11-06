@@ -62,6 +62,7 @@ const EventsPageLocationFilter: React.FC = () => {
             option => !selectedLocations.includes(formattedPlace(option))
           )
         }
+        textVariant="caption"
       />
       <div className={rootContainer}>
         {selectedLocations.map(location => (

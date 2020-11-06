@@ -7,6 +7,7 @@ import React, {
 } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import clsx from "clsx";
 import dynamic from "next/dynamic";
 import { Router } from "next/router";
 
@@ -38,9 +39,6 @@ const useStyles = makeStyles({
     minHeight: 260
   },
   billingContentContainer: {
-    flex: 7,
-    marginTop: 8,
-    marginBottom: 8,
     minHeight: 380
   }
 });
@@ -109,11 +107,6 @@ const DonationPageForm: React.FC<Props> = ({
   ]);
 
   const isPaymentStep = useMemo(() => step.title === "Payment", [step]);
-  const dynamicContentContainer = useMemo(
-    () =>
-      step.title === "Billing" ? billingContentContainer : contentContainer,
-    [step, billingContentContainer, contentContainer]
-  );
 
   const amount = useMemo(
     () => amountStep.radioButtonAmount ?? amountStep.otherAmount,
@@ -239,7 +232,14 @@ const DonationPageForm: React.FC<Props> = ({
           curStepIndex={curStepIndex}
           stepTitles={STEPS.map(_ => _.title)}
         />
-        <div className={dynamicContentContainer}>{componentJSX}</div>
+        <div
+          className={clsx(
+            contentContainer,
+            step.title === "Billing" && billingContentContainer
+          )}
+        >
+          {componentJSX}
+        </div>
         <DonationPageFormButton
           disabled={isContinueButtonDisabled}
           ctaText={ctaText}
