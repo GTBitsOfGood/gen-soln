@@ -24,7 +24,9 @@ const useStyles = makeStyles<Theme, StyleProps>(({ palette }) =>
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      backgroundImage: props => `url(${props.imagePath})`,
+      backgroundImage: props =>
+        // Add a black overlay on top of cause image
+        `linear-gradient(to right, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${props.imagePath})`,
       backgroundPosition: "center",
       backgroundSize: "cover"
     },
@@ -58,15 +60,9 @@ const EventsPageCauseCard: React.FC<Props> = ({
   return (
     <FocusVisibleOnly onClick={onClick}>
       <div className={card}>
-        {isSmall ? (
-          <CoreTypography variant="h4" className={causeText}>
-            {cause}
-          </CoreTypography>
-        ) : (
-          <CoreTypography variant="h2" className={causeText}>
-            {cause}
-          </CoreTypography>
-        )}
+        <CoreTypography variant={isSmall ? "h4" : "h2"} className={causeText}>
+          {cause}
+        </CoreTypography>
       </div>
     </FocusVisibleOnly>
   );

@@ -48,7 +48,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths: ids.map(config.pages.donate), fallback: true };
 };
 
-// eslint-disable-next-line
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params?.id as string;
 

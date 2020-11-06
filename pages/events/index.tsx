@@ -33,7 +33,6 @@ const EventsNextPage: NextPage<InferGetServerSidePropsType<
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
