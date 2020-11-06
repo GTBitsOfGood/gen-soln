@@ -6,7 +6,6 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import CoreTypography from "@core/typography";
 import config from "config";
-import { getFilteredEvents } from "requests/events";
 import { EventCardData, FilterPaginatedEventCards } from "utils/types";
 
 import EventsPageEventCard from "./EventsPageEventCard";
@@ -24,30 +23,27 @@ const CARDS_PER_PAGE = 12;
 
 interface Props {
   filteredEvents: FilterPaginatedEventCards;
+  sort: string;
+  position: Position | undefined;
+  getMoreEvents: (newPage: number) => Promise<FilterPaginatedEventCards>;
+  sortCards: (lat: number, long: number) => Promise<FilterPaginatedEventCards>;
 }
 
-const EventsPageInfiniteScroll: React.FC<Props> = ({ filteredEvents }) => {
+const EventsPageInfiniteScroll: React.FC<Props> = ({
+  filteredEvents,
+  sort,
+  position,
+  getMoreEvents,
+  sortCards
+}) => {
   const { endTextContainer } = useStyles();
 
-  const {
-    cards: initialCards,
-    causes,
-    cities,
-    times,
-    page,
-    lat,
-    long,
-    totalCount,
-    date,
-    isLastPage
-  } = filteredEvents;
-
-  const [cards, setCards] = useState<EventCardData[]>(initialCards);
-  const [hasMore, setHasMore] = useState(!isLastPage);
+  const [cards, setCards] = useState<EventCardData[]>(filteredEvents.cards);
+  const [hasMore, setHasMore] = useState(!filteredEvents.isLastPage);
 
   const router = useRouter();
 
-  const pageRef = useRef(page);
+  const pageRef = useRef(filteredEvents.page);
 
   useEffect(() => {
     setCards(filteredEvents.cards);
@@ -55,26 +51,26 @@ const EventsPageInfiniteScroll: React.FC<Props> = ({ filteredEvents }) => {
     pageRef.current = filteredEvents.page;
   }, [filteredEvents]);
 
-  const getMoreCards = async () => {
-    const paginatedEvents = await getFilteredEvents({
-      causes,
-      cities,
-      times,
-      page: pageRef.current + 1,
-      lat,
-      long,
-      totalCount,
-      date
-    });
-
-    pageRef.current = paginatedEvents.page;
-
-    if (paginatedEvents.isLastPage) {
-      setHasMore(false);
+  useEffect(() => {
+    if (sort === "location" && position !== undefined) {
+      void (async () => {
+        const sortedEvents = await sortCards(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+        setCards(sortedEvents.cards);
+        setHasMore(!sortedEvents.isLastPage);
+        pageRef.current = sortedEvents.page;
+      })();
+    } else {
+      void (async () => {
+        const sortedEvents = await sortCards(-999, -999);
+        setCards(sortedEvents.cards);
+        setHasMore(!sortedEvents.isLastPage);
+        pageRef.current = sortedEvents.page;
+      })();
     }
-
-    setCards([...cards, ...paginatedEvents.cards]);
-  };
+  }, [sort, sortCards, position]);
 
   const glimmers = (
     <Grid
@@ -95,7 +91,14 @@ const EventsPageInfiniteScroll: React.FC<Props> = ({ filteredEvents }) => {
 
   return (
     <InfiniteScroll
-      loadMore={getMoreCards}
+      loadMore={async () => {
+        const paginatedEvents = await getMoreEvents(pageRef.current + 1);
+        pageRef.current = paginatedEvents.page;
+        if (paginatedEvents.isLastPage) {
+          setHasMore(false);
+        }
+        setCards([...cards, ...paginatedEvents.cards]);
+      }}
       hasMore={hasMore}
       loader={glimmers}
       threshold={750}

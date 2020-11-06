@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 
 import {
   makeStyles,
@@ -14,6 +14,7 @@ import CoreTypography from "@core/typography";
 
 import { usePosition } from "../usePosition";
 import EventsPageFilteredHeaderAlert from "./EventsPageFilteredHeaderAlert";
+import { OptionValue, SORT_OPTIONS } from "./index";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -63,13 +64,17 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   })
 );
 
-const SORT_OPTIONS = [
-  { text: "Closest to you", value: "location" },
-  { text: "Most signed up", value: "participants" }
-] as const;
-type OptionValue = typeof SORT_OPTIONS[number]["value"];
+interface Props {
+  sort: string;
+  setSort: (newSortValue: OptionValue) => void;
+  setPosition: (position: Position) => void;
+}
 
-const EventsPageFilteredHeaderSelect: React.FC = () => {
+const EventsPageFilteredHeaderSelect: React.FC<Props> = ({
+  sort,
+  setSort,
+  setPosition
+}) => {
   const {
     container,
     select,
@@ -83,9 +88,7 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
 
   const isDisabled = useRef(true);
 
-  const { hasError } = usePosition(isDisabled.current);
-
-  const [value, setValue] = useState<OptionValue>("participants");
+  const { position, hasError } = usePosition(isDisabled.current);
 
   const onChange = useCallback(
     (
@@ -95,20 +98,24 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
       }>
     ) => {
       const selectedValue = event.target.value as OptionValue;
-      setValue(selectedValue);
+      setSort(selectedValue);
 
       if (selectedValue === "location") {
         isDisabled.current = false;
+
+        if (position != undefined) {
+          setPosition(position);
+        }
       }
     },
-    []
+    [setSort, setPosition, position]
   );
 
   useEffect(() => {
-    if (hasError && value === "location") {
-      setValue("participants");
+    if (hasError && sort === "location") {
+      setSort("participants");
     }
-  }, [hasError, value]);
+  }, [hasError, setSort, sort]);
 
   return (
     <div className={container}>
@@ -117,7 +124,7 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
         <CoreTypography variant="h4">Sort by</CoreTypography>
         <Select
           classes={{ select, icon }}
-          value={value}
+          value={sort}
           onChange={onChange}
           autoWidth={true}
           disableUnderline={true}
