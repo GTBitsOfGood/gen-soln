@@ -7,7 +7,6 @@ import CoreTypography from "@core/typography";
 import { EventCardData, PaginatedEventCards } from "utils/types";
 
 import EventsPageEventCard from "./EventsPageEventCard";
-import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
 
 const useStyles = makeStyles({
   endTextContainer: {
@@ -75,7 +74,7 @@ const EventsPageInfiniteScroll: React.FC = () => {
     >
       {Array.from({ length: CARDS_PER_PAGE }, (_, i) => (
         <Grid key={`glimmer_${i}`} item>
-          <EventsPageEventCardGlimmer />
+          <EventsPageEventCard />
         </Grid>
       ))}
     </Grid>

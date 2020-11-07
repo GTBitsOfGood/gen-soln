@@ -1,6 +1,7 @@
 import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { Skeleton } from "@material-ui/lab";
 import clsx from "clsx";
 
 import CoreTypography from "@core/typography";
@@ -62,46 +63,63 @@ const useStyles = makeStyles(({ palette }: Theme) =>
 );
 
 interface Props {
-  // see EventCardData under util/types
-  eventCardData: EventCardData;
-  onClick: () => void;
+  /* if either of these are undefined, we render a glimmer instead */
+  eventCardData?: EventCardData;
+  onClick?: () => void;
 }
 
 const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
-  const {
-    card,
-    cardContainer,
-    content,
-    image,
-    meta,
-    body,
-    header,
-    truncate
-  } = useStyles();
+  const classes = useStyles();
 
-  return (
-    <FocusVisibleOnly onClick={onClick}>
-      <div className={cardContainer}>
-        <div className={card}>
-          <img
-            src={eventCardData.image}
-            className={image}
-            alt={`${eventCardData.name}`}
-          />
-          <div className={content}>
-            <CoreTypography variant="h4" className={clsx(meta, truncate)}>
-              {formatDateRange(eventCardData.startDate, eventCardData.endDate)}
-            </CoreTypography>
-            <CoreTypography variant="h4" className={header}>
-              {eventCardData.name}
-            </CoreTypography>
-            <CoreTypography className={clsx(body, truncate)}>
-              {eventCardData.address.text.main}
-            </CoreTypography>
-          </div>
+  const image =
+    eventCardData == null ? (
+      <Skeleton animation="wave" className={classes.image} variant="rect" />
+    ) : (
+      <img
+        src={eventCardData.image}
+        className={classes.image}
+        alt={`${eventCardData.name}`}
+      />
+    );
+
+  const date =
+    eventCardData == null ? (
+      <Skeleton />
+    ) : (
+      formatDateRange(eventCardData.startDate, eventCardData.endDate)
+    );
+
+  const name = eventCardData == null ? <Skeleton /> : eventCardData.name;
+
+  const body =
+    eventCardData == null ? <Skeleton /> : eventCardData.address.text.main;
+
+  const card = (
+    <div className={classes.cardContainer}>
+      <div className={classes.card}>
+        {image}
+        <div className={classes.content}>
+          <CoreTypography
+            variant="h4"
+            className={clsx(classes.meta, classes.truncate)}
+          >
+            {date}
+          </CoreTypography>
+          <CoreTypography variant="h4" className={classes.header}>
+            {name}
+          </CoreTypography>
+          <CoreTypography className={clsx(classes.body, classes.truncate)}>
+            {body}
+          </CoreTypography>
         </div>
       </div>
-    </FocusVisibleOnly>
+    </div>
+  );
+
+  return onClick == null ? (
+    card
+  ) : (
+    <FocusVisibleOnly onClick={onClick}>{card}</FocusVisibleOnly>
   );
 };
 
