@@ -79,7 +79,7 @@ const DonationPageHeaderSelect: React.FC<DropdownProps> = ({
         disabled={disabled}
         onChange={onChange}
         className={selectMargin}
-        disableUnderline={true}
+        disableUnderline
         inputProps={{
           classes: {
             root: input

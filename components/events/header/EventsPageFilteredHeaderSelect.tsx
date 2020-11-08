@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import {
   makeStyles,
@@ -11,8 +11,10 @@ import {
 
 import { ChevronDownIcon } from "@core/icons";
 import CoreTypography from "@core/typography";
+import usePosition from "components/events/usePosition";
+import { useRouterQueryParamsForSortingState } from "components/events/useRouterQueryParamsState";
+import { SORT_OPTIONS, SortValue, DEFAULT_SORT_VALUE } from "utils/sortOptions";
 
-import { usePosition } from "../usePosition";
 import EventsPageFilteredHeaderAlert from "./EventsPageFilteredHeaderAlert";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
@@ -29,14 +31,13 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       "&:focus": {
         backgroundColor: "transparent"
       },
-      paddingRight: "0 !important",
+      paddingRight: "1rem !important",
       minWidth: 120
     },
     icon: {
       color: palette.primary.main,
-      fontSize: "0.90rem",
-      marginTop: 2.5,
-      marginLeft: 10
+      fontSize: "0.9rem",
+      top: "auto"
     },
     menu: {
       display: "flex",
@@ -53,7 +54,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     },
     menuItemRoot: {
       "&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover": {
-        backgroundColor: palette.primary.main,
+        backgroundColor: palette.object.lightOutline,
         borderRadius: 15
       },
       "&:hover": {
@@ -63,12 +64,6 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     menuItemSelected: {}
   })
 );
-
-const SORT_OPTIONS = [
-  { text: "Closest to you", value: "location" },
-  { text: "Most signed up", value: "participants" }
-] as const;
-type OptionValue = typeof SORT_OPTIONS[number]["value"];
 
 const EventsPageFilteredHeaderSelect: React.FC = () => {
   const {
@@ -82,47 +77,41 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
     menuItemSelected
   } = useStyles();
 
-  const isDisabled = useRef(true);
+  const {
+    currentState,
+    replace,
+    shallowPut
+  } = useRouterQueryParamsForSortingState();
 
-  const { error } = usePosition(isDisabled.current);
-
-  const [value, setValue] = useState<OptionValue>("participants");
-
-  const onChange = useCallback(
-    (
-      event: React.ChangeEvent<{
-        name?: string | undefined;
-        value: unknown;
-      }>
-    ) => {
-      const selectedValue = event.target.value as OptionValue;
-      setValue(selectedValue);
-
-      if (selectedValue === "location") {
-        isDisabled.current = false;
-      }
-    },
-    []
-  );
+  const { position, hasError } = usePosition(currentState !== "location");
 
   useEffect(() => {
-    if (error != null && value === "location") {
-      setValue("participants");
+    if (hasError && currentState === "location") {
+      replace("participants");
     }
-  }, [error, value]);
+  }, [hasError, currentState, replace]);
+
+  // Ensures that the sortValue query parameter reflects the default value if it is not already a valid value
+  useEffect(() => {
+    if (currentState == null) {
+      shallowPut(DEFAULT_SORT_VALUE);
+    }
+  }, [currentState, position, shallowPut]);
 
   return (
     <div className={container}>
-      {error && <EventsPageFilteredHeaderAlert />}
+      {hasError && <EventsPageFilteredHeaderAlert />}
       <FormControl className={input}>
         <CoreTypography variant="h4">Sort by</CoreTypography>
         <Select
-          classes={{ select }}
-          value={value}
-          onChange={onChange}
-          autoWidth={true}
-          disableUnderline={true}
-          IconComponent={() => <ChevronDownIcon className={icon} />}
+          classes={{ select, icon }}
+          value={currentState ?? DEFAULT_SORT_VALUE}
+          onChange={event => {
+            replace(event.target.value as SortValue);
+          }}
+          autoWidth
+          disableUnderline
+          IconComponent={ChevronDownIcon}
           inputProps={{
             classes: {
               root: input
@@ -144,15 +133,15 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
             getContentAnchorEl: null
           }}
         >
-          {SORT_OPTIONS.map(({ text, value }) => (
+          {SORT_OPTIONS.map(({ text, value: optionValue }) => (
             <MenuItem
-              key={value}
-              value={value}
+              key={optionValue}
+              value={optionValue}
               classes={{
                 root: menuItemRoot,
                 selected: menuItemSelected
               }}
-              disabled={error != null && value === "location"}
+              disabled={hasError && optionValue === "location"}
             >
               <CoreTypography variant="body2">{text}</CoreTypography>
             </MenuItem>

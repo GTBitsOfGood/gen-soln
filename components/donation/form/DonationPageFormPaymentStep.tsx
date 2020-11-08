@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
 
-import { TextField } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {
   CardNumberElement,
@@ -12,7 +11,6 @@ import clsx from "clsx";
 import {
   DonationPageStateDispatch,
   PaymentStepProps,
-  setNameOnCard,
   setIsCurStepCompleted
 } from "./reducer";
 import StripeTextField from "./StripeTextField";
@@ -43,9 +41,7 @@ const useStyles = makeStyles({
   }
 });
 
-const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
-  nameOnCard
-}) => {
+const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = () => {
   const {
     container,
     rowFlex,
@@ -79,17 +75,6 @@ const DonationPageFormPaymentStep: React.FC<PaymentStepProps> = ({
 
   return (
     <div className={clsx(container, verticalNegativeMargin)}>
-      <TextField
-        fullWidth
-        required
-        autoComplete="cc-name"
-        label="Name on Card"
-        className={verticalPositiveMargin}
-        value={nameOnCard}
-        onChange={e => {
-          dispatch && dispatch(setNameOnCard(e.target.value));
-        }}
-      />
       <StripeTextField
         fullWidth
         label="Card Number"

@@ -1,15 +1,15 @@
 import config from "config";
 import {
-  DatePageInformation,
+  DatePageRequest,
   DatePaginatedEventCards,
-  LocationPageInformation,
+  LocationPageRequest,
+  FilterPageRequest,
+  FilterPaginatedEventCards,
   LocationPaginatedEventCards
 } from "utils/types";
 import { fetchRequestWithPayloadResponse } from "utils/util";
 
-export const getUpcomingEvents = async (
-  datePageInformation: DatePageInformation
-) =>
+export const getUpcomingEvents = async (datePageInformation: DatePageRequest) =>
   fetchRequestWithPayloadResponse<DatePaginatedEventCards>(
     config.apis.getUpcomingEvents,
     {
@@ -19,7 +19,7 @@ export const getUpcomingEvents = async (
   );
 
 export const getNearestEvents = async (
-  locationPageInformation: LocationPageInformation
+  locationPageInformation: LocationPageRequest
 ) =>
   fetchRequestWithPayloadResponse<LocationPaginatedEventCards>(
     config.apis.getNearestEvents,
@@ -27,4 +27,24 @@ export const getNearestEvents = async (
       method: "GET"
     },
     locationPageInformation
+  );
+
+export const getFilteredEvents = async (
+  filterPageInformation: FilterPageRequest
+) =>
+  fetchRequestWithPayloadResponse<FilterPaginatedEventCards>(
+    config.apis.getFilteredEvents,
+    {
+      method: "GET"
+    },
+    filterPageInformation
+  );
+
+export const getAllEvents = async (datePageInformation: DatePageRequest) =>
+  fetchRequestWithPayloadResponse<DatePaginatedEventCards>(
+    config.apis.getAllEvents,
+    {
+      method: "GET"
+    },
+    datePageInformation
   );

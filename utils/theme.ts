@@ -26,7 +26,8 @@ const theme = createMuiTheme({
       hint: grays["40"]
     },
     object: { lightOutline: grays["5"], darkOutline: grays["20"] },
-    background: { default: grays.bg, paper: grays.white }
+    background: { default: grays.bg, paper: grays.white },
+    divider: grays["20"]
   },
   typography: typographyStyles,
   props: {

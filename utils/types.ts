@@ -4,6 +4,9 @@ import {
   PaletteOptions
 } from "@material-ui/core/styles/createPalette";
 
+import { FilterValue } from "./filters";
+import { SortValue } from "./sortOptions";
+
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
 // Fields from the back-end Nonprofit schema that should be exposed to the front-end.
@@ -21,6 +24,11 @@ export interface Nonprofit {
   // TODO: consider adding the donations field?
 }
 
+export type NonprofitInfoForEventPage = Pick<
+  Nonprofit,
+  "name" | "_id" | "about"
+>;
+
 // Keep in sync with the backend schema
 export interface Donation {
   name: string;
@@ -31,7 +39,7 @@ export interface Donation {
 }
 
 // Keep in sync with the backend schema
-interface EventBase {
+export interface Event {
   name: string;
   startDate: string;
   endDate: string;
@@ -43,25 +51,10 @@ interface EventBase {
   };
   _id: string;
   nonprofitId: string;
-}
-
-export type Event = EventBase & {
   maxVolunteers: number;
   volunteers: Array<string>;
   about: string;
-};
-
-export type EventCardData = EventBase;
-
-export interface PageInformation {
-  page: number;
-  totalCount: number;
-  isLastPage: boolean;
 }
-
-export type PaginatedEventCards = PaginatedCards<EventCardData>;
-
-export type PaginatedNonprofitCards = PaginatedCards<NonprofitCardData>;
 
 export interface NonprofitCardData {
   _id: string;
@@ -72,7 +65,10 @@ export interface NonprofitCardData {
   logo: string;
 }
 
-export type PaginatedCards<CardData> = PageInformation & { cards: CardData[] };
+export type EventCardData = Omit<
+  Event,
+  "maxVolunteers" | "volunteers" | "about"
+>;
 
 export type CauseCardData = {
   cause: string;
@@ -80,25 +76,54 @@ export type CauseCardData = {
   filterValue: string;
 };
 
+export interface PageInformation {
+  page: number;
+  isLastPage: boolean;
+}
+
+export type PaginatedCards<T> = PageInformation & { cards: T[] };
+export type PaginatedEventCards = PaginatedCards<EventCardData>;
 export type PaginatedCauseCards = PaginatedCards<CauseCardData>;
+export type PaginatedNonprofitCards = PaginatedCards<NonprofitCardData>;
 
 interface PaginateWithLocation {
   lat: number;
   long: number;
 }
 
-export interface PaginateWithDate {
+interface PaginateWithDate {
   date: string;
+}
+interface PaginateWithFilter {
+  causes: FilterValue<"cause">[];
+  cities: FilterValue<"location">[];
+  times: FilterValue<"time">[];
+  totalCount: number; // Filtered events page needs to explicitly display total number of results
+}
+interface PaginateWithSortValue {
+  sortValue: SortValue;
 }
 
 export type LocationPaginatedEventCards = PaginatedEventCards &
   PaginateWithLocation;
-
-export type LocationPageInformation = PageInformation & PaginateWithLocation;
+export type LocationPageRequest = Pick<PageInformation, "page"> &
+  PaginateWithLocation &
+  PaginateWithDate;
 
 export type DatePaginatedEventCards = PaginatedEventCards & PaginateWithDate;
+export type DatePageRequest = Pick<PageInformation, "page"> & PaginateWithDate;
 
-export type DatePageInformation = PageInformation & PaginateWithDate;
+export type FilterPaginatedEventCards = PaginatedEventCards &
+  PaginateWithFilter &
+  PaginateWithLocation &
+  PaginateWithDate &
+  PaginateWithSortValue;
+
+export type FilterPageRequest = Pick<PageInformation, "page"> &
+  PaginateWithFilter &
+  PaginateWithLocation &
+  PaginateWithDate &
+  PaginateWithSortValue;
 
 export interface Dropdown {
   text: string;

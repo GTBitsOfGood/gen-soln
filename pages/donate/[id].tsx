@@ -48,7 +48,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths: ids.map(config.pages.donate), fallback: true };
 };
 
-// eslint-disable-next-line
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params?.id as string;
 
@@ -73,12 +72,12 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
         items,
         selectedValue: id
       },
-      revalidate: 10
+      revalidate: config.nextJSPageRegenerationTime
     };
   } catch (err) {
     return {
       props: {},
-      revalidate: 10
+      revalidate: config.nextJSPageRegenerationTime
     };
   }
 };

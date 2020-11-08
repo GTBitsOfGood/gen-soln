@@ -1,19 +1,24 @@
 import { Client } from "@googlemaps/google-maps-services-js";
+import NodeCache from "node-cache";
 
 import config from "config";
 import Mongo from "server/index";
 import Event from "server/models/event";
 import Nonprofit from "server/models/nonprofit";
+import { addDays, getBeginningOfDay, getWeekendOffset } from "utils/date";
 import errors from "utils/errors";
-import { FilterValue } from "utils/filters";
 import {
   Event as EventType,
   EventCardData as EventCardDataType,
   DatePaginatedEventCards,
-  DatePageInformation,
+  DatePageRequest,
   LocationPaginatedEventCards,
-  LocationPageInformation
+  LocationPageRequest,
+  FilterPaginatedEventCards,
+  FilterPageRequest
 } from "utils/types";
+
+const filterCache = new NodeCache();
 
 const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   name: 1,
@@ -25,15 +30,44 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
   duration: 1,
   _id: 1
 };
-const CARDS_PER_PAGE = 4;
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
-const NEAREST_EVENTS_RADIUS = 20 / 3959; // radius for nearest events in radians (20 miles / earth's radius)
+const METERS_IN_A_MILE = 1609.34;
+const NEAREST_EVENTS_RADIUS_IN_MILES = 20;
+
+export async function getAllEventsCardData({
+  date,
+  page
+}: DatePageRequest): Promise<DatePaginatedEventCards> {
+  const CARDS_PER_PAGE = 4;
+  await Mongo();
+
+  const result = await Event.find(
+    {
+      startDate: {
+        $gte: new Date(date)
+      }
+    },
+    CARD_FIELDS
+  )
+    .sort({ startDate: 1 })
+    .skip(page * CARDS_PER_PAGE)
+    .limit(CARDS_PER_PAGE + 1);
+
+  return {
+    cards: result
+      .slice(0, CARDS_PER_PAGE)
+      .map(r => r.toJSON()) as EventCardDataType[],
+    page,
+    date,
+    isLastPage: result.length < CARDS_PER_PAGE + 1
+  };
+}
 
 export async function getUpcomingEventsCardData({
   date,
-  page,
-  totalCount
-}: DatePageInformation): Promise<DatePaginatedEventCards> {
+  page
+}: DatePageRequest): Promise<DatePaginatedEventCards> {
+  const CARDS_PER_PAGE = 4;
   await Mongo();
 
   const result = await Event.find(
@@ -47,102 +81,152 @@ export async function getUpcomingEventsCardData({
   )
     .sort({ startDate: 1 })
     .skip(page * CARDS_PER_PAGE)
-    .limit(CARDS_PER_PAGE);
+    .limit(CARDS_PER_PAGE + 1); // get one more than required so that we can check if this is the last page
 
   return {
-    cards: result.map(r => r.toJSON()) as EventCardDataType[],
+    cards: result
+      .slice(0, CARDS_PER_PAGE)
+      .map(r => r.toJSON()) as EventCardDataType[],
     page,
-    totalCount,
     date,
-    isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
+    isLastPage: result.length < CARDS_PER_PAGE + 1
   };
-}
-
-export async function getUpcomingEventsCardDataCount(date: Date) {
-  await Mongo();
-
-  return Event.countDocuments({
-    startDate: {
-      $gte: date,
-      $lte: new Date(date.getTime() + MILLISECONDS_IN_WEEK)
-    }
-  });
 }
 
 export async function getNearestEventsCardData({
   lat,
   long,
-  page,
-  totalCount
-}: LocationPageInformation): Promise<LocationPaginatedEventCards> {
+  date,
+  page
+}: LocationPageRequest): Promise<LocationPaginatedEventCards> {
+  const CARDS_PER_PAGE = 4;
   await Mongo();
-
-  if (totalCount == -1) {
-    totalCount = await getNearestEventsCardDataCount({ lat, long });
-  }
 
   const result = await Event.find(
     {
       "address.location": {
-        $geoWithin: {
-          $centerSphere: [[long, lat], NEAREST_EVENTS_RADIUS]
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [long, lat]
+          },
+          $maxDistance: METERS_IN_A_MILE * NEAREST_EVENTS_RADIUS_IN_MILES
         }
+      },
+      startDate: {
+        $gte: new Date(date)
       }
     },
     CARD_FIELDS
   )
     .skip(page * CARDS_PER_PAGE)
-    .limit(CARDS_PER_PAGE);
+    .limit(CARDS_PER_PAGE + 1); // get one more than required so that we can check if this is the last page
 
+  return {
+    cards: result
+      .slice(0, CARDS_PER_PAGE)
+      .map(r => r.toJSON()) as EventCardDataType[],
+    page,
+    lat,
+    long,
+    isLastPage: result.length < CARDS_PER_PAGE + 1
+  };
+}
+
+export async function getFilteredEventsCardData({
+  causes,
+  cities,
+  times,
+  page,
+  lat,
+  long,
+  totalCount,
+  date,
+  sortValue
+}: FilterPageRequest): Promise<FilterPaginatedEventCards> {
+  const CARDS_PER_PAGE = 16;
+  await Mongo();
+
+  let findQuery = await createFilterQuery({ causes, cities, times, date });
+  let sortQuery = {};
+
+  switch (sortValue) {
+    case "location":
+      // We can't sort by distance because of $geoWithin, but we can add a $near component
+      // to the query using the user's location ($near returns sorted results).
+      findQuery = {
+        ...findQuery,
+        "address.location": {
+          $near: {
+            $geometry: {
+              type: "Point",
+              coordinates: [long, lat]
+            }
+          }
+        }
+      };
+      break;
+    case "participants":
+      sortQuery = {
+        ...sortQuery,
+        volunteers: -1
+      };
+      break;
+    default: {
+      const _exhaustiveCheck: never = sortValue;
+      return _exhaustiveCheck;
+    }
+  }
+
+  const result = await Event.find(findQuery, CARD_FIELDS)
+    .skip(page * CARDS_PER_PAGE)
+    .sort(sortQuery)
+    .limit(CARDS_PER_PAGE);
   return {
     cards: result.map(r => r.toJSON()) as EventCardDataType[],
     page,
     totalCount,
+    date,
     lat,
     long,
+    cities,
+    causes,
+    times,
+    sortValue,
     isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
   };
 }
 
-export async function getNearestEventsCardDataCount({
-  lat,
-  long
-}: Pick<LocationPageInformation, "lat" | "long">) {
+export async function getFilteredEventsCardDataCount({
+  causes,
+  cities,
+  times,
+  date
+}: Parameters<typeof createFilterQuery>[0]) {
   await Mongo();
-
-  return Event.countDocuments({
-    "address.location": {
-      $geoWithin: {
-        $centerSphere: [[long, lat], NEAREST_EVENTS_RADIUS]
-      }
-    }
-  });
+  const findQuery = await createFilterQuery({ causes, cities, times, date });
+  return Event.countDocuments(findQuery);
 }
-
-export async function getByFilteredEventsCardData(
-  causes: FilterValue<"cause">[],
-  cities: string[],
-  times: FilterValue<"time">[]
-) {
+const createFilterQuery = async ({
+  causes,
+  cities,
+  times,
+  date
+}: Pick<FilterPageRequest, "causes" | "cities" | "times" | "date">) => {
   await Mongo();
-
   let findQuery = {};
+  const [idsWithCauses, bounds] = await Promise.all([
+    getNonprofitIdsByCause(causes),
+    getCityPolygonCoordinates(cities)
+  ]);
   if (causes.length) {
-    const idsWithCause = await Nonprofit.find(
-      {
-        cause: { $in: causes }
-      },
-      "nonprofitId"
-    );
-
     findQuery = {
       ...findQuery,
-      nonprofitId: { $in: idsWithCause.map(r => r["_id"]) }
+      nonprofitId: { $in: idsWithCauses.flat() }
     };
   }
-  if (cities.length) {
-    const bounds = await getCityPolygonCoordinates(cities);
 
+  if (cities.length) {
     findQuery = {
       ...findQuery,
       "address.location": {
@@ -157,52 +241,37 @@ export async function getByFilteredEventsCardData(
   }
 
   if (times.length) {
+    const dateObj = new Date(date);
+    const beginningOfDay = getBeginningOfDay(dateObj);
+    const weekendOffset = getWeekendOffset(beginningOfDay);
+
     const timeFilters = times.map(time => {
-      let startTime = new Date();
-      startTime.setHours(0);
-      startTime.setMinutes(0);
-      startTime.setSeconds(0);
-      startTime.setMilliseconds(0);
-      let endTime;
+      let startTime, endTime;
       switch (time) {
-        case "TODAY": {
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 1);
+        case "TODAY":
+          startTime = beginningOfDay;
+          endTime = addDays(startTime, 1);
           break;
-        }
-        case "TOMORROW": {
-          startTime.setDate(startTime.getDate() + 1);
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 1);
+        case "TOMORROW":
+          startTime = addDays(beginningOfDay, 1);
+          endTime = addDays(startTime, 1);
           break;
-        }
-        case "WEEKEND": {
-          const offset = startTime.getDay() == 0 ? -1 : 6 - startTime.getDay();
-          startTime.setDate(startTime.getDate() + offset);
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 2);
+        case "WEEKEND":
+          startTime = addDays(beginningOfDay, weekendOffset);
+          endTime = addDays(startTime, 2);
           break;
-        }
-        case "NWEEKEND": {
-          const offset = startTime.getDay() == 0 ? -1 : 6 - startTime.getDay();
-          startTime.setDate(startTime.getDate() + offset + 7);
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 2);
+        case "NWEEKEND":
+          startTime = addDays(beginningOfDay, weekendOffset + 7);
+          endTime = addDays(startTime, 2);
           break;
-        }
-        case "NWEEK": {
-          startTime = new Date();
-          startTime.setDate(startTime.getDate() + 7);
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 7);
+        case "WEEK":
+          startTime = dateObj;
+          endTime = addDays(startTime, 7);
           break;
-        }
-        case "WEEK": {
-          startTime = new Date();
-          endTime = new Date(startTime);
-          endTime.setDate(startTime.getDate() + 7);
+        case "NWEEK":
+          startTime = addDays(dateObj, 7);
+          endTime = addDays(startTime, 7);
           break;
-        }
         default: {
           const _exhaustiveCheck: never = time;
           return _exhaustiveCheck;
@@ -220,9 +289,8 @@ export async function getByFilteredEventsCardData(
       $or: timeFilters
     };
   }
-  const result = await Event.find(findQuery).limit(5);
-  return result.map(r => r.toJSON()) as EventCardDataType[];
-}
+  return findQuery;
+};
 
 export async function getEventById(_id: string): Promise<EventType> {
   await Mongo();
@@ -242,36 +310,66 @@ export async function getAllEventIds(): Promise<string[]> {
   return Event.distinct("_id").exec();
 }
 
-function getCityPolygonCoordinates(cities: string[]) {
+function getNonprofitIdsByCause(causes: FilterPageRequest["causes"]) {
+  return Promise.all(
+    causes.map(async cause => {
+      const nonProfitsWithCause = filterCache.get<string[]>(cause);
+      if (nonProfitsWithCause != null) {
+        return nonProfitsWithCause;
+      } else {
+        const nonProfitsWithCause: string[] = await Nonprofit.distinct("_id", {
+          cause
+        });
+        filterCache.set(
+          cause,
+          nonProfitsWithCause,
+          MILLISECONDS_IN_WEEK / 1000
+        );
+        return nonProfitsWithCause;
+      }
+    })
+  );
+}
+
+function getCityPolygonCoordinates(cities: FilterPageRequest["cities"]) {
   const client = new Client({});
 
   return Promise.all(
     cities.map(async city => {
-      const geocode = await client.geocode({
-        params: {
-          address: city, // space delineated street address of location
-          components: "country:US",
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          key: config.googleMaps.serverKey!
-        }
-      });
+      const cachedBounds = filterCache.get<number[][][]>(city);
+      if (cachedBounds != null) {
+        return cachedBounds;
+      } else {
+        const geocode = await client.geocode({
+          params: {
+            address: city, // space delineated street address of location
+            components: "country:US",
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            key: config.googleMaps.serverKey!
+          }
+        });
 
-      const viewport = geocode.data.results[0].geometry.viewport;
+        const viewport = geocode.data.results[0].geometry.viewport;
 
-      const north = viewport.northeast.lng;
-      const east = viewport.northeast.lat;
-      const south = viewport.southwest.lng;
-      const west = viewport.southwest.lat;
+        const north = viewport.northeast.lng;
+        const east = viewport.northeast.lat;
+        const south = viewport.southwest.lng;
+        const west = viewport.southwest.lat;
 
-      return [
-        [
-          [north, east],
-          [south, east],
-          [south, west],
-          [north, west],
-          [north, east] // duplicate the first one in order to create a closed loop for mongo
-        ]
-      ];
+        const googleBounds = [
+          [
+            [north, east],
+            [south, east],
+            [south, west],
+            [north, west],
+            [north, east] // duplicate the first one in order to create a closed loop for mongo
+          ]
+        ];
+
+        filterCache.set(city, googleBounds);
+
+        return googleBounds;
+      }
     })
   );
 }

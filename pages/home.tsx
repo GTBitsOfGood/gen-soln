@@ -10,15 +10,8 @@ interface Props {
 
 const HomePage = (props: Props) => {
   const { nonprofitCards } = props;
-  const { page, totalCount, isLastPage, cards } = nonprofitCards;
-  return (
-    <Home
-      page={page}
-      totalCount={totalCount}
-      isLastPage={isLastPage}
-      cards={cards}
-    />
-  );
+  const { page, isLastPage, cards } = nonprofitCards;
+  return <Home page={page} isLastPage={isLastPage} cards={cards} />;
 };
 export default HomePage;
 export const getServerSideProps: () => Promise<{

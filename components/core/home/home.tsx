@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 const Home = (nonprofitCards: PaginatedNonprofitCards) => {
   const [session] = useSession();
   const { container, text, button } = useStyles();
-  const { page, totalCount, isLastPage, cards } = nonprofitCards;
+  const { page, isLastPage, cards } = nonprofitCards;
 
   return (
     <div className={container}>
@@ -44,7 +44,7 @@ const Home = (nonprofitCards: PaginatedNonprofitCards) => {
             variant="contained"
             onClick={e => {
               e.preventDefault();
-              signIn().catch(err => console.log(err));
+              signIn().catch(err => console.error(err));
             }}
             className={button}
           >
@@ -59,7 +59,7 @@ const Home = (nonprofitCards: PaginatedNonprofitCards) => {
             variant="contained"
             onClick={e => {
               e.preventDefault();
-              signOut().catch(err => console.log(err));
+              signOut().catch(err => console.error(err));
             }}
             className={button}
           >
@@ -75,12 +75,7 @@ const Home = (nonprofitCards: PaginatedNonprofitCards) => {
         Sign up
       </CoreButton>
       <SupportCauseGrid />
-      <LandingCarousel
-        page={page}
-        totalCount={totalCount}
-        isLastPage={isLastPage}
-        cards={cards}
-      />
+      <LandingCarousel page={page} isLastPage={isLastPage} cards={cards} />
     </div>
   );
 };

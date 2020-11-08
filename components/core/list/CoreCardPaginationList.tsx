@@ -10,9 +10,11 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
     button: {
       backgroundColor: palette.background.paper,
+      color: palette.text.primary,
       boxShadow: `inset 0 0 0 1px ${palette.object.lightOutline}`,
       "&:hover": {
-        backgroundColor: palette.object.darkOutline
+        backgroundColor: palette.background.default,
+        color: palette.text.hint
       }
     },
     nextButtonContainer: {
@@ -49,17 +51,21 @@ interface Props<CardData> {
   renderCard: (c: CardData) => JSX.Element;
   cardGlimmer: JSX.Element;
   cardWidth?: number;
+  shouldWait?: boolean;
+  setHasNoResults?: (b: boolean) => void;
 }
 
 const DEFAULT_ROW_SIZE = 4;
 const MARGIN_ADJUSTMENT = 24;
 
-const CardPaginationList = <CardData,>({
+const CoreCardPaginationList = <CardData,>({
   paginatedCardsData,
   fetchCards,
   renderCard,
   cardGlimmer,
-  cardWidth = 283
+  cardWidth = 283,
+  shouldWait = false,
+  setHasNoResults
 }: Props<CardData>) => {
   const classes = useStyles();
 
@@ -70,9 +76,9 @@ const CardPaginationList = <CardData,>({
 
   // Number of elements displayed
   const [rowSize, setRowSize] = useState(DEFAULT_ROW_SIZE);
-  const [maxElem, setMaxElem] = useState(
-    paginatedCardsData.isLastPage ? paginatedCardsData.totalCount : -1
-  );
+  const [hasReceivedLastPageData, setHasReceivedLastPageData] = useState(
+    paginatedCardsData.isLastPage
+  ); // if cards has achieved the maximum possible length
   const [loading, setLoading] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -85,30 +91,40 @@ const CardPaginationList = <CardData,>({
 
   useEffect(() => {
     if (
+      !hasReceivedLastPageData &&
       first + rowSize > cards.length &&
       !fetchingRef.current &&
-      fetchCards != null
+      fetchCards != null &&
+      !shouldWait
     ) {
       void (async () => {
         fetchingRef.current = true;
         setLoading(true);
-
         const { cards: newCards, page: newPage, isLastPage } = await fetchCards(
           pageRef.current + 1
         );
 
         pageRef.current = newPage;
-
-        if (isLastPage) {
-          setMaxElem(cards.length + newCards.length);
-        }
-
+        setHasReceivedLastPageData(isLastPage); // technically we shouldn't over-write hasSeenLastPage after it has become true, but this code will never be called if hasSeenLastPage is already true
         setCards(prevCards => [...prevCards, ...newCards]);
         setLoading(false);
         fetchingRef.current = false;
+
+        // allow parent component to unmount this list if necessary
+        if (isLastPage && cards.length + newCards.length === 0) {
+          setHasNoResults != null && setHasNoResults(true);
+        }
       })();
     }
-  }, [cards.length, first, rowSize, fetchCards]);
+  }, [
+    cards.length,
+    first,
+    rowSize,
+    fetchCards,
+    hasReceivedLastPageData,
+    shouldWait,
+    setHasNoResults
+  ]);
 
   const handleResize = useCallback(() => {
     // wrap the resize in a 100ms debounce to prevent excess polling
@@ -126,11 +142,18 @@ const CardPaginationList = <CardData,>({
   // add an event listener and call the initial row size update
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-    handleResize();
+
+    // we can't call handleResize directly here, the component might get
+    // unmounted immediately and we can't set state after unmount
+    const w = containerRef.current?.offsetWidth;
+    if (w != null) {
+      setRowSize(Math.max(1, Math.floor((w - MARGIN_ADJUSTMENT) / cardWidth)));
+    }
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [handleResize]);
+  }, [cardWidth, handleResize]);
 
   // click handlers for buttons
   const nextPage = () => {
@@ -143,7 +166,7 @@ const CardPaginationList = <CardData,>({
 
   // holds all the elements currently displayed
   const display = cards.slice(first, first + rowSize).map(renderCard);
-  const hasNext = maxElem == -1 || first + rowSize < maxElem;
+  const hasNext = !hasReceivedLastPageData || first + rowSize < cards.length;
   if (hasNext) {
     // pad the display items with null if necessary
     while (display.length < rowSize) {
@@ -169,7 +192,7 @@ const CardPaginationList = <CardData,>({
           {card}
         </div>
       ))}
-      {hasNext && !loading && (
+      {hasNext && !loading && !shouldWait && (
         <div className={classes.nextButtonContainer}>
           <IconButton
             aria-label="next cards"
@@ -184,4 +207,4 @@ const CardPaginationList = <CardData,>({
   );
 };
 
-export default CardPaginationList;
+export default CoreCardPaginationList;

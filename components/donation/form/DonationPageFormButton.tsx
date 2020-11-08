@@ -1,7 +1,9 @@
 import React from "react";
 
-import { CircularProgress, Button } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+
+import { CoreButton } from "@core/buttons";
 
 import DonationPageFormAdminLoginLink from "./DonationPageFormAdminLoginLink";
 
@@ -33,17 +35,17 @@ const DonationPageFormButton: React.FC<Props> = ({
 
   return (
     <div className={container}>
-      <Button
+      <CoreButton
         disabled={disabled}
         type="submit"
-        color="primary"
+        // color="primary"
         variant="contained"
       >
         {showLoadingIndicator && (
           <CircularProgress className={rightMargin} color="inherit" size={16} />
         )}
         {ctaText}
-      </Button>
+      </CoreButton>
       <DonationPageFormAdminLoginLink />
     </div>
   );

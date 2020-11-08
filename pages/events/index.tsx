@@ -10,10 +10,10 @@ import EventsPageFiltered from "components/events/EventsPageFiltered";
 import EventsPageUnfiltered from "components/events/EventsPageUnfiltered";
 import {
   getUpcomingEventsCardData,
-  getUpcomingEventsCardDataCount,
-  getByFilteredEventsCardData
+  getFilteredEventsCardData
 } from "server/actions/events";
-import { getFilterValuesInQuery } from "utils/filters";
+import { getFilterValuesInQuery, getFilterCountFromQuery } from "utils/filters";
+import { DEFAULT_SORT_VALUE, getSortValueInQuery } from "utils/sortOptions";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -34,22 +34,18 @@ const EventsNextPage: NextPage<InferGetServerSidePropsType<
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async ({
+  query
+}: GetServerSidePropsContext) => {
   // Don't remove the async otherwise InferGetStaticPropsType won't work as expected
   // TODO: Use this eventually, if we need common props between filtered and unfiltered event pages.
   const commonProps = {};
 
-  if (Object.keys(context.query).length === 0) {
+  if (getFilterCountFromQuery(query) === 0) {
     const date = new Date();
-    const upcomingEventsTotalCount = await getUpcomingEventsCardDataCount(date);
     const upcomingEventsFirstPageData = await getUpcomingEventsCardData({
       date: date.toJSON(),
-      page: 0,
-      totalCount: upcomingEventsTotalCount,
-      isLastPage: false
+      page: 0
     });
 
     return {
@@ -60,14 +56,29 @@ export const getServerSideProps = async (
       }
     };
   } else {
-    const causes = getFilterValuesInQuery(context.query, "cause");
-    const cities = getFilterValuesInQuery(context.query, "location");
-    const times = getFilterValuesInQuery(context.query, "time");
-    /*upcomingEventsFirstPageData = */ await getByFilteredEventsCardData(
-      causes,
-      cities,
-      times
-    );
+    const sortBy = getSortValueInQuery(query) ?? DEFAULT_SORT_VALUE;
+    switch (sortBy) {
+      case "participants": {
+        const causes = getFilterValuesInQuery(query, "cause");
+        const cities = getFilterValuesInQuery(query, "location");
+        const times = getFilterValuesInQuery(query, "time");
+        /*upcomingEventsFirstPageData =  await getByFilteredEventsCardData({
+          causes,
+          cities,
+          times,
+          // TO DO: ADD PAGE SUPPORT
+        });*/
+        break; // TODO: Call getByFilteredEventsCardData and return first page of data
+      }
+      case "location":
+        // TODO: DO NOT call getByFilteredEventsCardData, since the first page data corresponding to location
+        // cannot be determined on the server. The client should make the request to get the first page's data.
+        break;
+      default: {
+        const _exhaustiveCheck: never = sortBy;
+        return _exhaustiveCheck;
+      }
+    }
   }
 
   return {
