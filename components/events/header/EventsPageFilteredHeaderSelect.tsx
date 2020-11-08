@@ -65,7 +65,11 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   })
 );
 
-const EventsPageFilteredHeaderSelect: React.FC = () => {
+interface Props {
+  setPosition: (position: Position) => void;
+}
+
+const EventsPageFilteredHeaderSelect: React.FC<Props> = ({ setPosition }) => {
   const {
     container,
     select,
@@ -87,16 +91,22 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
 
   useEffect(() => {
     if (hasError && currentState === "location") {
-      replace("participants");
+      replace(DEFAULT_SORT_VALUE);
     }
-  }, [hasError, currentState, replace]);
+  }, [currentState, hasError, replace]);
 
   // Ensures that the sortValue query parameter reflects the default value if it is not already a valid value
   useEffect(() => {
     if (currentState == null) {
       shallowPut(DEFAULT_SORT_VALUE);
     }
-  }, [currentState, position, shallowPut]);
+  }, [currentState, shallowPut]);
+
+  useEffect(() => {
+    if (position != null) {
+      setPosition(position);
+    }
+  }, [position, setPosition]);
 
   return (
     <div className={container}>

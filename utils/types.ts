@@ -87,7 +87,6 @@ interface PaginateWithFilter {
   causes: FilterValue<"cause">[];
   cities: FilterValue<"location">[];
   times: FilterValue<"time">[];
-  totalCount: number; // Filtered events page needs to explicitly display total number of results
 }
 interface PaginateWithSortValue {
   sortValue: SortValue;
@@ -107,12 +106,15 @@ export type FilterPaginatedEventCards = PaginatedEventCards &
   PaginateWithLocation &
   PaginateWithDate &
   PaginateWithSortValue;
-
 export type FilterPageRequest = Pick<PageInformation, "page"> &
   PaginateWithFilter &
   PaginateWithLocation &
   PaginateWithDate &
   PaginateWithSortValue;
+export type FilterPageQueryArgs = Pick<
+  FilterPageRequest,
+  "causes" | "cities" | "times" | "date"
+>;
 
 export interface Dropdown {
   text: string;
