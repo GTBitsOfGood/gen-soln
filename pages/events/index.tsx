@@ -14,6 +14,7 @@ import {
   getFilteredEventsCardDataCount
 } from "server/actions/events";
 import { getFilterValuesInQuery, getFilterCountFromQuery } from "utils/filters";
+import { DEFAULT_SORT_VALUE, getSortValueInQuery } from "utils/sortOptions";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -29,6 +30,7 @@ const EventsNextPage: NextPage<InferGetServerSidePropsType<
       return (
         <EventsPageFiltered
           filteredEventsFirstPageData={props.filteredEventsFirstPageData}
+          filteredEventstotalCount={props.filteredEventstotalCount}
         />
       );
     default: {
@@ -38,17 +40,15 @@ const EventsNextPage: NextPage<InferGetServerSidePropsType<
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async ({
+  query
+}: GetServerSidePropsContext) => {
   // Don't remove the async otherwise InferGetStaticPropsType won't work as expected
   // TODO: Use this eventually, if we need common props between filtered and unfiltered event pages.
   const commonProps = {};
   const date = new Date().toJSON();
-  
-  if (getFilterCountFromQuery(context.query) === 0) {
-    const date = new Date();
+
+  if (getFilterCountFromQuery(query) === 0) {
     const upcomingEventsFirstPageData = await getUpcomingEventsCardData({
       date,
       page: 0
@@ -62,32 +62,54 @@ export const getServerSideProps = async (
       }
     };
   } else {
-    const causes = getFilterValuesInQuery(context.query, "cause");
-    const cities = getFilterValuesInQuery(context.query, "location");
-    const times = getFilterValuesInQuery(context.query, "time");
+    let filteredEventsFirstPageData, filteredEventstotalCount;
 
-    const totalCount = await getFilteredEventsCardDataCount({
+    const sortValue = getSortValueInQuery(query) ?? DEFAULT_SORT_VALUE;
+    const causes = getFilterValuesInQuery(query, "cause");
+    const cities = getFilterValuesInQuery(query, "location");
+    const times = getFilterValuesInQuery(query, "time");
+
+    const totalCountPromise = getFilteredEventsCardDataCount({
       causes,
       cities,
       times,
       date
     });
 
-    const filteredEventsFirstPageData = await getFilteredEventsCardData({
-      causes,
-      cities,
-      times,
-      page: 0,
-      lat: -999,
-      long: -999,
-      totalCount,
-      date
-    });
+    switch (sortValue) {
+      case "participants": {
+        [
+          filteredEventsFirstPageData,
+          filteredEventstotalCount
+        ] = await Promise.all([
+          getFilteredEventsCardData({
+            causes,
+            cities,
+            times,
+            page: 0,
+            lat: -999,
+            long: -999,
+            date,
+            sortValue
+          }),
+          totalCountPromise
+        ]);
+        break;
+      }
+      case "location":
+        filteredEventstotalCount = await totalCountPromise;
+        break;
+      default: {
+        const _exhaustiveCheck: never = sortValue;
+        return _exhaustiveCheck;
+      }
+    }
 
     return {
       props: {
         ...commonProps,
         filteredEventsFirstPageData,
+        filteredEventstotalCount,
         type: "WITH_QUERY" as const
       }
     };

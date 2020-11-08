@@ -3,10 +3,10 @@ import React, { useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core";
 
 import { getFilteredEvents } from "requests/events";
+import { SortValue, DEFAULT_SORT_VALUE } from "utils/sortOptions";
 import { FilterPaginatedEventCards } from "utils/types";
 
 import EventsPageInfiniteScroll from "./EventsPageInfiniteScroll";
-import { OptionValue, INITIAL_SORT } from "./header";
 import EventsPageFilteredHeader from "./header/EventsPageFilteredHeader";
 
 const useStyles = makeStyles({
@@ -16,57 +16,60 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  filteredEvents: FilterPaginatedEventCards;
+  filteredEventsFirstPageData?: FilterPaginatedEventCards;
+  filteredEventstotalCount: number;
 }
 
-const EventsPageFilteredContent: React.FC<Props> = ({ filteredEvents }) => {
+const EventsPageFilteredContent: React.FC<Props> = ({
+  filteredEventsFirstPageData,
+  filteredEventstotalCount
+}) => {
   const { root } = useStyles();
 
-  const [sort, setSort] = useState<OptionValue>(INITIAL_SORT);
+  const [sort, setSort] = useState<SortValue>(DEFAULT_SORT_VALUE);
   const [position, setPosition] = useState<Position>();
-
-  const setSortCallback = useCallback((newSortValue: OptionValue) => {
-    setSort(newSortValue);
-  }, []);
 
   const setPositionCallback = useCallback((position: Position) => {
     setPosition(position);
   }, []);
 
+  if (filteredEventsFirstPageData == null) {
+    return null;
+  }
+  const { causes, cities, times, date } = filteredEventsFirstPageData;
+
   return (
     <div className={root}>
       <EventsPageFilteredHeader
-        resultsLength={filteredEvents.totalCount}
-        sort={sort}
-        setSort={setSortCallback}
+        resultsLength={filteredEventstotalCount}
         setPosition={setPositionCallback}
       />
       <EventsPageInfiniteScroll
-        filteredEvents={filteredEvents}
+        filteredEvents={filteredEventsFirstPageData}
         sort={sort}
         position={position}
         getMoreEvents={(page: number) =>
           getFilteredEvents({
-            causes: filteredEvents.causes,
-            cities: filteredEvents.cities,
-            times: filteredEvents.times,
+            causes,
+            cities,
+            times,
             page,
-            lat: filteredEvents.lat,
-            long: filteredEvents.long,
-            totalCount: filteredEvents.totalCount,
-            date: filteredEvents.date
+            date,
+            lat: filteredEventsFirstPageData.lat,
+            long: filteredEventsFirstPageData.long,
+            sortValue: filteredEventsFirstPageData.sortValue
           })
         }
         sortCards={(lat: number, long: number) =>
           getFilteredEvents({
-            causes: filteredEvents.causes,
-            cities: filteredEvents.cities,
-            times: filteredEvents.times,
+            causes,
+            cities,
+            times,
             page: 0,
+            date,
             lat,
             long,
-            totalCount: filteredEvents.totalCount,
-            date: filteredEvents.date
+            sortValue: lat === -999 ? "participants" : "location"
           })
         }
       />

@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core";
 
 import CoreTypography from "@core/typography";
 
-import { OptionValue } from ".";
 import EventsPageFilteredHeaderSelect from "./EventsPageFilteredHeaderSelect";
 
 const useStyles = makeStyles({
@@ -18,15 +17,11 @@ const useStyles = makeStyles({
 
 interface Props {
   resultsLength: number;
-  sort: OptionValue;
-  setSort: (newSortValue: OptionValue) => void;
   setPosition: (position: Position) => void;
 }
 
 const EventsPageFilteredHeader: React.FC<Props> = ({
   resultsLength,
-  sort,
-  setSort,
   setPosition
 }) => {
   const { header } = useStyles();
@@ -34,11 +29,7 @@ const EventsPageFilteredHeader: React.FC<Props> = ({
   return (
     <header className={header}>
       <CoreTypography variant="h2">{resultsLength} results</CoreTypography>
-      <EventsPageFilteredHeaderSelect
-        sort={sort}
-        setSort={setSort}
-        setPosition={setPosition}
-      />
+      <EventsPageFilteredHeaderSelect setPosition={setPosition} />
     </header>
   );
 };

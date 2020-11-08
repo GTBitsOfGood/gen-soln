@@ -7,6 +7,7 @@ const useStyles = makeStyles({
   container: {
     minHeight: "100vh",
     width: "100vw",
+    maxWidth: "100%",
     display: "flex"
   }
 });

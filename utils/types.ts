@@ -5,6 +5,7 @@ import {
 } from "@material-ui/core/styles/createPalette";
 
 import { FilterValue } from "./filters";
+import { SortValue } from "./sortOptions";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
@@ -86,7 +87,9 @@ interface PaginateWithFilter {
   causes: FilterValue<"cause">[];
   cities: FilterValue<"location">[];
   times: FilterValue<"time">[];
-  totalCount: number; // Filtered events page needs to explicitly display total number of results
+}
+interface PaginateWithSortValue {
+  sortValue: SortValue;
 }
 
 export type LocationPaginatedEventCards = PaginatedEventCards &
@@ -101,12 +104,14 @@ export type DatePageRequest = Pick<PageInformation, "page"> & PaginateWithDate;
 export type FilterPaginatedEventCards = PaginatedEventCards &
   PaginateWithFilter &
   PaginateWithLocation &
-  PaginateWithDate;
+  PaginateWithDate &
+  PaginateWithSortValue;
 
 export type FilterPageRequest = Pick<PageInformation, "page"> &
   PaginateWithFilter &
   PaginateWithLocation &
-  PaginateWithDate;
+  PaginateWithDate &
+  PaginateWithSortValue;
 
 export interface Dropdown {
   text: string;
