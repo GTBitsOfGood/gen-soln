@@ -5,11 +5,10 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import { XIcon } from "@core/icons";
 import { typographyStyles } from "@core/typography";
+import { useRouterQueryParamsForFilterState } from "components/events/useRouterQueryParamsState";
 import LocationAutocompleteInput, {
   PlaceType
 } from "components/LocationAutocompleteInput";
-
-import useRouterQueryParamsState from "./useRouterQueryParamsState";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -48,7 +47,7 @@ const EventsPageLocationFilter: React.FC = () => {
     currentState: selectedLocations,
     put,
     remove
-  } = useRouterQueryParamsState("location");
+  } = useRouterQueryParamsForFilterState("location");
 
   return (
     <>

@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import { getFilteredEventsCardData } from "server/actions/events";
 import { FilterValue } from "utils/filters";
+import { SortValue } from "utils/sortOptions";
 import { handleGetRequestWithPayloadResponse } from "utils/util";
 
 // @route   GET filtered events card data
@@ -15,9 +16,19 @@ export default async (
     req,
     res,
     getFilteredEventsCardData,
-    ["causes", "cities", "times", "lat", "long", "page", "totalCount", "date"],
+    [
+      "causes",
+      "cities",
+      "times",
+      "lat",
+      "long",
+      "page",
+      "totalCount",
+      "date",
+      "sortValue"
+    ],
     queryRecord => {
-      const { causes, cities, times, date } = queryRecord;
+      const { causes, cities, times, date, sortValue } = queryRecord;
 
       const lat = Number(queryRecord.lat);
       const long = Number(queryRecord.long);
@@ -32,7 +43,8 @@ export default async (
         isNaN(long) ||
         isNaN(page) ||
         isNaN(totalCount) ||
-        Array.isArray(date)
+        Array.isArray(date) ||
+        Array.isArray(sortValue)
       ) {
         throw new Error(
           "API call to getFilteredEvents did not receive data of the expected type!"
@@ -48,7 +60,8 @@ export default async (
         lat,
         long,
         totalCount,
-        date
+        date,
+        sortValue: sortValue as SortValue
       };
     }
   );

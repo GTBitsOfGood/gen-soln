@@ -33,7 +33,6 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 const METERS_IN_A_MILE = 1609.34;
 const NEAREST_EVENTS_RADIUS_IN_MILES = 20;
-const INVALID_COORDINATE = -999;
 
 export async function getAllEventsCardData({
   date,
@@ -139,36 +138,44 @@ export async function getFilteredEventsCardData({
   cities,
   times,
   page,
-  lat = INVALID_COORDINATE,
-  long = INVALID_COORDINATE,
+  lat,
+  long,
   totalCount,
-  date
+  date,
+  sortValue
 }: FilterPageRequest): Promise<FilterPaginatedEventCards> {
   const CARDS_PER_PAGE = 16;
   await Mongo();
 
-  let findQuery = await createFilter({ causes, cities, times, date });
+  let findQuery = await createFilterQuery({ causes, cities, times, date });
   let sortQuery = {};
 
-  if (lat !== INVALID_COORDINATE && long !== INVALID_COORDINATE) {
-    // We can't sort by distance because of $geoWithin, but we can add a $near component
-    // to the query using the user's location ($near returns sorted results).
-    findQuery = {
-      ...findQuery,
-      "address.location": {
-        $near: {
-          $geometry: {
-            type: "Point",
-            coordinates: [long, lat]
+  switch (sortValue) {
+    case "location":
+      // We can't sort by distance because of $geoWithin, but we can add a $near component
+      // to the query using the user's location ($near returns sorted results).
+      findQuery = {
+        ...findQuery,
+        "address.location": {
+          $near: {
+            $geometry: {
+              type: "Point",
+              coordinates: [long, lat]
+            }
           }
         }
-      }
-    };
-  } else {
-    sortQuery = {
-      ...sortQuery,
-      volunteers: -1
-    };
+      };
+      break;
+    case "participants":
+      sortQuery = {
+        ...sortQuery,
+        volunteers: -1
+      };
+      break;
+    default: {
+      const _exhaustiveCheck: never = sortValue;
+      return _exhaustiveCheck;
+    }
   }
 
   const result = await Event.find(findQuery, CARD_FIELDS)
@@ -185,6 +192,7 @@ export async function getFilteredEventsCardData({
     cities,
     causes,
     times,
+    sortValue,
     isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
   };
 }
@@ -194,13 +202,12 @@ export async function getFilteredEventsCardDataCount({
   cities,
   times,
   date
-}: Pick<FilterPageRequest, "causes" | "cities" | "times" | "date">) {
+}: Parameters<typeof createFilterQuery>[0]) {
   await Mongo();
-  const findQuery = await createFilter({ causes, cities, times, date });
+  const findQuery = await createFilterQuery({ causes, cities, times, date });
   return Event.countDocuments(findQuery);
 }
-
-const createFilter = async ({
+const createFilterQuery = async ({
   causes,
   cities,
   times,
