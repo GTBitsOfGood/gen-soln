@@ -1,5 +1,4 @@
 import { Client } from "@googlemaps/google-maps-services-js";
-import { flatten } from "lodash";
 import NodeCache from "node-cache";
 
 import config from "config";
@@ -226,7 +225,7 @@ const createFilterQuery = async ({
   if (causes.length) {
     findQuery = {
       ...findQuery,
-      nonprofitId: { $in: flatten(nonprofitIdsWithCauses) }
+      nonprofitId: { $in: nonprofitIdsWithCauses.flat() }
     };
   }
 
@@ -235,7 +234,7 @@ const createFilterQuery = async ({
     // and add those IDs to findQuery. This is done so that sorting by distance, which also uses "address.location" can work.
     findQuery = {
       ...findQuery,
-      _id: { $in: flatten(eventIdsInCities) }
+      _id: { $in: eventIdsInCities.flat() }
     };
   }
 
@@ -384,7 +383,7 @@ function getEventIdsInCities(cities: FilterPageQueryArgs["cities"]) {
             }
           }
         });
-        filterCache.set(city, eventsInCity);
+        filterCache.set(city, eventsInCity, MILLISECONDS_IN_WEEK / 1000);
         return eventsInCity;
       }
     })
