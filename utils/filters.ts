@@ -1,6 +1,7 @@
 import { ParsedUrlQuery } from "querystring";
 
 import { Dropdown } from "./types";
+import { convertToStringArr } from "./util";
 
 const CAUSES = [
   {
@@ -40,17 +41,7 @@ export type FilterValue<T extends FilterType> = FilterOptions<
 export const getFilterValuesInQuery = <T extends FilterType>(
   query: ParsedUrlQuery,
   type: T
-) => {
-  const queryValues = query[type];
-
-  if (queryValues == null) {
-    return [];
-  }
-  if (Array.isArray(queryValues)) {
-    return queryValues as Array<FilterValue<T>>;
-  }
-  return [queryValues] as Array<FilterValue<T>>;
-};
+) => convertToStringArr(query[type]) as Array<FilterValue<T>>;
 
 export const getFilterCountFromQuery = (query: ParsedUrlQuery) =>
   Object.keys(filters).reduce(

@@ -15,6 +15,7 @@ import {
 } from "server/actions/events";
 import { getFilterValuesInQuery, getFilterCountFromQuery } from "utils/filters";
 import { DEFAULT_SORT_VALUE, getSortValueInQuery } from "utils/sortOptions";
+import { FilterPaginatedEventCards } from "utils/types";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -62,19 +63,24 @@ export const getServerSideProps = async ({
       }
     };
   } else {
-    let filteredEventsFirstPageData, filteredEventstotalCount;
+    let filteredEventsFirstPageData: FilterPaginatedEventCards,
+      filteredEventstotalCount;
+
+    const filterValues = {
+      causes: getFilterValuesInQuery(query, "cause"),
+      cities: getFilterValuesInQuery(query, "location"),
+      times: getFilterValuesInQuery(query, "time"),
+      date
+    };
+    const totalCountPromise = getFilteredEventsCardDataCount(filterValues);
 
     const sortValue = getSortValueInQuery(query) ?? DEFAULT_SORT_VALUE;
-    const causes = getFilterValuesInQuery(query, "cause");
-    const cities = getFilterValuesInQuery(query, "location");
-    const times = getFilterValuesInQuery(query, "time");
-
-    const totalCountPromise = getFilteredEventsCardDataCount({
-      causes,
-      cities,
-      times,
-      date
-    });
+    const initialRequestData = {
+      sortValue,
+      page: 0,
+      lat: -999, // Any number, doesn't matter. We don't call getFilteredEventsCardData() when sortValue="location" on the server.
+      long: -999
+    };
 
     switch (sortValue) {
       case "participants": {
@@ -83,14 +89,8 @@ export const getServerSideProps = async ({
           filteredEventstotalCount
         ] = await Promise.all([
           getFilteredEventsCardData({
-            causes,
-            cities,
-            times,
-            page: 0,
-            lat: -999,
-            long: -999,
-            date,
-            sortValue
+            ...filterValues,
+            ...initialRequestData
           }),
           totalCountPromise
         ]);
@@ -98,6 +98,12 @@ export const getServerSideProps = async ({
       }
       case "location":
         filteredEventstotalCount = await totalCountPromise;
+        filteredEventsFirstPageData = {
+          ...filterValues,
+          ...initialRequestData,
+          cards: [], // the server doesn't know what cards are part of the first page when sorting by "location".
+          isLastPage: false // so that EventsPageInfiniteScroll can show glimmers while client is fetching data.
+        };
         break;
       default: {
         const _exhaustiveCheck: never = sortValue;

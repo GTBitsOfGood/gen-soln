@@ -106,12 +106,15 @@ export type FilterPaginatedEventCards = PaginatedEventCards &
   PaginateWithLocation &
   PaginateWithDate &
   PaginateWithSortValue;
-
 export type FilterPageRequest = Pick<PageInformation, "page"> &
   PaginateWithFilter &
   PaginateWithLocation &
   PaginateWithDate &
   PaginateWithSortValue;
+export type FilterPageQueryArgs = Pick<
+  FilterPageRequest,
+  "causes" | "cities" | "times" | "date"
+>;
 
 export interface Dropdown {
   text: string;

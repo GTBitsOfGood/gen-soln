@@ -91,9 +91,9 @@ const EventsPageFilteredHeaderSelect: React.FC<Props> = ({ setPosition }) => {
 
   useEffect(() => {
     if (hasError && currentState === "location") {
-      replace("participants");
+      replace(DEFAULT_SORT_VALUE);
     }
-  }, [hasError, currentState, replace]);
+  }, [currentState, hasError, replace]);
 
   // Ensures that the sortValue query parameter reflects the default value if it is not already a valid value
   useEffect(() => {

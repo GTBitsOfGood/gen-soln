@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 import { FilterType, getFilterValuesInQuery } from "utils/filters";
 import { SORT_VALUE_QUERY_KEY, getSortValueInQuery } from "utils/sortOptions";
+import { convertToStringArr } from "utils/util";
 
 export const useRouterQueryParamsForFilterState = <T extends FilterType>(
   key: T
@@ -13,10 +14,6 @@ export const useRouterQueryParamsForFilterState = <T extends FilterType>(
 
 export const useRouterQueryParamsForSortingState = () =>
   useRouterQueryParamsState(SORT_VALUE_QUERY_KEY, getSortValueInQuery);
-
-const convertToStringArr = (
-  input: ParsedUrlQuery[keyof ParsedUrlQuery]
-): string[] => (input == null ? [] : Array.isArray(input) ? input : [input]);
 
 const useRouterQueryParamsState = <
   K extends string,

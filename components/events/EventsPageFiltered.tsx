@@ -6,7 +6,7 @@ import EventsPageFilteredContent from "./EventsPageFilteredContent";
 import EventsPageWithSidebar from "./sidebar/EventsPageWithSidebar";
 
 interface Props extends React.ComponentProps<typeof EventsPageWithSidebar> {
-  filteredEventsFirstPageData?: FilterPaginatedEventCards;
+  filteredEventsFirstPageData: FilterPaginatedEventCards;
   filteredEventstotalCount: number;
 }
 

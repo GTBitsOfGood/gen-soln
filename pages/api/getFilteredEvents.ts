@@ -3,7 +3,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getFilteredEventsCardData } from "server/actions/events";
 import { FilterValue } from "utils/filters";
 import { SortValue } from "utils/sortOptions";
-import { handleGetRequestWithPayloadResponse } from "utils/util";
+import {
+  convertToStringArr,
+  handleGetRequestWithPayloadResponse
+} from "utils/util";
 
 // @route   GET filtered events card data
 // @desc    Gets event data given filter parameters
@@ -25,9 +28,6 @@ export default async (
       const page = Number(queryRecord.page);
 
       if (
-        typeof causes !== "string" ||
-        typeof cities !== "string" ||
-        typeof times !== "string" ||
         isNaN(lat) ||
         isNaN(long) ||
         isNaN(page) ||
@@ -40,10 +40,9 @@ export default async (
       }
 
       return {
-        causes:
-          causes === "" ? [] : (causes.split(",") as FilterValue<"cause">[]),
-        cities: cities === "" ? [] : cities.split(","),
-        times: times === "" ? [] : (times.split(",") as FilterValue<"time">[]),
+        causes: convertToStringArr(causes, true) as FilterValue<"cause">[],
+        cities: convertToStringArr(cities, true),
+        times: convertToStringArr(times, true) as FilterValue<"time">[],
         page,
         lat,
         long,
