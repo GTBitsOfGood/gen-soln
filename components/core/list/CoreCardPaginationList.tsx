@@ -36,7 +36,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       position: "relative",
       overflowX: "visible",
       overflowY: "hidden",
-      marginLeft: -24,
+      marginLeft: 24,
       paddingLeft: 24
     },
     item: {
