@@ -7,6 +7,7 @@ import { CoreButton } from "@core/buttons";
 import LandingCarousel from "@core/home/LandingCarousel";
 import config from "config";
 
+import { PaginatedNonprofitCards } from "../../../utils/types";
 import SupportCauseGrid from "./SupportCauseGrid";
 
 const useStyles = makeStyles({
@@ -29,10 +30,10 @@ const useStyles = makeStyles({
   }
 });
 
-const HomePage = () => {
+const Home = (nonprofitCards: PaginatedNonprofitCards) => {
   const [session] = useSession();
-
   const { container, text, button } = useStyles();
+  const { page, totalCount, isLastPage, cards } = nonprofitCards;
 
   return (
     <div className={container}>
@@ -74,9 +75,14 @@ const HomePage = () => {
         Sign up
       </CoreButton>
       <SupportCauseGrid />
-      <LandingCarousel />
+      <LandingCarousel
+        page={page}
+        totalCount={totalCount}
+        isLastPage={isLastPage}
+        cards={cards}
+      />
     </div>
   );
 };
 
-export default HomePage;
+export default Home;

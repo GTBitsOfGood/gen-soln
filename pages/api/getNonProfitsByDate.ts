@@ -14,18 +14,6 @@ export default async (
     req,
     res,
     getNonprofitsCardData,
-    ["date"],
-    queryRecord => {
-      const date = queryRecord.date;
-
-      if (typeof date !== "string") {
-        throw new Error(
-          "API call to getNearestEvents did not receive data of the expected type!"
-        );
-      }
-
-      return {
-        date
-      };
-    }
+    [],
+    queryRecord => queryRecord
   );

@@ -1,12 +1,11 @@
 import config from "config";
-import { PaginateWithDate, PaginatedNonprofitCards } from "utils/types";
+import { PaginatedNonprofitCards } from "utils/types";
 import { fetchRequestWithPayloadResponse } from "utils/util";
 
-export const getNonProfitsByDate = (date: PaginateWithDate) =>
+export const getNonProfitsByDate = () =>
   fetchRequestWithPayloadResponse<PaginatedNonprofitCards>(
     config.apis.getNonProfitsByDate,
     {
       method: "GET"
-    },
-    date
+    }
   );
