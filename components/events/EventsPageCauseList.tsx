@@ -1,12 +1,12 @@
 import React from "react";
 
 import CardPaginationList from "@core/list";
+import { useRouterQueryParamsForFilterState } from "components/events/useRouterQueryParamsState";
 import { filters } from "utils/filters";
 import { PaginatedCauseCards } from "utils/types";
 
 import EventsPageCauseCard from "./EventsPageCauseCard";
 import EventsPageCauseCardGlimmer from "./EventsPageCauseCardGlimmer";
-import useRouterQueryParamsState from "./sidebar/useRouterQueryParamsState";
 
 const CAUSE_CARDS: PaginatedCauseCards = {
   cards: filters["cause"].map(({ text, value }) => {
@@ -21,7 +21,7 @@ const CAUSE_CARDS: PaginatedCauseCards = {
 };
 
 const EventsPageCauseList: React.FC = () => {
-  const { put } = useRouterQueryParamsState("cause");
+  const { put } = useRouterQueryParamsForFilterState("cause");
 
   return (
     <CardPaginationList

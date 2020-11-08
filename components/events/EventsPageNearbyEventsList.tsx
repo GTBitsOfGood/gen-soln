@@ -7,7 +7,7 @@ import { getNearestEvents } from "requests/events";
 import { LocationPaginatedEventCards } from "utils/types";
 
 import EventsPageEventList from "./EventsPageEventList";
-import { usePosition } from "./usePosition";
+import usePosition from "./usePosition";
 
 const useStyles = makeStyles({
   listContainer: {
