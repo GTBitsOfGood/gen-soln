@@ -26,7 +26,6 @@ export async function getNonprofitsCardData(): Promise<
   return {
     cards: cards,
     page: 0,
-    totalCount: cards.length,
     isLastPage: true
   };
 }

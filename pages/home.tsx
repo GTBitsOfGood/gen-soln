@@ -28,10 +28,10 @@ export const getServerSideProps: () => Promise<{
 }> = async () => {
   const cards = await getNonprofitsCardData()
     .then(res => {
-      console.log(res);
       return res;
     })
     .catch(e => {
+      // eslint-disable-next-line no-console
       console.log(e);
       return {
         cards: [],
@@ -40,6 +40,5 @@ export const getServerSideProps: () => Promise<{
         isLastPage: true
       };
     });
-  console.log(cards);
   return { props: { nonprofitCards: cards } };
 };

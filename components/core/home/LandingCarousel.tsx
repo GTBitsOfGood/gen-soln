@@ -16,7 +16,7 @@ const LandingCarousel = (nonprofitCardData: PaginatedNonprofitCards) => {
         <NonprofitCard
           nonprofitCardData={cardData}
           onClick={() => {
-            config.pages.non_profit(cardData._id);
+            config.pages.nonprofit(cardData._id);
           }}
         />
       )}
