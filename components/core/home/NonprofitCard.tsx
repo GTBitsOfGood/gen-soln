@@ -73,7 +73,7 @@ const NonprofitCard = (props: Props) => {
       <div className={cardContainer}>
         <div className={card}>
           <img
-            src={nonprofitCardData.logo}
+            src={nonprofitCardData.logo.split('"')[1]}
             className={image}
             alt={`${nonprofitCardData.name}`}
           />
