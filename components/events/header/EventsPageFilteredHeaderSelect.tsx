@@ -91,6 +91,7 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
     }
   }, [hasError, currentState, replace]);
 
+  // Ensures that the sortValue query parameter reflects the default value if it is not already a valid value
   useEffect(() => {
     if (currentState == null) {
       shallowPut(DEFAULT_SORT_VALUE);
@@ -106,8 +107,7 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
           classes={{ select, icon }}
           value={currentState ?? DEFAULT_SORT_VALUE}
           onChange={event => {
-            const selectedValue = event.target.value as SortValue;
-            replace(selectedValue);
+            replace(event.target.value as SortValue);
           }}
           autoWidth
           disableUnderline

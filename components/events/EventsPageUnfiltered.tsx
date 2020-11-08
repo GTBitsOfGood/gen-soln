@@ -15,6 +15,7 @@ const EventsPageUnfiltered: React.FC<Props> = ({
 }) => {
   const { currentState, shallowClear } = useRouterQueryParamsForSortingState();
 
+  // Ideally, the sortValue query parameter should be cleared by EventsPageFilteredHeaderSelect upon unmount, but that messes up route changes
   useEffect(() => {
     if (currentState != null) {
       shallowClear();
