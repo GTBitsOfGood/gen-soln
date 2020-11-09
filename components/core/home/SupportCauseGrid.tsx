@@ -37,12 +37,17 @@ const SupportCauseGrid = () => {
   const minGridWidth = 100 / split;
   const grid_sm = 12 / split;
   const classes = useStyles(minGridWidth);
-  const image_url =
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png";
-  const data = [{ image: image_url }];
-  for (let x = 0; x < 8; x++) {
-    data.push({ image: image_url });
-  }
+  const images = [
+    { image: "../../.././causes/ARTS_CULTURE_AND_HUMANITIES.jpg" },
+    { image: "../.././causes/EDUCATION_AND_RESEARCH.jpg" },
+    { image: "../.././causes/ENVIRONMENT_AND_ANIMALS.jpg" },
+    { image: "../.././causes/HEALTH.jpg" },
+    { image: "../.././causes/HUMAN_SERVICES.jpg" },
+    { image: "../.././causes/INTERNATIONAL.jpg" },
+    { image: "../.././causes/PUBLIC_SOCIETAL.jpg" },
+    { image: "../.././causes/RELIGION.jpg" },
+    { image: "../.././causes/OTHER.jpg" }
+  ];
   return (
     <div className={classes.container}>
       <Typography className={classes.text} variant="h4">
@@ -56,11 +61,11 @@ const SupportCauseGrid = () => {
           alignItems="center"
           style={{ minHeight: "100vh", maxWidth: "100%" }}
         >
-          {data.map(elem => (
+          {images.map(elem => (
             <Grid
               item
               sm={grid_sm == 3 ? 3 : grid_sm == 2 ? 2 : 1}
-              key={data.indexOf(elem)}
+              key={images.indexOf(elem)}
               className={classes.individual_container}
             >
               <Grid container justify="center" alignItems="center">
