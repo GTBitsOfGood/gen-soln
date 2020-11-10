@@ -27,7 +27,6 @@ const DonationPageLayout: React.FC<Props> = ({ children, ...rest }) => {
 
   return (
     <FullPageLayout className={container}>
-      s
       <DonationPageHeader {...rest} />
       <div className={content}>{children}</div>
     </FullPageLayout>
