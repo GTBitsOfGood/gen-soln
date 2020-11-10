@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Chip } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -48,14 +48,19 @@ const EventsPageLocationFilter: React.FC = () => {
     put,
     remove
   } = useRouterQueryParamsForFilterState("location");
+  // Allows us to clear the input field once a place has been selected
+  const [inputValueToDisplay, setInputValueToDisplay] = useState<string>();
 
   return (
     <>
       <LocationAutocompleteInput
-        clearInputOnClose
+        inputValueToDisplay={inputValueToDisplay}
         locationType="(cities)"
         placeholder="E.g. Atlanta, Boston"
-        parentCallback={place => void put(formattedPlace(place))}
+        parentCallback={place => {
+          setInputValueToDisplay("");
+          put(formattedPlace(place));
+        }}
         filterOptions={options =>
           options.filter(
             option => !selectedLocations.includes(formattedPlace(option))

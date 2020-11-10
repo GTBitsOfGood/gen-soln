@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useEffect } from "react";
+import React, { useContext, useCallback, useEffect, useState } from "react";
 
 import { TextField } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -43,6 +43,30 @@ const useStyles = makeStyles({
   }
 });
 
+const AUTOCOMPLETE_COMPONENTS_SEPERATOR = ", ";
+const autocompletePredictionToComponents = ({
+  structured_formatting
+}: PlaceType) => {
+  const addressLine1 = structured_formatting.main_text;
+  const [city, state] = structured_formatting.secondary_text.split(
+    AUTOCOMPLETE_COMPONENTS_SEPERATOR
+  );
+
+  return { addressLine1, city, state };
+};
+
+const componentsToAutocompletePredictionText = ({
+  addressLine1,
+  city,
+  state
+}: ReturnType<typeof autocompletePredictionToComponents>): string | null => {
+  if (addressLine1 === "") {
+    return null;
+  }
+
+  return [addressLine1, city, state].join(AUTOCOMPLETE_COMPONENTS_SEPERATOR);
+};
+
 const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
   firstName,
   lastName,
@@ -68,28 +92,41 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
     dispatch && dispatch(setIsCurStepCompleted(true));
   }, [dispatch]);
 
+  const [
+    predictAutocompleteWithText,
+    setPredictAutocompleteWithText
+  ] = useState(
+    componentsToAutocompletePredictionText({ addressLine1, city, state })
+  ); // Initially, use all our address components to predict user's input. If we end up storing the entire prediction object in our Redux store, we can simply use the prediction's description field.
+
   const onChange = useCallback(
     (
       key: keyof BillingStepProps,
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string
     ) => {
-      if (typeof e === "string") {
-        dispatch && dispatch(setBillingStepField({ key, value: e }));
-      } else {
-        dispatch &&
-          dispatch(setBillingStepField({ key, value: e.target.value }));
-      }
+      setPredictAutocompleteWithText(null); // The user might be entering a completely new address, so assume we can't use our address components.
+      const value = typeof e === "string" ? e : e.target.value;
+      dispatch && dispatch(setBillingStepField({ key, value }));
     },
     [dispatch]
   );
 
   const onAutocompleteAddressChange = useCallback(
     (address: PlaceType) => {
-      const addressLine1 = address.structured_formatting.main_text;
-      const [city, state] = address.structured_formatting.secondary_text.split(
-        ", "
-      );
       if (dispatch) {
+        const {
+          addressLine1,
+          city,
+          state
+        } = autocompletePredictionToComponents(address);
+        // Ensures that the currently selected place appears on top of autocomplete's suggestions:
+        setPredictAutocompleteWithText(
+          componentsToAutocompletePredictionText({
+            addressLine1,
+            city,
+            state
+          })
+        );
         dispatch(
           setBillingStepField({ key: "addressLine1", value: addressLine1 })
         );
@@ -139,14 +176,15 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
       />
       <div className={clsx(name, verticalPositiveMargin)}>
         <LocationAutocompleteInput
+          freeSolo
           parentCallback={onAutocompleteAddressChange}
-          parentInputChangeCallback={e => {
-            onChange("addressLine1", e);
-          }}
           locationType="address"
-          fullWidth
           required
-          defaultInputValue={addressLine1}
+          inputValueToDisplay={addressLine1}
+          inputValue={predictAutocompleteWithText ?? addressLine1}
+          inputValueOnChange={newInputValue => {
+            onChange("addressLine1", newInputValue);
+          }}
           label="Address Line 1"
           outlined={false}
           textVariant="body1"
