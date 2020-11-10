@@ -7,6 +7,7 @@ import React, {
 } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import clsx from "clsx";
 import dynamic from "next/dynamic";
 import { Router } from "next/router";
 
@@ -36,6 +37,9 @@ const useStyles = makeStyles({
     marginTop: 8,
     marginBottom: 8,
     minHeight: 260
+  },
+  billingContentContainer: {
+    minHeight: 380
   }
 });
 
@@ -85,7 +89,7 @@ const DonationPageForm: React.FC<Props> = ({
   selectedNonprofitId,
   stripeAccount
 }) => {
-  const { container, contentContainer } = useStyles();
+  const { container, contentContainer, billingContentContainer } = useStyles();
   const [
     { curStepIndex, isCurStepCompleted, billingStep, amountStep, paymentStep },
     dispatch
@@ -142,24 +146,17 @@ const DonationPageForm: React.FC<Props> = ({
           nonprofitId: selectedNonprofitId
         });
       } else {
-        if (isPaymentStep && billingStep.address) {
-          const [
-            city,
-            state,
-            country
-          ] = billingStep.address.structured_formatting.secondary_text.split(
-            ", "
-          );
-          await createPaymentMethod(
+        isPaymentStep &&
+          (await createPaymentMethod(
             name,
             billingStep.email,
             billingStep.zipcode,
-            city,
-            billingStep.address.structured_formatting.main_text,
-            state,
-            country.slice(0, -1)
-          );
-        }
+            billingStep.city,
+            billingStep.addressLine1,
+            billingStep.addressLine2,
+            billingStep.state,
+            "US" // Hardcoded country as US
+          ));
         dispatch(incrementStep());
       }
     },
@@ -170,7 +167,10 @@ const DonationPageForm: React.FC<Props> = ({
       billingStep.firstName,
       billingStep.lastName,
       billingStep.zipcode,
-      billingStep.address,
+      billingStep.addressLine1,
+      billingStep.addressLine2,
+      billingStep.state,
+      billingStep.city,
       processPayment,
       createPaymentMethod,
       isPaymentStep,
@@ -232,7 +232,14 @@ const DonationPageForm: React.FC<Props> = ({
           curStepIndex={curStepIndex}
           stepTitles={STEPS.map(_ => _.title)}
         />
-        <div className={contentContainer}>{componentJSX}</div>
+        <div
+          className={clsx(
+            contentContainer,
+            step.title === "Billing" && billingContentContainer
+          )}
+        >
+          {componentJSX}
+        </div>
         <DonationPageFormButton
           disabled={isContinueButtonDisabled}
           ctaText={ctaText}

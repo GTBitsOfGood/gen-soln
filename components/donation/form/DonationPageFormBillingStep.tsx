@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useEffect } from "react";
+import React, { useContext, useCallback, useEffect, useState } from "react";
 
 import { TextField } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -13,7 +13,6 @@ import {
   DonationPageStateDispatch,
   setBillingStepField,
   setIsCurStepCompleted,
-  setAddress,
   setZipcode
 } from "./reducer";
 
@@ -44,11 +43,38 @@ const useStyles = makeStyles({
   }
 });
 
+const AUTOCOMPLETE_COMPONENTS_SEPERATOR = ", ";
+const autocompletePredictionToComponents = ({
+  structured_formatting
+}: PlaceType) => {
+  const addressLine1 = structured_formatting.main_text;
+  const [city, state] = structured_formatting.secondary_text.split(
+    AUTOCOMPLETE_COMPONENTS_SEPERATOR
+  );
+
+  return { addressLine1, city, state };
+};
+
+const componentsToAutocompletePredictionText = ({
+  addressLine1,
+  city,
+  state
+}: ReturnType<typeof autocompletePredictionToComponents>): string | null => {
+  if (addressLine1 === "") {
+    return null;
+  }
+
+  return [addressLine1, city, state].join(AUTOCOMPLETE_COMPONENTS_SEPERATOR);
+};
+
 const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
   firstName,
   lastName,
   email,
-  address,
+  addressLine1,
+  addressLine2,
+  city,
+  state,
   zipcode
 }) => {
   const {
@@ -66,19 +92,47 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
     dispatch && dispatch(setIsCurStepCompleted(true));
   }, [dispatch]);
 
+  const [
+    predictAutocompleteWithText,
+    setPredictAutocompleteWithText
+  ] = useState(
+    componentsToAutocompletePredictionText({ addressLine1, city, state })
+  ); // Initially, use all our address components to predict user's input. If we end up storing the entire prediction object in our Redux store, we can simply use the prediction's description field.
+
   const onChange = useCallback(
     (
-      key: keyof Omit<BillingStepProps, "address">,
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      key: keyof BillingStepProps,
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string
     ) => {
-      dispatch && dispatch(setBillingStepField({ key, value: e.target.value }));
+      setPredictAutocompleteWithText(null); // The user might be entering a completely new address, so assume we can't use our address components.
+      const value = typeof e === "string" ? e : e.target.value;
+      dispatch && dispatch(setBillingStepField({ key, value }));
     },
     [dispatch]
   );
 
-  const onAddressChange = useCallback(
+  const onAutocompleteAddressChange = useCallback(
     (address: PlaceType) => {
-      dispatch && dispatch(setAddress(address));
+      if (dispatch) {
+        const {
+          addressLine1,
+          city,
+          state
+        } = autocompletePredictionToComponents(address);
+        // Ensures that the currently selected place appears on top of autocomplete's suggestions:
+        setPredictAutocompleteWithText(
+          componentsToAutocompletePredictionText({
+            addressLine1,
+            city,
+            state
+          })
+        );
+        dispatch(
+          setBillingStepField({ key: "addressLine1", value: addressLine1 })
+        );
+        dispatch(setBillingStepField({ key: "city", value: city }));
+        dispatch(setBillingStepField({ key: "state", value: state }));
+      }
     },
     [dispatch]
   );
@@ -122,12 +176,52 @@ const DonationPageFormBillingStep: React.FC<BillingStepProps> = ({
       />
       <div className={clsx(name, verticalPositiveMargin)}>
         <LocationAutocompleteInput
-          parentCallback={onAddressChange}
+          freeSolo
+          parentCallback={onAutocompleteAddressChange}
           locationType="address"
-          fullWidth
           required
-          defaultValue={address}
-          label="Billing Address"
+          inputValueToDisplay={addressLine1}
+          inputValue={predictAutocompleteWithText ?? addressLine1}
+          inputValueOnChange={newInputValue => {
+            onChange("addressLine1", newInputValue);
+          }}
+          label="Address Line 1"
+          outlined={false}
+          textVariant="body1"
+        />
+      </div>
+      <div className={clsx(name, verticalPositiveMargin)}>
+        <TextField
+          fullWidth
+          label="Address Line 2"
+          value={addressLine2}
+          onChange={e => {
+            onChange("addressLine2", e);
+          }}
+          autoComplete="address-line2"
+        />
+      </div>
+      <div className={clsx(name, verticalPositiveMargin)}>
+        <TextField
+          required
+          fullWidth
+          label="City"
+          className={rightMargin}
+          value={city}
+          onChange={e => {
+            onChange("city", e);
+          }}
+          autoComplete="address-level2"
+        />
+        <TextField
+          required
+          fullWidth
+          label="State"
+          value={state}
+          onChange={e => {
+            onChange("state", e);
+          }}
+          autoComplete="address-level1"
         />
       </div>
       <div className={clsx(name, verticalPositiveMargin)}>
