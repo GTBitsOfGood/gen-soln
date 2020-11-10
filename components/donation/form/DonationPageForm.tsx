@@ -198,7 +198,7 @@ const DonationPageForm: React.FC<Props> = ({
 
       case "Review":
         Component = step.component;
-        return <Component />;
+        return <Component {...{ ...billingStep, amount }} />;
 
       default: {
         const _exhaustiveCheck: never = step;
