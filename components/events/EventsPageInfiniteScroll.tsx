@@ -9,7 +9,6 @@ import config from "config";
 import { PaginatedEventCards } from "utils/types";
 
 import EventsPageEventCard from "./EventsPageEventCard";
-import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
 
 const useStyles = makeStyles({
   endTextContainer: {
@@ -31,7 +30,7 @@ const EventsPageInfiniteScrollGlimmer: React.FC = () => {
     <Grid container direction="row" alignItems="center" spacing={3}>
       {Array.from({ length: Math.floor(CARDS_PER_PAGE / 2) }, (_, i) => (
         <Grid key={`glimmer_${i}`} item>
-          <EventsPageEventCardGlimmer />
+          <EventsPageEventCard type="glimmer" />
         </Grid>
       ))}
     </Grid>
@@ -71,6 +70,7 @@ const EventsPageInfiniteScroll: React.FC<Props> = ({
         {cards.map((card, i) => (
           <Grid key={i} item>
             <EventsPageEventCard
+              type="data"
               eventCardData={card}
               onClick={() => {
                 void router.push(
