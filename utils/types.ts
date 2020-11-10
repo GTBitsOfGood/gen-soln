@@ -16,7 +16,6 @@ export interface Nonprofit {
   name: string;
   headline: string;
   about: string;
-  background: string;
   logo: string;
   stripeAccount: string;
   events: string[];
