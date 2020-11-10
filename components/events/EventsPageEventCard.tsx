@@ -62,37 +62,49 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   })
 );
 
-interface Props {
-  /* if either of these are undefined, we render a glimmer instead */
-  eventCardData?: EventCardData;
-  onClick?: () => void;
-}
+type Props =
+  | {
+      eventCardData: EventCardData;
+      onClick: () => void;
+      type: "data";
+    }
+  | { type: "glimmer" };
 
-const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
+const EventsPageEventCard: React.FC<Props> = props => {
   const classes = useStyles();
 
-  const image =
-    eventCardData == null ? (
-      <Skeleton animation="wave" className={classes.image} variant="rect" />
-    ) : (
-      <img
-        src={eventCardData.image}
-        className={classes.image}
-        alt={`${eventCardData.name}`}
-      />
-    );
+  let image, date, name, body;
 
-  const date =
-    eventCardData == null ? (
-      <Skeleton />
-    ) : (
-      formatDateRange(eventCardData.startDate, eventCardData.endDate)
-    );
+  switch (props.type) {
+    case "data": {
+      const { eventCardData } = props;
+      image = (
+        <img
+          src={eventCardData.image}
+          className={classes.image}
+          alt={`${eventCardData.name}`}
+        />
+      );
+      date = formatDateRange(eventCardData.startDate, eventCardData.endDate);
+      name = eventCardData.name;
+      body = eventCardData.address.text.main;
+      break;
+    }
+    case "glimmer": {
+      image = (
+        <Skeleton animation="wave" className={classes.image} variant="rect" />
+      );
 
-  const name = eventCardData == null ? <Skeleton /> : eventCardData.name;
-
-  const body =
-    eventCardData == null ? <Skeleton /> : eventCardData.address.text.main;
+      date = <Skeleton />;
+      name = <Skeleton />;
+      body = <Skeleton />;
+      break;
+    }
+    default: {
+      const _exhaustiveCheck: never = props;
+      return _exhaustiveCheck;
+    }
+  }
 
   const card = (
     <div className={classes.cardContainer}>
@@ -116,10 +128,10 @@ const EventsPageEventCard: React.FC<Props> = ({ eventCardData, onClick }) => {
     </div>
   );
 
-  return onClick == null ? (
+  return props.type === "glimmer" ? (
     card
   ) : (
-    <FocusVisibleOnly onClick={onClick}>{card}</FocusVisibleOnly>
+    <FocusVisibleOnly onClick={props.onClick}>{card}</FocusVisibleOnly>
   );
 };
 
