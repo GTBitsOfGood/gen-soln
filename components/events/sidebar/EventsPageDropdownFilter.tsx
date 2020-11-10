@@ -3,10 +3,10 @@ import React from "react";
 import { FormGroup } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
+import { useRouterQueryParamsForFilterState } from "components/events/useRouterQueryParamsState";
 import { FilterType, FilterOptions } from "utils/filters";
 
 import EventsPageDropdownFilterCheckbox from "./EventsPageDropdownFilterCheckbox";
-import useRouterQueryParamsState from "./useRouterQueryParamsState";
 
 const useStyles = makeStyles({
   optionRoot: {
@@ -27,7 +27,9 @@ const EventsPageDropdownFilter = <T extends FilterType>({
 }: React.PropsWithChildren<Props<T>>) => {
   const { optionRoot } = useStyles();
 
-  const { currentState, put, remove } = useRouterQueryParamsState(filter);
+  const { currentState, put, remove } = useRouterQueryParamsForFilterState(
+    filter
+  );
 
   return (
     <FormGroup className={optionRoot}>

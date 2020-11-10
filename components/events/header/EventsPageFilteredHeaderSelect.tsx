@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import {
   makeStyles,
@@ -11,8 +11,10 @@ import {
 
 import { ChevronDownIcon } from "@core/icons";
 import CoreTypography from "@core/typography";
+import usePosition from "components/events/usePosition";
+import { useRouterQueryParamsForSortingState } from "components/events/useRouterQueryParamsState";
+import { SORT_OPTIONS, SortValue, DEFAULT_SORT_VALUE } from "utils/sortOptions";
 
-import { usePosition } from "../usePosition";
 import EventsPageFilteredHeaderAlert from "./EventsPageFilteredHeaderAlert";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
@@ -63,13 +65,11 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   })
 );
 
-const SORT_OPTIONS = [
-  { text: "Closest to you", value: "location" },
-  { text: "Most signed up", value: "participants" }
-] as const;
-type OptionValue = typeof SORT_OPTIONS[number]["value"];
+interface Props {
+  setPosition: (position: Position) => void;
+}
 
-const EventsPageFilteredHeaderSelect: React.FC = () => {
+const EventsPageFilteredHeaderSelect: React.FC<Props> = ({ setPosition }) => {
   const {
     container,
     select,
@@ -81,34 +81,32 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
     menuItemSelected
   } = useStyles();
 
-  const isDisabled = useRef(true);
+  const {
+    currentState,
+    replace,
+    shallowPut
+  } = useRouterQueryParamsForSortingState();
 
-  const { hasError } = usePosition(isDisabled.current);
-
-  const [value, setValue] = useState<OptionValue>("participants");
-
-  const onChange = useCallback(
-    (
-      event: React.ChangeEvent<{
-        name?: string | undefined;
-        value: unknown;
-      }>
-    ) => {
-      const selectedValue = event.target.value as OptionValue;
-      setValue(selectedValue);
-
-      if (selectedValue === "location") {
-        isDisabled.current = false;
-      }
-    },
-    []
-  );
+  const { position, hasError } = usePosition(currentState !== "location");
 
   useEffect(() => {
-    if (hasError && value === "location") {
-      setValue("participants");
+    if (hasError && currentState === "location") {
+      replace(DEFAULT_SORT_VALUE);
     }
-  }, [hasError, value]);
+  }, [currentState, hasError, replace]);
+
+  // Ensures that the sortValue query parameter reflects the default value if it is not already a valid value
+  useEffect(() => {
+    if (currentState == null) {
+      shallowPut(DEFAULT_SORT_VALUE);
+    }
+  }, [currentState, shallowPut]);
+
+  useEffect(() => {
+    if (position != null) {
+      setPosition(position);
+    }
+  }, [position, setPosition]);
 
   return (
     <div className={container}>
@@ -117,8 +115,10 @@ const EventsPageFilteredHeaderSelect: React.FC = () => {
         <CoreTypography variant="h4">Sort by</CoreTypography>
         <Select
           classes={{ select, icon }}
-          value={value}
-          onChange={onChange}
+          value={currentState ?? DEFAULT_SORT_VALUE}
+          onChange={event => {
+            replace(event.target.value as SortValue);
+          }}
           autoWidth
           disableUnderline
           IconComponent={ChevronDownIcon}
