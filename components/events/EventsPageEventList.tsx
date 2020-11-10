@@ -26,9 +26,10 @@ const EventsPageEventList: React.FC<Props> = ({
     <CardPaginationList
       paginatedCardsData={paginatedEventCardsData}
       fetchCards={getMoreEvents}
-      cardGlimmer={<EventsPageEventCard />}
+      cardGlimmer={<EventsPageEventCard type="glimmer" />}
       renderCard={cardData => (
         <EventsPageEventCard
+          type="data"
           eventCardData={cardData}
           onClick={() => {
             void router.push(

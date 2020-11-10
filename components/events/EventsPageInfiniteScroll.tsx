@@ -74,7 +74,7 @@ const EventsPageInfiniteScroll: React.FC = () => {
     >
       {Array.from({ length: CARDS_PER_PAGE }, (_, i) => (
         <Grid key={`glimmer_${i}`} item>
-          <EventsPageEventCard />
+          <EventsPageEventCard type="glimmer" />
         </Grid>
       ))}
     </Grid>
@@ -97,6 +97,7 @@ const EventsPageInfiniteScroll: React.FC = () => {
         {cards.map((card, i) => (
           <Grid key={i} item>
             <EventsPageEventCard
+              type="data"
               eventCardData={card}
               onClick={() => {
                 // TODO
