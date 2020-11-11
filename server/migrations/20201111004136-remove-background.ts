@@ -46,7 +46,6 @@ export const up: MigrationFunction = async (db: Db) => {
 export const down: MigrationFunction = async (db: Db) => {
   await db
     .collection("nonprofits")
-    //.deleteMany({ _id: { $in: nonprofits.map(_ => _._id) } });
     .updateMany(
       { _id: { $in: nonprofits.map(_ => _._id) } },
       { $set: { background: nonprofits.find(_id => _id)?.background } }
