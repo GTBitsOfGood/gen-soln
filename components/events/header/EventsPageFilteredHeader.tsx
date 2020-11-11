@@ -29,7 +29,9 @@ const EventsPageFilteredHeader: React.FC<Props> = ({
   return (
     <header className={header}>
       <CoreTypography variant="h2">{resultsLength} results</CoreTypography>
-      <EventsPageFilteredHeaderSelect setPosition={setPosition} />
+      {resultsLength > 0 && (
+        <EventsPageFilteredHeaderSelect setPosition={setPosition} />
+      )}
     </header>
   );
 };
