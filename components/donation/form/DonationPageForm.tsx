@@ -40,6 +40,9 @@ const useStyles = makeStyles({
   },
   billingContentContainer: {
     minHeight: 380
+  },
+  center: {
+    alignItems: "center"
   }
 });
 
@@ -89,7 +92,12 @@ const DonationPageForm: React.FC<Props> = ({
   selectedNonprofitId,
   stripeAccount
 }) => {
-  const { container, contentContainer, billingContentContainer } = useStyles();
+  const {
+    container,
+    contentContainer,
+    billingContentContainer,
+    center
+  } = useStyles();
   const [
     { curStepIndex, isCurStepCompleted, billingStep, amountStep, paymentStep },
     dispatch
@@ -228,10 +236,12 @@ const DonationPageForm: React.FC<Props> = ({
   return (
     <DonationPageStateDispatch.Provider value={dispatch}>
       <form className={container} onSubmit={handleSubmit}>
-        <DonationPageFormNavigation
-          curStepIndex={curStepIndex}
-          stepTitles={STEPS.map(_ => _.title)}
-        />
+        <div className={clsx(container, center)}>
+          <DonationPageFormNavigation
+            curStepIndex={curStepIndex}
+            stepTitles={STEPS.map(_ => _.title)}
+          />
+        </div>
         <div
           className={clsx(
             contentContainer,
