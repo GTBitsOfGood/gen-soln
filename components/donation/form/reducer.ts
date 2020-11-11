@@ -21,8 +21,9 @@ export interface BillingStepProps {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PaymentStepProps {}
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ReviewStepProps {}
+export interface ReviewStepProps extends BillingStepProps {
+  amount: number;
+}
 
 type State = {
   curStepIndex: number;

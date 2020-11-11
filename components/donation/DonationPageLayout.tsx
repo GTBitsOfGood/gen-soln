@@ -15,7 +15,8 @@ const useStyles = makeStyles<Theme>(({ margins }) =>
       flex: 1,
       backgroundColor: "#FFFAF1",
       display: "flex",
-      padding: `${margins.LARGE_VERTICAL} ${margins.HORIZONTAL}`
+      flexDirection: "column",
+      alignItems: "center"
     }
   })
 );
