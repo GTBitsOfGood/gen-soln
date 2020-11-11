@@ -26,12 +26,20 @@ const EventsPageFilteredHeader: React.FC<Props> = ({
 }) => {
   const { header } = useStyles();
 
-  return (
-    <header className={header}>
-      <CoreTypography variant="h2">{resultsLength} results</CoreTypography>
-      <EventsPageFilteredHeaderSelect setPosition={setPosition} />
-    </header>
-  );
+  if (resultsLength > 0) {
+    return (
+      <header className={header}>
+        <CoreTypography variant="h2">{resultsLength} results</CoreTypography>
+        <EventsPageFilteredHeaderSelect setPosition={setPosition} />
+      </header>
+    );
+  } else {
+    return (
+      <header className={header}>
+        <CoreTypography variant="h2">{resultsLength} results</CoreTypography>
+      </header>
+    );
+  }
 };
 
 export default EventsPageFilteredHeader;
