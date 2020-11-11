@@ -21,16 +21,8 @@ export interface BillingStepProps {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PaymentStepProps {}
 
-export interface ReviewStepProps {
-  firstName: string;
-  lastName: string;
-  addressLine1: string;
-  addressLine2: string;
-  city: string;
-  state: string;
-  zipcode: string;
+export interface ReviewStepProps extends BillingStepProps {
   amount: number;
-  email: string;
 }
 
 type State = {

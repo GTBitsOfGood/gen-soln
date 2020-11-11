@@ -80,12 +80,10 @@ const DonationPageFormReviewStep: React.FC<ReviewStepProps> = ({
           <CoreTypography variant="body1" className={verticalPositiveMargin}>
             {addressLine1}
           </CoreTypography>
-          {addressLine2 ? (
+          {addressLine2 && (
             <CoreTypography variant="body1" className={verticalPositiveMargin}>
               {addressLine2}
             </CoreTypography>
-          ) : (
-            <></>
           )}
           <CoreTypography variant="body1" className={verticalPositiveMargin}>
             {`${city}, ${state} ${zipcode}`}

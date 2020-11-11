@@ -213,7 +213,7 @@ const DonationPageForm: React.FC<Props> = ({
         return _exhaustiveCheck;
       }
     }
-  }, [step, billingStep, amountStep, paymentStep]);
+  }, [step, billingStep, amountStep, paymentStep, amount]);
 
   const routeChangeStart = useCallback(() => {
     setIsRouteChanging(true);
