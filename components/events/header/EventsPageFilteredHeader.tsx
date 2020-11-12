@@ -17,15 +17,21 @@ const useStyles = makeStyles({
 
 interface Props {
   resultsLength: number;
+  setPosition: (position: Position) => void;
 }
 
-const EventsPageFilteredHeader: React.FC<Props> = ({ resultsLength }) => {
+const EventsPageFilteredHeader: React.FC<Props> = ({
+  resultsLength,
+  setPosition
+}) => {
   const { header } = useStyles();
 
   return (
     <header className={header}>
       <CoreTypography variant="h2">{resultsLength} results</CoreTypography>
-      <EventsPageFilteredHeaderSelect />
+      {resultsLength > 0 && (
+        <EventsPageFilteredHeaderSelect setPosition={setPosition} />
+      )}
     </header>
   );
 };

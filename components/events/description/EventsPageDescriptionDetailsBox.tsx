@@ -84,6 +84,7 @@ const EventsPageDescriptionDetailsBox: React.FC<Props> = ({
           variant="h5"
           underline="always"
           color="inherit"
+          target="_blank"
         >
           {event.address.text.main}
         </CoreLink>

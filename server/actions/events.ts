@@ -15,7 +15,8 @@ import {
   LocationPaginatedEventCards,
   LocationPageRequest,
   FilterPaginatedEventCards,
-  FilterPageRequest
+  FilterPageRequest,
+  FilterPageQueryArgs
 } from "utils/types";
 
 const filterCache = new NodeCache();
@@ -33,7 +34,6 @@ const CARD_FIELDS: Record<keyof EventCardDataType, 1> = {
 const MILLISECONDS_IN_WEEK = 7 * 24 * 60 * 60 * 1000;
 const METERS_IN_A_MILE = 1609.34;
 const NEAREST_EVENTS_RADIUS_IN_MILES = 20;
-const INVALID_COORDINATE = -999;
 
 export async function getAllEventsCardData({
   date,
@@ -139,53 +139,64 @@ export async function getFilteredEventsCardData({
   cities,
   times,
   page,
-  lat = INVALID_COORDINATE,
-  long = INVALID_COORDINATE,
-  totalCount,
-  date
+  lat,
+  long,
+  date,
+  sortValue
 }: FilterPageRequest): Promise<FilterPaginatedEventCards> {
   const CARDS_PER_PAGE = 16;
   await Mongo();
 
-  let findQuery = await createFilter({ causes, cities, times, date });
+  let findQuery = await createFilterQuery({ causes, cities, times, date });
   let sortQuery = {};
 
-  if (lat !== INVALID_COORDINATE && long !== INVALID_COORDINATE) {
-    // We can't sort by distance because of $geoWithin, but we can add a $near component
-    // to the query using the user's location ($near returns sorted results).
-    findQuery = {
-      ...findQuery,
-      "address.location": {
-        $near: {
-          $geometry: {
-            type: "Point",
-            coordinates: [long, lat]
+  switch (sortValue) {
+    case "location":
+      // We can't sort by distance because of $geoWithin, but we can add a $near component
+      // to the query using the user's location ($near returns sorted results).
+      // ENSURE that createFilterQuery doesn't use "address.location".
+      findQuery = {
+        ...findQuery,
+        "address.location": {
+          $near: {
+            $geometry: {
+              type: "Point",
+              coordinates: [long, lat]
+            }
           }
         }
-      }
-    };
-  } else {
-    sortQuery = {
-      ...sortQuery,
-      volunteers: -1
-    };
+      };
+      break;
+    case "participants":
+      sortQuery = {
+        ...sortQuery,
+        volunteers: -1
+      };
+      break;
+    default: {
+      const _exhaustiveCheck: never = sortValue;
+      return _exhaustiveCheck;
+    }
   }
 
   const result = await Event.find(findQuery, CARD_FIELDS)
     .skip(page * CARDS_PER_PAGE)
     .sort(sortQuery)
-    .limit(CARDS_PER_PAGE);
+    .limit(CARDS_PER_PAGE + 1); // get one more than required so that we can check if this is the last page
+
   return {
-    cards: result.map(r => r.toJSON()) as EventCardDataType[],
+    cards: result
+      .slice(0, CARDS_PER_PAGE)
+      .map(r => r.toJSON()) as EventCardDataType[],
     page,
-    totalCount,
     date,
     lat,
     long,
     cities,
     causes,
     times,
-    isLastPage: totalCount - (page + 1) * CARDS_PER_PAGE <= 0
+    sortValue,
+    isLastPage: result.length < CARDS_PER_PAGE + 1
   };
 }
 
@@ -194,42 +205,36 @@ export async function getFilteredEventsCardDataCount({
   cities,
   times,
   date
-}: Pick<FilterPageRequest, "causes" | "cities" | "times" | "date">) {
+}: FilterPageQueryArgs) {
   await Mongo();
-  const findQuery = await createFilter({ causes, cities, times, date });
+  const findQuery = await createFilterQuery({ causes, cities, times, date });
   return Event.countDocuments(findQuery);
 }
-
-const createFilter = async ({
+const createFilterQuery = async ({
   causes,
   cities,
   times,
   date
-}: Pick<FilterPageRequest, "causes" | "cities" | "times" | "date">) => {
+}: FilterPageQueryArgs) => {
   await Mongo();
   let findQuery = {};
-  const [idsWithCauses, bounds] = await Promise.all([
-    getNonprofitIdsByCause(causes),
-    getCityPolygonCoordinates(cities)
+  const [nonprofitIdsWithCauses, eventIdsInCities] = await Promise.all([
+    getNonprofitIdsWithCauses(causes),
+    getEventIdsInCities(cities)
   ]);
   if (causes.length) {
     findQuery = {
       ...findQuery,
-      nonprofitId: { $in: idsWithCauses.flat() }
+      nonprofitId: { $in: nonprofitIdsWithCauses.flat() }
     };
   }
 
   if (cities.length) {
+    // Can't append $geoWithin to findQuery; we must execute seperate queries with $geoWithin to get event IDs
+    // and add those IDs to findQuery. This is done so that sorting by distance, which also uses "address.location" can work.
     findQuery = {
       ...findQuery,
-      "address.location": {
-        $geoWithin: {
-          $geometry: {
-            type: "MultiPolygon",
-            coordinates: bounds
-          }
-        }
-      }
+      _id: { $in: eventIdsInCities.flat() }
     };
   }
 
@@ -282,6 +287,15 @@ const createFilter = async ({
       $or: timeFilters
     };
   }
+
+  findQuery = {
+    ...findQuery,
+    startDate: {
+      // Always exclude past events
+      $gte: new Date(date)
+    }
+  };
+
   return findQuery;
 };
 
@@ -303,35 +317,35 @@ export async function getAllEventIds(): Promise<string[]> {
   return Event.distinct("_id").exec();
 }
 
-function getNonprofitIdsByCause(causes: FilterPageRequest["causes"]) {
+function getNonprofitIdsWithCauses(causes: FilterPageQueryArgs["causes"]) {
   return Promise.all(
     causes.map(async cause => {
-      const nonProfitsWithCause = filterCache.get<string[]>(cause);
-      if (nonProfitsWithCause != null) {
-        return nonProfitsWithCause;
+      const cachedIds = filterCache.get<string[]>(cause);
+      if (cachedIds != null) {
+        return cachedIds;
       } else {
-        const nonProfitsWithCause: string[] = await Nonprofit.distinct("_id", {
+        const nonprofitsWithCause: string[] = await Nonprofit.distinct("_id", {
           cause
         });
         filterCache.set(
           cause,
-          nonProfitsWithCause,
+          nonprofitsWithCause,
           MILLISECONDS_IN_WEEK / 1000
         );
-        return nonProfitsWithCause;
+        return nonprofitsWithCause;
       }
     })
   );
 }
 
-function getCityPolygonCoordinates(cities: FilterPageRequest["cities"]) {
+function getEventIdsInCities(cities: FilterPageQueryArgs["cities"]) {
   const client = new Client({});
 
   return Promise.all(
     cities.map(async city => {
-      const cachedBounds = filterCache.get<number[][][]>(city);
-      if (cachedBounds != null) {
-        return cachedBounds;
+      const cachedIds = filterCache.get<string[]>(city);
+      if (cachedIds != null) {
+        return cachedIds;
       } else {
         const geocode = await client.geocode({
           params: {
@@ -349,7 +363,7 @@ function getCityPolygonCoordinates(cities: FilterPageRequest["cities"]) {
         const south = viewport.southwest.lng;
         const west = viewport.southwest.lat;
 
-        const googleBounds = [
+        const cityBounds = [
           [
             [north, east],
             [south, east],
@@ -359,9 +373,18 @@ function getCityPolygonCoordinates(cities: FilterPageRequest["cities"]) {
           ]
         ];
 
-        filterCache.set(city, googleBounds);
-
-        return googleBounds;
+        const eventsInCity: string[] = await Event.distinct("_id", {
+          "address.location": {
+            $geoWithin: {
+              $geometry: {
+                type: "Polygon",
+                coordinates: cityBounds
+              }
+            }
+          }
+        });
+        filterCache.set(city, eventsInCity, MILLISECONDS_IN_WEEK / 1000);
+        return eventsInCity;
       }
     })
   );

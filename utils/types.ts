@@ -5,6 +5,7 @@ import {
 } from "@material-ui/core/styles/createPalette";
 
 import { FilterValue } from "./filters";
+import { SortValue } from "./sortOptions";
 
 export type Spacing = "VERTICAL" | "HORIZONTAL" | "LARGE_VERTICAL";
 
@@ -15,7 +16,6 @@ export interface Nonprofit {
   name: string;
   headline: string;
   about: string;
-  background: string;
   logo: string;
   stripeAccount: string;
   events: string[];
@@ -67,6 +67,8 @@ export type CauseCardData = {
   filterValue: string;
 };
 
+export type NonprofitCardData = Omit<Nonprofit, "stripeAccount" | "events">;
+
 export interface PageInformation {
   page: number;
   isLastPage: boolean;
@@ -87,7 +89,9 @@ interface PaginateWithFilter {
   causes: FilterValue<"cause">[];
   cities: FilterValue<"location">[];
   times: FilterValue<"time">[];
-  totalCount: number; // Filtered events page needs to explicitly display total number of results
+}
+interface PaginateWithSortValue {
+  sortValue: SortValue;
 }
 
 export type LocationPaginatedEventCards = PaginatedEventCards &
@@ -102,12 +106,17 @@ export type DatePageRequest = Pick<PageInformation, "page"> & PaginateWithDate;
 export type FilterPaginatedEventCards = PaginatedEventCards &
   PaginateWithFilter &
   PaginateWithLocation &
-  PaginateWithDate;
-
+  PaginateWithDate &
+  PaginateWithSortValue;
 export type FilterPageRequest = Pick<PageInformation, "page"> &
   PaginateWithFilter &
   PaginateWithLocation &
-  PaginateWithDate;
+  PaginateWithDate &
+  PaginateWithSortValue;
+export type FilterPageQueryArgs = Pick<
+  FilterPageRequest,
+  "causes" | "cities" | "times" | "date"
+>;
 
 export interface Dropdown {
   text: string;

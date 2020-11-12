@@ -10,9 +10,12 @@ import EventsPageFiltered from "components/events/EventsPageFiltered";
 import EventsPageUnfiltered from "components/events/EventsPageUnfiltered";
 import {
   getUpcomingEventsCardData,
-  getFilteredEventsCardData
+  getFilteredEventsCardData,
+  getFilteredEventsCardDataCount
 } from "server/actions/events";
 import { getFilterValuesInQuery, getFilterCountFromQuery } from "utils/filters";
+import { DEFAULT_SORT_VALUE, getSortValueInQuery } from "utils/sortOptions";
+import { FilterPaginatedEventCards } from "utils/types";
 
 const EventsNextPage: NextPage<InferGetServerSidePropsType<
   typeof getServerSideProps
@@ -25,7 +28,12 @@ const EventsNextPage: NextPage<InferGetServerSidePropsType<
         />
       );
     case "WITH_QUERY":
-      return <EventsPageFiltered />;
+      return (
+        <EventsPageFiltered
+          filteredEventsFirstPageData={props.filteredEventsFirstPageData}
+          filteredEventstotalCount={props.filteredEventstotalCount}
+        />
+      );
     default: {
       const _exhaustiveCheck: never = props;
       return _exhaustiveCheck;
@@ -33,18 +41,17 @@ const EventsNextPage: NextPage<InferGetServerSidePropsType<
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async ({
+  query
+}: GetServerSidePropsContext) => {
   // Don't remove the async otherwise InferGetStaticPropsType won't work as expected
   // TODO: Use this eventually, if we need common props between filtered and unfiltered event pages.
   const commonProps = {};
+  const date = new Date().toJSON();
 
-  if (getFilterCountFromQuery(context.query) === 0) {
-    const date = new Date();
+  if (getFilterCountFromQuery(query) === 0) {
     const upcomingEventsFirstPageData = await getUpcomingEventsCardData({
-      date: date.toJSON(),
+      date,
       page: 0
     });
 
@@ -56,23 +63,63 @@ export const getServerSideProps = async (
       }
     };
   } else {
-    const causes = getFilterValuesInQuery(context.query, "cause");
-    const cities = getFilterValuesInQuery(context.query, "location");
-    const times = getFilterValuesInQuery(context.query, "time");
-    /*upcomingEventsFirstPageData =  await getByFilteredEventsCardData({
-      causes,
-      cities,
-      times,
-      // TO DO: ADD PAGE SUPPORT
-    });*/
-  }
+    let filteredEventsFirstPageData: FilterPaginatedEventCards,
+      filteredEventstotalCount;
 
-  return {
-    props: {
-      ...commonProps,
-      type: "WITH_QUERY" as const
+    const filterValues = {
+      causes: getFilterValuesInQuery(query, "cause"),
+      cities: getFilterValuesInQuery(query, "location"),
+      times: getFilterValuesInQuery(query, "time"),
+      date
+    };
+    const totalCountPromise = getFilteredEventsCardDataCount(filterValues);
+
+    const sortValue = getSortValueInQuery(query) ?? DEFAULT_SORT_VALUE;
+    const initialRequestData = {
+      sortValue,
+      page: 0,
+      lat: -999, // Any number, doesn't matter. We don't call getFilteredEventsCardData() when sortValue="location" on the server.
+      long: -999
+    };
+
+    switch (sortValue) {
+      case "participants": {
+        [
+          filteredEventsFirstPageData,
+          filteredEventstotalCount
+        ] = await Promise.all([
+          getFilteredEventsCardData({
+            ...filterValues,
+            ...initialRequestData
+          }),
+          totalCountPromise
+        ]);
+        break;
+      }
+      case "location":
+        filteredEventstotalCount = await totalCountPromise;
+        filteredEventsFirstPageData = {
+          ...filterValues,
+          ...initialRequestData,
+          cards: [], // the server doesn't know what cards are part of the first page when sorting by "location".
+          isLastPage: false // so that EventsPageInfiniteScroll can show glimmers while client is fetching data.
+        };
+        break;
+      default: {
+        const _exhaustiveCheck: never = sortValue;
+        return _exhaustiveCheck;
+      }
     }
-  };
+
+    return {
+      props: {
+        ...commonProps,
+        filteredEventsFirstPageData,
+        filteredEventstotalCount,
+        type: "WITH_QUERY" as const
+      }
+    };
+  }
 };
 
 export default EventsNextPage;

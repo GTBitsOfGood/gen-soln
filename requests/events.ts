@@ -10,7 +10,7 @@ import {
 import { fetchRequestWithPayloadResponse } from "utils/util";
 
 export const getUpcomingEvents = async (datePageInformation: DatePageRequest) =>
-  fetchRequestWithPayloadResponse<DatePaginatedEventCards>(
+  fetchRequestWithPayloadResponse<DatePaginatedEventCards, DatePageRequest>(
     config.apis.getUpcomingEvents,
     {
       method: "GET"
@@ -21,7 +21,10 @@ export const getUpcomingEvents = async (datePageInformation: DatePageRequest) =>
 export const getNearestEvents = async (
   locationPageInformation: LocationPageRequest
 ) =>
-  fetchRequestWithPayloadResponse<LocationPaginatedEventCards>(
+  fetchRequestWithPayloadResponse<
+    LocationPaginatedEventCards,
+    LocationPageRequest
+  >(
     config.apis.getNearestEvents,
     {
       method: "GET"
@@ -32,7 +35,7 @@ export const getNearestEvents = async (
 export const getFilteredEvents = async (
   filterPageInformation: FilterPageRequest
 ) =>
-  fetchRequestWithPayloadResponse<FilterPaginatedEventCards>(
+  fetchRequestWithPayloadResponse<FilterPaginatedEventCards, FilterPageRequest>(
     config.apis.getFilteredEvents,
     {
       method: "GET"
@@ -41,7 +44,7 @@ export const getFilteredEvents = async (
   );
 
 export const getAllEvents = async (datePageInformation: DatePageRequest) =>
-  fetchRequestWithPayloadResponse<DatePaginatedEventCards>(
+  fetchRequestWithPayloadResponse<DatePaginatedEventCards, DatePageRequest>(
     config.apis.getAllEvents,
     {
       method: "GET"

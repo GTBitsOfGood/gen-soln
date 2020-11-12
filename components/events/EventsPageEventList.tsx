@@ -7,7 +7,6 @@ import config from "config";
 import { PaginatedEventCards } from "utils/types";
 
 import EventsPageEventCard from "./EventsPageEventCard";
-import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
 
 interface Props {
   paginatedEventCardsData: PaginatedEventCards;
@@ -27,9 +26,10 @@ const EventsPageEventList: React.FC<Props> = ({
     <CardPaginationList
       paginatedCardsData={paginatedEventCardsData}
       fetchCards={getMoreEvents}
-      cardGlimmer={<EventsPageEventCardGlimmer />}
+      cardGlimmer={<EventsPageEventCard type="glimmer" />}
       renderCard={cardData => (
         <EventsPageEventCard
+          type="data"
           eventCardData={cardData}
           onClick={() => {
             void router.push(

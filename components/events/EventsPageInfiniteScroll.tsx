@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import { makeStyles, Grid } from "@material-ui/core";
+import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroller";
 
 import CoreTypography from "@core/typography";
-import { EventCardData, PaginatedEventCards } from "utils/types";
+import config from "config";
+import { PaginatedEventCards } from "utils/types";
 
 import EventsPageEventCard from "./EventsPageEventCard";
-import EventsPageEventCardGlimmer from "./EventsPageEventCardGlimmer";
 
 const useStyles = makeStyles({
   endTextContainer: {
@@ -19,89 +20,63 @@ const useStyles = makeStyles({
 
 const CARDS_PER_PAGE = 12;
 
-const mockCardData: EventCardData = {
-  name: "Test",
-  startDate: "2020-10-22T23:04:00.103Z",
-  endDate: "2020-10-22T23:05:30.103Z",
-  duration: 0,
-  image: "/defaultImages/defaultEvent.png",
-  address: {
-    text: { main: "main location", secondary: "secondary location" },
-    location: { type: "Point", coordinates: [1, 2] }
-  },
-  _id: "abc123",
-  nonprofitId: "1234"
-};
+interface Props {
+  paginatedEventCardsData: PaginatedEventCards;
+  getMoreEvents?: (newPage: number) => Promise<PaginatedEventCards>;
+}
 
-let pageId = 0;
-const totalMockCards = 50;
-
-const fetchCards = async (): Promise<PaginatedEventCards> => {
-  await new Promise(r => setTimeout(r, 300));
-
-  pageId++;
-
-  return {
-    page: pageId,
-    isLastPage: totalMockCards - pageId * CARDS_PER_PAGE <= 0,
-    cards: Array(CARDS_PER_PAGE).fill(mockCardData) as EventCardData[]
-  };
-};
-
-const EventsPageInfiniteScroll: React.FC = () => {
-  const { endTextContainer } = useStyles();
-
-  const [cards, setCards] = useState<EventCardData[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-
-  const getMoreCards = (): void => {
-    void fetchCards().then(paginatedCards => {
-      if (paginatedCards.isLastPage) {
-        setHasMore(false);
-      }
-
-      setCards([...cards, ...paginatedCards.cards]);
-    });
-  };
-
-  const glimmers = (
-    <Grid
-      key="glimmer_container"
-      container
-      direction="row"
-      justify="center"
-      alignItems="center"
-      spacing={3}
-    >
-      {Array.from({ length: CARDS_PER_PAGE }, (_, i) => (
+const EventsPageInfiniteScrollGlimmer: React.FC = () => {
+  return (
+    <Grid container direction="row" alignItems="center" spacing={3}>
+      {Array.from({ length: Math.floor(CARDS_PER_PAGE / 2) }, (_, i) => (
         <Grid key={`glimmer_${i}`} item>
-          <EventsPageEventCardGlimmer />
+          <EventsPageEventCard type="glimmer" />
         </Grid>
       ))}
     </Grid>
   );
+};
+
+const EventsPageInfiniteScroll: React.FC<Props> = ({
+  paginatedEventCardsData,
+  getMoreEvents
+}) => {
+  const { endTextContainer } = useStyles();
+
+  const [cards, setCards] = useState(paginatedEventCardsData.cards);
+  const [hasMore, setHasMore] = useState(!paginatedEventCardsData.isLastPage);
+
+  const router = useRouter();
+
+  const pageRef = useRef(paginatedEventCardsData.page);
 
   return (
     <InfiniteScroll
-      loadMore={getMoreCards}
+      loadMore={async () => {
+        if (getMoreEvents != null) {
+          const paginatedEvents = await getMoreEvents(pageRef.current + 1);
+          pageRef.current = paginatedEvents.page;
+          if (paginatedEvents.isLastPage) {
+            setHasMore(false);
+          }
+          setCards(prevCards => [...prevCards, ...paginatedEvents.cards]);
+        }
+      }}
       hasMore={hasMore}
-      loader={glimmers}
-      threshold={750}
+      loader={<EventsPageInfiniteScrollGlimmer key="glimmer_container" />}
+      threshold={380}
     >
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-        spacing={3}
-      >
+      <Grid container direction="row" alignItems="center" spacing={3}>
         {cards.map((card, i) => (
           <Grid key={i} item>
             <EventsPageEventCard
+              type="data"
               eventCardData={card}
               onClick={() => {
-                // TODO
-                return;
+                void router.push(
+                  config.pages.event(),
+                  config.pages.event(card._id)
+                );
               }}
             />
           </Grid>

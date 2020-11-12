@@ -12,7 +12,8 @@ import DonationPageNonprofitBanner from "./DonationPageNonprofitBanner";
 const useStyles = makeStyles({
   container: {
     minWidth: 420,
-    flex: 0.48
+    flex: 0.48,
+    width: "50%"
   }
 });
 
@@ -21,14 +22,14 @@ interface Props {
 }
 
 const DonationPage: React.FC<Props & DropdownProps> = ({
-  nonprofit: { background, headline, about, stripeAccount, logo },
+  nonprofit: { headline, about, stripeAccount, logo },
   ...dropdownProps
 }) => {
   const { container } = useStyles();
 
   // Setting key will tell React to re-mount the DonationPageMainContent component when the selected Nonprofit in the dropdown changes
   return (
-    <DonationPageLayout {...dropdownProps} backgroundImage={background}>
+    <DonationPageLayout {...dropdownProps}>
       <ContainerWithShadow className={container}>
         <DonationPageNonprofitBanner headline={headline} logoImage={logo} />
         <DonationPageMainContent

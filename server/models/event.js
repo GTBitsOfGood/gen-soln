@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// eslint-disable-next-line no-unused-vars
 const pointSchema = new Schema(
   {
     type: {
