@@ -16,7 +16,6 @@ interface StyleProps {
 }
 
 const useStyles = makeStyles({
-  // @ts-ignore: Pretty sure bug in mui types
   textStyle: (props: StyleProps) => typographyStyles[props.textVariant],
   highlightedText: {
     fontWeight: 800

@@ -1,23 +1,10 @@
 import React from "react";
 
 import { Typography } from "@material-ui/core";
-import { TypographyStyleOptions } from "@material-ui/core/styles/createTypography";
 
-type Variant =
-  | "h1"
-  | "h2"
-  | "h3"
-  | "h4"
-  | "h5"
-  | "body1"
-  | "body2"
-  | "overline"
-  | "caption";
+type Variant = keyof typeof typographyStyles;
 
-export const typographyStyles: Readonly<Record<
-  Variant,
-  TypographyStyleOptions
->> = {
+export const typographyStyles = {
   h1: {
     fontFamily: "VisbyCF-ExtraBold",
     fontWeight: 800,
@@ -96,7 +83,7 @@ export const typographyStyles: Readonly<Record<
     lineHeight: "130%",
     letterSpacing: "normal"
   }
-};
+} as const;
 
 type Props = Omit<React.ComponentProps<typeof Typography>, "variant"> & {
   variant?: Variant;

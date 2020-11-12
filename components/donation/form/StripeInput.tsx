@@ -28,11 +28,9 @@ const StripeInput: React.FC<InputBaseComponentProps> = ({
       options={{
         style: {
           base: {
-            fontSize: typographyStyles.body1.fontSize as string,
+            ...typographyStyles.body1,
             // For some reason the font family "OpenSans-Regular" does not seem to be loaded, so we define some fallback fonts
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            fontFamily: `${typographyStyles.body1
-              .fontFamily!}, "Open Sans", "sans-serif"`
+            fontFamily: `${typographyStyles.body1.fontFamily}, "Open Sans", "sans-serif"`
           }
         }
       }}
