@@ -22,8 +22,7 @@ const donationSchema = new Schema({
   },
   userId: {
     type: String,
-    ref: "User",
-    required: true
+    ref: "User"
   },
   timestamp: {
     type: Date,

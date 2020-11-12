@@ -4,6 +4,7 @@ import Stripe from "stripe";
 import Mongo, { stripeConstructor } from "server/index";
 import Donation from "server/models/donation";
 import Nonprofit from "server/models/nonprofit";
+import User from "server/models/user";
 import errors from "utils/errors";
 import { Donation as DonationType } from "utils/types";
 
@@ -17,10 +18,14 @@ export async function logDonation({
   await Mongo();
 
   const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
-  const user = await Donation.findOne({ _id: userId }); // TODO: Don't allow front end to pass null resulting userId
+  const user = await User.findOne({ _id: userId }); // TODO: Don't allow front end to pass null resulting userId
 
   if (!nonprofit) {
     throw new Error(errors.nonprofit.INVALID_ID);
+  }
+
+  if (!user) {
+    throw new Error(errors.user.INVALID_ID);
   }
 
   const donation = await Donation.create({

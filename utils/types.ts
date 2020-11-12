@@ -34,7 +34,7 @@ export interface Donation {
   email: string;
   amount: number;
   nonprofitId: string;
-  userId: string;
+  userId: string | null;
   timestamp: Date;
 }
 
