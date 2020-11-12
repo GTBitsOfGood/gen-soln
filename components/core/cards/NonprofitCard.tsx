@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Chip } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import router from "next/router";
 
@@ -11,7 +12,6 @@ import { NonprofitCardData } from "utils/types";
 
 interface StyleProps {
   logoImage: string;
-  backgroundImage: string;
 }
 
 const useStyles = makeStyles<Theme, StyleProps>(({ palette }) =>
@@ -42,7 +42,7 @@ const useStyles = makeStyles<Theme, StyleProps>(({ palette }) =>
       position: "relative",
       height: 176,
       marginBottom: 6,
-      color: "white",
+      color: palette.background.paper,
       outline: "none",
       display: "flex",
       alignItems: "center",
@@ -50,8 +50,8 @@ const useStyles = makeStyles<Theme, StyleProps>(({ palette }) =>
       overflow: "hidden",
       "&::before": {
         content: '""',
-        backgroundImage: props =>
-          `linear-gradient(to right, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), ${props.backgroundImage}`,
+        backgroundImage:
+          "linear-gradient(to right, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(/backgrounds/nonprofitBackground.png)",
         backgroundPosition: "center",
         backgroundSize: "cover",
         position: "absolute",
@@ -63,10 +63,10 @@ const useStyles = makeStyles<Theme, StyleProps>(({ palette }) =>
       }
     },
     logo: {
-      width: "124px",
-      height: "124px",
+      width: 124,
+      height: 124,
       marginLeft: 24,
-      backgroundColor: "white",
+      backgroundColor: palette.background.paper,
       content: props => props.logoImage,
       borderRadius: "50%",
       zIndex: 1
@@ -83,8 +83,8 @@ const useStyles = makeStyles<Theme, StyleProps>(({ palette }) =>
     cause: {
       height: 34,
       marginTop: 12,
-      background: "white",
-      color: "#333333",
+      background: palette.background.paper,
+      color: palette.text.primary,
       textTransform: "capitalize",
       pointerEvents: "none"
     },
@@ -121,7 +121,6 @@ interface Props {
 
 const NonprofitCard: React.FC<Props> = ({ nonprofitCardData, onClick }) => {
   const logoImage = nonprofitCardData.logo;
-  const backgroundImage = nonprofitCardData.background;
 
   const {
     card,
@@ -135,7 +134,7 @@ const NonprofitCard: React.FC<Props> = ({ nonprofitCardData, onClick }) => {
     aboutContainer,
     donateContainer,
     supporters
-  } = useStyles({ logoImage, backgroundImage });
+  } = useStyles({ logoImage });
 
   return (
     <FocusVisibleOnly onClick={onClick}>
@@ -150,11 +149,10 @@ const NonprofitCard: React.FC<Props> = ({ nonprofitCardData, onClick }) => {
               <CoreTypography variant="h5" className={location}>
                 Atlanta, GA
               </CoreTypography>
-              <CoreButton variant="contained" className={cause}>
-                <CoreTypography variant="caption">
-                  {nonprofitCardData.cause.toLowerCase()}
-                </CoreTypography>
-              </CoreButton>
+              <Chip
+                label={nonprofitCardData.cause.toLowerCase()}
+                className={cause}
+              />
             </div>
           </div>
           <div className={content}>
