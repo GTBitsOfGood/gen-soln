@@ -39,8 +39,7 @@ const StripeTextField: React.FC<Props> = ({
         inputProps: {
           component: stripeElement
         },
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-explicit-any
-        inputComponent: StripeInput as any
+        inputComponent: StripeInput
       }}
       error={Boolean(error)}
       helperText={error}
