@@ -3,7 +3,10 @@ import React from "react";
 import { Grid, Typography } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
+import CoreTypography from "@core/typography";
 import useWindowDimensions from "@core/util/findWindowSize";
+
+import { filters } from "../../../utils/filters";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,8 +28,24 @@ const useStyles = makeStyles(theme => ({
     color: "#333333",
     margin: "5px 0px"
   },
-  image: {
-    "border-radius": "10px"
+  causeText: {
+    color: theme.palette.primary.contrastText,
+    align_self: "center",
+    maxWidth: 260
+  },
+  card: {
+    backgroundColor: theme.palette.background.paper,
+    width: 360,
+    height: 202,
+    borderRadius: 10,
+    overflow: "hidden",
+    outline: "none",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundPosition: "center",
+    backgroundSize: "cover"
   }
 }));
 
@@ -37,17 +56,12 @@ const SupportCauseGrid = () => {
   const minGridWidth = 100 / split;
   const grid_sm = 12 / split;
   const classes = useStyles(minGridWidth);
-  const images = [
-    { image: "../../.././causes/ARTS_CULTURE_AND_HUMANITIES.jpg" },
-    { image: "../.././causes/EDUCATION_AND_RESEARCH.jpg" },
-    { image: "../.././causes/ENVIRONMENT_AND_ANIMALS.jpg" },
-    { image: "../.././causes/HEALTH.jpg" },
-    { image: "../.././causes/HUMAN_SERVICES.jpg" },
-    { image: "../.././causes/INTERNATIONAL.jpg" },
-    { image: "../.././causes/PUBLIC_SOCIETAL.jpg" },
-    { image: "../.././causes/RELIGION.jpg" },
-    { image: "../.././causes/OTHER.jpg" }
-  ];
+  const causes = filters["cause"].map(({ text, value }) => {
+    return {
+      cause: text,
+      imagePath: `../../.././causes/${value}.jpg`
+    };
+  });
   return (
     <div className={classes.container}>
       <Typography className={classes.text} variant="h4">
@@ -61,21 +75,24 @@ const SupportCauseGrid = () => {
           alignItems="center"
           style={{ minHeight: "100vh", maxWidth: "100%" }}
         >
-          {images.map(elem => (
+          {causes.map(elem => (
             <Grid
               item
               sm={grid_sm == 3 ? 3 : grid_sm == 2 ? 2 : 1}
-              key={images.indexOf(elem)}
+              key={causes.indexOf(elem)}
               className={classes.individual_container}
             >
               <Grid container justify="center" alignItems="center">
-                <img
-                  className={classes.image}
-                  src={`${elem.image}`}
-                  alt="Placeholder"
-                  height="202"
-                  width="360"
-                />
+                <div
+                  className={classes.card}
+                  style={{
+                    backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${elem.imagePath})`
+                  }}
+                >
+                  <CoreTypography variant="h2" className={classes.causeText}>
+                    {elem.cause}
+                  </CoreTypography>
+                </div>
               </Grid>
             </Grid>
           ))}

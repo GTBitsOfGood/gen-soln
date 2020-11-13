@@ -56,7 +56,9 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     banner: (nonprofitcardData: { background: string }) => ({
       height: "200px",
       "background-size": "cover",
-      backgroundImage: nonprofitcardData.background,
+      backgroundImage:
+        `linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), ` +
+        nonprofitcardData.background,
       opacity: "90%",
       display: "flex",
       flexDirection: "row"
