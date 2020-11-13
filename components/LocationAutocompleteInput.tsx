@@ -52,6 +52,7 @@ interface Props extends StyleProps {
   required?: boolean;
   placeholder?: string;
   outlined?: boolean;
+  clearValueOnClose?: boolean;
 }
 
 const LocationAutocompleteInput: React.FC<Props> = ({
@@ -66,7 +67,8 @@ const LocationAutocompleteInput: React.FC<Props> = ({
   label = "",
   required = false,
   placeholder = "",
-  outlined = true
+  outlined = true,
+  clearValueOnClose = false
 }) => {
   const { textStyle, highlightedText, inputAdornmentRoot } = useStyles({
     textVariant
@@ -191,6 +193,7 @@ const LocationAutocompleteInput: React.FC<Props> = ({
         inputValueOnChangeCallbackToUse &&
           inputValueOnChangeCallbackToUse(newInputValue);
       }}
+      onClose={() => void (clearValueOnClose && setValue(null))}
       renderInput={({ InputProps, ...textFieldProps }) => {
         const { inputProps, ...rest } = textFieldProps;
         // @ts-ignore: Material-ui does not include types for this :/
