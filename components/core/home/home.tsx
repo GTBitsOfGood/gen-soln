@@ -1,10 +1,16 @@
 import React from "react";
 
+import { Typography } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { signIn, signOut, useSession } from "next-auth/client";
 
 import { CoreButton } from "@core/buttons";
+import LandingCarousel from "@core/home/LandingCarousel";
+import CoreLink from "@core/link";
 import config from "config";
+
+import { PaginatedNonprofitCards } from "../../../utils/types";
+import SupportCauseGrid from "./SupportCauseGrid";
 
 const useStyles = makeStyles({
   container: {
@@ -23,13 +29,28 @@ const useStyles = makeStyles({
     width: "160px",
     "align-self": "center",
     margin: "20px 0px"
+  },
+  carousel: {
+    "align-self": "center",
+    "margin-bottom": 10
+  },
+  heading: {
+    align: "left",
+    "margin-left": 48,
+    "margin-top": 200,
+    "margin-bottom": 25,
+    color: "#333333"
+  },
+  allLink: {
+    "margin-top": 20,
+    float: "right"
   }
 });
 
-const HomePage = () => {
+const Home = (nonprofitCards: PaginatedNonprofitCards) => {
   const [session] = useSession();
-
-  const { container, text, button } = useStyles();
+  const { container, text, button, carousel, heading, allLink } = useStyles();
+  const { page, isLastPage, cards } = nonprofitCards;
 
   return (
     <div className={container}>
@@ -70,8 +91,18 @@ const HomePage = () => {
       >
         Sign up
       </CoreButton>
+      <SupportCauseGrid />
+      <div className={carousel}>
+        <Typography className={heading} variant="h2">
+          New Non-Profits on Our Platform
+        </Typography>
+        <LandingCarousel page={page} isLastPage={isLastPage} cards={cards} />
+        <CoreLink href={"/"} className={allLink}>
+          {"All Non-Profits Here ->"}
+        </CoreLink>
+      </div>
     </div>
   );
 };
 
-export default HomePage;
+export default Home;

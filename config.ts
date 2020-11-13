@@ -36,6 +36,7 @@ export default {
     recoverPassword: "/api/recoverPassword",
     getUpcomingEvents: "/api/getUpcomingEvents",
     getNearestEvents: "/api/getNearestEvents",
+    getNonProfitsByDate: "/api/getNonProfitsByDate",
     getFilteredEvents: "/api/getFilteredEvents",
     getAllEvents: "api/getAllEvents",
     getNonprofitEvents: "/api/getNonprofitEvents"

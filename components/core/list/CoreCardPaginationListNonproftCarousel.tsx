@@ -28,8 +28,9 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       position: "relative",
       zIndex: 1
     },
-    container: {
+    container: (props: { row_size: number; card_width: number }) => ({
       display: "flex",
+      width: 48 + (props.card_width + 32) * props.row_size,
       flexWrap: "wrap",
       flexDirection: "row",
       alignItems: "center",
@@ -37,8 +38,8 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       overflowX: "visible",
       overflowY: "hidden",
       marginLeft: 24,
-      paddingLeft: -24
-    },
+      paddingLeft: 24
+    }),
     item: {
       marginRight: 32
     }
@@ -56,9 +57,9 @@ interface Props<CardData> {
 }
 
 const DEFAULT_ROW_SIZE = 4;
-const MARGIN_ADJUSTMENT = 24;
+const MARGIN_ADJUSTMENT = 48;
 
-const CoreCardPaginationList = <CardData,>({
+const CoreCardPaginationListNonprofitCarousel = <CardData,>({
   paginatedCardsData,
   fetchCards,
   renderCard,
@@ -67,8 +68,6 @@ const CoreCardPaginationList = <CardData,>({
   shouldWait = false,
   setHasNoResults
 }: Props<CardData>) => {
-  const classes = useStyles();
-
   const [cards, setCards] = useState(paginatedCardsData.cards);
 
   // Index of the first element displayed in the list
@@ -76,12 +75,18 @@ const CoreCardPaginationList = <CardData,>({
 
   // Number of elements displayed
   const [rowSize, setRowSize] = useState(DEFAULT_ROW_SIZE);
+  const [styleProps, setStyleProps] = useState({
+    row_size: rowSize,
+    card_width: cardWidth
+  });
+
+  const classes = useStyles(styleProps);
+
   const [hasReceivedLastPageData, setHasReceivedLastPageData] = useState(
     paginatedCardsData.isLastPage
   ); // if cards has achieved the maximum possible length
   const [loading, setLoading] = useState(false);
 
-  const containerRef = useRef<HTMLDivElement>(null);
   const pageRef = useRef(paginatedCardsData.page);
 
   // Lock calls to fetchCards if one is currently in progress
@@ -129,12 +134,19 @@ const CoreCardPaginationList = <CardData,>({
   const handleResize = useCallback(() => {
     // wrap the resize in a 100ms debounce to prevent excess polling
     clearTimeout(resizeTimeoutRef.current);
-    const w = containerRef.current?.offsetWidth;
+    const w = typeof window !== "undefined" ? window.innerWidth : null;
     resizeTimeoutRef.current = window.setTimeout(() => {
       if (w != null) {
         setRowSize(
           Math.max(1, Math.floor((w - MARGIN_ADJUSTMENT) / cardWidth))
         );
+        setStyleProps({
+          row_size: Math.max(
+            1,
+            Math.floor((w - MARGIN_ADJUSTMENT) / cardWidth)
+          ),
+          card_width: cardWidth
+        });
       }
     }, 100);
   }, [cardWidth]);
@@ -145,9 +157,13 @@ const CoreCardPaginationList = <CardData,>({
 
     // we can't call handleResize directly here, the component might get
     // unmounted immediately and we can't set state after unmount
-    const w = containerRef.current?.offsetWidth;
+    const w = typeof window !== "undefined" ? window.innerWidth : null;
     if (w != null) {
       setRowSize(Math.max(1, Math.floor((w - MARGIN_ADJUSTMENT) / cardWidth)));
+      setStyleProps({
+        row_size: Math.max(1, Math.floor((w - MARGIN_ADJUSTMENT) / cardWidth)),
+        card_width: cardWidth
+      });
     }
 
     return () => {
@@ -175,7 +191,7 @@ const CoreCardPaginationList = <CardData,>({
   }
 
   return (
-    <div className={classes.container} ref={containerRef}>
+    <div className={classes.container}>
       {first > 0 && (
         <div className={classes.prevButtonContainer}>
           <IconButton
@@ -207,4 +223,4 @@ const CoreCardPaginationList = <CardData,>({
   );
 };
 
-export default CoreCardPaginationList;
+export default CoreCardPaginationListNonprofitCarousel;
