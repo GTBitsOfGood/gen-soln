@@ -4,71 +4,67 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
 import CoreTypography from "@core/typography";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
+import { CauseCardData } from "utils/types";
 
-const useStyles = makeStyles(({ palette }: Theme) =>
+interface StyleProps {
+  imagePath: string;
+  isSmall: boolean;
+}
+
+const useStyles = makeStyles<Theme, StyleProps>(({ palette }) =>
   createStyles({
     card: {
       backgroundColor: palette.background.paper,
-      width: 358,
-      height: 200,
+      width: props => (props.isSmall ? 250 : 360),
+      height: props => (props.isSmall ? 138 : 202),
       borderRadius: 10,
       overflow: "hidden",
-      boxShadow: `0 0 0 1px ${palette.object.lightOutline}`,
-      outline: "none"
-    },
-    cardContainer: {
-      position: "relative",
-      width: 360,
-      height: 202,
-      padding: 1
-    },
-    image: {
-      display: "block",
-      width: "inherit",
-      objectFit: "cover"
-    },
-    textContainer: {
-      position: "absolute",
-      width: 280,
-      height: 68,
-      left: "calc(50% - 280px/2)",
-      top: "calc(50% - 68px/2)"
+      outline: "none",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundImage: props =>
+        // Add a black overlay on top of cause image
+        `linear-gradient(to right, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${props.imagePath})`,
+      backgroundPosition: "center",
+      backgroundSize: "cover"
     },
     causeText: {
       color: palette.primary.contrastText,
       display: "flex",
       alignItems: "center",
-      textAlign: "center"
+      textAlign: "center",
+      maxWidth: props => (props.isSmall ? 200 : 260)
     }
   })
 );
 
 interface Props {
-  cause: string;
-  imagePath: string;
+  causeCardData: CauseCardData;
   onClick: () => void;
+  isSmall?: boolean;
 }
 
 const EventsPageCauseCard: React.FC<Props> = ({
-  cause,
-  imagePath,
-  onClick
+  causeCardData,
+  onClick,
+  isSmall = false
 }) => {
-  const { card, cardContainer, textContainer, image, causeText } = useStyles();
+  const { imagePath, cause } = causeCardData;
+  const { card, causeText } = useStyles({
+    imagePath,
+    isSmall
+  });
 
   return (
-    <div className={cardContainer}>
-      <FocusVisibleOnly onClick={onClick}>
-        <div className={card}>
-          <img src={imagePath} className={image} alt={`${cause}`} />
-          <div className={textContainer}>
-            <CoreTypography variant="h2" className={causeText}>
-              {cause}
-            </CoreTypography>
-          </div>
-        </div>
-      </FocusVisibleOnly>
-    </div>
+    <FocusVisibleOnly onClick={onClick}>
+      <div className={card}>
+        <CoreTypography variant={isSmall ? "h4" : "h2"} className={causeText}>
+          {cause}
+        </CoreTypography>
+      </div>
+    </FocusVisibleOnly>
   );
 };
 

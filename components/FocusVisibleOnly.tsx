@@ -10,7 +10,8 @@ const useStyles = makeStyles({
   nofocus: {
     "&:focus": {
       outline: "none"
-    }
+    },
+    cursor: "pointer"
   }
 });
 

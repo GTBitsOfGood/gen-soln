@@ -27,7 +27,16 @@ const useStripePayment = () => {
   ] = useState<StripePaymentMethod | null>(null);
 
   const createPaymentMethod = useCallback(
-    async (name: string, email: string, zipcode: string) => {
+    async (
+      name: string,
+      email: string,
+      zipcode: string,
+      city: string,
+      addressLine1: string,
+      addressLine2: string,
+      state: string,
+      country: string
+    ) => {
       if (!elements || !stripe) {
         throw new Error("Not ready to process payments just yet!");
       }
@@ -36,7 +45,12 @@ const useStripePayment = () => {
         name,
         email,
         address: {
-          postal_code: zipcode
+          city: city,
+          country: country,
+          line1: addressLine1,
+          ...(addressLine2 && { line2: addressLine2 }),
+          postal_code: zipcode,
+          state: state
         }
       };
 

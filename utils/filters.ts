@@ -1,10 +1,13 @@
 import { ParsedUrlQuery } from "querystring";
 
 import { Dropdown } from "./types";
+import { convertToStringArr } from "./util";
 
 const CAUSES = [
-  { text: "Arts", value: "ARTS" },
-  { text: "Culture and Humanities", value: "CULTURE_AND_HUMANITIES" },
+  {
+    text: "Arts, Culture, and Humanities",
+    value: "ARTS_CULTURE_AND_HUMANITIES"
+  },
   { text: "Education and Research", value: "EDUCATION_AND_RESEARCH" },
   { text: "Environment and Animals", value: "ENVIRONMENT_AND_ANIMALS" },
   { text: "Health", value: "HEALTH" },
@@ -31,19 +34,18 @@ export const filters = {
 
 export type FilterType = keyof typeof filters;
 export type FilterOptions<T extends FilterType> = typeof filters[T];
-type FilterValue<T extends FilterType> = FilterOptions<T>[number]["value"];
+export type FilterValue<T extends FilterType> = FilterOptions<
+  T
+>[number]["value"];
 
 export const getFilterValuesInQuery = <T extends FilterType>(
   query: ParsedUrlQuery,
   type: T
-) => {
-  const queryValues = query[type];
+) => convertToStringArr(query[type]) as Array<FilterValue<T>>;
 
-  if (queryValues == null) {
-    return [];
-  }
-  if (Array.isArray(queryValues)) {
-    return queryValues as Array<FilterValue<T>>;
-  }
-  return [queryValues] as Array<FilterValue<T>>;
-};
+export const getFilterCountFromQuery = (query: ParsedUrlQuery) =>
+  Object.keys(filters).reduce(
+    (sum, filter) =>
+      sum + getFilterValuesInQuery(query, filter as FilterType).length,
+    0
+  );

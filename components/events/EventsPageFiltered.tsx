@@ -1,12 +1,27 @@
 import React from "react";
 
-import EventsPageWithSidebar from "./EventsPageWithSidebar";
+import { FilterPaginatedEventCards } from "utils/types";
 
-// Right now we have no additional props
-type Props = React.ComponentProps<typeof EventsPageWithSidebar>;
+import EventsPageFilteredContent from "./EventsPageFilteredContent";
+import EventsPageWithSidebar from "./sidebar/EventsPageWithSidebar";
 
-const EventsPageFiltered: React.FC<Props> = props => {
-  return <EventsPageWithSidebar {...props} />;
+interface Props {
+  filteredEventsFirstPageData: FilterPaginatedEventCards;
+  filteredEventstotalCount: number;
+}
+
+const EventsPageFiltered: React.FC<Props> = ({
+  filteredEventsFirstPageData,
+  filteredEventstotalCount
+}) => {
+  return (
+    <EventsPageWithSidebar>
+      <EventsPageFilteredContent
+        filteredEventsFirstPageData={filteredEventsFirstPageData}
+        filteredEventstotalCount={filteredEventstotalCount}
+      />
+    </EventsPageWithSidebar>
+  );
 };
 
 export default EventsPageFiltered;

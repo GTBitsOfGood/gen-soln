@@ -9,8 +9,10 @@ import {
 import ErrorPage from "next/error";
 import { useRouter } from "next/router";
 
+import EventsPageDescription from "components/events/description/EventsPageEventDescription";
 import config from "config";
 import { getAllEventIds, getEventById } from "server/actions/events";
+import { getNonprofitInfoForEventPageById } from "server/actions/nonprofit";
 
 const NonprofitEventPage: NextPage<InferGetStaticPropsType<
   typeof getStaticProps
@@ -21,12 +23,16 @@ const NonprofitEventPage: NextPage<InferGetStaticPropsType<
     return null;
   }
 
-  if (props.hasError) {
+  if (props.hasError || props.event == null) {
     return <ErrorPage statusCode={404} />;
   }
 
-  //TODO: return event page
-  return null;
+  return (
+    <EventsPageDescription
+      event={props.event}
+      nonProfitInfo={props.nonProfitInfo}
+    />
+  );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -40,19 +46,23 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 
   try {
     const event = await getEventById(id);
+    const nonProfitInfo = await getNonprofitInfoForEventPageById(
+      event.nonprofitId
+    );
 
     return {
       props: {
-        event
+        event,
+        nonProfitInfo
       },
-      revalidate: 1
+      revalidate: config.nextJSPageRegenerationTime
     };
   } catch (error) {
     return {
       props: {
         hasError: true
       },
-      revalidate: 1
+      revalidate: config.nextJSPageRegenerationTime
     };
   }
 };

@@ -38,10 +38,11 @@
     "next": "9.5.4",
     "next-auth": "^3.1.0",
     "next-cookies": "^2.0.3",
-    "querystringify": "^2.2.0",
+    "node-cache": "^5.1.2",
+    "query-string": "^6.13.7",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "requirejs": "^2.3.6",
+    "react-infinite-scroller": "^1.2.4",
     "stripe": "^8.40.0"
   },
   "devDependencies": {
@@ -61,6 +62,7 @@
     "@types/node": "^14.6.0",
     "@types/querystringify": "^2.0.0",
     "@types/react": "^16.9.47",
+    "@types/react-infinite-scroller": "^1.2.1",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "babel-eslint": "^10.1.0",

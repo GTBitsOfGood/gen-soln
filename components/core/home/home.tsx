@@ -40,7 +40,7 @@ const HomePage = () => {
             variant="contained"
             onClick={e => {
               e.preventDefault();
-              signIn().catch(err => console.log(err));
+              signIn().catch(err => console.error(err));
             }}
             className={button}
           >
@@ -55,7 +55,7 @@ const HomePage = () => {
             variant="contained"
             onClick={e => {
               e.preventDefault();
-              signOut().catch(err => console.log(err));
+              signOut().catch(err => console.error(err));
             }}
             className={button}
           >

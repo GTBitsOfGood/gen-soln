@@ -25,7 +25,9 @@ export default {
     signup: "/signup",
     donate: (path = "[id]"): string => `/donate/${path}`,
     events: "/events",
-    event: (path = "[id]"): string => `/events/${path}`
+    event: (path = "[id]"): string => `/events/${path}`,
+    nonprofits: "/nonprofits",
+    nonprofit: (path = "[id]"): string => `/nonprofits/${path}`
   },
   apis: {
     login: "/api/login",
@@ -33,6 +35,10 @@ export default {
     createPaymentIntent: "/api/createPaymentIntent",
     recoverPassword: "/api/recoverPassword",
     getUpcomingEvents: "/api/getUpcomingEvents",
-    getNearestEvents: "/api/getNearestEvents"
-  }
+    getNearestEvents: "/api/getNearestEvents",
+    getFilteredEvents: "/api/getFilteredEvents",
+    getAllEvents: "api/getAllEvents",
+    getNonprofitEvents: "/api/getNonprofitEvents"
+  },
+  nextJSPageRegenerationTime: 10 // Amount of seconds after which incremental static regeneration of Next.js pages can occur
 };

@@ -2,8 +2,6 @@ import { createContext, Dispatch } from "react";
 
 import { PayloadAction, createSlice, AnyAction } from "@reduxjs/toolkit";
 
-import { PlaceType } from "components/LocationAutocompleteInput";
-
 export interface AmountStepProps {
   radioButtonAmount: number | null;
   otherAmount: number;
@@ -13,16 +11,19 @@ export interface BillingStepProps {
   firstName: string;
   lastName: string;
   email: string;
-  address: PlaceType | null;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  state: string;
   zipcode: string;
 }
 
-export interface PaymentStepProps {
-  nameOnCard: string;
-}
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ReviewStepProps {}
+export interface PaymentStepProps {}
+
+export interface ReviewStepProps extends BillingStepProps {
+  amount: number;
+}
 
 type State = {
   curStepIndex: number;
@@ -45,16 +46,17 @@ export const initialState: State = {
     firstName: "",
     lastName: "",
     email: "",
-    address: null,
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    state: "",
     zipcode: ""
   },
   amountStep: {
     radioButtonAmount: AMOUNTS[0],
     otherAmount: +MIN_OTHER_AMOUNT
   },
-  paymentStep: {
-    nameOnCard: ""
-  }
+  paymentStep: {}
 };
 
 const name = "donationPageSlice";
@@ -87,17 +89,11 @@ const { actions, reducer } = createSlice({
       {
         payload
       }: PayloadAction<{
-        key: keyof Omit<BillingStepProps, "address">;
+        key: keyof BillingStepProps;
         value: string;
       }>
     ) {
       billingStep[payload.key] = payload.value;
-    },
-    setAddress({ billingStep }, { payload }: PayloadAction<PlaceType | null>) {
-      billingStep.address = payload;
-    },
-    setNameOnCard({ paymentStep }, { payload }: PayloadAction<string>) {
-      paymentStep.nameOnCard = payload;
     },
     setZipcode({ billingStep }, { payload }: PayloadAction<string>) {
       // From https://github.com/medipass/react-credit-card-input/blob/master/src/utils/formatter.js#L135
@@ -117,8 +113,6 @@ export const {
   setRadioButtonAmount,
   setOtherAmount,
   setBillingStepField,
-  setAddress,
-  setNameOnCard,
   setZipcode
 } = actions;
 

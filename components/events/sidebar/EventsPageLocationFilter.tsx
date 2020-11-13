@@ -1,15 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Chip } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 import { XIcon } from "@core/icons";
 import { typographyStyles } from "@core/typography";
+import { useRouterQueryParamsForFilterState } from "components/events/useRouterQueryParamsState";
 import LocationAutocompleteInput, {
   PlaceType
 } from "components/LocationAutocompleteInput";
-
-import useRouterQueryParamsState from "./useRouterQueryParamsState";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -48,20 +47,26 @@ const EventsPageLocationFilter: React.FC = () => {
     currentState: selectedLocations,
     put,
     remove
-  } = useRouterQueryParamsState("location");
+  } = useRouterQueryParamsForFilterState("location");
+  // Allows us to clear the input field once a place has been selected
+  const [inputValueToDisplay, setInputValueToDisplay] = useState<string>();
 
   return (
     <>
       <LocationAutocompleteInput
-        clearInputOnClose
+        inputValueToDisplay={inputValueToDisplay}
         locationType="(cities)"
         placeholder="E.g. Atlanta, Boston"
-        parentCallback={place => void put(formattedPlace(place))}
+        parentCallback={place => {
+          setInputValueToDisplay("");
+          put(formattedPlace(place));
+        }}
         filterOptions={options =>
           options.filter(
             option => !selectedLocations.includes(formattedPlace(option))
           )
         }
+        textVariant="caption"
       />
       <div className={rootContainer}>
         {selectedLocations.map(location => (

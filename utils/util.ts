@@ -1,6 +1,6 @@
 import fetch from "isomorphic-unfetch";
 import { NextApiRequest, NextApiResponse } from "next";
-import { stringify as querystringify } from "querystringify";
+import { stringify as querystringify } from "query-string";
 
 import errors from "utils/errors";
 
@@ -14,6 +14,24 @@ interface APIFailureResponse {
   message: string;
 }
 
+type QueryParameterValues = string | number | boolean | string[]; // feel free to add more types as required, just make sure you know how querystringify handles them.
+type Interface<T> = { [key in keyof T]: QueryParameterValues };
+
+export const convertToStringArr = (
+  input: undefined | null | string | string[],
+  ignoreEmptyString = false
+): string[] => {
+  if (Array.isArray(input)) {
+    return input;
+  }
+
+  if (input == null || (ignoreEmptyString && input === "")) {
+    return [];
+  }
+
+  return [input];
+};
+
 const hasOwnProperties = <S, T extends PropertyKey>(
   obj: S,
   properties: T[]
@@ -25,8 +43,10 @@ const hasOwnProperties = <S, T extends PropertyKey>(
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const handleGetRequestWithPayloadResponse = async <S extends object, T>(
+export const handleGetRequestWithPayloadResponse = async <
+  S extends Interface<S>,
+  T
+>(
   { method, query }: NextApiRequest,
   res: NextApiResponse,
   serverAction: (input: S) => Promise<T>,
@@ -65,8 +85,10 @@ export const handleGetRequestWithPayloadResponse = async <S extends object, T>(
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const handlePostRequestWithPayloadResponse = async <S extends object, T>(
+export const handlePostRequestWithPayloadResponse = async <
+  S extends Interface<S>,
+  T
+>(
   { method, body }: NextApiRequest,
   res: NextApiResponse,
   serverAction: (input: S) => Promise<T>,
@@ -102,17 +124,29 @@ export const handlePostRequestWithPayloadResponse = async <S extends object, T>(
 };
 
 // Use this function on client side to make API requests
-export const fetchRequestWithPayloadResponse = async <T>(
+export const fetchRequestWithPayloadResponse = async <
+  T,
+  S extends Interface<S> = undefined
+>(
   url: string,
   options: RequestInit = {},
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  queryParameters: object = {}
+  queryParameters?: S
 ): Promise<T> => {
   const isGetRequest = options.method?.toUpperCase() === "GET";
 
-  const fullUrl = isGetRequest
-    ? `${url}?${querystringify(queryParameters)}`
-    : url;
+  let fullUrl;
+  if (isGetRequest && queryParameters != null) {
+    for (const key in queryParameters) {
+      const val = queryParameters[key];
+      if (Array.isArray(val) && val.length === 0) {
+        // @ts-ignore: We could create another object to deal with this type error but that seems unnecessary
+        queryParameters[key] = ""; // querystringify will ignore empty arrays, but our API endpoint methods expect all query params to be present in the incoming request. So we replace empty arrays with empty strings since querystringify doesn't ignore them.
+      }
+    }
+    fullUrl = `${url}?${querystringify(queryParameters)}`;
+  } else {
+    fullUrl = url;
+  }
 
   const res = await fetch(fullUrl, {
     mode: "same-origin",

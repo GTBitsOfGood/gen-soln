@@ -7,6 +7,7 @@ import React, {
 } from "react";
 
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import clsx from "clsx";
 import dynamic from "next/dynamic";
 import { Router } from "next/router";
 
@@ -36,6 +37,12 @@ const useStyles = makeStyles({
     marginTop: 8,
     marginBottom: 8,
     minHeight: 260
+  },
+  billingContentContainer: {
+    minHeight: 380
+  },
+  center: {
+    alignItems: "center"
   }
 });
 
@@ -85,7 +92,12 @@ const DonationPageForm: React.FC<Props> = ({
   selectedNonprofitId,
   stripeAccount
 }) => {
-  const { container, contentContainer } = useStyles();
+  const {
+    container,
+    contentContainer,
+    billingContentContainer,
+    center
+  } = useStyles();
   const [
     { curStepIndex, isCurStepCompleted, billingStep, amountStep, paymentStep },
     dispatch
@@ -146,7 +158,12 @@ const DonationPageForm: React.FC<Props> = ({
           (await createPaymentMethod(
             name,
             billingStep.email,
-            billingStep.zipcode
+            billingStep.zipcode,
+            billingStep.city,
+            billingStep.addressLine1,
+            billingStep.addressLine2,
+            billingStep.state,
+            "US" // Hardcoded country as US
           ));
         dispatch(incrementStep());
       }
@@ -158,6 +175,10 @@ const DonationPageForm: React.FC<Props> = ({
       billingStep.firstName,
       billingStep.lastName,
       billingStep.zipcode,
+      billingStep.addressLine1,
+      billingStep.addressLine2,
+      billingStep.state,
+      billingStep.city,
       processPayment,
       createPaymentMethod,
       isPaymentStep,
@@ -185,14 +206,14 @@ const DonationPageForm: React.FC<Props> = ({
 
       case "Review":
         Component = step.component;
-        return <Component />;
+        return <Component {...{ ...billingStep, amount }} />;
 
       default: {
         const _exhaustiveCheck: never = step;
         return _exhaustiveCheck;
       }
     }
-  }, [step, billingStep, amountStep, paymentStep]);
+  }, [step, billingStep, amountStep, paymentStep, amount]);
 
   const routeChangeStart = useCallback(() => {
     setIsRouteChanging(true);
@@ -215,11 +236,20 @@ const DonationPageForm: React.FC<Props> = ({
   return (
     <DonationPageStateDispatch.Provider value={dispatch}>
       <form className={container} onSubmit={handleSubmit}>
-        <DonationPageFormNavigation
-          curStepIndex={curStepIndex}
-          stepTitles={STEPS.map(_ => _.title)}
-        />
-        <div className={contentContainer}>{componentJSX}</div>
+        <div className={clsx(container, center)}>
+          <DonationPageFormNavigation
+            curStepIndex={curStepIndex}
+            stepTitles={STEPS.map(_ => _.title)}
+          />
+        </div>
+        <div
+          className={clsx(
+            contentContainer,
+            step.title === "Billing" && billingContentContainer
+          )}
+        >
+          {componentJSX}
+        </div>
         <DonationPageFormButton
           disabled={isContinueButtonDisabled}
           ctaText={ctaText}

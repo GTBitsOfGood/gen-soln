@@ -4,7 +4,10 @@ import config from "config";
 import Mongo, { stripeConstructor } from "server/index";
 import Nonprofit from "server/models/nonprofit";
 import errors from "utils/errors";
-import { Nonprofit as NonprofitType } from "utils/types";
+import {
+  Nonprofit as NonprofitType,
+  NonprofitInfoForEventPage
+} from "utils/types";
 
 type NonprofitNameWithId = Pick<NonprofitType, "name" | "_id">;
 
@@ -12,7 +15,6 @@ export async function createNonprofit({
   name,
   headline,
   about,
-  background,
   logo,
   stripeAccount
 }: NonprofitType) {
@@ -22,7 +24,6 @@ export async function createNonprofit({
     name,
     headline,
     about,
-    background,
     logo,
     stripeAccount
   });
@@ -51,6 +52,37 @@ export async function getNonprofitById(_id: string): Promise<NonprofitType> {
 
   // Exclude donation information for now:
   const nonprofit = await Nonprofit.findOne({ _id }, { donations: 0 }).lean();
+  if (nonprofit == null) {
+    throw new Error(errors.nonprofit.INVALID_ID);
+  }
+
+  if (Array.isArray(nonprofit)) {
+    throw new Error(errors.GENERIC_TEXT);
+  }
+
+  // @ts-ignore: Temporary, until our Nonprofit Mongoose model is typed
+  return nonprofit;
+}
+
+const NONPROFIT_FIELDS_FOR_EVENT_PAGE: Record<
+  keyof NonprofitInfoForEventPage,
+  1
+> = {
+  name: 1,
+  about: 1,
+  _id: 1
+};
+
+export async function getNonprofitInfoForEventPageById(
+  _id: string
+): Promise<NonprofitInfoForEventPage> {
+  await Mongo();
+
+  // Exclude donation information for now:
+  const nonprofit = await Nonprofit.findOne(
+    { _id },
+    NONPROFIT_FIELDS_FOR_EVENT_PAGE
+  ).lean();
   if (nonprofit == null) {
     throw new Error(errors.nonprofit.INVALID_ID);
   }

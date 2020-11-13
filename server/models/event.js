@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// eslint-disable-next-line no-unused-vars
 const pointSchema = new Schema(
   {
     type: {
@@ -50,8 +49,14 @@ const eventSchema = new Schema(
     },
     address: {
       text: {
-        type: String,
-        required: true
+        main: {
+          type: String,
+          required: true
+        },
+        secondary: {
+          type: String,
+          required: true
+        }
       },
       location: {
         type: pointSchema,

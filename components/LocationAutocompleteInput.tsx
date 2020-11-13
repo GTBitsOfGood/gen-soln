@@ -11,8 +11,13 @@ import { SearchIcon } from "@core/icons";
 import CoreTypography, { typographyStyles } from "@core/typography";
 import config from "config";
 
+interface StyleProps {
+  textVariant: keyof typeof typographyStyles;
+}
+
 const useStyles = makeStyles({
-  textStyle: typographyStyles.caption,
+  // @ts-ignore: Pretty sure bug in mui types
+  textStyle: (props: StyleProps) => typographyStyles[props.textVariant],
   highlightedText: {
     fontWeight: 800
   },
@@ -35,37 +40,54 @@ function loadScript(src: string, position: HTMLElement | null, id: string) {
 
 export type PlaceType = google.maps.places.AutocompletePrediction;
 
-interface Props {
+interface Props extends StyleProps {
   locationType: string;
-  parentCallback: (value: PlaceType) => void;
+  parentCallback: (googleMapsPlace: PlaceType) => void;
+  inputValueToDisplay?: string; // allows you to override what gets displayed in the text field to the user.
+  inputValue?: string; // what Google Maps Autocomplete will query against; provide this to make the input text field controlled.
+  inputValueOnChange?: (newInputValue: string) => void;
+  freeSolo?: boolean;
   filterOptions?: (options: PlaceType[]) => PlaceType[];
   label?: string;
-  fullWidth?: boolean;
-  defaultValue?: PlaceType | null;
   required?: boolean;
   placeholder?: string;
-  clearInputOnClose?: boolean;
+  outlined?: boolean;
 }
 
 const LocationAutocompleteInput: React.FC<Props> = ({
   locationType,
   parentCallback,
+  textVariant,
+  inputValueToDisplay,
+  inputValue,
+  inputValueOnChange,
+  freeSolo = false,
   filterOptions = x => x,
   label = "",
-  fullWidth = false,
-  defaultValue = null,
   required = false,
   placeholder = "",
-  clearInputOnClose = false
+  outlined = true
 }) => {
-  const { textStyle, highlightedText, inputAdornmentRoot } = useStyles();
-  const [value, setValue] = useState<PlaceType | null>(defaultValue);
-  const [inputValue, setInputValue] = useState("");
+  const { textStyle, highlightedText, inputAdornmentRoot } = useStyles({
+    textVariant
+  });
+  const [value, setValue] = useState<PlaceType | null>(null);
+  const [uncontrolledInputValue, setUncontrolledInputValue] = useState("");
   const [options, setOptions] = useState<PlaceType[]>([]);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(
     null
   );
   const loaded = useRef(false);
+
+  let inputValueToUse: string,
+    inputValueOnChangeCallbackToUse: typeof inputValueOnChange;
+  if (inputValue != null) {
+    inputValueToUse = inputValue;
+    inputValueOnChangeCallbackToUse = inputValueOnChange;
+  } else {
+    inputValueToUse = uncontrolledInputValue;
+    inputValueOnChangeCallbackToUse = setUncontrolledInputValue;
+  }
 
   if (typeof window !== "undefined" && !loaded.current) {
     if (!document.querySelector("#google-maps")) {
@@ -112,14 +134,14 @@ const LocationAutocompleteInput: React.FC<Props> = ({
       return undefined;
     }
 
-    if (inputValue === "") {
+    if (inputValueToUse === "") {
       setOptions(value ? [value] : []);
       return undefined;
     }
 
     fetch(
       {
-        input: inputValue
+        input: inputValueToUse
       },
       (results?: PlaceType[]) => {
         if (active) {
@@ -141,59 +163,62 @@ const LocationAutocompleteInput: React.FC<Props> = ({
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }, [value, inputValueToUse, fetch]);
 
   return (
     <Autocomplete
-      getOptionLabel={option =>
-        typeof option === "string" ? option : option.description
-      }
-      classes={{ noOptions: textStyle }}
+      disableClearable
       blurOnSelect
-      filterOptions={filterOptions}
-      options={options}
       autoComplete
       includeInputInList
       filterSelectedOptions
-      fullWidth={fullWidth}
+      fullWidth
+      getOptionLabel={option => option.description}
+      classes={{ noOptions: textStyle }}
+      freeSolo={freeSolo}
+      filterOptions={filterOptions}
+      options={options}
+      // @ts-ignore For some reason value can't be null when disableClearable is true. However we don't want to set value to undefined either since this component is uncontrolled.
       value={value}
-      onChange={(
-        event: React.ChangeEvent<unknown>,
-        newValue: PlaceType | null
-      ) => {
-        if (newValue) {
+      onChange={(event, newValue) => {
+        if (typeof newValue !== "string") {
           setOptions(s => [newValue, ...s]);
+          setValue(newValue);
           parentCallback(newValue);
         }
-
-        setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
+        inputValueOnChangeCallbackToUse &&
+          inputValueOnChangeCallbackToUse(newInputValue);
       }}
-      onClose={() => void (clearInputOnClose && setValue(null))}
-      renderInput={({ InputProps, ...rest }) => (
-        <TextField
-          {...rest}
-          label={label}
-          variant="outlined"
-          fullWidth
-          required={required}
-          placeholder={placeholder}
-          InputProps={{
-            ...InputProps,
-            startAdornment: (
-              <InputAdornment
-                classes={{ root: inputAdornmentRoot }}
-                position="start"
-              >
-                <SearchIcon fontSize="inherit" />
-              </InputAdornment>
-            ),
-            classes: { root: textStyle }
-          }}
-        />
-      )}
+      renderInput={({ InputProps, ...textFieldProps }) => {
+        const { inputProps, ...rest } = textFieldProps;
+        // @ts-ignore: Material-ui does not include types for this :/
+        inputProps.value = inputValueToDisplay ?? inputValueToUse;
+        return (
+          <TextField
+            {...rest}
+            fullWidth
+            label={label}
+            required={required}
+            placeholder={placeholder}
+            inputProps={inputProps}
+            variant={outlined ? "outlined" : "standard"}
+            InputProps={{
+              ...InputProps,
+              startAdornment: (
+                <InputAdornment
+                  classes={{ root: inputAdornmentRoot }}
+                  position="start"
+                >
+                  <SearchIcon fontSize="inherit" />
+                </InputAdornment>
+              ),
+              classes: { root: textStyle }
+            }}
+          />
+        );
+      }}
       renderOption={option => {
         const matches =
           option.structured_formatting.main_text_matched_substrings;

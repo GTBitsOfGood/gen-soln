@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 
+import CoreDivider from "@core/divider";
 import CoreTypography from "@core/typography";
-import { getUpcomingEvents, getNearestEvents } from "requests/events";
-import {
-  DatePaginatedEventCards,
-  LocationPaginatedEventCards
-} from "utils/types";
+import { getUpcomingEvents } from "requests/events";
+import { DatePaginatedEventCards } from "utils/types";
 
+import EventsPageCauseList from "./EventsPageCauseList";
 import EventsPageEventList from "./EventsPageEventList";
-import { usePosition } from "./usePosition";
+import EventsPageNearbyEventsList from "./EventsPageNearbyEventsList";
 
 const useStyles = makeStyles({
   mainContainer: {
@@ -24,6 +23,10 @@ const useStyles = makeStyles({
   },
   nearestEventsContainer: {
     marginTop: 60
+  },
+  divider: {
+    marginTop: 72,
+    marginBottom: 72
   }
 });
 
@@ -32,35 +35,11 @@ interface Props {
 }
 
 const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
-  const { mainContainer, listContainer, nearestEventsContainer } = useStyles();
-
-  const { position, error } = usePosition();
-
-  const [nearestEvents, setNearestEvents] = useState<
-    LocationPaginatedEventCards
-  >();
-
-  useEffect(() => {
-    const fetchNearestEvents = async () => {
-      if (position) {
-        const result = await getNearestEvents({
-          lat: position.coords.latitude,
-          long: position.coords.longitude,
-          page: 0,
-          totalCount: -1,
-          isLastPage: false
-        });
-
-        setNearestEvents(result);
-      }
-    };
-
-    void fetchNearestEvents();
-  }, [position, error]);
+  const { mainContainer, listContainer, divider } = useStyles();
 
   return (
     <div className={mainContainer}>
-      {upcomingEvents.eventCards.length > 0 && (
+      {upcomingEvents.cards.length > 0 && (
         <>
           <CoreTypography variant="h2">
             Upcoming Volunteer Events
@@ -71,38 +50,20 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
               getMoreEvents={(page: number) =>
                 getUpcomingEvents({
                   page,
-                  date: upcomingEvents.date,
-                  totalCount: upcomingEvents.totalCount,
-                  isLastPage: upcomingEvents.isLastPage
+                  date: upcomingEvents.date
                 })
               }
             />
           </div>
         </>
       )}
-      {nearestEvents && nearestEvents.eventCards.length > 0 && (
-        <>
-          <div className={nearestEventsContainer}>
-            <CoreTypography variant="h2">
-              Volunteer Events Near You
-            </CoreTypography>
-            <div className={listContainer}>
-              <EventsPageEventList
-                paginatedEventCardsData={nearestEvents}
-                getMoreEvents={(page: number) =>
-                  getNearestEvents({
-                    page,
-                    lat: nearestEvents.lat,
-                    long: nearestEvents.long,
-                    totalCount: nearestEvents.totalCount,
-                    isLastPage: nearestEvents.isLastPage
-                  })
-                }
-              />
-            </div>
-          </div>
-        </>
-      )}
+      <EventsPageNearbyEventsList date={upcomingEvents.date} />
+      <CoreDivider className={divider} />
+      <CoreTypography variant="h2">Volunteer For a Cause</CoreTypography>
+      <div className={listContainer}>
+        <EventsPageCauseList />
+      </div>
+      <CoreDivider className={divider} />
     </div>
   );
 };
