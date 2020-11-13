@@ -6,10 +6,7 @@ import Donation from "server/models/donation";
 import Nonprofit from "server/models/nonprofit";
 import User from "server/models/user";
 import errors from "utils/errors";
-import {
-  //Donation as DonationType,
-  LoggedDonation
-} from "utils/types";
+import { LoggedDonation } from "utils/types";
 
 export async function logDonation({
   name,
