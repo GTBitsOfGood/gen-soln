@@ -37,7 +37,8 @@ export default {
     getUpcomingEvents: "/api/getUpcomingEvents",
     getNearestEvents: "/api/getNearestEvents",
     getFilteredEvents: "/api/getFilteredEvents",
-    getAllEvents: "api/getAllEvents"
+    getAllEvents: "api/getAllEvents",
+    getNonprofitEvents: "/api/getNonprofitEvents"
   },
   nextJSPageRegenerationTime: 10 // Amount of seconds after which incremental static regeneration of Next.js pages can occur
 };
