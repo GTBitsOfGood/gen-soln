@@ -10,8 +10,8 @@ const CARD_FIELDS: Record<keyof NonprofitCardDataType, 1> = {
   name: 1,
   headline: 1,
   about: 1,
-  background: 1,
-  logo: 1
+  logo: 1,
+  cause: 1
 };
 
 export async function getNonprofitsCardData(): Promise<

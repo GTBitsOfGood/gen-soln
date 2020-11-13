@@ -1,9 +1,6 @@
-import { url } from "inspector";
-
 import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { signIn } from "next-auth/client";
 
 import { CoreButton } from "@core/buttons";
 import CoreTypography from "@core/typography";
@@ -54,16 +51,14 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       width: "160px",
       margin: "20px 0px"
     },
-    banner: (nonprofitcardData: { background: string }) => ({
+    banner: {
       height: "200px",
       "background-size": "cover",
-      backgroundImage:
-        `linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), ` +
-        nonprofitcardData.background,
+      backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/backgrounds/nonprofitBackground.png)`,
       opacity: "90%",
       display: "flex",
       flexDirection: "row"
-    })
+    }
   })
 );
 
@@ -84,7 +79,7 @@ const NonprofitCard = (props: Props) => {
     banner,
     description,
     button
-  } = useStyles(nonprofitCardData);
+  } = useStyles();
 
   return (
     <FocusVisibleOnly onClick={onClick}>
