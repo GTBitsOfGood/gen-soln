@@ -14,5 +14,6 @@ export default async (
     "name",
     "email",
     "amount",
+    "userId",
     "nonprofitId"
   ]);

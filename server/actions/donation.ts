@@ -6,7 +6,10 @@ import Donation from "server/models/donation";
 import Nonprofit from "server/models/nonprofit";
 import User from "server/models/user";
 import errors from "utils/errors";
-import { Donation as DonationType } from "utils/types";
+import {
+  //Donation as DonationType,
+  LoggedDonation
+} from "utils/types";
 
 export async function logDonation({
   name,
@@ -14,7 +17,7 @@ export async function logDonation({
   amount,
   userId,
   nonprofitId
-}: Omit<DonationType, "timestamp">): Promise<void> {
+}: LoggedDonation): Promise<void> {
   await Mongo();
 
   const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });

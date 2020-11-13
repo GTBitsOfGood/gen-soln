@@ -38,6 +38,8 @@ export interface Donation {
   timestamp: Date;
 }
 
+export type LoggedDonation = Omit<DonationType, "timestamp">;
+
 // Keep in sync with the backend schema
 export interface Event {
   name: string;
