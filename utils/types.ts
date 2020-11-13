@@ -38,7 +38,7 @@ export interface Donation {
   timestamp: Date;
 }
 
-export type LoggedDonation = Omit<DonationType, "timestamp">;
+export type LoggedDonation = Omit<Donation, "timestamp">;
 
 // Keep in sync with the backend schema
 export interface Event {
