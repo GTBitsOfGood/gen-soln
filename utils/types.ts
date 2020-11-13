@@ -75,8 +75,6 @@ export type CauseCardData = {
   filterValue: string;
 };
 
-export type NonprofitCardData = Omit<Nonprofit, "stripeAccount" | "events">;
-
 export interface PageInformation {
   page: number;
   isLastPage: boolean;
