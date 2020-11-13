@@ -1,5 +1,5 @@
 import config from "config";
-import { Donation } from "utils/types";
+import { LoggedDonation } from "utils/types";
 import { fetchRequestWithPayloadResponse } from "utils/util";
 
 /**
@@ -24,9 +24,7 @@ export const createPaymentIntent = async (
     body: JSON.stringify({ amount, email, stripeAccount })
   });
 
-export const logDonation = async (
-  donation: Omit<Donation, "timestamp">
-): Promise<boolean> =>
+export const logDonation = async (donation: LoggedDonation): Promise<boolean> =>
   fetchRequestWithPayloadResponse<boolean>(config.apis.logDonation, {
     method: "POST",
     headers: {
