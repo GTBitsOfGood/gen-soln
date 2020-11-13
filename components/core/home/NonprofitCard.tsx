@@ -36,7 +36,8 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       display: "block",
       height: 128,
       width: "inherit",
-      objectFit: "cover"
+      objectFit: "cover",
+      margin: 10
     },
     content: {
       padding: "16px 24px"
@@ -96,7 +97,7 @@ const NonprofitCard = (props: Props) => {
               alt={`${nonprofitCardData.name}`}
             />
             <div>
-              <CoreTypography variant="h3" className={name}>
+              <CoreTypography variant="h2" className={name}>
                 {nonprofitCardData.name}
               </CoreTypography>
             </div>
