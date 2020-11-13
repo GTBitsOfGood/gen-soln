@@ -3,10 +3,14 @@ import { url } from "inspector";
 import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { signIn } from "next-auth/client";
 
+import { CoreButton } from "@core/buttons";
 import CoreTypography from "@core/typography";
 import FocusVisibleOnly from "components/FocusVisibleOnly";
 import { NonprofitCardData } from "utils/types";
+
+import config from "../../../config";
 
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
@@ -37,26 +41,25 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     content: {
       padding: "16px 24px"
     },
-    header: {
-      marginBottom: 6,
-      /* line-clamp isn't supported yet, so the next four rules handle it for us */
-      display: "-webkit-box",
-      WebkitBoxOrient: "vertical",
-      WebkitLineClamp: 2,
-      overflow: "hidden"
+    name: {
+      color: "white",
+      "margin-left": 50,
+      "margin-top": 20
     },
-    body: {
-      marginBottom: 6
+    description: {
+      "font-size": 14
     },
-    meta: {
-      color: palette.primary.main,
-      marginBottom: 6
+    button: {
+      width: "160px",
+      margin: "20px 0px"
     },
     banner: (nonprofitcardData: { background: string }) => ({
       height: "200px",
       "background-size": "cover",
       backgroundImage: nonprofitcardData.background,
-      opacity: "80%"
+      opacity: "90%",
+      display: "flex",
+      flexDirection: "row"
     })
   })
 );
@@ -69,9 +72,16 @@ interface Props {
 const NonprofitCard = (props: Props) => {
   const { nonprofitCardData, onClick } = props;
   const logo_path: string = nonprofitCardData.logo.split('"')[1];
-  const { card, cardContainer, content, image, header, banner } = useStyles(
-    nonprofitCardData
-  );
+  const {
+    card,
+    cardContainer,
+    content,
+    image,
+    name,
+    banner,
+    description,
+    button
+  } = useStyles(nonprofitCardData);
 
   return (
     <FocusVisibleOnly onClick={onClick}>
@@ -83,11 +93,28 @@ const NonprofitCard = (props: Props) => {
               className={image}
               alt={`${nonprofitCardData.name}`}
             />
+            <div>
+              <CoreTypography variant="h3" className={name}>
+                {nonprofitCardData.name}
+              </CoreTypography>
+            </div>
           </div>
           <div className={content}>
-            <CoreTypography variant="h4" className={header}>
-              {nonprofitCardData.name}
+            <CoreTypography variant="body1" className={description}>
+              {nonprofitCardData.about}
             </CoreTypography>
+            <CoreButton
+              variant="contained"
+              onClick={e => {
+                e.preventDefault();
+                window.location.replace(
+                  config.pages.nonprofit(nonprofitCardData._id)
+                );
+              }}
+              className={button}
+            >
+              Donate
+            </CoreButton>
           </div>
         </div>
       </div>
