@@ -15,7 +15,6 @@ export async function createNonprofit({
   name,
   headline,
   about,
-  background,
   logo,
   stripeAccount
 }: NonprofitType) {
@@ -25,7 +24,6 @@ export async function createNonprofit({
     name,
     headline,
     about,
-    background,
     logo,
     stripeAccount
   });

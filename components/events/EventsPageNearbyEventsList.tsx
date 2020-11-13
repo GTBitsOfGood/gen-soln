@@ -48,7 +48,7 @@ const EventsPageNearbyEvents: React.FC<Props> = ({ date }) => {
                     page,
                     lat: position.coords.latitude,
                     long: position.coords.longitude,
-                    date: date
+                    date
                   })
               : undefined
           }

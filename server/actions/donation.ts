@@ -12,7 +12,7 @@ export async function logDonation({
   email,
   amount,
   nonprofitId
-}: DonationType): Promise<void> {
+}: Omit<DonationType, "timestamp">): Promise<void> {
   await Mongo();
 
   const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
