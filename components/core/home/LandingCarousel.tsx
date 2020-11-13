@@ -4,7 +4,7 @@ import CardPaginationList from "@core/list/CoreCardPaginationListNonproftCarouse
 import config from "config";
 import { NonprofitCardData, PaginatedNonprofitCards } from "utils/types";
 
-import NonprofitCard from "./NonprofitCard";
+import NonprofitCard from ".././cards/NonprofitCard";
 import NonprofitCardGlimmer from "./NonprofitCardGlimmer";
 
 const LandingCarousel = (nonprofitCardData: PaginatedNonprofitCards) => {

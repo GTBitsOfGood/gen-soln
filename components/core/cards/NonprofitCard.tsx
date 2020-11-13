@@ -150,7 +150,7 @@ const NonprofitCard: React.FC<Props> = ({ nonprofitCardData, onClick }) => {
                 Atlanta, GA
               </CoreTypography>
               <Chip
-                label={nonprofitCardData.cause.toLowerCase()}
+                label={"Causes"} //nonprofitCardData.cause.toLowerCase()}
                 className={cause}
               />
             </div>

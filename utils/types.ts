@@ -55,14 +55,7 @@ export interface Event {
   about: string;
 }
 
-export interface NonprofitCardData {
-  _id: string;
-  name: string;
-  headline: string;
-  about: string;
-  background: string;
-  logo: string;
-}
+export type NonprofitCardData = Omit<Nonprofit, "stripeAccount" | "events">;
 
 export type EventCardData = Omit<
   Event,
