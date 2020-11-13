@@ -11,8 +11,8 @@ import { NonprofitCardData } from "utils/types";
 const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
     card: {
-      width: 248,
-      height: 267,
+      width: 555,
+      height: 339,
       borderRadius: 10,
       overflow: "hidden",
       backgroundColor: palette.background.paper,
@@ -21,8 +21,8 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       boxShadow: `0 0 0 1px ${palette.object.lightOutline}`
     },
     cardContainer: {
-      width: 250,
-      height: 269,
+      width: 555,
+      height: 339,
       padding: 1,
       "&:focusVisible": {
         outline: "none"
@@ -58,11 +58,16 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       overflow: "hidden",
       whiteSpace: "nowrap"
     },
-    banner: (image_path: { image: string }) => ({
+    banner: (nonprofitcardData: { background: string }) => ({
       height: "200px",
       "background-size": "cover",
-      backgroundImage: "url(" + image_path.image + ")"
-    })
+      backgroundImage: nonprofitcardData.background,
+      opacity: "80%"
+    }),
+    bannerContent: {
+      position: "relative",
+      display: "block"
+    }
   })
 );
 
@@ -74,10 +79,15 @@ interface Props {
 const NonprofitCard = (props: Props) => {
   const { nonprofitCardData, onClick } = props;
   const logo_path: string = nonprofitCardData.logo.split('"')[1];
-  const image_path = { image: "../.././causes/OTHER.jpg" };
-  const { card, cardContainer, content, image, header, banner } = useStyles(
-    image_path
-  );
+  const {
+    card,
+    cardContainer,
+    content,
+    image,
+    header,
+    banner,
+    bannerContent
+  } = useStyles(nonprofitCardData);
 
   return (
     <FocusVisibleOnly onClick={onClick}>
@@ -90,6 +100,7 @@ const NonprofitCard = (props: Props) => {
               alt={`${nonprofitCardData.name}`}
             />
           </div>
+          <div className={bannerContent}></div>
           <div className={content}>
             <CoreTypography variant="h4" className={header}>
               {nonprofitCardData.name}

@@ -12,6 +12,7 @@ const LandingCarousel = (nonprofitCardData: PaginatedNonprofitCards) => {
     <CardPaginationList
       paginatedCardsData={nonprofitCardData}
       cardGlimmer={<NonprofitCardGlimmer />}
+      cardWidth={555}
       renderCard={(cardData: NonprofitCardData) => (
         <NonprofitCard
           nonprofitCardData={cardData}
