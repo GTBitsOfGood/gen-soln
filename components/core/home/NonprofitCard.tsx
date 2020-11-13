@@ -52,22 +52,12 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       color: palette.primary.main,
       marginBottom: 6
     },
-    /* Only works for truncating a single line */
-    truncate: {
-      textOverflow: "ellipsis",
-      overflow: "hidden",
-      whiteSpace: "nowrap"
-    },
     banner: (nonprofitcardData: { background: string }) => ({
       height: "200px",
       "background-size": "cover",
       backgroundImage: nonprofitcardData.background,
       opacity: "80%"
-    }),
-    bannerContent: {
-      position: "relative",
-      display: "block"
-    }
+    })
   })
 );
 
@@ -79,15 +69,9 @@ interface Props {
 const NonprofitCard = (props: Props) => {
   const { nonprofitCardData, onClick } = props;
   const logo_path: string = nonprofitCardData.logo.split('"')[1];
-  const {
-    card,
-    cardContainer,
-    content,
-    image,
-    header,
-    banner,
-    bannerContent
-  } = useStyles(nonprofitCardData);
+  const { card, cardContainer, content, image, header, banner } = useStyles(
+    nonprofitCardData
+  );
 
   return (
     <FocusVisibleOnly onClick={onClick}>
@@ -100,7 +84,6 @@ const NonprofitCard = (props: Props) => {
               alt={`${nonprofitCardData.name}`}
             />
           </div>
-          <div className={bannerContent}></div>
           <div className={content}>
             <CoreTypography variant="h4" className={header}>
               {nonprofitCardData.name}

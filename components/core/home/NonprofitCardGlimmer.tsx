@@ -7,16 +7,16 @@ const useStyles = makeStyles(({ palette }: Theme) =>
   createStyles({
     card: {
       backgroundColor: palette.background.paper,
-      width: 358,
-      height: 200,
+      width: 555,
+      height: 339,
       borderRadius: 10,
       overflow: "hidden",
       boxShadow: `0 0 0 1px ${palette.object.lightOutline}`
     },
     cardContainer: {
       position: "relative",
-      width: 360,
-      height: 202,
+      width: 555,
+      height: 339,
       padding: 1
     },
     textContainer: {

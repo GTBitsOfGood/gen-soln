@@ -1,6 +1,6 @@
 import React from "react";
 
-import CardPaginationList from "@core/list";
+import CardPaginationList from "@core/list/CoreCardPaginationListNonproftCarousel";
 import config from "config";
 import { NonprofitCardData, PaginatedNonprofitCards } from "utils/types";
 

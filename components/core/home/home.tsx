@@ -27,12 +27,15 @@ const useStyles = makeStyles({
     width: "160px",
     "align-self": "center",
     margin: "20px 0px"
+  },
+  carousel: {
+    "align-self": "center"
   }
 });
 
 const Home = (nonprofitCards: PaginatedNonprofitCards) => {
   const [session] = useSession();
-  const { container, text, button } = useStyles();
+  const { container, text, button, carousel } = useStyles();
   const { page, isLastPage, cards } = nonprofitCards;
 
   return (
@@ -75,7 +78,9 @@ const Home = (nonprofitCards: PaginatedNonprofitCards) => {
         Sign up
       </CoreButton>
       <SupportCauseGrid />
-      <LandingCarousel page={page} isLastPage={isLastPage} cards={cards} />
+      <div className={carousel}>
+        <LandingCarousel page={page} isLastPage={isLastPage} cards={cards} />
+      </div>
     </div>
   );
 };
