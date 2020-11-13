@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   individual_container: minGridWidth => ({
     "min-width": minGridWidth.toString() + "%"
   }),
-  text: {
+  heading: {
     "text-align": "center",
     color: "#333333",
     margin: "5px 0px"
@@ -64,7 +64,7 @@ const SupportCauseGrid = () => {
   });
   return (
     <div className={classes.container}>
-      <Typography className={classes.text} variant="h4">
+      <Typography className={classes.heading} variant="h1">
         Find a Cause You Support
       </Typography>
       <div className={classes.root}>
