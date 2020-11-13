@@ -1,3 +1,5 @@
+import { url } from "inspector";
+
 import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
@@ -55,7 +57,12 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       textOverflow: "ellipsis",
       overflow: "hidden",
       whiteSpace: "nowrap"
-    }
+    },
+    banner: (image_path: { image: string }) => ({
+      height: "200px",
+      "background-size": "cover",
+      backgroundImage: "url(" + image_path.image + ")"
+    })
   })
 );
 
@@ -66,17 +73,23 @@ interface Props {
 
 const NonprofitCard = (props: Props) => {
   const { nonprofitCardData, onClick } = props;
-  const { card, cardContainer, content, image, header } = useStyles();
+  const logo_path: string = nonprofitCardData.logo.split('"')[1];
+  const image_path = { image: "../.././causes/OTHER.jpg" };
+  const { card, cardContainer, content, image, header, banner } = useStyles(
+    image_path
+  );
 
   return (
     <FocusVisibleOnly onClick={onClick}>
       <div className={cardContainer}>
         <div className={card}>
-          <img
-            src={nonprofitCardData.logo.split('"')[1]}
-            className={image}
-            alt={`${nonprofitCardData.name}`}
-          />
+          <div className={banner}>
+            <img
+              src={logo_path}
+              className={image}
+              alt={`${nonprofitCardData.name}`}
+            />
+          </div>
           <div className={content}>
             <CoreTypography variant="h4" className={header}>
               {nonprofitCardData.name}
