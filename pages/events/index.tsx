@@ -51,6 +51,7 @@ export const getServerSideProps = async ({
   const commonProps = {};
   const date = new Date().toJSON();
   console.log(date);
+  console.log(new Date().getTimezoneOffset());
 
   if (getFilterCountFromQuery(query) === 0) {
     const [
