@@ -31,7 +31,7 @@ const options: InitOptions = {
           ...session.user,
           ...user
         }
-      }
+      };
     }
   }
 };
