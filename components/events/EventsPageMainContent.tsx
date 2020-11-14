@@ -7,6 +7,7 @@ import CoreTypography from "@core/typography";
 import { getUpcomingEvents } from "requests/events";
 import { DatePaginatedEventCards } from "utils/types";
 
+import EventsPageAllEventsList from "./EventsPageAllEventsList";
 import EventsPageCauseList from "./EventsPageCauseList";
 import EventsPageEventList from "./EventsPageEventList";
 import EventsPageNearbyEventsList from "./EventsPageNearbyEventsList";
@@ -32,9 +33,13 @@ const useStyles = makeStyles({
 
 interface Props {
   upcomingEvents: DatePaginatedEventCards;
+  allEvents: DatePaginatedEventCards;
 }
 
-const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
+const EventsPageMainContent: React.FC<Props> = ({
+  upcomingEvents,
+  allEvents
+}) => {
   const { mainContainer, listContainer, divider } = useStyles();
 
   return (
@@ -64,6 +69,9 @@ const EventsPageMainContent: React.FC<Props> = ({ upcomingEvents }) => {
         <EventsPageCauseList />
       </div>
       <CoreDivider className={divider} />
+      <div>
+        <EventsPageAllEventsList allEvents={allEvents} />
+      </div>
     </div>
   );
 };

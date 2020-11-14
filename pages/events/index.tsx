@@ -11,7 +11,8 @@ import EventsPageUnfiltered from "components/events/EventsPageUnfiltered";
 import {
   getUpcomingEventsCardData,
   getFilteredEventsCardData,
-  getFilteredEventsCardDataCount
+  getFilteredEventsCardDataCount,
+  getAllEventsCardData
 } from "server/actions/events";
 import { getFilterValuesInQuery, getFilterCountFromQuery } from "utils/filters";
 import { DEFAULT_SORT_VALUE, getSortValueInQuery } from "utils/sortOptions";
@@ -25,6 +26,7 @@ const EventsNextPage: NextPage<InferGetServerSidePropsType<
       return (
         <EventsPageUnfiltered
           upcomingEventsFirstPageData={props.upcomingEventsFirstPageData}
+          allEventsFirstPageData={props.allEventsFirstPageData}
         />
       );
     case "WITH_QUERY":
@@ -55,10 +57,16 @@ export const getServerSideProps = async ({
       page: 0
     });
 
+    const allEventsFirstPageData = await getAllEventsCardData({
+      date,
+      page: 0
+    });
+
     return {
       props: {
         ...commonProps,
         upcomingEventsFirstPageData,
+        allEventsFirstPageData,
         type: "WITHOUT_QUERY" as const
       }
     };

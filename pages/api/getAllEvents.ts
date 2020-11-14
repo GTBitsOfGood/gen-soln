@@ -21,7 +21,7 @@ export default async (
 
       if (Array.isArray(date) || isNaN(page)) {
         throw new Error(
-          "API call to getUpcomingEvents did not receive data of the expected type!"
+          "API call to getAllEvents did not receive data of the expected type!"
         );
       }
 
