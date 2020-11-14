@@ -240,6 +240,7 @@ export async function getFilteredEventsCardDataCount({
 }: FilterPageQueryArgs) {
   await Mongo();
   const findQuery = await createFilterQuery({ causes, cities, times, date });
+  console.log(findQuery);
   return Event.countDocuments(findQuery);
 }
 const createFilterQuery = async ({

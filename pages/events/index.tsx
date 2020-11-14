@@ -50,6 +50,7 @@ export const getServerSideProps = async ({
   // TODO: Use this eventually, if we need common props between filtered and unfiltered event pages.
   const commonProps = {};
   const date = new Date().toJSON();
+  console.log(date);
 
   if (getFilterCountFromQuery(query) === 0) {
     const [
