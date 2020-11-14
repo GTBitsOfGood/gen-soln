@@ -22,9 +22,6 @@ const useStyles = makeStyles({
   listContainer: {
     paddingTop: 24
   },
-  nearestEventsContainer: {
-    marginTop: 60
-  },
   divider: {
     marginTop: 72,
     marginBottom: 72
