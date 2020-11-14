@@ -52,15 +52,19 @@ export const getServerSideProps = async ({
   const date = new Date().toJSON();
 
   if (getFilterCountFromQuery(query) === 0) {
-    const upcomingEventsFirstPageData = await getUpcomingEventsCardData({
-      date,
-      page: 0
-    });
-
-    const allEventsFirstPageData = await getAllEventsCardData({
-      date,
-      page: 0
-    });
+    const [
+      upcomingEventsFirstPageData,
+      allEventsFirstPageData
+    ] = await Promise.all([
+      getUpcomingEventsCardData({
+        date,
+        page: 0
+      }),
+      await getAllEventsCardData({
+        date,
+        page: 0
+      })
+    ]);
 
     return {
       props: {

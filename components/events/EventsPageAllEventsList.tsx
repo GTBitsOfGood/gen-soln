@@ -13,8 +13,8 @@ interface Props {
 }
 
 const EventsPageAllEventsList: React.FC<Props> = ({ allEvents }) => {
-  return (
-    <div>
+  return allEvents.cards.length > 0 ? (
+    <>
       <CoreTypography variant="h2">All Events</CoreTypography>
       <div>
         <EventsPageInfiniteScroll
@@ -27,8 +27,8 @@ const EventsPageAllEventsList: React.FC<Props> = ({ allEvents }) => {
           }
         />
       </div>
-    </div>
-  );
+    </>
+  ) : null;
 };
 
 export default EventsPageAllEventsList;

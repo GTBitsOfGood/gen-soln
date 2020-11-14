@@ -69,9 +69,7 @@ const EventsPageMainContent: React.FC<Props> = ({
         <EventsPageCauseList />
       </div>
       <CoreDivider className={divider} />
-      <div>
-        <EventsPageAllEventsList allEvents={allEvents} />
-      </div>
+      <EventsPageAllEventsList allEvents={allEvents} />
     </div>
   );
 };
