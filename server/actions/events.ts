@@ -40,7 +40,7 @@ export async function getAllEventsCardData({
   date,
   page
 }: DatePageRequest): Promise<DatePaginatedEventCards> {
-  const CARDS_PER_PAGE = 4;
+  const CARDS_PER_PAGE = 12;
   await Mongo();
 
   const result = await Event.find(

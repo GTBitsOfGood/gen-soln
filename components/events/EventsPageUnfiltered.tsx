@@ -8,10 +8,12 @@ import { useRouterQueryParamsForSortingState } from "./useRouterQueryParamsState
 
 interface Props {
   upcomingEventsFirstPageData: DatePaginatedEventCards;
+  allEventsFirstPageData: DatePaginatedEventCards;
 }
 
 const EventsPageUnfiltered: React.FC<Props> = ({
-  upcomingEventsFirstPageData
+  upcomingEventsFirstPageData,
+  allEventsFirstPageData
 }) => {
   const { currentState, shallowClear } = useRouterQueryParamsForSortingState();
 
@@ -24,7 +26,10 @@ const EventsPageUnfiltered: React.FC<Props> = ({
 
   return (
     <EventsPageWithSidebar>
-      <EventsPageMainContent upcomingEvents={upcomingEventsFirstPageData} />
+      <EventsPageMainContent
+        upcomingEvents={upcomingEventsFirstPageData}
+        allEvents={allEventsFirstPageData}
+      />
     </EventsPageWithSidebar>
   );
 };
