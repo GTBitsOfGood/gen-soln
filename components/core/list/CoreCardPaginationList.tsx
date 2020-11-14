@@ -35,9 +35,7 @@ const useStyles = makeStyles(({ palette }: Theme) =>
       alignItems: "center",
       position: "relative",
       overflowX: "visible",
-      overflowY: "hidden",
-      marginLeft: 24,
-      paddingLeft: -24
+      overflowY: "hidden"
     },
     item: {
       marginRight: 32
