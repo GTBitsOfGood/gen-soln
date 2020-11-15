@@ -51,7 +51,7 @@ export default function FixedContainer() {
               marginTop: "36px"
             }}
           >
-            <CoreTypography variant="body1">Support Us</CoreTypography>
+            Support Us
           </CoreButton>
         </div>
       </Container>
@@ -92,7 +92,7 @@ export default function FixedContainer() {
               marginTop: "140px"
             }}
           >
-            <CoreTypography variant="body1">Donate</CoreTypography>
+            Donate
           </CoreButton>
 
           <CoreButton
@@ -106,7 +106,7 @@ export default function FixedContainer() {
               marginLeft: "96px"
             }}
           >
-            <CoreTypography variant="body1">Volunteer</CoreTypography>
+            Volunteer
           </CoreButton>
         </div>
       </Container>
