@@ -6,12 +6,14 @@ import { signIn, signOut, useSession } from "next-auth/client";
 
 import SimpleContainer from "@core/banner/Banner";
 import FixedContainer from "@core/footer";
-import LandingCarousel from "@core/home/LandingCarousel";
+import NonprofitLandingCarousel from "@core/home/NonprofitLandingCarousel";
 import CoreLink from "@core/link";
 import CoreNavBar from "@core/navbar/CoreNavBar";
-import { PaginatedNonprofitCards } from "utils/types";
+import { DatePaginatedEventCards, PaginatedNonprofitCards } from "utils/types";
 
 import SupportCauseGrid from "./SupportCauseGrid";
+import EventsPageEventList from "components/events/EventsPageEventList";
+import { getUpcomingEvents } from "requests/events";
 
 const useStyles = makeStyles({
   container: {
@@ -47,10 +49,14 @@ const useStyles = makeStyles({
   }
 });
 
-const Home = (nonprofitCards: PaginatedNonprofitCards) => {
+interface Props {
+  nonprofitCards: PaginatedNonprofitCards;
+  upcomingEvents: DatePaginatedEventCards;
+}
+
+const Home: React.FC<Props> = props => {
   const [session] = useSession();
   const { container, text, button, carousel, heading, allLink } = useStyles();
-  const { page, isLastPage, cards } = nonprofitCards;
 
   return (
     <div className={container}>
@@ -61,10 +67,26 @@ const Home = (nonprofitCards: PaginatedNonprofitCards) => {
         <Typography className={heading} variant="h2">
           New Non-Profits on Our Platform
         </Typography>
-        <LandingCarousel page={page} isLastPage={isLastPage} cards={cards} />
+        <NonprofitLandingCarousel nonprofitCards={props.nonprofitCards} />
         <CoreLink href={"/"} className={allLink}>
           {"All Non-Profits Here ->"}
         </CoreLink>
+      </div>
+      <div className={carousel}>
+        <Typography variant="h2">
+          Upcoming Volunteer Events
+        </Typography>
+        <div>
+          <EventsPageEventList
+            paginatedEventCardsData={props.upcomingEvents}
+            getMoreEvents={(page: number) =>
+              getUpcomingEvents({
+                page,
+                date: props.upcomingEvents.date
+              })
+            }
+          />
+        </div>
       </div>
       <FixedContainer />
     </div>
