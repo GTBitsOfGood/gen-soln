@@ -9,9 +9,11 @@ import {
   Menu
 } from "@material-ui/core";
 import { makeStyles, StylesProvider } from "@material-ui/core/styles";
+import { useRouter } from "next/router";
 
 import { CoreButton } from "@core/buttons";
 import { SearchIcon, ThreeBarsIcon } from "@core/icons";
+import config from "config";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -89,7 +91,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function CoreNavBar() {
+  const router = useRouter();
   const navTabs = ["Discover", "Events", "Non-profits", "Sign In", "Sign Up"];
+  const navRoutes = [
+    config.pages.index,
+    config.pages.events,
+    config.pages.nonprofits,
+    config.pages.login,
+    config.pages.signup
+  ];
   const classes = useStyles();
   const [
     mobileMoreAnchorEl,
@@ -153,15 +163,40 @@ export default function CoreNavBar() {
             <div className={classes.containButton}>
               {navTabs.map(navTab => {
                 if (navTab !== "Sign Up" && navTab !== "Sign In") {
-                  return <CoreButton>{navTab}</CoreButton>;
+                  const route = navRoutes[navTabs.indexOf(navTab)];
+                  return (
+                    <CoreButton
+                      onClick={() => {
+                        void router.push(route);
+                      }}
+                    >
+                      {navTab}
+                    </CoreButton>
+                  );
                 }
               })}
             </div>
             <div className={classes.containButton}>
-              <CoreButton variant="outlined"> Sign In </CoreButton>
+              <CoreButton
+                variant="outlined"
+                onClick={() => {
+                  void router.push(config.pages.login);
+                }}
+              >
+                {" "}
+                Sign In{" "}
+              </CoreButton>
             </div>
             <div className={classes.containButton}>
-              <CoreButton variant="contained"> Sign Up </CoreButton>
+              <CoreButton
+                variant="contained"
+                onClick={() => {
+                  void router.push(config.pages.signup);
+                }}
+              >
+                {" "}
+                Sign Up{" "}
+              </CoreButton>
             </div>
           </div>
           <div className={classes.sectionMobile}>
