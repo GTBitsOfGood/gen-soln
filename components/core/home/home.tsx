@@ -53,14 +53,13 @@ const HomePage: React.FC<Props> = ({ upcomingEvents }) => {
   const [session] = useSession();
 
   const { container, text, button, mainContainer, listContainer } = useStyles();
-  const events = upcomingEvents;
   return (
     <div className={container}>
       {console.log(upcomingEvents)}
       <CoreNavBar></CoreNavBar>
       <SimpleContainer></SimpleContainer>
       <div className={mainContainer}>
-        {events && (
+        {upcomingEvents && (
           <>
             <CoreTypography variant="h2">
               Upcoming Volunteer Events
