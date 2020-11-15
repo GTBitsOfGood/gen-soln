@@ -17,14 +17,16 @@ export async function logDonation({
 }: LoggedDonation): Promise<void> {
   await Mongo();
 
-  const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
-  const user = await User.findOne({ _id: userId }); // TODO: Don't allow front end to pass null resulting userId
+  const [nonprofit, user] = await Promise.all([
+    Nonprofit.findOne({ _id: nonprofitId }),
+    User.findOne({ _id: userId }) // TODO: Don't allow front end to pass null resulting userId
+  ]);
 
   if (!nonprofit) {
     throw new Error(errors.nonprofit.INVALID_ID);
   }
 
-  if (!user) {
+  if (!user /*TODO: Remove second condition*/ && user != "") {
     throw new Error(errors.user.INVALID_ID);
   }
 
