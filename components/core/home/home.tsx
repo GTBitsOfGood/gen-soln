@@ -33,8 +33,15 @@ const useStyles = makeStyles({
     margin: "20px 0px"
   },
   upcomingEventsCarousel: {
-    alignSelf: "center",
-    marginTop: "50px"
+    display: "flex",
+    flexDirection: "column",
+    "align-self": "center",
+    "margin-top": "10vh",
+    "margin-left": "5vh",
+    "margin-right": "5vh"
+  },
+  upcomingEventsHeading: {
+    marginBottom: 20
   },
   carousel: {
     alignSelf: "center",
@@ -60,14 +67,14 @@ interface Props {
 
 const Home: React.FC<Props> = props => {
   const [session] = useSession();
-  const { container, text, button, carousel, upcomingEventsCarousel, heading, allLink } = useStyles();
+  const { container, text, button, carousel, upcomingEventsCarousel, heading, allLink, upcomingEventsHeading } = useStyles();
 
   return (
     <div className={container}>
       <CoreNavBar />
       <SimpleContainer />
       <div className={upcomingEventsCarousel}>
-        <Typography variant="h2">
+        <Typography className={upcomingEventsHeading} variant="h2">
           Upcoming Volunteer Events
         </Typography>
         <div>
@@ -80,6 +87,9 @@ const Home: React.FC<Props> = props => {
               })
             }
           />
+          <CoreLink href={"/events"} className={allLink}>
+            {"All Events Here ->"}
+          </CoreLink>
         </div>
       </div>
       <SupportCauseGrid />
