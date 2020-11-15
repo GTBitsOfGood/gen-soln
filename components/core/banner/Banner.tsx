@@ -37,7 +37,8 @@ const useStyles = makeStyles({
     minHeight: "100vh",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    "margin-bottom": -700
   },
   sc: {
     display: "flex",
