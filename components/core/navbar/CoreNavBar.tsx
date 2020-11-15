@@ -8,7 +8,7 @@ import {
   MenuItem,
   Menu
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, StylesProvider } from "@material-ui/core/styles";
 
 import { CoreButton } from "@core/buttons";
 import { SearchIcon, ThreeBarsIcon } from "@core/icons";
@@ -38,18 +38,21 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
-      width: 110
+      width: 130,
+      height: 37
     }
   },
   searchIcon: {
     paddingLeft: 17,
+    paddingTop: 0,
     color: "#999999",
     height: "100%",
     position: "absolute",
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    width: 14
   },
   inputRoot: {
     color: "#OOOOOO"
@@ -78,6 +81,10 @@ const useStyles = makeStyles(theme => ({
   },
   containButton: {
     paddingLeft: 24
+  },
+  image: {
+    width: "114.35px",
+    height: "20px"
   }
 }));
 
@@ -122,7 +129,11 @@ export default function CoreNavBar() {
       <AppBar position="static" style={{ background: "#FFFFFF" }}>
         <Toolbar>
           <a href="https://www.bitsofgood.org/">
-            <img alt="Bits of Good Logo" src="/site/bog-logo.svg" />
+            <img
+              alt="Bits of Good Logo"
+              src="/site/bog-logo.svg"
+              className={classes.image}
+            />
           </a>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
