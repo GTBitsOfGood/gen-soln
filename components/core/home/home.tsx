@@ -7,13 +7,14 @@ import { signIn, signOut, useSession } from "next-auth/client";
 import SimpleContainer from "@core/banner/Banner";
 import FixedContainer from "@core/footer";
 import NonprofitLandingCarousel from "@core/home/NonprofitLandingCarousel";
+import LongArrowRight from "@core/icons/symbols/LongArrowRight";
 import CoreLink from "@core/link";
 import CoreNavBar from "@core/navbar/CoreNavBar";
+import EventsPageEventList from "components/events/EventsPageEventList";
+import { getUpcomingEvents } from "requests/events";
 import { DatePaginatedEventCards, PaginatedNonprofitCards } from "utils/types";
 
 import SupportCauseGrid from "./SupportCauseGrid";
-import EventsPageEventList from "components/events/EventsPageEventList";
-import { getUpcomingEvents } from "requests/events";
 
 const useStyles = makeStyles({
   container: {
@@ -57,6 +58,11 @@ const useStyles = makeStyles({
   allLink: {
     marginTop: 20,
     float: "right"
+  },
+  arrow: {
+    paddingTop: 12,
+    marginLeft: 8,
+    color: "#FD8033"
   }
 });
 
@@ -67,7 +73,17 @@ interface Props {
 
 const Home: React.FC<Props> = props => {
   const [session] = useSession();
-  const { container, text, button, carousel, upcomingEventsCarousel, heading, allLink, upcomingEventsHeading } = useStyles();
+  const {
+    container,
+    text,
+    button,
+    carousel,
+    upcomingEventsCarousel,
+    heading,
+    allLink,
+    upcomingEventsHeading,
+    arrow
+  } = useStyles();
 
   return (
     <div className={container}>
@@ -87,9 +103,10 @@ const Home: React.FC<Props> = props => {
               })
             }
           />
-          <CoreLink href={"/events"} className={allLink}>
-            {"All Events Here ->"}
-          </CoreLink>
+          <div className={allLink}>
+            <CoreLink href={"/events"}>ALL EVENTS HERE</CoreLink>
+            <LongArrowRight className={arrow} />
+          </div>
         </div>
       </div>
       <SupportCauseGrid />
@@ -98,9 +115,10 @@ const Home: React.FC<Props> = props => {
           New Non-Profits on Our Platform
         </Typography>
         <NonprofitLandingCarousel nonprofitCards={props.nonprofitCards} />
-        <CoreLink href={"/"} className={allLink}>
-          {"All Non-Profits Here ->"}
-        </CoreLink>
+        <div className={allLink}>
+          <CoreLink href={"/"}>ALL NON-PROFITS HERE</CoreLink>
+          <LongArrowRight className={arrow} />
+        </div>
       </div>
       <FixedContainer />
     </div>
