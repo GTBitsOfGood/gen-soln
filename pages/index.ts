@@ -14,8 +14,7 @@ const IndexPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const router = useRouter();
 
   useEffect(() => {
-    defaultNonprofitId &&
-      void router.push(config.pages.donate(defaultNonprofitId));
+    defaultNonprofitId && void router.push(config.pages.home);
   }, [router, defaultNonprofitId]);
 
   return null;
