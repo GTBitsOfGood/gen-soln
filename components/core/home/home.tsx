@@ -32,6 +32,10 @@ const useStyles = makeStyles({
     alignSelf: "center",
     margin: "20px 0px"
   },
+  upcomingEventsCarousel: {
+    alignSelf: "center",
+    marginTop: "50px"
+  },
   carousel: {
     alignSelf: "center",
     marginBottom: 10
@@ -56,23 +60,13 @@ interface Props {
 
 const Home: React.FC<Props> = props => {
   const [session] = useSession();
-  const { container, text, button, carousel, heading, allLink } = useStyles();
+  const { container, text, button, carousel, upcomingEventsCarousel, heading, allLink } = useStyles();
 
   return (
     <div className={container}>
       <CoreNavBar />
       <SimpleContainer />
-      <SupportCauseGrid />
-      <div className={carousel}>
-        <Typography className={heading} variant="h2">
-          New Non-Profits on Our Platform
-        </Typography>
-        <NonprofitLandingCarousel nonprofitCards={props.nonprofitCards} />
-        <CoreLink href={"/"} className={allLink}>
-          {"All Non-Profits Here ->"}
-        </CoreLink>
-      </div>
-      <div className={carousel}>
+      <div className={upcomingEventsCarousel}>
         <Typography variant="h2">
           Upcoming Volunteer Events
         </Typography>
@@ -87,6 +81,16 @@ const Home: React.FC<Props> = props => {
             }
           />
         </div>
+      </div>
+      <SupportCauseGrid />
+      <div className={carousel}>
+        <Typography className={heading} variant="h2">
+          New Non-Profits on Our Platform
+        </Typography>
+        <NonprofitLandingCarousel nonprofitCards={props.nonprofitCards} />
+        <CoreLink href={"/"} className={allLink}>
+          {"All Non-Profits Here ->"}
+        </CoreLink>
       </div>
       <FixedContainer />
     </div>
