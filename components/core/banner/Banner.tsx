@@ -2,17 +2,16 @@ import React from "react";
 
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 
 import { CoreButton } from "@core/buttons";
 import { SearchIcon } from "@core/icons";
+import CoreTypography from "@core/typography/CoreTypography";
 
 const useStyles = makeStyles({
   banner: {
     display: "flex",
     justifyContent: "center",
     margin: 0,
-    //backgroundImage: "url(" + "../backgrounds/HeroImg.jpg" + ")",
     alignItems: "center",
     overflow: "hidden",
     position: "absolute",
@@ -20,41 +19,28 @@ const useStyles = makeStyles({
     marginRight: "10%"
   },
   overlay: {
-    display: "flex",
-    width: "906px",
-    height: "184px",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: "-130px",
-    backgroundColor: "white",
-    borderColor: "black",
-    borderRadius: "20px"
-  },
-  smallContainer: {
-    justifyContent: "space-evenly"
-  },
-  c: {
     minHeight: "100vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    "margin-bottom": -700
+    marginBottom: -700
   },
-  sc: {
+  row: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
+    textAlign: "left"
   },
   box: {
     padding: "50px",
     position: "relative",
     textAlign: "center",
-    width: "906px",
-    height: "184px",
+    width: 906,
+    height: 184,
     backgroundColor: "white",
     borderColor: "black",
-    borderRadius: "20px",
-    marginTop: "-850px"
+    borderRadius: 20,
+    marginTop: -850
   },
   searchIcon: {
     paddingLeft: 17,
@@ -72,7 +58,7 @@ const useStyles = makeStyles({
   bgimg: {
     objectFit: "cover",
     filter: "brightness(50%)",
-    height: "530px",
+    height: 530,
     width: "100vw"
   }
 });
@@ -89,41 +75,43 @@ export default function SimpleContainer() {
         ></img>
         <div className={classes.banner}>
           <Container>
-            <Typography variant="h1" style={{ color: "white" }}>
+            <CoreTypography variant="h1" style={{ color: "white" }}>
               Connecting Non-profits with Communities <br></br> of People Who to
               to do Good
-            </Typography>
+            </CoreTypography>
             <br></br>
-            <Typography variant="h3" style={{ color: "white" }}>
+            <CoreTypography variant="h3" style={{ color: "white" }}>
               Free for Non-profits, no subscription or platform fees
-            </Typography>
+            </CoreTypography>
             <br></br>
             <CoreButton variant="contained"> Non-profit sign up </CoreButton>
           </Container>
         </div>
       </div>
-      <div className={classes.c}>
+      <div className={classes.overlay}>
         <div className={classes.box}>
-          <Typography variant="h2">Discover Non-Profts Near You</Typography>
+          <CoreTypography variant="h2">
+            Discover Non-Profts Near You
+          </CoreTypography>
           <br></br>
-          <div className={classes.sc}>
-            <div style={{ textAlign: "left" }}>
-              <Typography variant="h4">Location</Typography>
-              <Typography variant="body2" style={{ color: "gray" }}>
+          <div className={classes.row}>
+            <div>
+              <CoreTypography variant="h4">Location</CoreTypography>
+              <CoreTypography variant="body2" style={{ color: "gray" }}>
                 Where are you located?
-              </Typography>
+              </CoreTypography>
             </div>
-            <div style={{ textAlign: "left" }}>
-              <Typography variant="h4">Cause</Typography>
-              <Typography variant="body2" style={{ color: "gray" }}>
+            <div>
+              <CoreTypography variant="h4">Cause</CoreTypography>
+              <CoreTypography variant="body2" style={{ color: "gray" }}>
                 What are you interested in?
-              </Typography>
+              </CoreTypography>
             </div>
-            <div style={{ textAlign: "left" }}>
-              <Typography variant="h4">Contribute</Typography>
-              <Typography variant="body2" style={{ color: "gray" }}>
+            <div>
+              <CoreTypography variant="h4">Contribute</CoreTypography>
+              <CoreTypography variant="body2" style={{ color: "gray" }}>
                 How do you want to help?
-              </Typography>
+              </CoreTypography>
             </div>
           </div>
           <br></br>

@@ -83,8 +83,8 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 24
   },
   image: {
-    width: "114.35px",
-    height: "20px"
+    width: 114.35,
+    height: 20
   }
 }));
 

@@ -5,52 +5,44 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import { signIn, signOut, useSession } from "next-auth/client";
 
 import SimpleContainer from "@core/banner/Banner";
-import { CoreButton } from "@core/buttons";
 import FixedContainer from "@core/footer";
 import LandingCarousel from "@core/home/LandingCarousel";
 import CoreLink from "@core/link";
 import CoreNavBar from "@core/navbar/CoreNavBar";
-import config from "config";
-import { getUpcomingEvents, getNearestEvents } from "requests/events";
-import {
-  DatePaginatedEventCards,
-  LocationPaginatedEventCards
-} from "utils/types";
+import { PaginatedNonprofitCards } from "utils/types";
 
-import { PaginatedNonprofitCards } from "../../../utils/types";
-import EventsPageEventList from "../../events/EventsPageEventList";
 import SupportCauseGrid from "./SupportCauseGrid";
 
 const useStyles = makeStyles({
   container: {
     display: "flex",
-    "min-width": "420px",
+    minWidth: "420px",
     flexDirection: "column",
-    "align-self": "center"
+    alignSelf: "center"
   },
   text: {
-    "text-align": "center",
+    textAlign: "center",
     color: "#333333",
     margin: "5px 0px"
   },
   button: {
     width: "160px",
-    "align-self": "center",
+    alignSelf: "center",
     margin: "20px 0px"
   },
   carousel: {
-    "align-self": "center",
-    "margin-bottom": 10
+    alignSelf: "center",
+    marginBottom: 10
   },
   heading: {
     align: "left",
-    "margin-left": 48,
-    "margin-top": 200,
-    "margin-bottom": 25,
+    marginLeft: 48,
+    marginTop: 200,
+    marginBottom: 25,
     color: "#333333"
   },
   allLink: {
-    "margin-top": 20,
+    marginTop: 20,
     float: "right"
   }
 });
@@ -62,8 +54,8 @@ const Home = (nonprofitCards: PaginatedNonprofitCards) => {
 
   return (
     <div className={container}>
-      <CoreNavBar></CoreNavBar>
-      <SimpleContainer></SimpleContainer>
+      <CoreNavBar />
+      <SimpleContainer />
       <SupportCauseGrid />
       <div className={carousel}>
         <Typography className={heading} variant="h2">
@@ -74,7 +66,7 @@ const Home = (nonprofitCards: PaginatedNonprofitCards) => {
           {"All Non-Profits Here ->"}
         </CoreLink>
       </div>
-      <FixedContainer></FixedContainer>
+      <FixedContainer />
     </div>
   );
 };
