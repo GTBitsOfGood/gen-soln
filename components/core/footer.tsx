@@ -10,6 +10,7 @@ import footerImage1 from "../../public/site/bog-footer.png";
 import * as logo from "../../public/site/bog-logo.png";
 import logo2 from "../../public/site/bog-logo2.png";
 */
+
 import CoreButton from "./buttons/CoreButton";
 import CoreTypography from "./typography/CoreTypography";
 
@@ -20,14 +21,12 @@ export default function FixedContainer() {
       <Container style={{ height: "558px" }}>
         <Typography component="div" style={{ backgroundColor: "#cfe8fc" }} />
         <div style={{ marginLeft: "40px", marginTop: "96px", float: "left" }}>
-          {/*
           <img
-            src={footerImage1}
+            src="../backgrounds/support_us.png"
             alt="bits of good footer"
             width="587"
             height="366"
           />
-          */}
         </div>
         <div
           style={{ float: "left", marginLeft: "117px", marginTop: "118.5px" }}
