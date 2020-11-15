@@ -94,7 +94,7 @@ export default function CoreNavBar() {
   const router = useRouter();
   const navTabs = ["Discover", "Events", "Non-profits", "Sign In", "Sign Up"];
   const navRoutes = [
-    config.pages.index,
+    "/home",
     config.pages.events,
     config.pages.nonprofits,
     config.pages.login,
