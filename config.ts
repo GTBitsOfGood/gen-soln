@@ -21,7 +21,6 @@ export default {
   baseUrl: process.env.BASE_URL,
   pages: {
     index: "/",
-    home: "/home",
     login: "/login",
     signup: "/signup",
     donate: (path = "[id]"): string => `/donate/${path}`,
