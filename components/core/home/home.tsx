@@ -4,45 +4,45 @@ import { Typography } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { signIn, signOut, useSession } from "next-auth/client";
 
-import { CoreButton } from "@core/buttons";
+import SimpleContainer from "@core/banner/Banner";
+import FixedContainer from "@core/footer";
 import LandingCarousel from "@core/home/LandingCarousel";
 import CoreLink from "@core/link";
-import config from "config";
+import CoreNavBar from "@core/navbar/CoreNavBar";
+import { PaginatedNonprofitCards } from "utils/types";
 
-import { PaginatedNonprofitCards } from "../../../utils/types";
 import SupportCauseGrid from "./SupportCauseGrid";
 
 const useStyles = makeStyles({
   container: {
     display: "flex",
-    "min-width": "420px",
+    minWidth: "420px",
     flexDirection: "column",
-    "align-self": "center",
-    "margin-top": "10vh"
+    alignSelf: "center"
   },
   text: {
-    "text-align": "center",
+    textAlign: "center",
     color: "#333333",
     margin: "5px 0px"
   },
   button: {
     width: "160px",
-    "align-self": "center",
+    alignSelf: "center",
     margin: "20px 0px"
   },
   carousel: {
-    "align-self": "center",
-    "margin-bottom": 10
+    alignSelf: "center",
+    marginBottom: 10
   },
   heading: {
     align: "left",
-    "margin-left": 48,
-    "margin-top": 200,
-    "margin-bottom": 25,
+    marginLeft: 48,
+    marginTop: 200,
+    marginBottom: 25,
     color: "#333333"
   },
   allLink: {
-    "margin-top": 20,
+    marginTop: 20,
     float: "right"
   }
 });
@@ -54,43 +54,8 @@ const Home = (nonprofitCards: PaginatedNonprofitCards) => {
 
   return (
     <div className={container}>
-      {!session && (
-        <div className={text}>
-          Not signed in <br />
-          <CoreButton
-            variant="contained"
-            onClick={e => {
-              e.preventDefault();
-              signIn().catch(err => console.error(err));
-            }}
-            className={button}
-          >
-            Sign in
-          </CoreButton>
-        </div>
-      )}
-      {session && (
-        <>
-          Signed in as {session.user.email} <br />
-          <CoreButton
-            variant="contained"
-            onClick={e => {
-              e.preventDefault();
-              signOut().catch(err => console.error(err));
-            }}
-            className={button}
-          >
-            Sign out
-          </CoreButton>
-        </>
-      )}
-      <CoreButton
-        variant="contained"
-        href={config.pages.signup}
-        className={button}
-      >
-        Sign up
-      </CoreButton>
+      <CoreNavBar />
+      <SimpleContainer />
       <SupportCauseGrid />
       <div className={carousel}>
         <Typography className={heading} variant="h2">
@@ -101,6 +66,7 @@ const Home = (nonprofitCards: PaginatedNonprofitCards) => {
           {"All Non-Profits Here ->"}
         </CoreLink>
       </div>
+      <FixedContainer />
     </div>
   );
 };

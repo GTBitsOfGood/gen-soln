@@ -193,6 +193,8 @@ export default function FixedContainer() {
           </ul>
         </div>
       </Container>
+      <br></br>
+      <br></br>
       <div style={{ marginLeft: "149px", marginRight: "149px" }}>
         <Divider />
         <Container style={{ height: "81px" }}>
@@ -210,7 +212,7 @@ export default function FixedContainer() {
             style={{
               float: "left",
               marginTop: "20px",
-              marginLeft: "720px",
+              marginLeft: "70%",
               color: "#333333"
             }}
           >
