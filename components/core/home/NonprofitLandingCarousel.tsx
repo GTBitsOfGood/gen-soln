@@ -21,7 +21,7 @@ const NonprofitLandingCarousel: React.FC<Props> = props => {
         <NonprofitCard
           nonprofitCardData={cardData}
           onClick={() => {
-            window.location.replace(config.pages.nonprofit(cardData._id));
+            window.location.replace(config.pages.donate(cardData._id));
           }}
         />
       )}

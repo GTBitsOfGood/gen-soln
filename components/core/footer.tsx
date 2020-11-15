@@ -24,19 +24,17 @@ export default function FixedContainer() {
       <Container style={{ height: "558px" }}>
         <Typography component="div" style={{ backgroundColor: "#cfe8fc" }} />
         <div style={{ marginLeft: "40px", marginTop: "96px", float: "left" }}>
-          {/*
           <img
-            src={footerImage1}
+            src="../backgrounds/support_us.png"
             alt="bits of good footer"
             width="587"
             height="366"
           />
-          */}
         </div>
         <div
           style={{ float: "left", marginLeft: "117px", marginTop: "118.5px" }}
         >
-          <CoreTypography variant="h4">Built by Students</CoreTypography>
+          <CoreTypography variant="h1">Built by Students</CoreTypography>
           <div style={{ width: "438px", marginTop: "16px", color: "#999999" }}>
             <CoreTypography variant="h5">
               This platform is maintained by a community of student volunteers.
@@ -55,7 +53,7 @@ export default function FixedContainer() {
               marginTop: "36px"
             }}
           >
-            <CoreTypography variant="body1">Support Us</CoreTypography>
+            Support Us
           </CoreButton>
         </div>
       </Container>
@@ -64,7 +62,7 @@ export default function FixedContainer() {
         <Container
           style={{ height: "104px", width: "906px", paddingTop: "96px" }}
         >
-          <CoreTypography variant="h4" style={{ textAlign: "center" }}>
+          <CoreTypography variant="h1" style={{ textAlign: "center" }}>
             Let’s Change the World, One Bit at a Time
           </CoreTypography>
           <CoreTypography
@@ -99,7 +97,7 @@ export default function FixedContainer() {
               void router.push(config.pages.donate("64357724"));
             }}
           >
-            <CoreTypography variant="body1">Donate</CoreTypography>
+            Donate
           </CoreButton>
 
           <CoreButton
@@ -116,7 +114,7 @@ export default function FixedContainer() {
               void router.push(config.pages.events);
             }}
           >
-            <CoreTypography variant="body1">Volunteer</CoreTypography>
+            Volunteer
           </CoreButton>
         </div>
       </Container>
