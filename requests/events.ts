@@ -5,7 +5,8 @@ import {
   LocationPageRequest,
   FilterPageRequest,
   FilterPaginatedEventCards,
-  LocationPaginatedEventCards
+  LocationPaginatedEventCards,
+  DateNonprofitPageRequest
 } from "utils/types";
 import { fetchRequestWithPayloadResponse } from "utils/util";
 
@@ -46,6 +47,20 @@ export const getFilteredEvents = async (
 export const getAllEvents = async (datePageInformation: DatePageRequest) =>
   fetchRequestWithPayloadResponse<DatePaginatedEventCards, DatePageRequest>(
     config.apis.getAllEvents,
+    {
+      method: "GET"
+    },
+    datePageInformation
+  );
+
+export const getNonprofitEvents = async (
+  datePageInformation: DateNonprofitPageRequest
+) =>
+  fetchRequestWithPayloadResponse<
+    DatePaginatedEventCards,
+    DateNonprofitPageRequest
+  >(
+    config.apis.getNonprofitEvents,
     {
       method: "GET"
     },
