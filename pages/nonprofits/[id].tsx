@@ -9,21 +9,22 @@ import {
 import ErrorPage from "next/error";
 import { useRouter } from "next/router";
 
+import NonprofitPage from "components/nonprofits/NonprofitPage";
 import config from "config";
 import { getNonprofitIds, getNonprofitById } from "server/actions/nonprofit";
 
-const NonprofitPage: NextPage<InferGetStaticPropsType<
+const NonprofitProfilePage: NextPage<InferGetStaticPropsType<
   typeof getStaticProps
 >> = props => {
   const router = useRouter();
   if (router.isFallback) {
     return null;
   }
-  if (props.hasError) {
+  if (props.hasError || !props.nonProfit) {
     return <ErrorPage statusCode={404} />;
   }
 
-  return null;
+  return <NonprofitPage nonprofit={props.nonProfit} />;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
