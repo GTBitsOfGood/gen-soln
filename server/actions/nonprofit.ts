@@ -95,21 +95,6 @@ export async function getNonprofitInfoForEventPageById(
   return nonprofit;
 }
 
-export async function getDefaultNonprofitId(): Promise<string> {
-  await Mongo();
-
-  const result = (await Nonprofit.find({}, { _id: 1 })
-    .lean()
-    .sort({ name: 1 })
-    .limit(1)) as Array<Pick<NonprofitType, "_id">>;
-
-  if (!result.length) {
-    throw new Error(errors.nonprofit.NO_DATA);
-  }
-
-  return result[0]._id;
-}
-
 export async function createStripeAccount(): Promise<Stripe.Account["id"]> {
   const stripe = stripeConstructor();
 

@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { getAllEventsCardData } from "server/actions/events";
+import { getNonprofitEventsCardData } from "server/actions/events";
 import { handleGetRequestWithPayloadResponse } from "utils/util";
 
 // @route   GET event card data
-// @desc    Gets event data
+// @desc    Gets upcoming events given a nonprofit
 // @access  Public
 export default async (
   req: NextApiRequest,
@@ -13,20 +13,22 @@ export default async (
   handleGetRequestWithPayloadResponse(
     req,
     res,
-    getAllEventsCardData,
-    ["date", "page"],
+    getNonprofitEventsCardData,
+    ["date", "nonprofitId", "page"],
     queryRecord => {
       const date = queryRecord.date;
+      const nonprofitId = queryRecord.nonprofitId;
       const page = Number(queryRecord.page);
 
-      if (Array.isArray(date) || isNaN(page)) {
+      if (Array.isArray(date) || Array.isArray(nonprofitId) || isNaN(page)) {
         throw new Error(
-          "API call to getAllEvents did not receive data of the expected type!"
+          "API call to getNonprofitEvents did not receive data of the expected type!"
         );
       }
 
       return {
         date,
+        nonprofitId,
         page
       };
     }

@@ -33,6 +33,7 @@ const useStripePayment = () => {
       zipcode: string,
       city: string,
       addressLine1: string,
+      addressLine2: string,
       state: string,
       country: string
     ) => {
@@ -47,6 +48,7 @@ const useStripePayment = () => {
           city: city,
           country: country,
           line1: addressLine1,
+          ...(addressLine2 && { line2: addressLine2 }),
           postal_code: zipcode,
           state: state
         }

@@ -55,6 +55,8 @@ export interface Event {
   about: string;
 }
 
+export type NonprofitCardData = Omit<Nonprofit, "stripeAccount" | "events">;
+
 export type EventCardData = Omit<
   Event,
   "maxVolunteers" | "volunteers" | "about"
@@ -74,11 +76,13 @@ export interface PageInformation {
 export type PaginatedCards<T> = PageInformation & { cards: T[] };
 export type PaginatedEventCards = PaginatedCards<EventCardData>;
 export type PaginatedCauseCards = PaginatedCards<CauseCardData>;
+export type PaginatedNonprofitCards = PaginatedCards<NonprofitCardData>;
 
 interface PaginateWithLocation {
   lat: number;
   long: number;
 }
+
 interface PaginateWithDate {
   date: string;
 }
@@ -99,6 +103,8 @@ export type LocationPageRequest = Pick<PageInformation, "page"> &
 
 export type DatePaginatedEventCards = PaginatedEventCards & PaginateWithDate;
 export type DatePageRequest = Pick<PageInformation, "page"> & PaginateWithDate;
+export type DateNonprofitPageRequest = DatePageRequest &
+  Pick<Event, "nonprofitId">;
 
 export type FilterPaginatedEventCards = PaginatedEventCards &
   PaginateWithFilter &

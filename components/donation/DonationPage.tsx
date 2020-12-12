@@ -12,7 +12,8 @@ import DonationPageNonprofitBanner from "./DonationPageNonprofitBanner";
 const useStyles = makeStyles({
   container: {
     minWidth: 420,
-    flex: 0.48
+    flex: 0.48,
+    width: "50%"
   }
 });
 
