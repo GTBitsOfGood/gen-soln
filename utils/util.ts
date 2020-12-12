@@ -14,7 +14,7 @@ interface APIFailureResponse {
   message: string;
 }
 
-type QueryParameterValues = string | number | boolean | string[]; // feel free to add more types as required, just make sure you know how querystringify handles them.
+type QueryParameterValues = string | number | boolean | string[] | null; // feel free to add more types as required, just make sure you know how querystringify handles them.
 type Interface<T> = { [key in keyof T]: QueryParameterValues };
 
 export const convertToStringArr = (

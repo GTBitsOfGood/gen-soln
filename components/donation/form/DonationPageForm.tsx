@@ -151,6 +151,7 @@ const DonationPageForm: React.FC<Props> = ({
           name,
           email: billingStep.email,
           amount,
+          userId: "", // TODO: ACTUAL USERID
           nonprofitId: selectedNonprofitId
         });
       } else {

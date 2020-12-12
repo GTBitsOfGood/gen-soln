@@ -4,27 +4,37 @@ import Stripe from "stripe";
 import Mongo, { stripeConstructor } from "server/index";
 import Donation from "server/models/donation";
 import Nonprofit from "server/models/nonprofit";
+import User from "server/models/user";
 import errors from "utils/errors";
-import { Donation as DonationType } from "utils/types";
+import { LoggedDonation } from "utils/types";
 
 export async function logDonation({
   name,
   email,
   amount,
+  userId,
   nonprofitId
-}: Omit<DonationType, "timestamp">): Promise<void> {
+}: LoggedDonation): Promise<void> {
   await Mongo();
 
-  const nonprofit = await Nonprofit.findOne({ _id: nonprofitId });
+  const [nonprofit, user] = await Promise.all([
+    Nonprofit.findOne({ _id: nonprofitId }),
+    User.findOne({ _id: userId }) // TODO: Don't allow front end to pass null resulting userId
+  ]);
 
   if (!nonprofit) {
     throw new Error(errors.nonprofit.INVALID_ID);
+  }
+
+  if (!user /*TODO: Remove second condition*/ && user != "") {
+    throw new Error(errors.user.INVALID_ID);
   }
 
   const donation = await Donation.create({
     name,
     email,
     amount,
+    user,
     nonprofitId
   });
 

@@ -15,5 +15,8 @@ export default {
   },
   event: {
     INVALID_ID: "An event with the provided ID does not exist in our database."
+  },
+  user: {
+    INVALID_ID: "A user with the provided ID does not exist in our database."
   }
 };

@@ -34,8 +34,11 @@ export interface Donation {
   email: string;
   amount: number;
   nonprofitId: string;
+  userId: string | null;
   timestamp: Date;
 }
+
+export type LoggedDonation = Omit<Donation, "timestamp">;
 
 // Keep in sync with the backend schema
 export interface Event {
