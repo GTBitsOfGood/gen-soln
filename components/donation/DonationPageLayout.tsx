@@ -1,40 +1,28 @@
 import React from "react";
 
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import FullPageLayout from "components/FullPageLayout";
 
 import DonationPageHeader from "./header/DonationPageHeader";
 
-interface StyleProps {
-  backgroundImage: string;
-}
+const useStyles = makeStyles({
+  container: {
+    flexDirection: "column"
+  },
+  content: {
+    flex: 1,
+    backgroundColor: "#FFFAF1",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  }
+});
 
-const useStyles = makeStyles<Theme, StyleProps>(({ margins }) =>
-  createStyles({
-    container: {
-      flexDirection: "column"
-    },
-    content: {
-      flex: 1,
-      display: "flex",
-      backgroundImage: props => props.backgroundImage,
-      backgroundSize: "cover",
-      backgroundRepeat: "repeat-y",
-      backgroundPosition: "center",
-      padding: `${margins.LARGE_VERTICAL} ${margins.HORIZONTAL}`
-    }
-  })
-);
+type Props = React.ComponentProps<typeof DonationPageHeader>;
 
-type Props = React.ComponentProps<typeof DonationPageHeader> & StyleProps;
-
-const DonationPageLayout: React.FC<Props> = ({
-  children,
-  backgroundImage,
-  ...rest
-}) => {
-  const { container, content } = useStyles({ backgroundImage });
+const DonationPageLayout: React.FC<Props> = ({ children, ...rest }) => {
+  const { container, content } = useStyles({});
 
   return (
     <FullPageLayout className={container}>

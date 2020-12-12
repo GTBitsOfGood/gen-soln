@@ -52,15 +52,18 @@ const EventsPageLocationFilter: React.FC = () => {
   return (
     <>
       <LocationAutocompleteInput
-        clearInputOnClose
+        clearValueOnClose
         locationType="(cities)"
         placeholder="E.g. Atlanta, Boston"
-        parentCallback={place => void put(formattedPlace(place))}
+        parentCallback={place => {
+          put(formattedPlace(place));
+        }}
         filterOptions={options =>
           options.filter(
             option => !selectedLocations.includes(formattedPlace(option))
           )
         }
+        textVariant="caption"
       />
       <div className={rootContainer}>
         {selectedLocations.map(location => (

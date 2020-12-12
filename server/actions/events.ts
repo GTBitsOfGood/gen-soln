@@ -12,6 +12,7 @@ import {
   EventCardData as EventCardDataType,
   DatePaginatedEventCards,
   DatePageRequest,
+  DateNonprofitPageRequest,
   LocationPaginatedEventCards,
   LocationPageRequest,
   FilterPaginatedEventCards,
@@ -39,7 +40,7 @@ export async function getAllEventsCardData({
   date,
   page
 }: DatePageRequest): Promise<DatePaginatedEventCards> {
-  const CARDS_PER_PAGE = 4;
+  const CARDS_PER_PAGE = 12;
   await Mongo();
 
   const result = await Event.find(
@@ -47,6 +48,37 @@ export async function getAllEventsCardData({
       startDate: {
         $gte: new Date(date)
       }
+    },
+    CARD_FIELDS
+  )
+    .sort({ startDate: 1 })
+    .skip(page * CARDS_PER_PAGE)
+    .limit(CARDS_PER_PAGE + 1);
+
+  return {
+    cards: result
+      .slice(0, CARDS_PER_PAGE)
+      .map(r => r.toJSON()) as EventCardDataType[],
+    page,
+    date,
+    isLastPage: result.length < CARDS_PER_PAGE + 1
+  };
+}
+
+export async function getNonprofitEventsCardData({
+  date,
+  nonprofitId,
+  page
+}: DateNonprofitPageRequest): Promise<DatePaginatedEventCards> {
+  const CARDS_PER_PAGE = 4;
+  await Mongo();
+
+  const result = await Event.find(
+    {
+      startDate: {
+        $gte: new Date(date)
+      },
+      nonprofitId: nonprofitId
     },
     CARD_FIELDS
   )

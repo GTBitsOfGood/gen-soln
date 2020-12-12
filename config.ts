@@ -29,6 +29,11 @@ export default {
     nonprofits: "/nonprofits",
     nonprofit: (path = "[id]"): string => `/nonprofits/${path}`
   },
+  auth0: {
+    clientId: process.env.AUTH0_CLIENT_ID,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    domain: process.env.AUTH0_DOMAIN
+  },
   apis: {
     login: "/api/login",
     logDonation: "/api/logDonation",
@@ -36,8 +41,10 @@ export default {
     recoverPassword: "/api/recoverPassword",
     getUpcomingEvents: "/api/getUpcomingEvents",
     getNearestEvents: "/api/getNearestEvents",
+    getNonProfitsByDate: "/api/getNonProfitsByDate",
     getFilteredEvents: "/api/getFilteredEvents",
-    getAllEvents: "api/getAllEvents"
+    getAllEvents: "api/getAllEvents",
+    getNonprofitEvents: "/api/getNonprofitEvents"
   },
   nextJSPageRegenerationTime: 10 // Amount of seconds after which incremental static regeneration of Next.js pages can occur
 };

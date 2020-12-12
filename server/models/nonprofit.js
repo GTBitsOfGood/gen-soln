@@ -20,15 +20,16 @@ const nonprofitSchema = new Schema({
     unique: true,
     required: true
   },
+  date: {
+    type: Date,
+    default: Date.now,
+    get: d => d.toString() // getter added to avoid Next.js serialization errors in development
+  },
   headline: {
     type: String,
     required: true
   },
   about: {
-    type: String,
-    required: true
-  },
-  background: {
     type: String,
     required: true
   },
