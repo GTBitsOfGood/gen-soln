@@ -4,35 +4,37 @@ import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
+import { useRouter } from "next/router";
 
 /*
 import footerImage1 from "../../public/site/bog-footer.png";
 import * as logo from "../../public/site/bog-logo.png";
 import logo2 from "../../public/site/bog-logo2.png";
 */
+import config from "config";
+
 import CoreButton from "./buttons/CoreButton";
 import CoreTypography from "./typography/CoreTypography";
 
 export default function FixedContainer() {
+  const router = useRouter();
   return (
     <React.Fragment>
       <CssBaseline />
       <Container style={{ height: "558px" }}>
         <Typography component="div" style={{ backgroundColor: "#cfe8fc" }} />
         <div style={{ marginLeft: "40px", marginTop: "96px", float: "left" }}>
-          {/*
           <img
-            src={footerImage1}
+            src="../backgrounds/support_us.png"
             alt="bits of good footer"
             width="587"
             height="366"
           />
-          */}
         </div>
         <div
           style={{ float: "left", marginLeft: "117px", marginTop: "118.5px" }}
         >
-          <CoreTypography variant="h4">Built by Students</CoreTypography>
+          <CoreTypography variant="h1">Built by Students</CoreTypography>
           <div style={{ width: "438px", marginTop: "16px", color: "#999999" }}>
             <CoreTypography variant="h5">
               This platform is maintained by a community of student volunteers.
@@ -51,7 +53,7 @@ export default function FixedContainer() {
               marginTop: "36px"
             }}
           >
-            <CoreTypography variant="body1">Support Us</CoreTypography>
+            Support Us
           </CoreButton>
         </div>
       </Container>
@@ -60,7 +62,7 @@ export default function FixedContainer() {
         <Container
           style={{ height: "104px", width: "906px", paddingTop: "96px" }}
         >
-          <CoreTypography variant="h4" style={{ textAlign: "center" }}>
+          <CoreTypography variant="h1" style={{ textAlign: "center" }}>
             Let’s Change the World, One Bit at a Time
           </CoreTypography>
           <CoreTypography
@@ -91,8 +93,11 @@ export default function FixedContainer() {
               width: "203px",
               marginTop: "140px"
             }}
+            onClick={() => {
+              void router.push(config.pages.donate("64357724"));
+            }}
           >
-            <CoreTypography variant="body1">Donate</CoreTypography>
+            Donate
           </CoreButton>
 
           <CoreButton
@@ -105,8 +110,11 @@ export default function FixedContainer() {
               marginTop: "140px",
               marginLeft: "96px"
             }}
+            onClick={() => {
+              void router.push(config.pages.events);
+            }}
           >
-            <CoreTypography variant="body1">Volunteer</CoreTypography>
+            Volunteer
           </CoreButton>
         </div>
       </Container>

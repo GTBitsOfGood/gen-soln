@@ -106,7 +106,7 @@ const NonprofitCard = (props: Props) => {
               onClick={e => {
                 e.preventDefault();
                 window.location.replace(
-                  config.pages.nonprofit(nonprofitCardData._id)
+                  config.pages.donate(nonprofitCardData._id)
                 );
               }}
               className={button}

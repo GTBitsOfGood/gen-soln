@@ -30,7 +30,6 @@ const useStyles = makeStyles(({ palette }: Theme) =>
     },
     container: {
       display: "flex",
-      flexWrap: "wrap",
       flexDirection: "row",
       alignItems: "center",
       position: "relative",

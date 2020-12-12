@@ -4,20 +4,24 @@ import CardPaginationList from "@core/list/CoreCardPaginationListNonproftCarouse
 import config from "config";
 import { NonprofitCardData, PaginatedNonprofitCards } from "utils/types";
 
-import NonprofitCard from ".././cards/NonprofitCard";
+import NonprofitCard from "../cards/NonprofitCard";
 import NonprofitCardGlimmer from "./NonprofitCardGlimmer";
 
-const LandingCarousel = (nonprofitCardData: PaginatedNonprofitCards) => {
+interface Props {
+  nonprofitCards: PaginatedNonprofitCards;
+}
+
+const NonprofitLandingCarousel: React.FC<Props> = props => {
   return (
     <CardPaginationList
-      paginatedCardsData={nonprofitCardData}
+      paginatedCardsData={props.nonprofitCards}
       cardGlimmer={<NonprofitCardGlimmer />}
       cardWidth={555}
       renderCard={(cardData: NonprofitCardData) => (
         <NonprofitCard
           nonprofitCardData={cardData}
           onClick={() => {
-            window.location.replace(config.pages.nonprofit(cardData._id));
+            window.location.replace(config.pages.donate(cardData._id));
           }}
         />
       )}
@@ -25,4 +29,4 @@ const LandingCarousel = (nonprofitCardData: PaginatedNonprofitCards) => {
   );
 };
 
-export default LandingCarousel;
+export default NonprofitLandingCarousel;
