@@ -20,11 +20,11 @@ const NonprofitProfilePage: NextPage<InferGetStaticPropsType<
   if (router.isFallback) {
     return null;
   }
-  if (props.hasError) {
+  if (props.hasError || !props.nonProfit) {
     return <ErrorPage statusCode={404} />;
   }
 
-  return <NonprofitProfilePage {...props} />;
+  return <NonprofitPage nonprofit={props.nonProfit} />;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
