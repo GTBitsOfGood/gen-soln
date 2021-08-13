@@ -36,7 +36,7 @@
     "mongodb": "^3.6.2",
     "mongoose": "^5.9.1",
     "nanoid": "^3.0.2",
-    "next": "9.5.4",
+    "next": "11.1.0",
     "next-auth": "GTBitsOfGood/next-auth#67498cf8fe11ca6b54cc7d4d62aefa6f0ac9992a",
     "next-cookies": "^2.0.3",
     "node-cache": "^5.1.2",
